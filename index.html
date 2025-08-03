@@ -667,13 +667,20 @@
 
         // Redirect to main app
         function redirectToMainApp(user) {
-            // 🔥 REPLACE THIS URL WITH YOUR MAIN APP URL 🔥
-            // For now, just showing alert - replace with actual redirect
-            
-            alert(`✅ Login Successful!\n\nUser: ${user.name || user.phone}\nRedirecting to main app...`);
-            
-            // Uncomment and modify this line to redirect to your main app:
-            // window.location.href = 'your-main-app.html';
+    // Save authentication status
+    try {
+        localStorage.setItem('kabiruAuth', JSON.stringify({
+            isAuthenticated: true,
+            user: user,
+            loginTime: new Date().toISOString()
+        }));
+    } catch (error) {
+        console.log('Could not save auth status');
+    }
+    
+    // Redirect to mining app
+    window.location.href = 'mining-app.html';
+}
             
             // Or if same page, you can trigger a custom event:
             // window.dispatchEvent(new CustomEvent('userLoggedIn', { detail: user }));
