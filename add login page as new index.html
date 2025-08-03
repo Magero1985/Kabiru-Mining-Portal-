@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KABIRU Login Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-logo-img {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            animation: pulse 2s infinite;
+            border: 2px solid #FFD700;
+            margin: 0 auto 15px;
+        }
+
+        .auth-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .auth-form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #FFD700;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: #FFD700;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 12px;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .auth-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .auth-toggle-link {
+            color: #FFD700;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: all 0.3s ease;
+        }
+
+        .auth-toggle-link:hover {
+            opacity: 0.8;
+        }
+
+        .otp-container {
+            display: none;
+            text-align: center;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .otp-input:focus {
+            border-color: #FFD700;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .otp-info {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .resend-timer {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        .resend-link {
+            color: #FFD700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 135, 0.1);
+            border: 1px solid rgba(0, 255, 135, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #00ff87;
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ff6b6b;
+            display: none;
+        }
+
+        .login-container {
+            display: block;
+        }
+
+        .signup-container {
+            display: none;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .auth-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+            
+            .otp-inputs {
+                gap: 8px;
+            }
+            
+            .otp-input {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Logo Section -->
+        <div class="auth-logo">
+            <div class="auth-logo-img">iKb</div>
+            <div class="auth-title">KABIRU</div>
+            <div class="auth-subtitle">Secure Login Portal</div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginContainer" class="login-container">
+            <form class="auth-form" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="loginPhone" placeholder="+254 700 000 000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="auth-button">Sign In</button>
+            </form>
+            
+            <div class="auth-toggle">
+                Don't have an account? <span class="auth-toggle-link" onclick="showSignup()">Sign Up</span>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupContainer" class="signup-container">
+            <div class="auth-form">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="signupName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="signupPhone" placeholder="+254 700 000 000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email (Optional)</label>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" placeholder="Create a strong password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="button" class="auth-button" id="signupButton" onclick="handleSignup()">CREATE ACCOUNT</button>
+            </div>
+            
+            <div class="auth-toggle">
+                Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
+            </div>
+        </div>
+
+        <!-- OTP Verification -->
+        <div id="otpContainer" class="otp-container">
+            <h3 style="color: #FFD700; margin-bottom: 15px;">Verify Your Phone</h3>
+            
+            <div class="otp-info">
+                <strong>📱 For Trial Purposes:</strong><br>
+                Use any 6 digits to verify your account.<br>
+                Example: 123456, 000000, or any combination.
+            </div>
+            
+            <div class="otp-inputs">
+                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 0)">
+                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 1)">
+                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 2)">
+                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 3)">
+                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 4)">
+                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 5)">
+            </div>
+            
+            <button class="auth-button" onclick="verifyOTP()">Verify & Continue</button>
+            
+            <div class="resend-timer">
+                Didn't receive code? <span class="resend-link" onclick="resendOTP()">Resend OTP</span>
+                <div id="resendTimer" style="margin-top: 5px; opacity: 0.6;"></div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successContainer" class="success-message">
+            <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
+            <div><strong>Account Verified Successfully!</strong></div>
+            <div style="font-size: 12px; margin-top: 8px;">Redirecting to your mining dashboard...</div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message">
+            <div><strong>⚠️ Error</strong></div>
+            <div id="errorText">Something went wrong. Please try again.</div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Authentication variables
+        let currentUser = null;
+        let otpTimer = null;
+        let resendCountdown = 60;
+        
+        // Safe storage functions
+        function saveUserData(userData) {
+            try {
+                // Try localStorage
+                if (typeof Storage !== "undefined" && localStorage) {
+                    localStorage.setItem('kabiruUser', JSON.stringify(userData));
+                    console.log('User data saved:', userData);
+                    return true;
+                }
+            } catch (error) {
+                console.log('Storage not available');
+            }
+            return false;
+        }
+        
+        function getUserData() {
+            try {
+                if (typeof Storage !== "undefined" && localStorage) {
+                    const data = localStorage.getItem('kabiruUser');
+                    if (data && data !== 'null') {
+                        return JSON.parse(data);
+                    }
+                }
+            } catch (error) {
+                console.log('Error reading user data');
+            }
+            return null;
+        }
+
+        // Initialize - check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedUser = getUserData();
+            if (savedUser) {
+                // User already logged in, redirect to main app
+                redirectToMainApp(savedUser);
+            }
+        });
+
+        // Authentication Functions
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('signupContainer').style.display = 'none';
+            document.getElementById('otpContainer').style.display = 'none';
+            hideMessages();
+        }
+
+        function showSignup() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('signupContainer').style.display = 'block';
+            document.getElementById('otpContainer').style.display = 'none';
+            hideMessages();
+        }
+
+        function showOTPVerification() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('signupContainer').style.display = 'none';
+            document.getElementById('otpContainer').style.display = 'block';
+            hideMessages();
+            
+            // Focus on first OTP input
+            document.querySelector('.otp-input').focus();
+            startResendTimer();
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successContainer').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!phone || !password) {
+                showError('Please fill in all fields');
+                return false;
+            }
+
+            if (!isValidPhone(phone)) {
+                showError('Please enter a valid phone number');
+                return false;
+            }
+
+            // Show loading
+            const submitButton = event.target.querySelector('.auth-button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Signing In...';
+            submitButton.disabled = true;
+
+            // Simulate login
+            setTimeout(() => {
+                currentUser = {
+                    phone: phone,
+                    loginType: 'existing',
+                    loginAt: new Date().toISOString()
+                };
+                
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+                showOTPVerification();
+            }, 1000);
+            
+            return false;
+        }
+
+        function handleSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validation
+            if (!name) {
+                showError('Please enter your full name');
+                return;
+            }
+            
+            if (!phone) {
+                showError('Please enter your phone number');
+                return;
+            }
+            
+            if (!password) {
+                showError('Please create a password');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 4) {
+                showError('Password must be at least 4 characters long');
+                return;
+            }
+
+            // Show loading
+            const button = document.getElementById('signupButton');
+            const originalText = button.textContent;
+            button.textContent = 'Creating Account...';
+            button.disabled = true;
+
+            // Create account
+            setTimeout(() => {
+                currentUser = {
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    loginType: 'new',
+                    createdAt: new Date().toISOString()
+                };
+                
+                button.textContent = originalText;
+                button.disabled = false;
+                showOTPVerification();
+                showNotification('Account created! Please verify with OTP');
+            }, 1000);
+        }
+
+        function moveToNext(current, index) {
+            if (current.value.length === 1) {
+                if (index < 5) {
+                    document.querySelectorAll('.otp-input')[index + 1].focus();
+                }
+            }
+            
+            // Auto-verify if all filled
+            const otpInputs = document.querySelectorAll('.otp-input');
+            const allFilled = Array.from(otpInputs).every(input => input.value.length === 1);
+            if (allFilled) {
+                setTimeout(verifyOTP, 500);
+            }
+        }
+
+        function verifyOTP() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            const otp = Array.from(otpInputs).map(input => input.value).join('');
+            
+            if (otp.length !== 6) {
+                showError('Please enter all 6 digits');
+                return;
+            }
+
+            // Show loading
+            const verifyButton = document.querySelector('#otpContainer .auth-button');
+            const originalText = verifyButton.textContent;
+            verifyButton.textContent = 'Verifying...';
+            verifyButton.disabled = true;
+
+            // Verify (accept any 6 digits)
+            setTimeout(() => {
+                if (otp.length === 6) {
+                    // Save user data
+                    const userDataToSave = {
+                        ...currentUser,
+                        verifiedAt: new Date().toISOString(),
+                        balance: 0.0000
+                    };
+                    
+                    saveUserData(userDataToSave);
+                    currentUser = userDataToSave;
+                    
+                    // Show success and redirect
+                    document.getElementById('otpContainer').style.display = 'none';
+                    document.getElementById('successContainer').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        redirectToMainApp(currentUser);
+                    }, 2000);
+                } else {
+                    showError('Verification failed. Please try again.');
+                    otpInputs.forEach(input => input.value = '');
+                    otpInputs[0].focus();
+                    verifyButton.textContent = originalText;
+                    verifyButton.disabled = false;
+                }
+            }, 1500);
+        }
+
+        function resendOTP() {
+            showNotification('New OTP sent to your phone!');
+            startResendTimer();
+        }
+
+        function startResendTimer() {
+            resendCountdown = 60;
+            const timerElement = document.getElementById('resendTimer');
+            
+            if (otpTimer) clearInterval(otpTimer);
+            
+            otpTimer = setInterval(() => {
+                resendCountdown--;
+                timerElement.textContent = `Resend available in ${resendCountdown} seconds`;
+                
+                if (resendCountdown <= 0) {
+                    clearInterval(otpTimer);
+                    timerElement.textContent = '';
+                }
+            }, 1000);
+        }
+
+        function isValidPhone(phone) {
+            if (!phone || phone.length < 8) return false;
+            const digitsOnly = phone.replace(/\D/g, '');
+            return digitsOnly.length >= 8 && digitsOnly.length <= 15;
+        }
+
+        function showError(message) {
+            document.getElementById('errorText').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 5000);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        //function redirectToMainApp(user) {
+    // Save user data
+    const userDataToSave = {
+        ...user,
+        loginTime: new Date().toISOString()
+    };
+    
+    try {
+        localStorage.setItem('kabiruUser', JSON.stringify(userDataToSave));
+        console.log('User data saved successfully');
+    } catch (error) {
+        console.log('Storage error, but continuing...');
+    }
+    
+    // Redirect to main app
+    window.location.href = 'dashboard.html';
+}
+            
+            // Or if same page, you can trigger a custom event:
+            // window.dispatchEvent(new CustomEvent('userLoggedIn', { detail: user }));
+        }
+
+        // Handle keyboard events
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('otpContainer').style.display === 'block') {
+                const otpInputs = document.querySelectorAll('.otp-input');
+                const activeElement = document.activeElement;
+                const currentIndex = Array.from(otpInputs).indexOf(activeElement);
+                
+                if (e.key === 'Backspace' && currentIndex > 0 && activeElement.value === '') {
+                    otpInputs[currentIndex - 1].focus();
+                    otpInputs[currentIndex - 1].value = '';
+                }
+                
+                if (e.key === 'Enter') {
+                    verifyOTP();
+                }
+            }
+        });
+
+        // Prevent non-numeric in OTP
+        document.querySelectorAll('.otp-input').forEach(input => {
+            input.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+        console.log('🚀 KABIRU Login System Ready!');
+    </script>
+</body>
+</html>
