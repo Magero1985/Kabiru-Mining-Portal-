@@ -664,22 +664,21 @@
             }, 3000);
         }
 
-        //function redirectToMainApp(user) {
-    // Save user data
-    const userDataToSave = {
-        ...user,
-        loginTime: new Date().toISOString()
-    };
-    
+        // Redirect to main app
+function redirectToMainApp(user) {
+    // Save authentication status
     try {
-        localStorage.setItem('kabiruUser', JSON.stringify(userDataToSave));
-        console.log('User data saved successfully');
+        localStorage.setItem('kabiruAuth', JSON.stringify({
+            isAuthenticated: true,
+            user: user,
+            loginTime: new Date().toISOString()
+        }));
     } catch (error) {
-        console.log('Storage error, but continuing...');
+        console.log('Could not save auth status');
     }
     
-    // Redirect to main app
-    window.location.href = 'dashboard.html';
+    // Redirect to mining app
+    window.location.href = 'mining-app.html';
 }
             
             // Or if same page, you can trigger a custom event:
