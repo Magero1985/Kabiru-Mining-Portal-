@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KABIRU Mining App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 15px;
+            position: relative;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .top-bar div {
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar div:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            border: 2px solid #FFD700;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .welcome-message {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .welcome-text {
+            color: #FFD700;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .welcome-subtext {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+        }
+
+        .balance-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .balance-title {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .mining-rate {
+            font-size: 12px;
+            opacity: 0.7;
+            color: #00ff87;
+        }
+
+        .mining-timer {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #00ff87;
+        }
+
+        .main-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .main-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 20px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            text-align: center;
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .sovereign-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+        }
+
+        .value-btn {
+            background: linear-gradient(45deg, #00ff87, #60efff);
+            color: #333;
+        }
+
+        .reserve-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tasks-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .tasks-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .reward-info {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .task-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-category {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .task-category:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+        }
+
+        .task-category.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+        }
+
+        .category-title {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .category-subtitle {
+            font-size: 9px;
+            opacity: 0.7;
+        }
+
+        .value-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .value-item {
+            background: rgba(0, 255, 135, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .value-item:hover {
+            background: rgba(0, 255, 135, 0.2);
+        }
+
+        .personal-ledger {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .ledger-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .ledger-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+            color: #FFD700;
+        }
+
+        .logout-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logout-button {
+            width: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+        }
+
+        .logout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        .mining-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-title {
+            color: #FFD700;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .value-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .value-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+        }
+
+        .value-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 10px;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .auth-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mining App -->
+    <div class="container">
+        <!-- Welcome Message -->
+        <div class="welcome-message">
+            <div class="welcome-text">Welcome to KABIRU!</div>
+            <div class="welcome-subtext">Start mining your tokens now</div>
+        </div>
+
+        <!-- Top Navigation Bar -->
+        <div class="top-bar">
+            <div onclick="showNotification('Utilities coming soon!')">UTILITIES</div>
+            <div onclick="showNotification('Wallet coming soon!')">WALLET</div>
+            <div onclick="showNotification('Documentation coming soon!')">READ</div>
+            <div onclick="showNotification('Languages coming soon!')">LANGUAGE</div>
+            <div onclick="showNotification('Corporate coming soon!')">CORPORATE</div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-img">iKb</div>
+                <div>
+                    <div class="app-title">KABIRU[iKb]</div>
+                    <div class="subtitle">Mine Kabiru Token</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balance Section -->
+        <div class="balance-section">
+            <div class="balance-title">Your KABIRU BALANCE</div>
+            <div class="balance-amount" id="balance">0.0000 iKb</div>
+            <div class="mining-rate">mining rate <span id="miningRate">0.001</span>iKb/day</div>
+            <div class="mining-timer" id="miningTimer">Next reward in: 00:00:00</div>
+        </div>
+
+        <!-- Main Action Buttons -->
+        <div class="main-buttons">
+            <button class="main-button sovereign-btn" onclick="openSovereignModal()">
+                SOVEREIGN
+            </button>
+            <button class="main-button value-btn" onclick="openValueModal()">
+                VALUE
+            </button>
+            <button class="main-button reserve-btn" onclick="mineTokens('reserve')">
+                RESERVE
+            </button>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-value" id="totalBalance">0.0000 iKb</div>
+                <div class="stat-label">TOTAL</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="miningStatus">Inactive</div>
+                <div class="stat-label">My Status</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="networkSize">144,000</div>
+                <div class="stat-label">Network size</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="tasksCompleted">0</div>
+                <div class="stat-label">Tasks</div>
+            </div>
+        </div>
+
+        <!-- Tasks & Rewards Section -->
+        <div class="tasks-section">
+            <div class="tasks-header">
+                <div class="tasks-title">Tasks</div>
+                <div class="reward-info">Reward</div>
+            </div>
+            
+            <div class="task-categories">
+                <div class="task-category" onclick="selectTask('mining')">
+                    <div class="category-title">iKb(M)</div>
+                    <div class="category-subtitle">Gen ledger</div>
+                </div>
+                <div class="task-category" onclick="selectTask('partnership')">
+                    <div class="category-title">iKb(P)</div>
+                    <div class="category-subtitle">Partnership</div>
+                </div>
+                <div class="task-category" onclick="selectTask('genledger')">
+                    <div class="category-title">iKb(GL)</div>
+                    <div class="category-subtitle">Gen Ledger</div>
+                </div>
+            </div>
+
+            <div class="value-categories">
+                <div class="value-item" onclick="performTask('service')">Service<br><small>value</small></div>
+                <div class="value-item" onclick="performTask('skill')">Skill<br><small>value</small></div>
+                <div class="value-item" onclick="performTask('knowledge')">Knowledge<br><small>value</small></div>
+            </div>
+        </div>
+
+        <!-- Personal Ledger Section -->
+        <div class="personal-ledger">
+            <div class="ledger-grid">
+                <div class="ledger-item">
+                    <div class="ledger-title">personal</div>
+                    <div>Ledger</div>
+                </div>
+                <div class="ledger-item">
+                    <div class="ledger-title">Generation</div>
+                    <div>Asset</div>
+                </div>
+                <div class="ledger-item">
+                    <div class="ledger-title">Information</div>
+                    <div>Asset</div>
+                </div>
+                <div class="ledger-item">
+                    <div class="ledger-title">iKb</div>
+                    <div>intelligent</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Spacer for Logout Button -->
+        <div class="footer-spacer"></div>
+
+        <!-- Footer -->
+        <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
+            kabiru mining App
+        </div>
+    </div>
+
+    <!-- Logout Section - Fixed at bottom -->
+    <div class="logout-section">
+        <button class="logout-button" onclick="handleLogout()">
+            🚪 Logout
+        </button>
+    </div>
+
+    <!-- Sovereign Values Modal -->
+    <div id="sovereignModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
+            <h2 class="modal-title">Select Your Sovereignty Value</h2>
+            <div id="sovereignOptions">
+                <div class="value-option" onclick="selectSovereignValue('personal')">
+                    <strong>Personal Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Individual autonomy and self-governance</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('economic')">
+                    <strong>Economic Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Financial independence and control</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('digital')">
+                    <strong>Digital Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Control over digital identity and data</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('territorial')">
+                    <strong>Territorial Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Land and resource ownership rights</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startSovereignMining()" disabled id="sovereignStartBtn">
+                Start Mining
+            </button>
+        </div>
+    </div>
+
+    <!-- Value Selection Modal -->
+    <div id="valueModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('valueModal')">&times;</span>
+            <h2 class="modal-title">Select Your Value Type</h2>
+            <div id="valueOptions">
+                <div class="value-option" onclick="selectValue('service', 0.0015)">
+                    <strong>Service Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Community service and assistance - 0.0015 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('skill', 0.0025)">
+                    <strong>Skill Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Professional skills and expertise - 0.0025 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('knowledge', 0.0035)">
+                    <strong>Knowledge Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Information and wisdom sharing - 0.0035 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('innovation', 0.0045)">
+                    <strong>Innovation Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Creative solutions and inventions - 0.0045 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('leadership', 0.0055)">
+                    <strong>Leadership Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Guidance and mentorship - 0.0055 iKb</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startValueMining()" disabled id="valueStartBtn">
+                Start Mining
+            </button>
+        </div>
+    </div>
+
+    <!-- Mining Indicator -->
+    <div id="miningIndicator" class="mining-indicator">
+        <div>⛏️ Mining in Progress...</div>
+        <div style="font-size: 12px; margin-top: 10px;">Mining tokens...</div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Global variables
+        let userBalance = 0.0000;
+        let miningRate = 0.001;
+        let isMinig = false;
+        let selectedSovereignType = null;
+        let selectedValueType = null;
+        let selectedValueAmount = 0;
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            updateBalanceDisplay();
+            startMiningTimer();
+            handleWelcomeMessage();
+            console.log('KABIRU Mining App Loaded Successfully!');
+        });
+
+        // Handle welcome message display and auto-hide
+        function handleWelcomeMessage() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            if (welcomeMsg) {
+                // Show the message initially
+                welcomeMsg.style.display = 'block';
+                welcomeMsg.style.opacity = '1';
+                
+                // Auto-hide after 4 seconds
+                setTimeout(() => {
+                    welcomeMsg.style.transition = 'opacity 1s ease-out';
+                    welcomeMsg.style.opacity = '0';
+                    
+                    // Remove from DOM after fade out
+                    setTimeout(() => {
+                        welcomeMsg.style.display = 'none';
+                    }, 1000);
+                }, 4000);
+            }
+        }
+
+        // Balance and mining functions
+        function updateBalanceDisplay() {
+            const balanceElements = document.querySelectorAll('#balance, #totalBalance');
+            balanceElements.forEach(el => {
+                if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
+            });
+        }
+
+        function startMiningTimer() {
+            const timerElement = document.getElementById('miningTimer');
+            if (!timerElement) return;
+
+            let seconds = 0;
+            setInterval(() => {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                seconds++;
+                
+                // Auto mine every 30 seconds for demo
+                if (seconds % 30 === 0 && isMinig) {
+                    userBalance += miningRate;
+                    updateBalanceDisplay();
+                    showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
+                }
+            }, 1000);
+        }
+
+        // Modal functions
+        function openSovereignModal() {
+            document.getElementById('sovereignModal').style.display = 'block';
+        }
+
+        function openValueModal() {
+            document.getElementById('valueModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function selectSovereignValue(type) {
+            selectedSovereignType = type;
+            
+            // Remove previous selections
+            document.querySelectorAll('#sovereignOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            
+            // Enable start button
+            document.getElementById('sovereignStartBtn').disabled = false;
+        }
+
+        function selectValue(type, amount) {
+            selectedValueType = type;
+            selectedValueAmount = amount;
+            
+            // Remove previous selections
+            document.querySelectorAll('#valueOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            
+            // Enable start button
+            document.getElementById('valueStartBtn').disabled = false;
+        }
+
+        function startSovereignMining() {
+            if (!selectedSovereignType) return;
+            
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += 0.005; // Base sovereign mining reward
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Sovereign mining complete! +0.0050 iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+            
+            closeModal('sovereignModal');
+        }
+
+        function startValueMining() {
+            if (!selectedValueType) return;
+            
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += selectedValueAmount;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Value mining complete! +${selectedValueAmount.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+            
+            closeModal('valueModal');
+        }
+
+        function mineTokens(type) {
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            let reward = 0.002; // Base reserve mining reward
+            
+            setTimeout(() => {
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Reserve mining complete! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+        }
+
+        function showMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'block';
+        }
+
+        function hideMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'none';
+        }
+
+        function incrementTasksCompleted() {
+            const tasksElement = document.getElementById('tasksCompleted');
+            let current = parseInt(tasksElement.textContent);
+            tasksElement.textContent = current + 1;
+        }
+
+        // Task functions
+        function selectTask(taskType) {
+            // Remove active class from all categories
+            document.querySelectorAll('.task-category').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Add active class to selected category
+            event.target.closest('.task-category').classList.add('active');
+            
+            showNotification(`Selected ${taskType} task category`);
+        }
+
+        function performTask(taskType) {
+            isMinig = true;
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                const reward = Math.random() * 0.003 + 0.001; // Random reward between 0.001-0.004
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`${taskType} task completed! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 2000);
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                showNotification('Logged out successfully!');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            }
+        }
+
+        // Notification function
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+    </html>
