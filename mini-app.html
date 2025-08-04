@@ -1104,14 +1104,6 @@
                         <div class="category-title">iKb(M)</div>
                         <div class="category-subtitle">Gen ledger</div>
                     </div>
-                    <div class="task-category" onclick="selectTask('partnership')">
-                        <div class="category-title">iKb(P)</div>
-                        <div class="category-subtitle">Partnership</div>
-                    </div>
-                    <div class="task-category" onclick="selectTask('genledger')">
-                        <div class="category-title">iKb(GL)</div>
-                        <div class="category-subtitle">Gen Ledger</div>
-                    </div>
                 </div>
 
                 <div class="value-categories">
@@ -1141,24 +1133,6 @@
                         <div>intelligent</div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Logout Button -->
-            <div style="text-align: center; margin: 30px 0 20px 0;">
-                <button onclick="logout()" style="
-                    background: rgba(255, 107, 107, 0.2);
-                    border: 1px solid rgba(255, 107, 107, 0.5);
-                    color: #ff6b6b;
-                    padding: 12px 30px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: 500;
-                    transition: all 0.3s ease;
-                " onmouseover="this.style.background='rgba(255, 107, 107, 0.3)'" 
-                   onmouseout="this.style.background='rgba(255, 107, 107, 0.2)'">
-                    🚪 Logout
-                </button>
             </div>
 
             <!-- Footer -->
@@ -1350,8 +1324,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Utilities Page -->
     <div id="utilitiesPage" class="utilities-page">
         <div class="container">
             <!-- Utilities Header -->
@@ -1425,7 +1397,180 @@
         </div>
     </div>
 
-    <!-- All Modals -->
+    <!-- Wallet Feature Modals -->
+    
+    <!-- Send Modal -->
+    <div id="sendModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Send KABIRU</h2>
+                <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="sendAddress">Recipient Address</label>
+                <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
+            </div>
+            <div class="input-group">
+                <label for="sendAmount">Amount (iKb)</label>
+                <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="sendNote">Note (Optional)</label>
+                <input type="text" id="sendNote" placeholder="Payment for...">
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
+                <button class="primary-button" onclick="processSend()">Send iKb</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div id="receiveModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Receive KABIRU</h2>
+                <span class="close" onclick="closeWalletModal('receiveModal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="background: white; padding: 20px; border-radius: 10px; display: inline-block;">
+                    <div style="color: #333; font-size: 16px; font-weight: bold;">QR Code</div>
+                    <div style="color: #666; font-size: 12px; margin-top: 5px;">Scan to send iKb</div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Your Wallet Address</label>
+                <input type="text" value="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2" readonly>
+            </div>
+            <div class="action-buttons">
+                <button class="primary-button" onclick="copyAddress()">Copy Address</button>
+                <button class="secondary-button" onclick="shareAddress()">Share</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swap Modal -->
+    <div id="swapModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Swap Tokens</h2>
+                <span class="close" onclick="closeWalletModal('swapModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="swapFrom">From</label>
+                <select id="swapFrom">
+                    <option value="ikb">KABIRU (iKb)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="swapFromAmount">Amount</label>
+                <input type="number" id="swapFromAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div style="text-align: center; margin: 15px 0;">
+                <span style="font-size: 20px;">🔄</span>
+            </div>
+            <div class="input-group">
+                <label for="swapTo">To</label>
+                <select id="swapTo">
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="ikb">KABIRU (iKb)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>You'll receive approximately</label>
+                <input type="text" id="swapToAmount" placeholder="0.0000" readonly>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('swapModal')">Cancel</button>
+                <button class="primary-button" onclick="processSwap()">Swap Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lockup Modal -->
+    <div id="lockupModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Token Lockup</h2>
+                <span class="close" onclick="closeWalletModal('lockupModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="lockupAmount">Amount to Lock (iKb)</label>
+                <input type="number" id="lockupAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="lockupPeriod">Lock Period</label>
+                <select id="lockupPeriod">
+                    <option value="30">30 Days (5% APY)</option>
+                    <option value="90">90 Days (8% APY)</option>
+                    <option value="180">180 Days (12% APY)</option>
+                    <option value="365">1 Year (18% APY)</option>
+                </select>
+            </div>
+            <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <div style="font-size: 12px; opacity: 0.8;">Estimated Rewards:</div>
+                <div style="color: #FFD700; font-weight: bold;" id="lockupRewards">0.0000 iKb</div>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('lockupModal')">Cancel</button>
+                <button class="primary-button" onclick="processLockup()">Lock Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reserve Modal -->
+    <div id="reserveModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Emergency Reserve</h2>
+                <span class="close" onclick="closeWalletModal('reserveModal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="font-size: 24px; color: #FFD700; font-weight: bold;">Reserve Balance</div>
+                <div style="font-size: 32px; color: #FFD700; margin: 10px 0;" id="reserveBalance">0.0000 iKb</div>
+                <div style="font-size: 12px; opacity: 0.7;">Protected emergency funds</div>
+            </div>
+            <div class="input-group">
+                <label for="reserveAmount">Amount</label>
+                <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="addToReserve()">Add to Reserve</button>
+                <button class="primary-button" onclick="withdrawFromReserve()">Emergency Withdraw</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust Modal -->
+    <div id="trustModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Trust Fund</h2>
+                <span class="close" onclick="closeWalletModal('trustModal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="font-size: 24px; color: #FFD700; font-weight: bold;">Trust Balance</div>
+                <div style="font-size: 32px; color: #FFD700; margin: 10px 0;" id="trustBalance">0.0000 iKb</div>
+                <div style="font-size: 12px; opacity: 0.7;">Growing at 15% annually</div>
+            </div>
+            <div class="input-group">
+                <label for="trustAmount">Contribution Amount (iKb)</label>
+                <input type="number" id="trustAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="trustBeneficiary">Beneficiary Address (Optional)</label>
+                <input type="text" id="trustBeneficiary" placeholder="0x742d35...4B76A2">
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('trustModal')">Cancel</button>
+                <button class="primary-button" onclick="addToTrust()">Add to Trust</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Language Selection Modal -->
     <div id="languageModal" class="subcategory-modal">
         <div class="subcategory-content">
@@ -1457,6 +1602,57 @@
                     <div class="subcategory-item-name">Yorùbá</div>
                     <div class="subcategory-item-desc">Nigeria, Benin</div>
                 </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('igbo', 'Igbo')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Igbo</div>
+                    <div class="subcategory-item-desc">Southeast Nigeria</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('amharic', 'አማርኛ')">
+                    <span class="subcategory-item-icon">🇪🇹</span>
+                    <div class="subcategory-item-name">Amharic</div>
+                    <div class="subcategory-item-desc">Ethiopia</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('arabic', 'العربية')">
+                    <span class="subcategory-item-icon">🇪🇬</span>
+                    <div class="subcategory-item-name">Arabic</div>
+                    <div class="subcategory-item-desc">North Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('french', 'Français')">
+                    <span class="subcategory-item-icon">🇫🇷</span>
+                    <div class="subcategory-item-name">Français</div>
+                    <div class="subcategory-item-desc">West/Central Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('zulu', 'isiZulu')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiZulu</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('xhosa', 'isiXhosa')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiXhosa</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('afrikaans', 'Afrikaans')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">Afrikaans</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('luganda', 'Luganda')">
+                    <span class="subcategory-item-icon">🇺🇬</span>
+                    <div class="subcategory-item-name">Luganda</div>
+                    <div class="subcategory-item-desc">Uganda</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; font-size: 12px; opacity: 0.7;">
+                More European languages coming soon...
             </div>
         </div>
     </div>
@@ -1480,11 +1676,21 @@
                     <div class="subcategory-item-name">Trust</div>
                     <div class="subcategory-item-desc">Trust management</div>
                 </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Holding Company')">
+                    <span class="subcategory-item-icon">🏢</span>
+                    <div class="subcategory-item-name">Holding Company</div>
+                    <div class="subcategory-item-desc">Corporate holdings</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Strawmanship')">
+                    <span class="subcategory-item-icon">👤</span>
+                    <div class="subcategory-item-name">Strawmanship</div>
+                    <div class="subcategory-item-desc">Legal representation</div>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Subcategory Modal -->
     <div id="subcategoryModal" class="subcategory-modal">
         <div class="subcategory-content">
             <div class="subcategory-header">
@@ -1511,6 +1717,14 @@
                     <strong>Economic Sovereignty</strong>
                     <p style="font-size: 12px; margin-top: 5px;">Financial independence and control</p>
                 </div>
+                <div class="value-option" onclick="selectSovereignValue('digital')">
+                    <strong>Digital Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Control over digital identity and data</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('territorial')">
+                    <strong>Territorial Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Land and resource ownership rights</p>
+                </div>
             </div>
             <button class="auth-button" onclick="startSovereignMining()" style="margin-top: 20px;" disabled id="sovereignStartBtn">
                 Start Mining
@@ -1532,28 +1746,22 @@
                     <strong>Skill Value</strong>
                     <p style="font-size: 12px; margin-top: 5px;">Professional skills and expertise - 0.0025 iKb</p>
                 </div>
+                <div class="value-option" onclick="selectValue('knowledge', 0.0035)">
+                    <strong>Knowledge Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Information and wisdom sharing - 0.0035 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('innovation', 0.0045)">
+                    <strong>Innovation Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Creative solutions and inventions - 0.0045 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('leadership', 0.0055)">
+                    <strong>Leadership Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Guidance and mentorship - 0.0055 iKb</p>
+                </div>
             </div>
             <button class="auth-button" onclick="startValueMining()" style="margin-top: 20px;" disabled id="valueStartBtn">
                 Start Mining
             </button>
-        </div>
-    </div>
-
-    <!-- Wallet Modals (shortened for space) -->
-    <div id="sendModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Send KABIRU</h2>
-                <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
-            </div>
-            <div class="input-group">
-                <label for="sendAddress">Recipient Address</label>
-                <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
-            </div>
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
-                <button class="primary-button" onclick="processSend()">Send iKb</button>
-            </div>
         </div>
     </div>
 
@@ -1567,56 +1775,6 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        // Authentication Check - Must be first
-        (function checkAuthentication() {
-            try {
-                console.log('🔐 Checking authentication...');
-                
-                const authData = localStorage.getItem('kabiruAuth');
-                const simpleFlag = localStorage.getItem('kabiruLoggedIn');
-                
-                console.log('Auth data found:', !!authData);
-                console.log('Simple flag found:', simpleFlag);
-                
-                if (!authData && simpleFlag !== 'true') {
-                    console.log('❌ No authentication found, redirecting to login...');
-                    window.location.href = 'index.html';
-                    return;
-                }
-                
-                if (authData) {
-                    const auth = JSON.parse(authData);
-                    if (!auth.isAuthenticated) {
-                        console.log('❌ Not authenticated, redirecting to login...');
-                        window.location.href = 'index.html';
-                        return;
-                    }
-                    
-                    // Check if login is still valid (24 hours)
-                    const loginTime = new Date(auth.loginTime);
-                    const now = new Date();
-                    const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
-                    
-                    if (hoursSinceLogin > 24) {
-                        console.log('❌ Login expired, redirecting...');
-                        localStorage.removeItem('kabiruAuth');
-                        localStorage.removeItem('kabiruUser');
-                        localStorage.removeItem('kabiruLoggedIn');
-                        window.location.href = 'index.html';
-                        return;
-                    }
-                    
-                    console.log('✅ User authenticated:', auth.user);
-                }
-                
-                console.log('✅ Authentication check passed!');
-                
-            } catch (error) {
-                console.log('❌ Auth check failed:', error);
-                window.location.href = 'index.html';
-            }
-        })();
-
         // Global variables
         let userBalance = 0.0000;
         let miningRate = 0.001;
@@ -1628,10 +1786,8 @@
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 KABIRU Mining App Loading...');
             updateBalanceDisplay();
             startMiningTimer();
-            console.log('✅ Mining app ready!');
         });
 
         // Navigation functions
@@ -1668,7 +1824,6 @@
             document.getElementById('documentPage').style.display = 'none';
         }
 
-        // Language functions
         function showLanguageModal() {
             document.getElementById('languageModal').style.display = 'block';
         }
@@ -1680,10 +1835,357 @@
         function selectLanguage(langCode, langName) {
             showNotification(`Language changed to ${langName}`);
             closeLanguageModal();
+            // Store selected language (in a real app, this would update the UI language)
             localStorage.setItem('selectedLanguage', langCode);
         }
 
-        // Corporate functions
+        function showReadPage() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'block';
+            document.getElementById('documentPage').style.display = 'none';
+        }
+
+        function showDocument(docType) {
+            document.getElementById('readPage').style.display = 'none';
+            document.getElementById('documentPage').style.display = 'block';
+            
+            const titleElement = document.getElementById('documentTitle');
+            const contentElement = document.getElementById('documentContent');
+            
+            const documents = {
+                whitepaper: {
+                    title: 'KABIRU Whitepaper',
+                    content: `
+                        <div class="coming-soon">
+                            📄 Whitepaper PDF will be available here soon
+                            <br><br>
+                            Please check back later for the complete technical documentation.
+                        </div>
+                    `
+                },
+                rules: {
+                    title: 'Platform Rules',
+                    content: `
+                        <div class="document-title">KABIRU Platform Rules</div>
+                        <div class="version-info">Version 1.0 - Last updated: August 2025</div>
+                        
+                        <div class="document-section-title">1. General Conduct</div>
+                        <div class="document-text">
+                            All users must maintain respectful and professional behavior within the KABIRU ecosystem. 
+                            Harassment, spam, or malicious activities are strictly prohibited.
+                        </div>
+                        
+                        <div class="document-section-title">2. Mining Guidelines</div>
+                        <div class="document-text">
+                            • Mining activities must be performed honestly without attempts to manipulate rewards<br>
+                            • Users are limited to one account per individual<br>
+                            • Automated mining tools or bots are not permitted<br>
+                            • All mining must represent genuine value creation
+                        </div>
+                        
+                        <div class="document-section-title">3. Token Usage</div>
+                        <div class="document-text">
+                            KABIRU tokens (iKb) should be used within the intended ecosystem. Trading, transferring, 
+                            or using tokens for illegal activities is prohibited.
+                        </div>
+                        
+                        <div class="document-section-title">4. Account Security</div>
+                        <div class="document-text">
+                            Users are responsible for maintaining the security of their accounts. Sharing credentials 
+                            or allowing unauthorized access may result in account suspension.
+                        </div>
+                        
+                        <div class="document-section-title">5. Violations and Penalties</div>
+                        <div class="document-text">
+                            Violations of these rules may result in warnings, temporary suspension, or permanent 
+                            account termination depending on severity.
+                        </div>
+                    `
+                },
+                terms: {
+                    title: 'Terms of Service',
+                    content: `
+                        <div class="document-title">Terms of Service</div>
+                        <div class="version-info">Version 1.0 - Effective Date: August 1, 2025</div>
+                        
+                        <div class="document-section-title">1. Acceptance of Terms</div>
+                        <div class="document-text">
+                            By accessing and using the KABIRU platform, you agree to be bound by these Terms of Service 
+                            and all applicable laws and regulations.
+                        </div>
+                        
+                        <div class="document-section-title">2. Description of Service</div>
+                        <div class="document-text">
+                            KABIRU is a digital token mining platform that allows users to earn tokens through 
+                            various value-creation activities including sovereignty, value creation, and reserve contributions.
+                        </div>
+                        
+                        <div class="document-section-title">3. User Responsibilities</div>
+                        <div class="document-text">
+                            Users are responsible for providing accurate information, maintaining account security, 
+                            and complying with all platform rules and applicable laws.
+                        </div>
+                        
+                        <div class="document-section-title">4. Intellectual Property</div>
+                        <div class="document-text">
+                            All content, trademarks, and intellectual property on the KABIRU platform remain the 
+                            property of their respective owners.
+                        </div>
+                        
+                        <div class="document-section-title">5. Limitation of Liability</div>
+                        <div class="document-text">
+                            KABIRU shall not be liable for any indirect, incidental, special, or consequential damages 
+                            resulting from the use of the platform.
+                        </div>
+                        
+                        <div class="document-section-title">6. Modifications</div>
+                        <div class="document-text">
+                            These terms may be updated periodically. Continued use of the platform constitutes 
+                            acceptance of any modifications.
+                        </div>
+                    `
+                },
+                privacy: {
+                    title: 'Privacy Policy',
+                    content: `
+                        <div class="document-title">Privacy Policy</div>
+                        <div class="version-info">Version 1.0 - Last updated: August 1, 2025</div>
+                        
+                        <div class="document-section-title">1. Information We Collect</div>
+                        <div class="document-text">
+                            We collect information you provide directly, such as account creation details, 
+                            mining activities, and transaction data necessary for platform operation.
+                        </div>
+                        
+                        <div class="document-section-title">2. How We Use Information</div>
+                        <div class="document-text">
+                            Your information is used to provide services, process transactions, communicate updates, 
+                            and improve platform functionality.
+                        </div>
+                        
+                        <div class="document-section-title">3. Information Sharing</div>
+                        <div class="document-text">
+                            We do not sell or rent personal information to third parties. Information may be shared 
+                            only as required by law or to protect platform security.
+                        </div>
+                        
+                        <div class="document-section-title">4. Data Security</div>
+                        <div class="document-text">
+                            We implement appropriate technical and organizational measures to protect your personal 
+                            information against unauthorized access, alteration, or destruction.
+                        </div>
+                        
+                        <div class="document-section-title">5. Your Rights</div>
+                        <div class="document-text">
+                            You have the right to access, update, or delete your personal information. 
+                            Contact support for assistance with data requests.
+                        </div>
+                        
+                        <div class="document-section-title">6. Contact Us</div>
+                        <div class="document-text">
+                            For privacy-related questions or concerns, please contact our support team through 
+                            the platform's official channels.
+                        </div>
+                    `
+                },
+                roadmap: {
+                    title: 'Project Roadmap',
+                    content: `
+                        <div class="document-title">KABIRU Development Roadmap</div>
+                        <div class="version-info">Updated: August 2025</div>
+                        
+                        <div class="document-section-title">Q3 2025 - Foundation</div>
+                        <div class="document-text">
+                            ✅ Core mining platform launch<br>
+                            ✅ Basic wallet functionality<br>
+                            ✅ Utility apps framework<br>
+                            🔄 Community building and onboarding
+                        </div>
+                        
+                        <div class="document-section-title">Q4 2025 - Expansion</div>
+                        <div class="document-text">
+                            📅 Advanced mining algorithms<br>
+                            📅 Enhanced security features<br>
+                            📅 Mobile app release<br>
+                            📅 Partnership integrations
+                        </div>
+                        
+                        <div class="document-section-title">Q1 2026 - Innovation</div>
+                        <div class="document-text">
+                            📅 AI-powered mining optimization<br>
+                            📅 Cross-chain compatibility<br>
+                            📅 Governance token introduction<br>
+                            📅 Decentralized exchange integration
+                        </div>
+                        
+                        <div class="document-section-title">Q2 2026 - Scale</div>
+                        <div class="document-text">
+                            📅 Global marketplace launch<br>
+                            📅 Enterprise solutions<br>
+                            📅 Educational platform<br>
+                            📅 Sustainability initiatives
+                        </div>
+                        
+                        <div class="document-section-title">Future Vision</div>
+                        <div class="document-text">
+                            Our long-term vision includes creating a comprehensive ecosystem for value creation, 
+                            sustainable development, and global economic empowerment through blockchain technology.
+                        </div>
+                    `
+                },
+                faq: {
+                    title: 'Frequently Asked Questions',
+                    content: `
+                        <div class="document-title">Frequently Asked Questions</div>
+                        <div class="version-info">Last updated: August 2025</div>
+                        
+                        <div class="document-section-title">What is KABIRU?</div>
+                        <div class="document-text">
+                            KABIRU is a digital token mining platform that rewards users for creating various forms of value, 
+                            including sovereignty, skills, knowledge, and community service.
+                        </div>
+                        
+                        <div class="document-section-title">How do I start mining?</div>
+                        <div class="document-text">
+                            Simply select one of the mining options (Sovereign, Value, or Reserve) on the main screen, 
+                            choose your specific category, and start the mining process.
+                        </div>
+                        
+                        <div class="document-section-title">What can I do with iKb tokens?</div>
+                        <div class="document-text">
+                            iKb tokens can be used within the KABIRU ecosystem for various utilities, stored in savings accounts, 
+                            locked up for rewards, or used in the integrated marketplace.
+                        </div>
+                        
+                        <div class="document-section-title">Is KABIRU safe to use?</div>
+                        <div class="document-text">
+                            Yes, KABIRU implements industry-standard security measures including encrypted transactions, 
+                            secure wallet storage, and regular security audits.
+                        </div>
+                        
+                        <div class="document-section-title">How often can I mine?</div>
+                        <div class="document-text">
+                            Mining frequency depends on the type of activity. Most mining activities have cooldown periods 
+                            to ensure fair distribution and prevent abuse.
+                        </div>
+                        
+                        <div class="document-section-title">Can I withdraw my tokens?</div>
+                        <div class="document-text">
+                            Currently, tokens are designed for use within the KABIRU ecosystem. External withdrawal options 
+                            may be available in future updates.
+                        </div>
+                        
+                        <div class="document-section-title">How do I contact support?</div>
+                        <div class="document-text">
+                            Support can be reached through the platform's official communication channels. 
+                            More contact options will be added as the platform grows.
+                        </div>
+                    `
+                },
+                changelog: {
+                    title: 'Version History',
+                    content: `
+                        <div class="document-title">Changelog</div>
+                        <div class="version-info">Track all platform updates and improvements</div>
+                        
+                        <div class="document-section-title">Version 1.2.0 - August 15, 2025</div>
+                        <div class="document-text">
+                            <strong>New Features:</strong><br>
+                            • Added Documentation section with comprehensive guides<br>
+                            • Enhanced wallet functionality with trust funds<br>
+                            • Improved mining reward calculations<br><br>
+                            
+                            <strong>Improvements:</strong><br>
+                            • Better mobile responsiveness<br>
+                            • Faster transaction processing<br>
+                            • Enhanced security measures<br><br>
+                            
+                            <strong>Bug Fixes:</strong><br>
+                            • Fixed balance update delays<br>
+                            • Resolved mining timer accuracy issues<br>
+                            • Corrected notification display problems
+                        </div>
+                        
+                        <div class="document-section-title">Version 1.1.0 - August 1, 2025</div>
+                        <div class="document-text">
+                            <strong>New Features:</strong><br>
+                            • Utility Apps marketplace<br>
+                            • Advanced wallet features (lockup, reserve, trust)<br>
+                            • Task completion tracking<br><br>
+                            
+                            <strong>Improvements:</strong><br>
+                            • Enhanced user interface<br>
+                            • Improved mining animations<br>
+                            • Better error handling
+                        </div>
+                        
+                        <div class="document-section-title">Version 1.0.0 - July 15, 2025</div>
+                        <div class="document-text">
+                            <strong>Initial Release:</strong><br>
+                            • Core mining functionality<br>
+                            • Basic wallet operations<br>
+                            • User account management<br>
+                            • Initial token distribution system
+                        </div>
+                    `
+                },
+                api: {
+                    title: 'API Documentation',
+                    content: `
+                        <div class="document-title">Developer API Documentation</div>
+                        <div class="version-info">API Version 1.0 - For developers and integrators</div>
+                        
+                        <div class="document-section-title">Getting Started</div>
+                        <div class="document-text">
+                            The KABIRU API provides programmatic access to mining operations, wallet management, 
+                            and utility services. Authentication is required for all API calls.
+                        </div>
+                        
+                        <div class="document-section-title">Authentication</div>
+                        <div class="document-text">
+                            <strong>Endpoint:</strong> POST /api/auth<br>
+                            <strong>Headers:</strong> Content-Type: application/json<br>
+                            <strong>Body:</strong> {"apiKey": "your-api-key", "signature": "request-signature"}
+                        </div>
+                        
+                        <div class="document-section-title">Mining Operations</div>
+                        <div class="document-text">
+                            <strong>Start Mining:</strong> POST /api/mining/start<br>
+                            <strong>Check Status:</strong> GET /api/mining/status<br>
+                            <strong>Get Rewards:</strong> GET /api/mining/rewards<br>
+                        </div>
+                        
+                        <div class="document-section-title">Wallet Management</div>
+                        <div class="document-text">
+                            <strong>Get Balance:</strong> GET /api/wallet/balance<br>
+                            <strong>Send Tokens:</strong> POST /api/wallet/send<br>
+                            <strong>Transaction History:</strong> GET /api/wallet/transactions<br>
+                        </div>
+                        
+                        <div class="document-section-title">Rate Limits</div>
+                        <div class="document-text">
+                            API calls are limited to 100 requests per minute per API key. 
+                            Higher limits available for verified developers.
+                        </div>
+                        
+                        <div class="document-section-title">Support</div>
+                        <div class="document-text">
+                            For API support and developer resources, please contact our technical team 
+                            through the official developer portal.
+                        </div>
+                    `
+                }
+            };
+            
+            const doc = documents[docType];
+            if (doc) {
+                titleElement.textContent = doc.title;
+                contentElement.innerHTML = doc.content;
+            }
+        }
+
         function showCorporateModal() {
             document.getElementById('corporateModal').style.display = 'block';
         }
@@ -1697,18 +2199,6 @@
             closeCorporateModal();
         }
 
-        // Document functions
-        function showDocument(docType) {
-            document.getElementById('readPage').style.display = 'none';
-            document.getElementById('documentPage').style.display = 'block';
-            
-            const titleElement = document.getElementById('documentTitle');
-            const contentElement = document.getElementById('documentContent');
-            
-            titleElement.textContent = docType.charAt(0).toUpperCase() + docType.slice(1);
-            contentElement.innerHTML = `<div class="coming-soon">📄 ${docType} documentation coming soon...</div>`;
-        }
-
         // Balance and mining functions
         function updateBalanceDisplay() {
             const balanceElements = document.querySelectorAll('#balance, #totalBalance, #walletBalance');
@@ -1718,4 +2208,454 @@
         }
 
         function updateWalletBalance() {
-            const wal
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
+        }
+
+        function startMiningTimer() {
+            const timerElement = document.getElementById('miningTimer');
+            if (!timerElement) return;
+
+            let seconds = 0;
+            setInterval(() => {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                seconds++;
+                
+                // Auto mine every 10 seconds for demo
+                if (seconds % 10 === 0 && isMinig) {
+                    userBalance += miningRate;
+                    updateBalanceDisplay();
+                    showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
+                }
+            }, 1000);
+        }
+
+        // Modal functions
+        function openSovereignModal() {
+            document.getElementById('sovereignModal').style.display = 'block';
+        }
+
+        function openValueModal() {
+            document.getElementById('valueModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function selectSovereignValue(type) {
+            selectedSovereignType = type;
+            
+            // Remove previous selections
+            document.querySelectorAll('#sovereignOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            
+            // Enable start button
+            document.getElementById('sovereignStartBtn').disabled = false;
+        }
+
+        function selectValue(type, amount) {
+            selectedValueType = type;
+            selectedValueAmount = amount;
+            
+            // Remove previous selections
+            document.querySelectorAll('#valueOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            
+            // Enable start button
+            document.getElementById('valueStartBtn').disabled = false;
+        }
+
+        function startSovereignMining() {
+            if (!selectedSovereignType) return;
+            
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += 0.005; // Base sovereign mining reward
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Sovereign mining complete! +0.0050 iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+            
+            closeModal('sovereignModal');
+        }
+
+        function startValueMining() {
+            if (!selectedValueType) return;
+            
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += selectedValueAmount;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Value mining complete! +${selectedValueAmount.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+            
+            closeModal('valueModal');
+        }
+
+        function mineTokens(type) {
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            let reward = 0.002; // Base reserve mining reward
+            
+            setTimeout(() => {
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Reserve mining complete! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+        }
+
+        function showMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'block';
+        }
+
+        function hideMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'none';
+        }
+
+        function incrementTasksCompleted() {
+            const tasksElement = document.getElementById('tasksCompleted');
+            let current = parseInt(tasksElement.textContent);
+            tasksElement.textContent = current + 1;
+        }
+
+        // Task functions
+        function selectTask(taskType) {
+            // Remove active class from all categories
+            document.querySelectorAll('.task-category').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Add active class to selected category
+            event.target.closest('.task-category').classList.add('active');
+            
+            showNotification(`Selected ${taskType} task category`);
+        }
+
+        function performTask(taskType) {
+            isMinig = true;
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                const reward = Math.random() * 0.003 + 0.001; // Random reward between 0.001-0.004
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`${taskType} task completed! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 2000);
+        }
+
+        // Utility functions
+        function openUtilityModal(utilityType) {
+            const modal = document.getElementById('subcategoryModal');
+            const title = document.getElementById('subcategoryTitle');
+            const grid = document.getElementById('subcategoryGrid');
+            
+            // Clear previous content
+            grid.innerHTML = '';
+            
+            // Set title and generate subcategories based on utility type
+            const utilities = {
+                education: {
+                    title: 'Education Services',
+                    items: [
+                        {icon: '📚', name: 'Online Courses', desc: 'Access premium courses'},
+                        {icon: '🎓', name: 'Universities', desc: 'Higher education'},
+                        {icon: '👨‍🏫', name: 'Tutoring', desc: 'Personal tutoring'},
+                        {icon: '📝', name: 'Certifications', desc: 'Professional certs'},
+                        {icon: '🔬', name: 'Research', desc: 'Academic research'},
+                        {icon: '📖', name: 'Libraries', desc: 'Digital libraries'}
+                    ]
+                },
+                transport: {
+                    title: 'Transportation Services',
+                    items: [
+                        {icon: '✈️', name: 'Airlines', desc: 'Flight bookings'},
+                        {icon: '🚗', name: 'Car Rental', desc: 'Vehicle rentals'},
+                        {icon: '🚌', name: 'Public Transit', desc: 'Bus & train tickets'},
+                        {icon: '🚲', name: 'Bike Sharing', desc: 'Bicycle rentals'},
+                        {icon: '🛵', name: 'Ride Sharing', desc: 'Taxi services'},
+                        {icon: '🚢', name: 'Marine', desc: 'Boat & ferry services'}
+                    ]
+                },
+                agriculture: {
+                    title: 'Agriculture Services',
+                    items: [
+                        {icon: '🌱', name: 'Seeds', desc: 'Premium seed varieties'},
+                        {icon: '🚜', name: 'Equipment', desc: 'Farm machinery'},
+                        {icon: '🌾', name: 'Crops', desc: 'Crop management'},
+                        {icon: '🐄', name: 'Livestock', desc: 'Animal farming'},
+                        {icon: '💧', name: 'Irrigation', desc: 'Water systems'},
+                        {icon: '🧪', name: 'Fertilizers', desc: 'Soil nutrients'}
+                    ]
+                },
+                marketplace: {
+                    title: 'Marketplace',
+                    items: [
+                        {icon: '🛍️', name: 'Shopping', desc: 'Online marketplace'},
+                        {icon: '🏪', name: 'Local Stores', desc: 'Neighborhood shops'},
+                        {icon: '🍔', name: 'Food Delivery', desc: 'Restaurant delivery'},
+                        {icon: '👕', name: 'Fashion', desc: 'Clothing & accessories'},
+                        {icon: '📱', name: 'Electronics', desc: 'Tech products'},
+                        {icon: '🏠', name: 'Home & Garden', desc: 'Home improvement'}
+                    ]
+                },
+                media: {
+                    title: 'TV & Media',
+                    items: [
+                        {icon: '📺', name: 'Live TV', desc: 'Television channels'},
+                        {icon: '🎬', name: 'Movies', desc: 'Film streaming'},
+                        {icon: '🎵', name: 'Music', desc: 'Audio streaming'},
+                        {icon: '📰', name: 'News', desc: 'Latest updates'},
+                        {icon: '🎮', name: 'Gaming', desc: 'Video games'},
+                        {icon: '📻', name: 'Podcasts', desc: 'Audio shows'}
+                    ]
+                },
+                realestate: {
+                    title: 'Real Estate',
+                    items: [
+                        {icon: '🏠', name: 'Buy', desc: 'Purchase property'},
+                        {icon: '🏘️', name: 'Rent', desc: 'Property rental'},
+                        {icon: '🏢', name: 'Commercial', desc: 'Business properties'},
+                        {icon: '🏡', name: 'Residential', desc: 'Home properties'},
+                        {icon: '🏗️', name: 'Construction', desc: 'Building services'},
+                        {icon: '💰', name: 'Investment', desc: 'Property investment'}
+                    ]
+                },
+                climate: {
+                    title: 'Climate Services',
+                    items: [
+                        {icon: '🌡️', name: 'Weather', desc: 'Weather forecasts'},
+                        {icon: '🌍', name: 'Environment', desc: 'Environmental data'},
+                        {icon: '🌊', name: 'Ocean', desc: 'Marine conditions'},
+                        {icon: '🌪️', name: 'Disasters', desc: 'Natural disasters'},
+                        {icon: '📊', name: 'Analytics', desc: 'Climate analysis'},
+                        {icon: '🛰️', name: 'Satellite', desc: 'Satellite imagery'}
+                    ]
+                },
+                energy: {
+                    title: 'Free Energy',
+                    items: [
+                        {icon: '☀️', name: 'Solar', desc: 'Solar power systems'},
+                        {icon: '💨', name: 'Wind', desc: 'Wind energy'},
+                        {icon: '💧', name: 'Hydro', desc: 'Water power'},
+                        {icon: '🔋', name: 'Battery', desc: 'Energy storage'},
+                        {icon: '⚡', name: 'Grid', desc: 'Smart grid services'},
+                        {icon: '🌱', name: 'Biomass', desc: 'Organic energy'}
+                    ]
+                },
+                workshops: {
+                    title: 'Workshops',
+                    items: [
+                        {icon: '🔨', name: 'Carpentry', desc: 'Woodworking skills'},
+                        {icon: '⚡', name: 'Electronics', desc: 'Circuit building'},
+                        {icon: '🎨', name: 'Arts & Crafts', desc: 'Creative workshops'},
+                        {icon: '💻', name: 'Programming', desc: 'Coding bootcamps'},
+                        {icon: '🍳', name: 'Cooking', desc: 'Culinary classes'},
+                        {icon: '🧵', name: 'Sewing', desc: 'Textile skills'}
+                    ]
+                },
+                resources: {
+                    title: 'Resources',
+                    items: [
+                        {icon: '📚', name: 'Documents', desc: 'Document templates'},
+                        {icon: '🔧', name: 'Tools', desc: 'Digital tools'},
+                        {icon: '💾', name: 'Software', desc: 'Applications'},
+                        {icon: '🎨', name: 'Graphics', desc: 'Design resources'},
+                        {icon: '📊', name: 'Data', desc: 'Datasets'},
+                        {icon: '🔍', name: 'Research', desc: 'Research tools'}
+                    ]
+                }
+            };
+            
+            const utility = utilities[utilityType];
+            if (utility) {
+                title.textContent = utility.title;
+                
+                utility.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'subcategory-item';
+                    itemDiv.onclick = () => useUtilityService(item.name);
+                    itemDiv.innerHTML = `
+                        <span class="subcategory-item-icon">${item.icon}</span>
+                        <div class="subcategory-item-name">${item.name}</div>
+                        <div class="subcategory-item-desc">${item.desc}</div>
+                    `;
+                    grid.appendChild(itemDiv);
+                });
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function closeSubcategoryModal() {
+            document.getElementById('subcategoryModal').style.display = 'none';
+        }
+
+        function useUtilityService(serviceName) {
+            showNotification(`${serviceName} service activated! Feature coming soon.`);
+            closeSubcategoryModal();
+        }
+
+        // Wallet functions
+        function openWalletModal(modalType) {
+            const modalId = modalType + 'Modal';
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeWalletModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function copyAddress() {
+            const address = '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2';
+            navigator.clipboard.writeText(address).then(() => {
+                showNotification('Wallet address copied to clipboard!');
+            });
+        }
+
+        function shareAddress() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My KABIRU Wallet Address',
+                    text: '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2'
+                });
+            } else {
+                copyAddress();
+            }
+        }
+
+        function processSend() {
+            const address = document.getElementById('sendAddress').value;
+            const amount = parseFloat(document.getElementById('sendAmount').value);
+            
+            if (!address || !amount || amount <= 0) {
+                showNotification('Please enter valid address and amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showNotification('Insufficient balance');
+                return;
+            }
+            
+            userBalance -= amount;
+            updateBalanceDisplay();
+            showNotification(`Successfully sent ${amount.toFixed(4)} iKb`);
+            closeWalletModal('sendModal');
+        }
+
+        function processSwap() {
+            const fromAmount = parseFloat(document.getElementById('swapFromAmount').value);
+            if (!fromAmount || fromAmount <= 0) {
+                showNotification('Please enter valid amount');
+                return;
+            }
+            
+            showNotification('Swap completed successfully!');
+            closeWalletModal('swapModal');
+        }
+
+        function processLockup() {
+            const amount = parseFloat(document.getElementById('lockupAmount').value);
+            if (!amount || amount <= 0 || amount > userBalance) {
+                showNotification('Please enter valid amount');
+                return;
+            }
+            
+            userBalance -= amount;
+            updateBalanceDisplay();
+            showNotification(`Successfully locked ${amount.toFixed(4)} iKb`);
+            closeWalletModal('lockupModal');
+        }
+
+        function addToReserve() {
+            const amount = parseFloat(document.getElementById('reserveAmount').value);
+            if (!amount || amount <= 0 || amount > userBalance) {
+                showNotification('Please enter valid amount');
+                return;
+            }
+            
+            userBalance -= amount;
+            updateBalanceDisplay();
+            showNotification(`Added ${amount.toFixed(4)} iKb to reserve`);
+            closeWalletModal('reserveModal');
+        }
+
+        function withdrawFromReserve() {
+            showNotification('Emergency withdrawal processed');
+            closeWalletModal('reserveModal');
+        }
+
+        function addToTrust() {
+            const amount = parseFloat(document.getElementById('trustAmount').value);
+            if (!amount || amount <= 0 || amount > userBalance) {
+                showNotification('Please enter valid amount');
+                return;
+            }
+            
+            userBalance -= amount;
+            updateBalanceDisplay();
+            showNotification(`Added ${amount.toFixed(4)} iKb to trust fund`);
+            closeWalletModal('trustModal');
+        }
+
+        function showAllTransactions() {
+            showNotification('Transaction history feature coming soon!');
+        }
+
+        // Notification function
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal, .wallet-modal, .subcategory-modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>">mining</div>
+                    </div>
+                    <div class="task-category" onclick="selectTask('partnership')">
+                        <div class="category-title">iKb(P)</div>
+                        <div class="category-subtitle">Partnership</div>
+                    </div>
+                    <div class="task-category" onclick="selectTask('genledger')">
+                        <div class="category-title">iKb(GL)</div>
+                        <div class="category-subtitle
