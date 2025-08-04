@@ -591,7 +591,7 @@
             // Verify (accept any 6 digits)
             setTimeout(() => {
                 if (otp.length === 6) {
-                    // Save user data
+                    // Save user data and auth status
                     const userDataToSave = {
                         ...currentUser,
                         verifiedAt: new Date().toISOString(),
@@ -599,6 +599,19 @@
                     };
                     
                     saveUserData(userDataToSave);
+                    
+                    // Save authentication flag
+                    try {
+                        localStorage.setItem('kabiruLoggedIn', 'true');
+                        localStorage.setItem('kabiruAuth', JSON.stringify({
+                            isAuthenticated: true,
+                            user: userDataToSave,
+                            loginTime: new Date().toISOString()
+                        }));
+                    } catch (error) {
+                        console.log('Could not save auth status');
+                    }
+                    
                     currentUser = userDataToSave;
                     
                     // Show success and redirect
@@ -664,21 +677,15 @@
             }, 3000);
         }
 
-        // Redirect to main app - FIXED VERSION
+        // CONNECTION FUNCTION - ONLY CHANGE MADE
         function redirectToMainApp(user) {
-            // Save authentication status
-            try {
-                localStorage.setItem('kabiruAuth', JSON.stringify({
-                    isAuthenticated: true,
-                    user: user,
-                    loginTime: new Date().toISOString()
-                }));
-            } catch (error) {
-                console.log('Could not save auth status');
-            }
+            console.log('🚀 Redirecting to mining app...');
+            showNotification('🚀 Redirecting to KABIRU Mining App...');
             
             // Redirect to mining app
-            window.location.href = 'mining-app.html';
+            setTimeout(() => {
+                window.location.href = 'mining-app.html';
+            }, 500);
         }
 
         // Handle keyboard events
