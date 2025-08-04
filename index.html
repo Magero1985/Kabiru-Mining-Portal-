@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KABIRU Login Portal</title>
+    <title>KABIRU Mining App</title>
     <style>
         * {
             margin: 0;
@@ -17,9 +17,21 @@
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 15px;
+            position: relative;
+        }
+
+        /* Authentication Styles */
+        .auth-screen {
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
             padding: 20px;
         }
 
@@ -69,10 +81,6 @@
             font-size: 14px;
             opacity: 0.8;
             margin-bottom: 20px;
-        }
-
-        .auth-form {
-            width: 100%;
         }
 
         .form-group {
@@ -194,16 +202,12 @@
             line-height: 1.4;
         }
 
-        .resend-timer {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 10px;
+        .login-container {
+            display: block;
         }
 
-        .resend-link {
-            color: #FFD700;
-            cursor: pointer;
-            text-decoration: underline;
+        .signup-container {
+            display: none;
         }
 
         .success-message {
@@ -228,12 +232,296 @@
             display: none;
         }
 
-        .login-container {
+        /* Main App Styles */
+        .main-app {
+            display: none;
+        }
+
+        .mining-app {
             display: block;
         }
 
-        .signup-container {
+        .read-page, .document-page, .utilities-page, .wallet-page {
             display: none;
+        }
+
+        .read-grid, .utilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .read-card, .utility-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .read-card:hover, .utility-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .read-icon, .utility-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .read-name, .utility-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .read-desc, .utility-desc {
+            font-size: 11px;
+            opacity: 0.8;
+            line-height: 1.3;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .top-bar div {
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar div:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            animation: pulse 2s infinite;
+            border: 2px solid #FFD700;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .balance-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .balance-title {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .mining-rate {
+            font-size: 12px;
+            opacity: 0.7;
+            color: #00ff87;
+        }
+
+        .main-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .main-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 20px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            text-align: center;
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .sovereign-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+        }
+
+        .value-btn {
+            background: linear-gradient(45deg, #00ff87, #60efff);
+            color: #333;
+        }
+
+        .reserve-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .utilities-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #FFD700;
+            font-size: 20px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .utilities-title {
+            font-size: 24px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .user-info {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-info:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .logout-btn {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            color: #ff6b6b;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
         }
 
         .notification {
@@ -255,7 +543,90 @@
             opacity: 1;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        .modal-title {
+            color: #FFD700;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .value-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .value-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+        }
+
+        .value-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            float: right;
+        }
+
+        .close:hover {
+            color: #FFD700;
+        }
+
+        .mining-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
         /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -267,7 +638,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Responsive Design */
         @media (max-width: 480px) {
             .auth-container {
                 margin: 20px;
@@ -287,154 +657,434 @@
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <!-- Logo Section -->
-        <div class="auth-logo">
-            <div class="auth-logo-img">iKb</div>
-            <div class="auth-title">KABIRU</div>
-            <div class="auth-subtitle">Secure Login Portal</div>
+    <!-- Authentication Screen -->
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-container">
+            <!-- Logo Section -->
+            <div class="auth-logo">
+                <div class="auth-logo-img">iKb</div>
+                <div class="auth-title">KABIRU</div>
+                <div class="auth-subtitle">Secure Login Portal</div>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginContainer" class="login-container">
+                <form class="auth-form" onsubmit="return handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="loginPhone" placeholder="+254 700 000 000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="auth-button">Sign In</button>
+                </form>
+                
+                <div class="auth-toggle">
+                    Don't have an account? <span class="auth-toggle-link" onclick="showSignup()">Sign Up</span>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signupContainer" class="signup-container">
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="signupName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="signupPhone" placeholder="+254 700 000 000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email (Optional)</label>
+                        <input type="email" class="form-input" id="signupEmail" placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="signupPassword" placeholder="Create a strong password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="button" class="auth-button" id="signupButton" onclick="handleSignup()">CREATE ACCOUNT</button>
+                </div>
+                
+                <div class="auth-toggle">
+                    Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
+                </div>
+            </div>
+
+            <!-- OTP Verification -->
+            <div id="otpContainer" class="otp-container">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">Verify Your Phone</h3>
+                
+                <div class="otp-info">
+                    <strong>📱 For Trial Purposes:</strong><br>
+                    Use any 6 digits to verify your account.<br>
+                    Example: 123456, 000000, or any combination.
+                </div>
+                
+                <div class="otp-inputs">
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 0)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 1)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 2)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 3)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 4)">
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 5)">
+                </div>
+                
+                <button class="auth-button" onclick="verifyOTP()">Verify & Continue</button>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successContainer" class="success-message">
+                <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
+                <div><strong>Account Verified Successfully!</strong></div>
+                <div style="font-size: 12px; margin-top: 8px;">Redirecting to your mining dashboard...</div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message">
+                <div><strong>⚠️ Error</strong></div>
+                <div id="errorText">Something went wrong. Please try again.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Mining App -->
+    <div id="mainApp" class="main-app">
+        <!-- Mining App Screen -->
+        <div id="miningApp" class="mining-app">
+            <div class="container">
+                <!-- User Info -->
+                <div class="user-info" onclick="toggleUserMenu()">
+                    <span id="userDisplayName">👤 User</span>
+                    <div id="userMenu" style="display: none; position: absolute; top: 100%; right: 0; background: rgba(0,0,0,0.9); padding: 10px; border-radius: 8px; margin-top: 5px; min-width: 150px;">
+                        <div style="margin-bottom: 8px; color: #FFD700;">Account Info</div>
+                        <div style="font-size: 11px; opacity: 0.7; margin-bottom: 10px;" id="userDetails">Phone: +254...</div>
+                        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                    </div>
+                </div>
+
+                <!-- Top Navigation Bar -->
+                <div class="top-bar">
+                    <div onclick="showUtilities()">UTILITIES</div>
+                    <div onclick="showWallet()">WALLET</div>
+                    <div onclick="showReadPage()">READ</div>
+                    <div onclick="showNotification('Language feature coming soon!')">LANGUAGE</div>
+                    <div onclick="showNotification('Corporate feature coming soon!')">CORPORATE</div>
+                </div>
+
+                <!-- Header -->
+                <div class="header">
+                    <div class="logo-section">
+                        <div class="logo-img">iKb</div>
+                        <div>
+                            <div class="app-title">KABIRU[iKb]</div>
+                            <div class="subtitle">Mine Kabiru Token</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Section -->
+                <div class="balance-section">
+                    <div class="balance-title">Your KABIRU BALANCE</div>
+                    <div class="balance-amount" id="balance">0.0000 iKb</div>
+                    <div class="mining-rate">mining rate <span id="miningRate">0.001</span>iKb/day</div>
+                </div>
+
+                <!-- Main Action Buttons -->
+                <div class="main-buttons">
+                    <button class="main-button sovereign-btn" onclick="openSovereignModal()">
+                        SOVEREIGN
+                    </button>
+                    <button class="main-button value-btn" onclick="openValueModal()">
+                        VALUE
+                    </button>
+                    <button class="main-button reserve-btn" onclick="mineTokens('reserve')">
+                        RESERVE
+                    </button>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalBalance">0.0000 iKb</div>
+                        <div class="stat-label">TOTAL</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="miningStatus">Inactive</div>
+                        <div class="stat-label">My Status</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="networkSize">144,000</div>
+                        <div class="stat-label">Network size</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="tasksCompleted">0</div>
+                        <div class="stat-label">Tasks</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Login Form -->
-        <div id="loginContainer" class="login-container">
-            <form class="auth-form" onsubmit="return handleLogin(event)">
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input" id="loginPhone" placeholder="+254 700 000 000" required>
+        <!-- Utilities Page -->
+        <div id="utilitiesPage" class="utilities-page">
+            <div class="container">
+                <div class="utilities-header">
+                    <button class="back-button" onclick="showMiningApp()">←</button>
+                    <div class="utilities-title">Utility Apps</div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+
+                <div class="utilities-grid">
+                    <div class="utility-card" onclick="showNotification('Education utility coming soon!')">
+                        <span class="utility-icon">🎓</span>
+                        <div class="utility-name">Education</div>
+                        <div class="utility-desc">Learning platforms and courses</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('Transport utility coming soon!')">
+                        <span class="utility-icon">🚗</span>
+                        <div class="utility-name">Transport</div>
+                        <div class="utility-desc">Transportation services</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('Agriculture utility coming soon!')">
+                        <span class="utility-icon">🌾</span>
+                        <div class="utility-name">Agriculture</div>
+                        <div class="utility-desc">Farming tools and services</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('Marketplace coming soon!')">
+                        <span class="utility-icon">🛒</span>
+                        <div class="utility-name">Marketplace</div>
+                        <div class="utility-desc">Buy and sell goods</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('Media services coming soon!')">
+                        <span class="utility-icon">📺</span>
+                        <div class="utility-name">TV & Media</div>
+                        <div class="utility-desc">Entertainment content</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('Real Estate coming soon!')">
+                        <span class="utility-icon">🏠</span>
+                        <div class="utility-name">Real Estate</div>
+                        <div class="utility-desc">Property services</div>
+                    </div>
                 </div>
-                <button type="submit" class="auth-button">Sign In</button>
-            </form>
-            
-            <div class="auth-toggle">
-                Don't have an account? <span class="auth-toggle-link" onclick="showSignup()">Sign Up</span>
             </div>
         </div>
 
-        <!-- Signup Form -->
-        <div id="signupContainer" class="signup-container">
-            <div class="auth-form">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="signupName" placeholder="John Doe" required>
+        <!-- Wallet Page -->
+        <div id="walletPage" class="wallet-page">
+            <div class="container">
+                <div class="utilities-header">
+                    <button class="back-button" onclick="showMiningApp()">←</button>
+                    <div class="utilities-title">KABIRU Wallet</div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input" id="signupPhone" placeholder="+254 700 000 000" required>
+
+                <div class="balance-section">
+                    <div class="balance-title">Wallet Balance</div>
+                    <div class="balance-amount" id="walletBalance">0.0000 iKb</div>
+                    <div style="font-size: 12px; opacity: 0.7; margin-top: 10px;">
+                        Address: 0x742d35...4B76A2
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Email (Optional)</label>
-                    <input type="email" class="form-input" id="signupEmail" placeholder="john@example.com">
+
+                <div class="utilities-grid">
+                    <div class="utility-card" onclick="showNotification('Send feature coming soon!')">
+                        <span class="utility-icon">📤</span>
+                        <div class="utility-name">Send</div>
+                        <div class="utility-desc">Transfer tokens</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('Receive feature coming soon!')">
+                        <span class="utility-icon">📥</span>
+                        <div class="utility-name">Receive</div>
+                        <div class="utility-desc">Get tokens</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('Swap feature coming soon!')">
+                        <span class="utility-icon">🔄</span>
+                        <div class="utility-name">Swap</div>
+                        <div class="utility-desc">Exchange tokens</div>
+                    </div>
+                    <div class="utility-card" onclick="showNotification('History feature coming soon!')">
+                        <span class="utility-icon">📊</span>
+                        <div class="utility-name">History</div>
+                        <div class="utility-desc">Transaction records</div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signupPassword" placeholder="Create a strong password" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
-                </div>
-                <button type="button" class="auth-button" id="signupButton" onclick="handleSignup()">CREATE ACCOUNT</button>
-            </div>
-            
-            <div class="auth-toggle">
-                Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
             </div>
         </div>
 
-        <!-- OTP Verification -->
-        <div id="otpContainer" class="otp-container">
-            <h3 style="color: #FFD700; margin-bottom: 15px;">Verify Your Phone</h3>
-            
-            <div class="otp-info">
-                <strong>📱 For Trial Purposes:</strong><br>
-                Use any 6 digits to verify your account.<br>
-                Example: 123456, 000000, or any combination.
-            </div>
-            
-            <div class="otp-inputs">
-                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 0)">
-                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 1)">
-                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 2)">
-                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 3)">
-                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 4)">
-                <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 5)">
-            </div>
-            
-            <button class="auth-button" onclick="verifyOTP()">Verify & Continue</button>
-            
-            <div class="resend-timer">
-                Didn't receive code? <span class="resend-link" onclick="resendOTP()">Resend OTP</span>
-                <div id="resendTimer" style="margin-top: 5px; opacity: 0.6;"></div>
-            </div>
-        </div>
+        <!-- Read Page -->
+        <div id="readPage" class="read-page">
+            <div class="container">
+                <div class="utilities-header">
+                    <button class="back-button" onclick="showMiningApp()">←</button>
+                    <div class="utilities-title">Documentation</div>
+                </div>
 
-        <!-- Success Message -->
-        <div id="successContainer" class="success-message">
-            <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
-            <div><strong>Account Verified Successfully!</strong></div>
-            <div style="font-size: 12px; margin-top: 8px;">Redirecting to your mining dashboard...</div>
+                <div class="read-grid">
+                    <div class="read-card" onclick="showNotification('Whitepaper coming soon!')">
+                        <span class="read-icon">📄</span>
+                        <div class="read-name">Whitepaper</div>
+                        <div class="read-desc">Technical documentation</div>
+                    </div>
+                    <div class="read-card" onclick="showNotification('Rules document coming soon!')">
+                        <span class="read-icon">📋</span>
+                        <div class="read-name">Rules</div>
+                        <div class="read-desc">Platform guidelines</div>
+                    </div>
+                    <div class="read-card" onclick="showNotification('Terms document coming soon!')">
+                        <span class="read-icon">📜</span>
+                        <div class="read-name">Terms</div>
+                        <div class="read-desc">Terms of service</div>
+                    </div>
+                    <div class="read-card" onclick="showNotification('FAQ coming soon!')">
+                        <span class="read-icon">❓</span>
+                        <div class="read-name">FAQ</div>
+                        <div class="read-desc">Common questions</div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Error Message -->
-        <div id="errorMessage" class="error-message">
-            <div><strong>⚠️ Error</strong></div>
-            <div id="errorText">Something went wrong. Please try again.</div>
+    <!-- Sovereign Values Modal -->
+    <div id="sovereignModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
+            <h2 class="modal-title">Select Your Sovereignty Value</h2>
+            <div id="sovereignOptions">
+                <div class="value-option" onclick="selectSovereignValue('personal')">
+                    <strong>Personal Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Individual autonomy and self-governance</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('economic')">
+                    <strong>Economic Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Financial independence and control</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('digital')">
+                    <strong>Digital Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Control over digital identity and data</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('territorial')">
+                    <strong>Territorial Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Land and resource ownership rights</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startSovereignMining()" style="margin-top: 20px;" disabled id="sovereignStartBtn">
+                Start Mining
+            </button>
         </div>
+    </div>
+
+    <!-- Value Selection Modal -->
+    <div id="valueModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('valueModal')">&times;</span>
+            <h2 class="modal-title">Select Your Value Type</h2>
+            <div id="valueOptions">
+                <div class="value-option" onclick="selectValue('service', 0.0015)">
+                    <strong>Service Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Community service and assistance - 0.0015 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('skill', 0.0025)">
+                    <strong>Skill Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Professional skills and expertise - 0.0025 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('knowledge', 0.0035)">
+                    <strong>Knowledge Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Information and wisdom sharing - 0.0035 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('innovation', 0.0045)">
+                    <strong>Innovation Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Creative solutions and inventions - 0.0045 iKb</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startValueMining()" style="margin-top: 20px;" disabled id="valueStartBtn">
+                Start Mining
+            </button>
+        </div>
+    </div>
+
+    <!-- Mining Indicator -->
+    <div id="miningIndicator" class="mining-indicator">
+        <div>⛏️ Mining in Progress...</div>
+        <div style="font-size: 12px; margin-top: 10px;">Mining tokens...</div>
     </div>
 
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
     <script>
-        // Authentication variables
+        // Global variables
         let currentUser = null;
+        let userBalance = 0.0000;
+        let miningRate = 0.001;
+        let isMining = false;
+        let selectedSovereignType = null;
+        let selectedValueType = null;
+        let selectedValueAmount = 0;
         let otpTimer = null;
         let resendCountdown = 60;
-        
-        // Safe storage functions
-        function saveUserData(userData) {
-            try {
-                // Try localStorage
-                if (typeof Storage !== "undefined" && localStorage) {
-                    localStorage.setItem('kabiruUser', JSON.stringify(userData));
-                    console.log('User data saved:', userData);
-                    return true;
-                }
-            } catch (error) {
-                console.log('Storage not available');
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            const savedUser = getUserData();
+            if (savedUser && savedUser.verifiedAt) {
+                // User already logged in
+                currentUser = savedUser;
+                userBalance = savedUser.balance || 0.0000;
+                showMainApp();
+            } else {
+                // Show login screen
+                showAuthScreen();
             }
-            return false;
-        }
-        
-        function getUserData() {
-            try {
-                if (typeof Storage !== "undefined" && localStorage) {
-                    const data = localStorage.getItem('kabiruUser');
-                    if (data && data !== 'null') {
-                        return JSON.parse(data);
-                    }
-                }
-            } catch (error) {
-                console.log('Error reading user data');
-            }
-            return null;
         }
 
-        // Initialize - check if already logged in
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedUser = getUserData();
-            if (savedUser) {
-                // User already logged in, redirect to main app
-                redirectToMainApp(savedUser);
+        // Storage functions
+        function saveUserData(userData) {
+            currentUser = userData;
+            // In a real app, this would save to a database
+            // For demo purposes, we'll just keep it in memory
+            console.log('User data saved:', userData);
+        }
+
+        function getUserData() {
+            // In a real app, this would retrieve from storage/database
+            return currentUser;
+        }
+
+        // Screen Navigation
+        function showAuthScreen() {
+            document.getElementById('authScreen').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+        }
+
+        function showMainApp() {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            
+            updateUserInterface();
+            updateBalanceDisplay();
+            startMiningTimer();
+        }
+
+        function updateUserInterface() {
+            if (currentUser) {
+                const displayName = currentUser.name || currentUser.phone || 'User';
+                document.getElementById('userDisplayName').textContent = `👤 ${displayName.split(' ')[0]}`;
+                document.getElementById('userDetails').textContent = `Phone: ${currentUser.phone || 'N/A'}`;
             }
-        });
+        }
 
         // Authentication Functions
         function showLogin() {
+            console.log('Showing login form');
             document.getElementById('loginContainer').style.display = 'block';
             document.getElementById('signupContainer').style.display = 'none';
             document.getElementById('otpContainer').style.display = 'none';
@@ -442,6 +1092,7 @@
         }
 
         function showSignup() {
+            console.log('Showing signup form');
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('signupContainer').style.display = 'block';
             document.getElementById('otpContainer').style.display = 'none';
@@ -454,9 +1105,7 @@
             document.getElementById('otpContainer').style.display = 'block';
             hideMessages();
             
-            // Focus on first OTP input
             document.querySelector('.otp-input').focus();
-            startResendTimer();
         }
 
         function hideMessages() {
@@ -480,13 +1129,11 @@
                 return false;
             }
 
-            // Show loading
             const submitButton = event.target.querySelector('.auth-button');
             const originalText = submitButton.textContent;
             submitButton.textContent = 'Signing In...';
             submitButton.disabled = true;
 
-            // Simulate login
             setTimeout(() => {
                 currentUser = {
                     phone: phone,
@@ -509,7 +1156,6 @@
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
-            // Validation
             if (!name) {
                 showError('Please enter your full name');
                 return;
@@ -535,13 +1181,11 @@
                 return;
             }
 
-            // Show loading
             const button = document.getElementById('signupButton');
             const originalText = button.textContent;
             button.textContent = 'Creating Account...';
             button.disabled = true;
 
-            // Create account
             setTimeout(() => {
                 currentUser = {
                     name: name,
@@ -565,7 +1209,6 @@
                 }
             }
             
-            // Auto-verify if all filled
             const otpInputs = document.querySelectorAll('.otp-input');
             const allFilled = Array.from(otpInputs).every(input => input.value.length === 1);
             if (allFilled) {
@@ -582,16 +1225,13 @@
                 return;
             }
 
-            // Show loading
             const verifyButton = document.querySelector('#otpContainer .auth-button');
             const originalText = verifyButton.textContent;
             verifyButton.textContent = 'Verifying...';
             verifyButton.disabled = true;
 
-            // Verify (accept any 6 digits)
             setTimeout(() => {
                 if (otp.length === 6) {
-                    // Save user data and auth status
                     const userDataToSave = {
                         ...currentUser,
                         verifiedAt: new Date().toISOString(),
@@ -599,27 +1239,13 @@
                     };
                     
                     saveUserData(userDataToSave);
+                    userBalance = 0.0000;
                     
-                    // Save authentication flag
-                    try {
-                        localStorage.setItem('kabiruLoggedIn', 'true');
-                        localStorage.setItem('kabiruAuth', JSON.stringify({
-                            isAuthenticated: true,
-                            user: userDataToSave,
-                            loginTime: new Date().toISOString()
-                        }));
-                    } catch (error) {
-                        console.log('Could not save auth status');
-                    }
-                    
-                    currentUser = userDataToSave;
-                    
-                    // Show success and redirect
                     document.getElementById('otpContainer').style.display = 'none';
                     document.getElementById('successContainer').style.display = 'block';
                     
                     setTimeout(() => {
-                        redirectToMainApp(currentUser);
+                        showMainApp();
                     }, 2000);
                 } else {
                     showError('Verification failed. Please try again.');
@@ -629,28 +1255,6 @@
                     verifyButton.disabled = false;
                 }
             }, 1500);
-        }
-
-        function resendOTP() {
-            showNotification('New OTP sent to your phone!');
-            startResendTimer();
-        }
-
-        function startResendTimer() {
-            resendCountdown = 60;
-            const timerElement = document.getElementById('resendTimer');
-            
-            if (otpTimer) clearInterval(otpTimer);
-            
-            otpTimer = setInterval(() => {
-                resendCountdown--;
-                timerElement.textContent = `Resend available in ${resendCountdown} seconds`;
-                
-                if (resendCountdown <= 0) {
-                    clearInterval(otpTimer);
-                    timerElement.textContent = '';
-                }
-            }, 1000);
         }
 
         function isValidPhone(phone) {
@@ -667,6 +1271,212 @@
             }, 5000);
         }
 
+        // Mining App Functions
+        function showMiningApp() {
+            document.getElementById('miningApp').style.display = 'block';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'none';
+        }
+
+        function showWallet() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'block';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'none';
+            updateWalletBalance();
+        }
+
+        function showUtilities() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'block';
+            document.getElementById('readPage').style.display = 'none';
+        }
+
+        function showReadPage() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'block';
+        }
+
+        function updateBalanceDisplay() {
+            const balanceElements = document.querySelectorAll('#balance, #totalBalance, #walletBalance');
+            balanceElements.forEach(el => {
+                if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
+            });
+        }
+
+        function updateWalletBalance() {
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
+        }
+
+        function startMiningTimer() {
+            let seconds = 0;
+            setInterval(() => {
+                seconds++;
+                
+                // Auto mine every 30 seconds for demo
+                if (seconds % 30 === 0 && isMining) {
+                    userBalance += miningRate;
+                    updateBalanceDisplay();
+                    showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
+                    
+                    // Update user data
+                    if (currentUser) {
+                        currentUser.balance = userBalance;
+                        saveUserData(currentUser);
+                    }
+                }
+            }, 1000);
+        }
+
+        // Mining Modal Functions
+        function openSovereignModal() {
+            document.getElementById('sovereignModal').style.display = 'block';
+        }
+
+        function openValueModal() {
+            document.getElementById('valueModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function selectSovereignValue(type) {
+            selectedSovereignType = type;
+            
+            document.querySelectorAll('#sovereignOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            event.target.closest('.value-option').classList.add('selected');
+            document.getElementById('sovereignStartBtn').disabled = false;
+        }
+
+        function selectValue(type, amount) {
+            selectedValueType = type;
+            selectedValueAmount = amount;
+            
+            document.querySelectorAll('#valueOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            event.target.closest('.value-option').classList.add('selected');
+            document.getElementById('valueStartBtn').disabled = false;
+        }
+
+        function startSovereignMining() {
+            if (!selectedSovereignType) return;
+            
+            isMining = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += 0.005;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Sovereign mining complete! +0.0050 iKb earned`);
+                incrementTasksCompleted();
+                
+                if (currentUser) {
+                    currentUser.balance = userBalance;
+                    saveUserData(currentUser);
+                }
+            }, 3000);
+            
+            closeModal('sovereignModal');
+        }
+
+        function startValueMining() {
+            if (!selectedValueType) return;
+            
+            isMining = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += selectedValueAmount;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Value mining complete! +${selectedValueAmount.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+                
+                if (currentUser) {
+                    currentUser.balance = userBalance;
+                    saveUserData(currentUser);
+                }
+            }, 3000);
+            
+            closeModal('valueModal');
+        }
+
+        function mineTokens(type) {
+            isMining = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            let reward = 0.002;
+            
+            setTimeout(() => {
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Reserve mining complete! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+                
+                if (currentUser) {
+                    currentUser.balance = userBalance;
+                    saveUserData(currentUser);
+                }
+            }, 3000);
+        }
+
+        function showMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'block';
+        }
+
+        function hideMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'none';
+        }
+
+        function incrementTasksCompleted() {
+            const tasksElement = document.getElementById('tasksCompleted');
+            let current = parseInt(tasksElement.textContent);
+            tasksElement.textContent = current + 1;
+        }
+
+        // User Management
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                userBalance = 0.0000;
+                isMining = false;
+                
+                // Reset UI
+                document.getElementById('userMenu').style.display = 'none';
+                
+                // Clear forms
+                document.querySelectorAll('.form-input').forEach(input => input.value = '');
+                document.querySelectorAll('.otp-input').forEach(input => input.value = '');
+                
+                // Show auth screen
+                showAuthScreen();
+                showLogin();
+                
+                showNotification('Logged out successfully');
+            }
+        }
+
+        // Notification function
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -677,18 +1487,22 @@
             }, 3000);
         }
 
-        // CONNECTION FUNCTION - ONLY CHANGE MADE
-        function redirectToMainApp(user) {
-            console.log('🚀 Redirecting to mining app...');
-            showNotification('🚀 Redirecting to KABIRU Mining App...');
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
             
-            // Redirect to mining app
-            setTimeout(() => {
-                window.location.href = 'mining-app.html';
-            }, 500);
+            // Close user menu when clicking outside
+            if (!event.target.closest('.user-info')) {
+                document.getElementById('userMenu').style.display = 'none';
+            }
         }
 
-        // Handle keyboard events
+        // Handle keyboard events for OTP
         document.addEventListener('keydown', function(e) {
             if (document.getElementById('otpContainer').style.display === 'block') {
                 const otpInputs = document.querySelectorAll('.otp-input');
@@ -713,7 +1527,7 @@
             });
         });
 
-        console.log('🚀 KABIRU Login System Ready!');
+        console.log('🚀 KABIRU Integrated App Ready!');
     </script>
 </body>
-</html>
+    </html>
