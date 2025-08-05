@@ -11,17 +11,30 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
-            margin: 0;
-            padding: 0;
         }
 
         /* LOGIN STYLES - UNCHANGED */
+        .login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
         .auth-container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -34,18 +47,6 @@
             animation: fadeInUp 0.8s ease-out;
             margin: 20px auto;
             display: none; /* Initially hidden, will show for non-logged users */
-        }
-
-        .auth-container.show {
-            display: block;
-        }
-
-        .login-page {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            min-height: 100vh;
         }
 
         .auth-logo {
@@ -333,22 +334,23 @@
         }
 
         /* MINING APP STYLES - COMPLETELY UNCHANGED */
+        .auth-container.show {
+            display: block;
+        }
+
+        .mining-app {
+            display: none;
+        }
+
+        .mining-app.show {
+            display: block;
+        }
+
         .container {
             max-width: 400px;
             margin: 0 auto;
             padding: 15px;
             position: relative;
-            min-height: 100vh;
-        }
-
-        .mining-app {
-            display: none;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        .mining-app.show {
-            display: block;
         }
 
         .read-page {
@@ -3263,4 +3265,4 @@
         console.log('🚀 KABIRU Integrated App Ready!');
     </script>
 </body>
-</html>
+                                             </html>
