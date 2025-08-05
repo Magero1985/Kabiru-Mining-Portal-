@@ -17,6 +17,8 @@
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
 
         /* LOGIN STYLES - UNCHANGED */
@@ -336,10 +338,13 @@
             margin: 0 auto;
             padding: 15px;
             position: relative;
+            min-height: 100vh;
         }
 
         .mining-app {
-            display: none; /* Initially hidden until user logs in */
+            display: none;
+            min-height: 100vh;
+            position: relative;
         }
 
         .mining-app.show {
