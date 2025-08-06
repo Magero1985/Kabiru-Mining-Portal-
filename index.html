@@ -85,6 +85,7 @@
 
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         .form-label {
@@ -115,6 +116,34 @@
 
         .form-input::placeholder {
             color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Password input with show/hide functionality */
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #FFD700;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            opacity: 0.7;
         }
 
         .auth-button {
@@ -158,6 +187,22 @@
         }
 
         .auth-toggle-link:hover {
+            opacity: 0.8;
+        }
+
+        /* Forgot Password Link */
+        .forgot-password-link {
+            display: block;
+            text-align: right;
+            color: #FFD700;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password-link:hover {
             opacity: 0.8;
         }
 
@@ -225,6 +270,11 @@
             font-size: 10px;
             opacity: 0.7;
             line-height: 1.2;
+        }
+
+        /* PASSWORD RESET CONTAINER */
+        .password-reset-container {
+            display: none;
         }
 
         /* EMAIL SIGNUP */
@@ -599,12 +649,40 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁</button>
+                    </div>
+                    <span class="forgot-password-link" onclick="showPasswordReset()">Forgot Password?</span>
                 </div>
                 <button type="button" class="auth-button" onclick="handleLogin()">Sign In</button>
                 
                 <div class="auth-toggle">
                     Don't have an account? <span class="auth-toggle-link" onclick="showSignupMethodSelection()">Sign Up</span>
+                </div>
+            </div>
+
+            <!-- Password Reset Form -->
+            <div id="passwordResetContainer" class="password-reset-container">
+                <div class="signup-header">
+                    <div class="signup-method-badge">🔒 Reset Password</div>
+                    <div class="back-to-methods" onclick="showLogin()">← Back to Sign In</div>
+                </div>
+                
+                <div class="verification-info">
+                    <strong>Reset Your Password:</strong><br>
+                    Enter your email address and we'll send you a link to reset your password.
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="resetEmail" placeholder="Enter your email address" required>
+                </div>
+                
+                <button type="button" class="auth-button" onclick="handlePasswordReset()">Send Reset Link</button>
+                
+                <div class="auth-toggle">
+                    Remember your password? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
                 </div>
             </div>
 
@@ -650,12 +728,18 @@
                 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="emailSignupPassword" placeholder="Create a strong password (min 6 chars)" required>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="emailSignupPassword" placeholder="Create a strong password (min 6 chars)" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('emailSignupPassword')">👁</button>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Confirm Password</label>
-                    <input type="password" class="form-input" id="emailConfirmPassword" placeholder="Confirm your password" required>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="emailConfirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('emailConfirmPassword')">👁</button>
+                    </div>
                 </div>
                 
                 <button type="button" class="auth-button" onclick="handleEmailSignup()">📧 CREATE ACCOUNT WITH EMAIL</button>
@@ -689,12 +773,18 @@
                 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="phoneSignupPassword" placeholder="Create a strong password" required>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="phoneSignupPassword" placeholder="Create a strong password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('phoneSignupPassword')">👁</button>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Confirm Password</label>
-                    <input type="password" class="form-input" id="phoneConfirmPassword" placeholder="Confirm your password" required>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="phoneConfirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('phoneConfirmPassword')">👁</button>
+                    </div>
                 </div>
                 
                 <button type="button" class="auth-button" onclick="handlePhoneSignup()">📱 CREATE ACCOUNT WITH SMS</button>
@@ -726,33 +816,6 @@
                     <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 5)">
                 </div>
                 
-                <button class="auth-button" onclick="verifyOTP()">Verify & Continue</button>
-                
-                <div style="font-size: 12px; opacity: 0.7; margin-top: 10px;">
-                    Didn't receive code? <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendOTP()">Resend SMS</span>
-                    <div id="resendTimer" style="margin-top: 5px; opacity: 0.6;"></div>
-                </div>
-            </div>
-
-            <!-- Email Verification -->
-            <div id="emailVerificationContainer" class="email-verification-container">
-                <h3 style="color: #FFD700; margin-bottom: 15px;">📧 Verify Your Email</h3>
-                
-                <div class="verification-info">
-                    <strong>Email Verification:</strong><br>
-                    We've sent a verification link to your email address.<br>
-                    Please check your inbox and click the verification link.
-                </div>
-                
-                <div style="margin: 20px 0;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">📬</div>
-                    <div style="font-size: 16px; margin-bottom: 10px;">Check your email!</div>
-                    <div style="font-size: 12px; opacity: 0.8;">
-                        Didn't receive the email? Check your spam folder or 
-                        <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">resend verification email</span>
-                    </div>
-                </div>
-                
                 <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
             </div>
 
@@ -777,7 +840,7 @@
             <!-- Top Navigation Bar -->
             <div class="top-bar">
                 <div onclick="showNotification('Utilities coming soon!')">UTILITIES</div>
-                <div onclick="showNotification('Wallet coming soon!')">WALLET</div>
+                <div onclick="showWalletSwap()">WALLET</div>
                 <div onclick="showNotification('Read coming soon!')">READ</div>
                 <div onclick="showNotification('Language coming soon!')">LANGUAGE</div>
                 <div onclick="showNotification('Corporate coming soon!')">CORPORATE</div>
@@ -844,6 +907,55 @@
         </div>
     </div>
 
+    <!-- Wallet/Swap Modal -->
+    <div id="walletModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; backdrop-filter: blur(10px);">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; max-width: 400px; width: 90%; border: 1px solid rgba(255,255,255,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #FFD700; margin: 0;">💱 Exchange iKb</h3>
+                <button onclick="closeWalletSwap()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 14px; opacity: 0.8; margin-bottom: 5px;">Your Balance</div>
+                    <div style="font-size: 24px; color: #FFD700; font-weight: bold;" id="walletBalance">0.0000 iKb</div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; color: #FFD700; font-size: 14px;">Amount to Exchange</label>
+                    <input type="number" id="exchangeAmount" placeholder="0.0000" style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;" oninput="calculateExchange()">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; color: #FFD700; font-size: 14px;">Exchange To</label>
+                    <select id="exchangeCurrency" style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;" onchange="calculateExchange()">
+                        <option value="KSH">KSH - Kenyan Shilling</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="PI">PI - Pi Network</option>
+                        <option value="BTC">BTC - Bitcoin</option>
+                        <option value="ETH">ETH - Ethereum</option>
+                    </select>
+                </div>
+                
+                <div style="background: rgba(0,255,135,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 14px; opacity: 0.8;">You will receive:</div>
+                        <div style="font-size: 18px; color: #00ff87; font-weight: bold;" id="exchangeResult">0.00</div>
+                    </div>
+                    <div style="font-size: 12px; opacity: 0.6; margin-top: 5px;" id="exchangeRate">Exchange rate: 1 iKb = 0.00</div>
+                </div>
+                
+                <button onclick="executeExchange()" style="width: 100%; padding: 15px; background: linear-gradient(45deg, #FFD700, #FFA500); border: none; border-radius: 12px; color: #333; font-size: 16px; font-weight: bold; cursor: pointer;">
+                    💱 EXCHANGE NOW
+                </button>
+                
+                <div style="font-size: 12px; opacity: 0.7; text-align: center; margin-top: 10px;">
+                    ⚠️ Exchanges are final and cannot be reversed
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
@@ -871,6 +983,16 @@
         let userBalance = 0.0000;
         let miningRate = 0.001;
         let isMining = false;
+        let totalTasksCompleted = 0;
+
+        // Exchange rates (these would normally come from an API)
+        const exchangeRates = {
+            KSH: 0.75,    // 1 iKb = 0.75 KSH
+            USD: 0.0057,  // 1 iKb = 0.0057 USD
+            PI: 0.012,    // 1 iKb = 0.012 PI
+            BTC: 0.00000015, // 1 iKb = 0.00000015 BTC
+            ETH: 0.0000023   // 1 iKb = 0.0000023 ETH
+        };
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -896,17 +1018,53 @@
             }
         }
 
+        // Password toggle functionality
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleButton = passwordInput.nextElementSibling;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = '👁';
+            }
+        }
+
         // Navigation Functions
         function checkLoginStatus() {
             console.log('Checking login status...');
-            const savedUser = getUserData();
-            if (savedUser) {
-                console.log('User found, showing mining app');
-                showMiningApp(savedUser);
-            } else {
-                console.log('No user found, showing login page');
-                showLoginPage();
-            }
+            
+            // Monitor Firebase auth state
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    console.log('Firebase user found:', user.uid);
+                    if (user.emailVerified || user.phoneNumber) {
+                        // User is verified
+                        const userData = {
+                            uid: user.uid,
+                            email: user.email,
+                            phone: user.phoneNumber,
+                            emailVerified: user.emailVerified,
+                            loginType: user.email ? 'email' : 'phone'
+                        };
+                        currentUser = userData;
+                        showMiningApp(userData);
+                        return;
+                    }
+                }
+                
+                // Check localStorage as fallback
+                const savedUser = getUserData();
+                if (savedUser && savedUser.verifiedAt) {
+                    console.log('Local user found, showing mining app');
+                    showMiningApp(savedUser);
+                } else {
+                    console.log('No verified user found, showing login page');
+                    showLoginPage();
+                }
+            });
         }
 
         function showLoginPage() {
@@ -917,6 +1075,7 @@
         function showMiningApp(user) {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('miningApp').style.display = 'block';
+            loadUserMiningData();
             updateBalanceDisplay();
             startMiningTimer();
         }
@@ -924,6 +1083,12 @@
         function showLogin() {
             hideAllContainers();
             document.getElementById('loginContainer').style.display = 'block';
+            hideMessages();
+        }
+
+        function showPasswordReset() {
+            hideAllContainers();
+            document.getElementById('passwordResetContainer').style.display = 'block';
             hideMessages();
         }
 
@@ -961,6 +1126,7 @@
         function hideAllContainers() {
             const containers = [
                 'loginContainer', 
+                'passwordResetContainer',
                 'signupMethodSelection',
                 'emailSignupContainer', 
                 'phoneSignupContainer',
@@ -978,6 +1144,44 @@
         function hideMessages() {
             document.getElementById('errorMessage').style.display = 'none';
             document.getElementById('successContainer').style.display = 'none';
+        }
+
+        // Password Reset Functions
+        async function handlePasswordReset() {
+            const email = document.getElementById('resetEmail').value.trim();
+            
+            if (!email) {
+                showError('Please enter your email address');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            try {
+                await firebase.auth().sendPasswordResetEmail(email);
+                showNotification('Password reset email sent! Check your inbox.');
+                showLogin();
+            } catch (error) {
+                console.error('Password reset error:', error);
+                let errorMessage = 'Failed to send reset email. ';
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'No account found with this email address.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Please enter a valid email address.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many requests. Please try again later.';
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                showError(errorMessage);
+            }
         }
 
         // Email Authentication Functions
@@ -1009,7 +1213,13 @@
 
         async function sendEmailVerification(user) {
             try {
-                await user.sendEmailVerification();
+                // Configure email verification settings
+                const actionCodeSettings = {
+                    url: window.location.origin, // Return to current page after verification
+                    handleCodeInApp: false
+                };
+                
+                await user.sendEmailVerification(actionCodeSettings);
                 console.log('Email verification sent');
                 return true;
             } catch (error) {
@@ -1132,18 +1342,8 @@
                             return;
                         }
                         
-                        // Successful email login
-                        const userDataToSave = {
-                            email: credential,
-                            loginType: 'email',
-                            firebaseUid: result.user.uid,
-                            verifiedAt: new Date().toISOString(),
-                            balance: userBalance
-                        };
-                        
-                        saveUserData(userDataToSave);
-                        currentUser = userDataToSave;
-                        showSuccessAndRedirect();
+                        // Successful email login - Firebase auth state will handle the redirect
+                        showNotification('Login successful!');
                     } else {
                         showError(result.error);
                     }
@@ -1214,6 +1414,11 @@
                 const result = await createEmailAccount(email, password);
                 
                 if (result.success) {
+                    // Set user display name
+                    await result.user.updateProfile({
+                        displayName: name
+                    });
+                    
                     // Send email verification
                     const emailSent = await sendEmailVerification(result.user);
                     
@@ -1302,19 +1507,11 @@
         // Email Verification Functions
         async function checkEmailVerification() {
             try {
+                // Reload the user to get the latest verification status
                 await firebase.auth().currentUser.reload();
                 const user = firebase.auth().currentUser;
                 
                 if (user && user.emailVerified) {
-                    const userDataToSave = {
-                        ...currentUser,
-                        firebaseUid: user.uid,
-                        verifiedAt: new Date().toISOString(),
-                        balance: 0.0000
-                    };
-                    
-                    saveUserData(userDataToSave);
-                    currentUser = userDataToSave;
                     showSuccessAndRedirect();
                 } else {
                     showError('Email not yet verified. Please check your inbox and click the verification link.');
@@ -1329,7 +1526,7 @@
             try {
                 const user = firebase.auth().currentUser;
                 if (user) {
-                    await user.sendEmailVerification();
+                    await sendEmailVerification(user);
                     showNotification('Verification email resent! Please check your inbox.');
                 } else {
                     showError('No user found. Please try signing up again.');
@@ -1368,15 +1565,6 @@
                 const verificationResult = await verifyFirebaseOTP(otp);
                 
                 if (verificationResult.success) {
-                    const userDataToSave = {
-                        ...currentUser,
-                        firebaseUid: verificationResult.user.uid,
-                        verifiedAt: new Date().toISOString(),
-                        balance: 0.0000
-                    };
-                    
-                    saveUserData(userDataToSave);
-                    currentUser = userDataToSave;
                     showSuccessAndRedirect();
                 } else {
                     showError(verificationResult.error || 'Verification failed. Please try again.');
@@ -1420,7 +1608,7 @@
             
             setTimeout(() => {
                 document.getElementById('successContainer').style.display = 'none';
-                showMiningApp(currentUser);
+                // Firebase auth state will handle showing the mining app
             }, 1500);
         }
 
@@ -1438,15 +1626,64 @@
             showNotification('Logged out successfully');
         }
 
-        // Storage Functions
+        // Storage Functions - Enhanced for permanent mining data
         function saveUserData(userData) {
             try {
-                localStorage.setItem('kabiruUser', JSON.stringify(userData));
-                console.log('User data saved:', userData);
+                const miningData = {
+                    ...userData,
+                    balance: userBalance,
+                    tasksCompleted: totalTasksCompleted,
+                    lastSaved: new Date().toISOString(),
+                    miningRate: miningRate
+                };
+                localStorage.setItem('kabiruUser', JSON.stringify(miningData));
+                
+                // Also save to a separate mining-specific key for extra persistence
+                const miningKey = `kabiruMining_${userData.uid || userData.phone || userData.email}`;
+                localStorage.setItem(miningKey, JSON.stringify({
+                    balance: userBalance,
+                    tasksCompleted: totalTasksCompleted,
+                    lastMined: new Date().toISOString(),
+                    totalEarnings: userBalance
+                }));
+                
+                console.log('User mining data saved permanently:', miningData);
                 return true;
             } catch (error) {
                 console.log('Storage not available');
                 return false;
+            }
+        }
+
+        function loadUserMiningData() {
+            try {
+                const userData = getUserData();
+                if (userData) {
+                    // Load balance and tasks from saved data
+                    userBalance = userData.balance || 0.0000;
+                    totalTasksCompleted = userData.tasksCompleted || 0;
+                    miningRate = userData.miningRate || 0.001;
+                    
+                    // Also check separate mining key for extra data
+                    const miningKey = `kabiruMining_${userData.uid || userData.phone || userData.email}`;
+                    const miningData = localStorage.getItem(miningKey);
+                    
+                    if (miningData) {
+                        const parsed = JSON.parse(miningData);
+                        userBalance = parsed.balance || userBalance;
+                        totalTasksCompleted = parsed.tasksCompleted || totalTasksCompleted;
+                    }
+                    
+                    console.log('Loaded mining data:', { balance: userBalance, tasks: totalTasksCompleted });
+                    
+                    // Update UI with loaded data
+                    updateBalanceDisplay();
+                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
+                }
+            } catch (error) {
+                console.log('Error loading mining data, starting fresh');
+                userBalance = 0.0000;
+                totalTasksCompleted = 0;
             }
         }
         
@@ -1464,7 +1701,20 @@
 
         function clearUserData() {
             try {
+                // Don't clear mining data, only auth data
+                const userData = getUserData();
+                if (userData) {
+                    // Save mining data before clearing
+                    const miningKey = `kabiruMining_${userData.uid || userData.phone || userData.email}`;
+                    localStorage.setItem(miningKey, JSON.stringify({
+                        balance: userBalance,
+                        tasksCompleted: totalTasksCompleted,
+                        lastSaved: new Date().toISOString()
+                    }));
+                }
+                
                 localStorage.removeItem('kabiruUser');
+                console.log('Auth data cleared, mining data preserved');
             } catch (error) {
                 console.log('Error clearing user data');
             }
@@ -1514,6 +1764,11 @@
                     userBalance += miningRate;
                     updateBalanceDisplay();
                     showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
+                    
+                    // Save mining progress
+                    if (currentUser) {
+                        saveUserData(currentUser);
+                    }
                 }
             }, 1000);
         }
@@ -1526,22 +1781,79 @@
             
             setTimeout(() => {
                 userBalance += reward;
+                totalTasksCompleted++;
                 updateBalanceDisplay();
+                document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
                 showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
-                incrementTasksCompleted();
                 
-                // Save updated balance
+                // Save updated mining data permanently
                 if (currentUser) {
-                    currentUser.balance = userBalance;
                     saveUserData(currentUser);
                 }
             }, 3000);
         }
 
         function incrementTasksCompleted() {
+            totalTasksCompleted++;
             const tasksElement = document.getElementById('tasksCompleted');
-            let current = parseInt(tasksElement.textContent);
-            tasksElement.textContent = current + 1;
+            tasksElement.textContent = totalTasksCompleted;
+            
+            // Save updated data
+            if (currentUser) {
+                saveUserData(currentUser);
+            }
+        }
+
+        // Wallet/Exchange Functions
+        function showWalletSwap() {
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
+            document.getElementById('walletModal').style.display = 'block';
+            calculateExchange();
+        }
+
+        function closeWalletSwap() {
+            document.getElementById('walletModal').style.display = 'none';
+            document.getElementById('exchangeAmount').value = '';
+        }
+
+        function calculateExchange() {
+            const amount = parseFloat(document.getElementById('exchangeAmount').value) || 0;
+            const currency = document.getElementById('exchangeCurrency').value;
+            const rate = exchangeRates[currency];
+            const result = amount * rate;
+            
+            document.getElementById('exchangeResult').textContent = result.toFixed(currency === 'BTC' || currency === 'ETH' ? 8 : 2) + ' ' + currency;
+            document.getElementById('exchangeRate').textContent = `Exchange rate: 1 iKb = ${rate.toFixed(currency === 'BTC' || currency === 'ETH' ? 8 : 4)} ${currency}`;
+        }
+
+        function executeExchange() {
+            const amount = parseFloat(document.getElementById('exchangeAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showNotification('Please enter a valid amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showNotification('Insufficient iKb balance');
+                return;
+            }
+            
+            const currency = document.getElementById('exchangeCurrency').value;
+            const rate = exchangeRates[currency];
+            const result = amount * rate;
+            
+            // Deduct from user balance
+            userBalance -= amount;
+            updateBalanceDisplay();
+            
+            // Save updated balance
+            if (currentUser) {
+                saveUserData(currentUser);
+            }
+            
+            closeWalletSwap();
+            showNotification(`Successfully exchanged ${amount.toFixed(4)} iKb for ${result.toFixed(currency === 'BTC' || currency === 'ETH' ? 8 : 2)} ${currency}!`);
         }
 
         function showNotification(message) {
@@ -1580,7 +1892,37 @@
             });
         });
 
-        console.log('🚀 KABIRU Mining App with Separate Email & SMS Signup Ready!');
+        // App initialization complete
     </script>
 </body>
-    </html>
+</html>
+    </script>
+</body>
+</html>verifyOTP()">Verify & Continue</button>
+                
+                <div style="font-size: 12px; opacity: 0.7; margin-top: 10px;">
+                    Didn't receive code? <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendOTP()">Resend SMS</span>
+                    <div id="resendTimer" style="margin-top: 5px; opacity: 0.6;"></div>
+                </div>
+            </div>
+
+            <!-- Email Verification -->
+            <div id="emailVerificationContainer" class="email-verification-container">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">📧 Verify Your Email</h3>
+                
+                <div class="verification-info">
+                    <strong>Email Verification:</strong><br>
+                    We've sent a verification link to your email address.<br>
+                    Please check your inbox and click the verification link, then return here.
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📬</div>
+                    <div style="font-size: 16px; margin-bottom: 10px;">Check your email!</div>
+                    <div style="font-size: 12px; opacity: 0.8;">
+                        Didn't receive the email? Check your spam folder or 
+                        <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">resend verification email</span>
+                    </div>
+                </div>
+                
+                <button class="auth-button" onclick="
