@@ -27,17 +27,11 @@
 
         /* LOGIN STYLES */
         .login-page {
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
             min-height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1000;
         }
 
         .auth-container {
@@ -746,7 +740,7 @@
 </head>
 <body>
     <!-- Login Page -->
-    <div id="loginPage" class="login-page" style="display: none;">
+    <div id="loginPage" class="login-page" style="display: flex;">
         <div class="auth-container" id="authContainer">
             <!-- Logo Section -->
             <div class="auth-logo">
@@ -1718,4 +1712,4 @@
         console.log('🚀 KABIRU Mining App Ready for Deployment!');
     </script>
 </body>
-                            </html>
+    </html>
