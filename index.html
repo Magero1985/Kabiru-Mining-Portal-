@@ -1228,11 +1228,21 @@
         }
 
         function showMiningApp(user) {
+            console.log('=== SHOWING MINING APP ===');
+            console.log('User data received:', user);
+            
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('miningApp').style.display = 'block';
+            
+            // Set current user BEFORE loading mining data
+            currentUser = user;
+            
+            // Load mining data for this specific user
             loadUserMiningData();
             updateBalanceDisplay();
             startMiningTimer();
+            
+            console.log('Mining app loaded with balance:', userBalance);
         }
 
         function showLogin() {
@@ -1830,41 +1840,77 @@
         }
 
         function loadUserMiningData() {
+            console.log('=== LOADING MINING DATA ===');
+            
             try {
-                const userData = getUserData();
-                if (userData && userData.uid) {
-                    console.log('Loading mining data for UID:', userData.uid);
-                    
-                    // Load balance and tasks from saved data
-                    userBalance = userData.balance || 0.0000;
-                    totalTasksCompleted = userData.tasksCompleted || 0;
-                    miningRate = userData.miningRate || 0.001;
-                    
-                    // Also check separate mining key for extra data using real Firebase UID
-                    const miningKey = `kabiruMining_${userData.uid}`;
-                    const miningData = localStorage.getItem(miningKey);
-                    
-                    if (miningData) {
-                        const parsed = JSON.parse(miningData);
-                        userBalance = parsed.balance || userBalance;
-                        totalTasksCompleted = parsed.tasksCompleted || totalTasksCompleted;
-                        console.log('Loaded persistent mining data:', parsed);
-                    } else {
-                        console.log('No persistent mining data found for UID:', userData.uid);
-                    }
-                    
-                    console.log('Final mining data:', { balance: userBalance, tasks: totalTasksCompleted });
-                    
-                    // Update UI with loaded data
-                    updateBalanceDisplay();
-                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-                } else {
-                    console.log('No valid user data for mining data loading');
+                // Get current user data
+                let userData = currentUser || getUserData();
+                console.log('Current user for mining data:', userData);
+                
+                if (!userData || !userData.uid) {
+                    console.log('No valid user UID found, starting fresh');
                     userBalance = 0.0000;
                     totalTasksCompleted = 0;
+                    return;
                 }
+                
+                console.log('Loading mining data for UID:', userData.uid);
+                
+                // First check the main user data for balance
+                if (userData.balance !== undefined) {
+                    userBalance = userData.balance;
+                    console.log('Loaded balance from user data:', userBalance);
+                }
+                
+                if (userData.tasksCompleted !== undefined) {
+                    totalTasksCompleted = userData.tasksCompleted;
+                    console.log('Loaded tasks from user data:', totalTasksCompleted);
+                }
+                
+                // Then check the separate mining storage
+                const miningKey = `kabiruMining_${userData.uid}`;
+                console.log('Checking mining storage with key:', miningKey);
+                
+                const miningData = localStorage.getItem(miningKey);
+                console.log('Raw mining data from storage:', miningData);
+                
+                if (miningData) {
+                    try {
+                        const parsed = JSON.parse(miningData);
+                        console.log('Parsed mining data:', parsed);
+                        
+                        if (parsed.balance !== undefined) {
+                            userBalance = parsed.balance;
+                            console.log('Updated balance from mining storage:', userBalance);
+                        }
+                        
+                        if (parsed.tasksCompleted !== undefined) {
+                            totalTasksCompleted = parsed.tasksCompleted;
+                            console.log('Updated tasks from mining storage:', totalTasksCompleted);
+                        }
+                    } catch (parseError) {
+                        console.error('Error parsing mining data:', parseError);
+                    }
+                } else {
+                    console.log('No separate mining data found for UID:', userData.uid);
+                }
+                
+                // Set mining rate
+                miningRate = userData.miningRate || 0.001;
+                
+                console.log('=== FINAL MINING DATA ===');
+                console.log('Balance:', userBalance);
+                console.log('Tasks:', totalTasksCompleted);
+                console.log('Mining rate:', miningRate);
+                
+                // Update UI with loaded data
+                updateBalanceDisplay();
+                if (document.getElementById('tasksCompleted')) {
+                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
+                }
+                
             } catch (error) {
-                console.log('Error loading mining data, starting fresh:', error);
+                console.error('Error loading mining data:', error);
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
             }
@@ -1959,21 +2005,33 @@
         }
 
         function mineTokens(type, reward) {
+            console.log('=== MINING TOKENS ===');
+            console.log('Mining type:', type, 'Reward:', reward);
+            console.log('Current user:', currentUser);
+            
             isMining = true;
             document.getElementById('miningStatus').textContent = 'Active';
             
             showNotification('Mining started! Please wait...');
             
             setTimeout(() => {
+                const oldBalance = userBalance;
                 userBalance += reward;
                 totalTasksCompleted++;
+                
+                console.log('Balance updated:', oldBalance, '->', userBalance);
+                console.log('Tasks updated to:', totalTasksCompleted);
+                
                 updateBalanceDisplay();
                 document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
                 showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
                 
                 // Save updated mining data permanently
-                if (currentUser) {
+                if (currentUser && currentUser.uid) {
+                    console.log('Saving mining data for UID:', currentUser.uid);
                     saveUserData(currentUser);
+                } else {
+                    console.error('Cannot save mining data - no valid current user with UID');
                 }
             }, 3000);
         }
@@ -2080,4 +2138,4 @@
         // App initialization complete
     </script>
 </body>
-    </html>
+                    </html>
