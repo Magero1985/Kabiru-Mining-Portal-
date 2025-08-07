@@ -1024,9 +1024,144 @@
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, checking login status...');
-            checkLoginStatus();
+            
+            // Check if this is a Firebase callback (email verification or password reset)
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const actionCode = urlParams.get('oobCode');
+            const apiKey = urlParams.get('apiKey');
+            
+            // Firebase sends these parameters for email actions
+            if (actionCode && apiKey) {
+                handleFirebaseCallback(mode || 'verifyEmail', actionCode);
+            } else {
+                checkLoginStatus();
+            }
+            
             initializeRecaptcha();
         });
+
+        // Handle Firebase email callbacks (verification, password reset)
+        async function handleFirebaseCallback(mode, actionCode) {
+            console.log('Firebase callback detected:', mode);
+            
+            try {
+                if (mode === 'verifyEmail' || !mode) {
+                    // Apply email verification
+                    await firebase.auth().applyActionCode(actionCode);
+                    console.log('Email verification successful');
+                    
+                    // Clean the URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    // Show success message and redirect to mining app
+                    showNotification('✅ Email verified successfully! Welcome to KABIRU Mining!');
+                    
+                    // Wait a moment then show mining app directly
+                    setTimeout(() => {
+                        // Create a verified user object
+                        const verifiedUser = {
+                            email: 'verified-user@example.com',
+                            emailVerified: true,
+                            loginType: 'email',
+                            verifiedAt: new Date().toISOString(),
+                            uid: 'verified-' + Date.now()
+                        };
+                        
+                        currentUser = verifiedUser;
+                        saveUserData(verifiedUser);
+                        showMiningApp(verifiedUser);
+                    }, 2000);
+                    
+                } else if (mode === 'resetPassword') {
+                    // Verify the password reset code
+                    const email = await firebase.auth().verifyPasswordResetCode(actionCode);
+                    console.log('Password reset code valid for:', email);
+                    
+                    // Show password reset form
+                    showPasswordResetForm(actionCode);
+                    
+                } else {
+                    console.log('Unknown mode:', mode);
+                    checkLoginStatus();
+                }
+            } catch (error) {
+                console.error('Firebase callback error:', error);
+                showError('Verification failed: ' + error.message);
+                
+                // Clean URL and show login
+                window.history.replaceState({}, document.title, window.location.pathname);
+                setTimeout(() => {
+                    checkLoginStatus();
+                }, 2000);
+            }
+        }
+
+        // Show password reset form with action code
+        function showPasswordResetForm(actionCode) {
+            // Clean the URL first
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Create and show password reset interface
+            hideAllContainers();
+            
+            // Create temporary reset form
+            const resetHtml = `
+                <div class="signup-header">
+                    <div class="signup-method-badge">🔑 Set New Password</div>
+                </div>
+                <div class="verification-info">
+                    <strong>Create New Password:</strong><br>
+                    Enter your new password below.
+                </div>
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="newPassword" placeholder="Enter new password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('newPassword')">👁</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmNewPassword')">👁</button>
+                    </div>
+                </div>
+                <button type="button" class="auth-button" onclick="completePasswordReset('${actionCode}')">Set New Password</button>
+            `;
+            
+            document.getElementById('passwordResetContainer').innerHTML = resetHtml;
+            document.getElementById('passwordResetContainer').style.display = 'block';
+        }
+
+        // Complete password reset
+        async function completePasswordReset(actionCode) {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            
+            if (!newPassword || newPassword.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            try {
+                await firebase.auth().confirmPasswordReset(actionCode, newPassword);
+                showNotification('✅ Password reset successful! You can now sign in with your new password.');
+                
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+            } catch (error) {
+                console.error('Password reset error:', error);
+                showError('Password reset failed: ' + error.message);
+            }
+        }
 
         // Initialize Firebase reCAPTCHA
         function initializeRecaptcha() {
@@ -1363,13 +1498,16 @@
                     result = await signInWithEmail(credential, password);
                     
                     if (result.success) {
+                        // Force reload user to get latest verification status
+                        await result.user.reload();
+                        
                         // Check if email is verified
                         if (!result.user.emailVerified) {
                             showError('Please verify your email address first. Check your inbox for the verification link.');
                             return;
                         }
                         
-                        // Successful email login - Firebase auth state will handle the redirect
+                        console.log('Email verified, login successful');
                         showNotification('Login successful!');
                     } else {
                         showError(result.error);
@@ -1534,18 +1672,26 @@
         // Email Verification Functions
         async function checkEmailVerification() {
             try {
-                // Reload the user to get the latest verification status
-                await firebase.auth().currentUser.reload();
                 const user = firebase.auth().currentUser;
+                if (!user) {
+                    showError('No user found. Please try signing in again.');
+                    return;
+                }
                 
-                if (user && user.emailVerified) {
+                // Force reload the user from server to get latest verification status
+                await user.reload();
+                
+                console.log('Current user email verification status:', user.emailVerified);
+                
+                if (user.emailVerified) {
+                    console.log('Email is verified, proceeding to app');
                     showSuccessAndRedirect();
                 } else {
                     showError('Email not yet verified. Please check your inbox and click the verification link.');
                 }
             } catch (error) {
                 console.error('Error checking email verification:', error);
-                showError('Error checking verification status. Please try again.');
+                showError('Error checking verification status. Please try signing in again.');
             }
         }
 
