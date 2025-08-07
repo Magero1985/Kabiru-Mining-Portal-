@@ -1,551 +1,4 @@
-<!-- Subcategory Modal for Utilities -->
-    <div id="subcategoryModal" class="subcategory-modal">
-        <div class="subcategory-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title" id="subcategoryTitle">Utility Categories</h2>
-                <span class="close" onclick="closeSubcategoryModal()">&times;</span>
-            </div>
-            <div id="subcategoryGrid" class="subcategory-grid">
-                <!-- Subcategory items will be populated here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Language Selection Modal -->
-    <div id="languageModal" class="subcategory-modal">
-        <div class="subcategory-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Select Language</h2>
-                <span class="close" onclick="closeLanguageModal()">&times;</span>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-item" onclick="selectLanguage('english', 'English')">
-                    <span class="subcategory-item-icon">🇺🇸</span>
-                    <div class="subcategory-item-name">English</div>
-                    <div class="subcategory-item-desc">Default language</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('swahili', 'Kiswahili')">
-                    <span class="subcategory-item-icon">🇰🇪</span>
-                    <div class="subcategory-item-name">Kiswahili</div>
-                    <div class="subcategory-item-desc">East Africa</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('hausa', 'Hausa')">
-                    <span class="subcategory-item-icon">🇳🇬</span>
-                    <div class="subcategory-item-name">Hausa</div>
-                    <div class="subcategory-item-desc">West Africa</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('yoruba', 'Yorùbá')">
-                    <span class="subcategory-item-icon">🇳🇬</span>
-                    <div class="subcategory-item-name">Yorùbá</div>
-                    <div class="subcategory-item-desc">Nigeria, Benin</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('igbo', 'Igbo')">
-                    <span class="subcategory-item-icon">🇳🇬</span>
-                    <div class="subcategory-item-name">Igbo</div>
-                    <div class="subcategory-item-desc">Southeast Nigeria</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('amharic', 'አማርኛ')">
-                    <span class="subcategory-item-icon">🇪🇹</span>
-                    <div class="subcategory-item-name">Amharic</div>
-                    <div class="subcategory-item-desc">Ethiopia</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('arabic', 'العربية')">
-                    <span class="subcategory-item-icon">🇪🇬</span>
-                    <div class="subcategory-item-name">Arabic</div>
-                    <div class="subcategory-item-desc">North Africa</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('french', 'Français')">
-                    <span class="subcategory-item-icon">🇫🇷</span>
-                    <div class="subcategory-item-name">Français</div>
-                    <div class="subcategory-item-desc">West/Central Africa</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('zulu', 'isiZulu')">
-                    <span class="subcategory-item-icon">🇿🇦</span>
-                    <div class="subcategory-item-name">isiZulu</div>
-                    <div class="subcategory-item-desc">South Africa</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('xhosa', 'isiXhosa')">
-                    <span class="subcategory-item-icon">🇿🇦</span>
-                    <div class="subcategory-item-name">isiXhosa</div>
-                    <div class="subcategory-item-desc">South Africa</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('afrikaans', 'Afrikaans')">
-                    <span class="subcategory-item-icon">🇿🇦</span>
-                    <div class="subcategory-item-name">Afrikaans</div>
-                    <div class="subcategory-item-desc">South Africa</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectLanguage('luganda', 'Luganda')">
-                    <span class="subcategory-item-icon">🇺🇬</span>
-                    <div class="subcategory-item-name">Luganda</div>
-                    <div class="subcategory-item-desc">Uganda</div>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 20px; font-size: 12px; opacity: 0.7;">
-                More European languages coming soon...
-            </div>
-        </div>
-    </div>
-
-    <!-- Corporate Modal -->
-    <div id="corporateModal" class="subcategory-modal">
-        <div class="subcategory-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Corporate Structure</h2>
-                <span class="close" onclick="closeCorporateModal()">&times;</span>
-            </div>
-            <div class="subcategory-grid">
-                <div class="subcategory-item" onclick="selectCorporate('Foundation')">
-                    <span class="subcategory-item-icon">🏛️</span>
-                    <div class="subcategory-item-name">Foundation</div>
-                    <div class="subcategory-item-desc">Charitable foundations</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectCorporate('Trust')">
-                    <span class="subcategory-item-icon">🤝</span>
-                    <div class="subcategory-item-name">Trust</div>
-                    <div class="subcategory-item-desc">Trust management</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectCorporate('Holding Company')">
-                    <span class="subcategory-item-icon">🏢</span>
-                    <div class="subcategory-item-name">Holding Company</div>
-                    <div class="subcategory-item-desc">Corporate holdings</div>
-                </div>
-                
-                <div class="subcategory-item" onclick="selectCorporate('Strawmanship')">
-                    <span class="subcategory-item-icon">👤</span>
-                    <div class="subcategory-item-name">Strawmanship</div>
-                    <div class="subcategory-item-desc">Legal representation</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sovereign Values Modal -->
-    <div id="sovereignModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
-            <h2 class="modal-title">Select Your Sovereignty Value</h2>
-            <div id="sovereignOptions">
-                <div class="value-option" onclick="selectSovereignValue('personal')">
-                    <strong>Personal Sovereignty</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Individual autonomy and self-governance</p>
-                </div>
-                <div class="value-option" onclick="selectSovereignValue('economic')">
-                    <strong>Economic Sovereignty</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Financial independence and control</p>
-                </div>
-                <div class="value-option" onclick="selectSovereignValue('digital')">
-                    <strong>Digital Sovereignty</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Control over digital identity and data</p>
-                </div>
-                <div class="value-option" onclick="selectSovereignValue('territorial')">
-                    <strong>Territorial Sovereignty</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Land and resource ownership rights</p>
-                </div>
-            </div>
-            <button class="auth-button" onclick="startSovereignMining()" style="margin-top: 20px;" disabled id="sovereignStartBtn">
-                Start Mining
-            </button>
-        </div>
-    </div>
-
-    <!-- Value Selection Modal -->
-    <div id="valueModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('valueModal')">&times;</span>
-            <h2 class="modal-title">Select Your Value Type</h2>
-            <div id="valueOptions">
-                <div class="value-option" onclick="selectValue('service', 0.0015)">
-                    <strong>Service Value</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Community service and assistance - 0.0015 iKb</p>
-                </div>
-                <div class="value-option" onclick="selectValue('skill', 0.0025)">
-                    <strong>Skill Value</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Professional skills and expertise - 0.0025 iKb</p>
-                </div>
-                <div class="value-option" onclick="selectValue('knowledge', 0.0035)">
-                    <strong>Knowledge Value</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Information and wisdom sharing - 0.0035 iKb</p>
-                </div>
-                <div class="value-option" onclick="selectValue('innovation', 0.0045)">
-                    <strong>Innovation Value</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Creative solutions and inventions - 0.0045 iKb</p>
-                </div>
-                <div class="value-option" onclick="selectValue('leadership', 0.0055)">
-                    <strong>Leadership Value</strong>
-                    <p style="font-size: 12px; margin-top: 5px;">Guidance and mentorship - 0.0055 iKb</p>
-                </div>
-            </div>
-            <button class="auth-button" onclick="startValueMining()" style="margin-top: 20px;" disabled id="valueStartBtn">
-                Start Mining
-            </button>
-        </div>
-    </div>
-
-    <!-- Mining Indicator -->
-    <div id="miningIndicator" class="mining-indicator">
-        <div>⛏️ Mining in Progress...</div>
-        <div style="font-size: 12px; margin-top: 10px;">Mining tokens...</div>
-    </div>
-
-    <!-- All the wallet modals from the original (keeping the existing wallet exchange modal as well) -->
-    
-    <!-- Send Modal -->
-    <div id="sendModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Send KABIRU</h2>
-                <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
-            </div>
-            <div class="input-group">
-                <label for="sendAddress">Recipient Address</label>
-                <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
-            </div>
-            <div class="input-group">
-                <label for="sendAmount">Amount (iKb)</label>
-                <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001">
-            </div>
-            <div class="input-group">
-                <label for="sendNote">Note (Optional)</label>
-                <input type="text" id="sendNote" placeholder="Payment for...">
-            </div>
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
-                <button class="primary-button" onclick="processSend()">Send iKb</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Receive Modal -->
-    <div id="receiveModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Receive KABIRU</h2>
-                <span class="close" onclick="closeWalletModal('receiveModal')">&times;</span>
-            </div>
-            <div style="text-align: center; margin: 20px 0;">
-                <div style="background: white; padding: 20px; border-radius: 10px; display: inline-block;">
-                    <div style="color: #333; font-size: 16px; font-weight: bold;">QR Code</div>
-                    <div style="color: #666; font-size: 12px; margin-top: 5px;">Scan to send iKb</div>
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Your Wallet Address</label>
-                <input type="text" value="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2" readonly>
-            </div>
-            <div class="action-buttons">
-                <button class="primary-button" onclick="copyWalletAddress()">Copy Address</button>
-                <button class="secondary-button" onclick="shareAddress()">Share</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Swap Modal -->
-    <div id="swapModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Swap Tokens</h2>
-                <span class="close" onclick="closeWalletModal('swapModal')">&times;</span>
-            </div>
-            <div class="input-group">
-                <label for="swapFrom">From</label>
-                <select id="swapFrom">
-                    <option value="ikb">KABIRU (iKb)</option>
-                    <option value="eth">Ethereum (ETH)</option>
-                    <option value="btc">Bitcoin (BTC)</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label for="swapFromAmount">Amount</label>
-                <input type="number" id="swapFromAmount" placeholder="0.0000" step="0.0001">
-            </div>
-            <div style="text-align: center; margin: 15px 0;">
-                <span style="font-size: 20px;">🔄</span>
-            </div>
-            <div class="input-group">
-                <label for="swapTo">To</label>
-                <select id="swapTo">
-                    <option value="eth">Ethereum (ETH)</option>
-                    <option value="btc">Bitcoin (BTC)</option>
-                    <option value="ikb">KABIRU (iKb)</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>You'll receive approximately</label>
-                <input type="text" id="swapToAmount" placeholder="0.0000" readonly>
-            </div>
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('swapModal')">Cancel</button>
-                <button class="primary-button" onclick="processSwap()">Swap Tokens</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Lockup Modal -->
-    <div id="lockupModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Token Lockup</h2>
-                <span class="close" onclick="closeWalletModal('lockupModal')">&times;</span>
-            </div>
-            <div class="input-group">
-                <label for="lockupAmount">Amount to Lock (iKb)</label>
-                <input type="number" id="lockupAmount" placeholder="0.0000" step="0.0001">
-            </div>
-            <div class="input-group">
-                <label for="lockupPeriod">Lock Period</label>
-                <select id="lockupPeriod">
-                    <option value="30">30 Days (5% APY)</option>
-                    <option value="90">90 Days (8% APY)</option>
-                    <option value="180">180 Days (12% APY)</option>
-                    <option value="365">1 Year (18% APY)</option>
-                </select>
-            </div>
-            <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
-                <div style="font-size: 12px; opacity: 0.8;">Estimated Rewards:</div>
-                <div style="color: #FFD700; font-weight: bold;" id="lockupRewards">0.0000 iKb</div>
-            </div>
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('lockupModal')">Cancel</button>
-                <button class="primary-button" onclick="processLockup()">Lock Tokens</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reserve Modal -->
-    <div id="reserveModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Emergency Reserve</h2>
-                <span class="close" onclick="closeWalletModal('reserveModal')">&times;</span>
-            </div>
-            <div style="text-align: center; margin: 20px 0;">
-                <div style="font-size: 24px; color: #FFD700; font-weight: bold;">Reserve Balance</div>
-                <div style="font-size: 32px; color: #FFD700; margin: 10px 0;" id="reserveBalance">0.0000 iKb</div>
-                <div style="font-size: 12px; opacity: 0.7;">Protected emergency funds</div>
-            </div>
-            <div class="input-group">
-                <label for="reserveAmount">Amount</label>
-                <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001">
-            </div>
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="addToReserve()">Add to Reserve</button>
-                <button class="primary-button" onclick="withdrawFromReserve()">Emergency Withdraw</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Trust Modal -->
-    <div id="trustModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Trust Fund</h2>
-                <span class="close" onclick="closeWalletModal('trustModal')">&times;</span>
-            </div>
-            <div style="text-align: center; margin: 20px 0;">
-                <div style="font-size: 24px; color: #FFD700; font-weight: bold;">Trust Balance</div>
-                <div style="font-size: 32px; color: #FFD700; margin: 10px 0;" id="trustBalance">0.0000 iKb</div>
-                <div style="font-size: 12px; opacity: 0.7;">Growing at 15% annually</div>
-            </div>
-            <div class="input-group">
-                <label for="trustAmount">Contribution Amount (iKb)</label>
-                <input type="number" id="trustAmount" placeholder="0.0000" step="0.0001">
-            </div>
-            <div class="input-group">
-                <label for="trustBeneficiary">Beneficiary Address (Optional)</label>
-                <input type="text" id="trustBeneficiary" placeholder="0x742d35...4B76A2">
-            </div>
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('trustModal')">Cancel</button>
-                <button class="primary-button" onclick="addToTrust()">Add to Trust</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
-
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
-            authDomain: "kabiru-mining-app.firebaseapp.com",
-            projectId: "kabiru-mining-app",
-            storageBucket: "kabiru-mining-app.firebasestorage.app",
-            messagingSenderId: "217095254990",
-            appId: "1:217095254990:web:9eb44eff825666995fb19f",
-            measurementId: "G-W6070RT4PB"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Global variables
-        let appVerifier;
-        let confirmationResult;
-        let currentUser = null;
-        let otpTimer = null;
-        let resendCountdown = 60;
-        let userBalance = 0.0000;
-        let miningRate = 0.001;
-        let isMining = false;
-        let totalTasksCompleted = 0;
-        let selectedSovereignType = null;
-        let selectedValueType = null;
-        let selectedValueAmount = 0;
-
-        // Exchange rates (these would normally come from an API)
-        const exchangeRates = {
-            KSH: 0.75,    // 1 iKb = 0.75 KSH
-            USD: 0.0057,  // 1 iKb = 0.0057 USD
-            PI: 0.012,    // 1 iKb = 0.012 PI
-            BTC: 0.00000015, // 1 iKb = 0.00000015 BTC
-            ETH: 0.0000023   // 1 iKb = 0.0000023 ETH
-        };
-
-        // Initialize app on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, checking login status...');
-            
-            // Check if this is a Firebase callback (email verification or password reset)
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-            const actionCode = urlParams.get('oobCode');
-            const apiKey = urlParams.get('apiKey');
-            
-            // Firebase sends these parameters for email actions
-            if (actionCode && apiKey) {
-                handleFirebaseCallback(mode || 'verifyEmail', actionCode);
-            } else {
-                checkLoginStatus();
-            }
-            
-            initializeRecaptcha();
-        });
-
-        // Handle Firebase email callbacks (verification, password reset)
-        async function handleFirebaseCallback(mode, actionCode) {
-            console.log('Firebase callback detected:', mode);
-            
-            try {
-                if (mode === 'verifyEmail' || !mode) {
-                    // Apply email verification
-                    await firebase.auth().applyActionCode(actionCode);
-                    console.log('Email verification successful');
-                    
-                    // Clean the URL
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    // Show success message
-                    showNotification('✅ Email verified successfully! Please sign in to start mining.');
-                    
-                    // Redirect to login so user can sign in with their verified account
-                    setTimeout(() => {
-                        showLoginPage();
-                        showLogin();
-                    }, 2000);
-                    
-                } else if (mode === 'resetPassword') {
-                    // Verify the password reset code
-                    const email = await firebase.auth().verifyPasswordResetCode(actionCode);
-                    console.log('Password reset code valid for:', email);
-                    
-                    // Show password reset form
-                    showPasswordResetForm(actionCode);
-                    
-                } else {
-                    console.log('Unknown mode:', mode);
-                    checkLoginStatus();
-                }
-            } catch (error) {
-                console.error('Firebase callback error:', error);
-                showError('Verification failed: ' + error.message);
-                
-                // Clean URL and show login
-                window.history.replaceState({}, document.title, window.location.pathname);
-                setTimeout(() => {
-                    checkLoginStatus();
-                }, 2000);
-            }
-        }
-
-        // Show password reset form with action code
-        function showPasswordResetForm(actionCode) {
-            // Clean the URL first
-            window.history.replaceState({}, document.title, window.location.pathname);
-            
-            // Create and show password reset interface
-            hideAllContainers();
-            
-            // Create temporary reset form
-            const resetHtml = `
-                <div class="signup-header">
-                    <div class="signup-method-badge">🔑 Set New Password</div>
-                </div>
-                <div class="verification-info">
-                    <strong>Create New Password:</strong><br>
-                    Enter your new password below.
-                </div>
-                <div class="form-group">
-                    <label class="form-label">New Password</label>
-                    <div class="password-input-container">
-                        <input type="password" class="form-input" id="newPassword" placeholder="Enter new password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('newPassword')">👁</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Confirm New Password</label>
-                    <div class="password-input-container">
-                        <input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('confirmNewPassword')">👁</button>
-                    </div>
-                </div>
-                <button type="button" class="auth-button" onclick="completePasswordReset('${actionCode}')">Set New Password</button>
-            `;
-            
-            document.getElementById('passwordResetContainer').innerHTML = resetHtml;
-            document.getElementById('passwordResetContainer').style.display = 'block';
-        }
-
-        // Complete password reset
-        async function completePasswordReset(actionCode) {
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmNewPassword').value;
-            
-            if (!newPassword || newPassword.length < 6) {
-                showError('Password must be at least 6 characters long');
-                return;
-            }
-            
-            if (newPassword !== confirmPassword) {
-                showError('Passwords do not match');
-                return;
-            }
-            
-            try {
-                await firebase.auth().confirmPasswordReset(actionCode, newPassword);
-                showNotification('✅ Password reset successful! You can now sign in with your new password.');
-                
-                setTimeout(() => {
-                    showLogin();
-                }, 2000);
-            } catch (error) {
-                console.error('Password reset error:', error);
-                showError('Password reset failed: ' + error.message);
-            }
-        }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -2067,7 +1520,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="label">Email (Optional)</label>
+                    <label class="form-label">Email (Optional)</label>
                     <input type="email" class="form-input" id="phoneSignupEmail" placeholder="john@example.com">
                 </div>
                 
@@ -2542,51 +1995,299 @@
         </div>
     </div>
 
-    <!-- Wallet/Swap Modal -->
-    <div id="walletModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; backdrop-filter: blur(10px);">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; max-width: 400px; width: 90%; border: 1px solid rgba(255,255,255,0.2);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="color: #FFD700; margin: 0;">💱 Exchange iKb</h3>
-                <button onclick="closeWalletSwap()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+    <!-- All Modal Elements -->
+
+    <!-- Subcategory Modal for Utilities -->
+    <div id="subcategoryModal" class="subcategory-modal">
+        <div class="subcategory-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title" id="subcategoryTitle">Utility Categories</h2>
+                <span class="close" onclick="closeSubcategoryModal()">&times;</span>
             </div>
-            
-            <div style="margin-bottom: 20px;">
-                <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 14px; opacity: 0.8; margin-bottom: 5px;">Your Balance</div>
-                    <div style="font-size: 24px; color: #FFD700; font-weight: bold;" id="walletBalance">0.0000 iKb</div>
+            <div id="subcategoryGrid" class="subcategory-grid">
+                <!-- Subcategory items will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Selection Modal -->
+    <div id="languageModal" class="subcategory-modal">
+        <div class="subcategory-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Select Language</h2>
+                <span class="close" onclick="closeLanguageModal()">&times;</span>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-item" onclick="selectLanguage('english', 'English')">
+                    <span class="subcategory-item-icon">🇺🇸</span>
+                    <div class="subcategory-item-name">English</div>
+                    <div class="subcategory-item-desc">Default language</div>
                 </div>
                 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; color: #FFD700; font-size: 14px;">Amount to Exchange</label>
-                    <input type="number" id="exchangeAmount" placeholder="0.0000" style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;" oninput="calculateExchange()">
+                <div class="subcategory-item" onclick="selectLanguage('swahili', 'Kiswahili')">
+                    <span class="subcategory-item-icon">🇰🇪</span>
+                    <div class="subcategory-item-name">Kiswahili</div>
+                    <div class="subcategory-item-desc">East Africa</div>
                 </div>
                 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; color: #FFD700; font-size: 14px;">Exchange To</label>
-                    <select id="exchangeCurrency" style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 16px;" onchange="calculateExchange()">
-                        <option value="KSH">KSH - Kenyan Shilling</option>
-                        <option value="USD">USD - US Dollar</option>
-                        <option value="PI">PI - Pi Network</option>
-                        <option value="BTC">BTC - Bitcoin</option>
-                        <option value="ETH">ETH - Ethereum</option>
-                    </select>
+                <div class="subcategory-item" onclick="selectLanguage('hausa', 'Hausa')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Hausa</div>
+                    <div class="subcategory-item-desc">West Africa</div>
                 </div>
                 
-                <div style="background: rgba(0,255,135,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="font-size: 14px; opacity: 0.8;">You will receive:</div>
-                        <div style="font-size: 18px; color: #00ff87; font-weight: bold;" id="exchangeResult">0.00</div>
-                    </div>
-                    <div style="font-size: 12px; opacity: 0.6; margin-top: 5px;" id="exchangeRate">Exchange rate: 1 iKb = 0.00</div>
+                <div class="subcategory-item" onclick="selectLanguage('yoruba', 'Yorùbá')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Yorùbá</div>
+                    <div class="subcategory-item-desc">Nigeria, Benin</div>
                 </div>
                 
-                <button onclick="executeExchange()" style="width: 100%; padding: 15px; background: linear-gradient(45deg, #FFD700, #FFA500); border: none; border-radius: 12px; color: #333; font-size: 16px; font-weight: bold; cursor: pointer;">
-                    💱 EXCHANGE NOW
-                </button>
-                
-                <div style="font-size: 12px; opacity: 0.7; text-align: center; margin-top: 10px;">
-                    ⚠️ Exchanges are final and cannot be reversed
+                <div class="subcategory-item" onclick="selectLanguage('igbo', 'Igbo')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Igbo</div>
+                    <div class="subcategory-item-desc">Southeast Nigeria</div>
                 </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('amharic', 'አማርኛ')">
+                    <span class="subcategory-item-icon">🇪🇹</span>
+                    <div class="subcategory-item-name">Amharic</div>
+                    <div class="subcategory-item-desc">Ethiopia</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('arabic', 'العربية')">
+                    <span class="subcategory-item-icon">🇪🇬</span>
+                    <div class="subcategory-item-name">Arabic</div>
+                    <div class="subcategory-item-desc">North Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('french', 'Français')">
+                    <span class="subcategory-item-icon">🇫🇷</span>
+                    <div class="subcategory-item-name">Français</div>
+                    <div class="subcategory-item-desc">West/Central Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('zulu', 'isiZulu')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiZulu</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('xhosa', 'isiXhosa')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiXhosa</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('afrikaans', 'Afrikaans')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">Afrikaans</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('luganda', 'Luganda')">
+                    <span class="subcategory-item-icon">🇺🇬</span>
+                    <div class="subcategory-item-name">Luganda</div>
+                    <div class="subcategory-item-desc">Uganda</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; font-size: 12px; opacity: 0.7;">
+                More European languages coming soon...
+            </div>
+        </div>
+    </div>
+
+    <!-- Corporate Modal -->
+    <div id="corporateModal" class="subcategory-modal">
+        <div class="subcategory-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Corporate Structure</h2>
+                <span class="close" onclick="closeCorporateModal()">&times;</span>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-item" onclick="selectCorporate('Foundation')">
+                    <span class="subcategory-item-icon">🏛️</span>
+                    <div class="subcategory-item-name">Foundation</div>
+                    <div class="subcategory-item-desc">Charitable foundations</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Trust')">
+                    <span class="subcategory-item-icon">🤝</span>
+                    <div class="subcategory-item-name">Trust</div>
+                    <div class="subcategory-item-desc">Trust management</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Holding Company')">
+                    <span class="subcategory-item-icon">🏢</span>
+                    <div class="subcategory-item-name">Holding Company</div>
+                    <div class="subcategory-item-desc">Corporate holdings</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Strawmanship')">
+                    <span class="subcategory-item-icon">👤</span>
+                    <div class="subcategory-item-name">Strawmanship</div>
+                    <div class="subcategory-item-desc">Legal representation</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sovereign Values Modal -->
+    <div id="sovereignModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
+            <h2 class="modal-title">Select Your Sovereignty Value</h2>
+            <div id="sovereignOptions">
+                <div class="value-option" onclick="selectSovereignValue('personal')">
+                    <strong>Personal Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Individual autonomy and self-governance</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('economic')">
+                    <strong>Economic Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Financial independence and control</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('digital')">
+                    <strong>Digital Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Control over digital identity and data</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('territorial')">
+                    <strong>Territorial Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Land and resource ownership rights</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startSovereignMining()" style="margin-top: 20px;" disabled id="sovereignStartBtn">
+                Start Mining
+            </button>
+        </div>
+    </div>
+
+    <!-- Value Selection Modal -->
+    <div id="valueModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('valueModal')">&times;</span>
+            <h2 class="modal-title">Select Your Value Type</h2>
+            <div id="valueOptions">
+                <div class="value-option" onclick="selectValue('service', 0.0015)">
+                    <strong>Service Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Community service and assistance - 0.0015 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('skill', 0.0025)">
+                    <strong>Skill Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Professional skills and expertise - 0.0025 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('knowledge', 0.0035)">
+                    <strong>Knowledge Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Information and wisdom sharing - 0.0035 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('innovation', 0.0045)">
+                    <strong>Innovation Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Creative solutions and inventions - 0.0045 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('leadership', 0.0055)">
+                    <strong>Leadership Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Guidance and mentorship - 0.0055 iKb</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startValueMining()" style="margin-top: 20px;" disabled id="valueStartBtn">
+                Start Mining
+            </button>
+        </div>
+    </div>
+
+    <!-- Mining Indicator -->
+    <div id="miningIndicator" class="mining-indicator">
+        <div>⛏️ Mining in Progress...</div>
+        <div style="font-size: 12px; margin-top: 10px;">Mining tokens...</div>
+    </div>
+
+    <!-- Wallet modals -->
+    
+    <!-- Send Modal -->
+    <div id="sendModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Send KABIRU</h2>
+                <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="sendAddress">Recipient Address</label>
+                <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
+            </div>
+            <div class="input-group">
+                <label for="sendAmount">Amount (iKb)</label>
+                <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="sendNote">Note (Optional)</label>
+                <input type="text" id="sendNote" placeholder="Payment for...">
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
+                <button class="primary-button" onclick="processSend()">Send iKb</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div id="receiveModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Receive KABIRU</h2>
+                <span class="close" onclick="closeWalletModal('receiveModal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="background: white; padding: 20px; border-radius: 10px; display: inline-block;">
+                    <div style="color: #333; font-size: 16px; font-weight: bold;">QR Code</div>
+                    <div style="color: #666; font-size: 12px; margin-top: 5px;">Scan to send iKb</div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Your Wallet Address</label>
+                <input type="text" value="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2" readonly>
+            </div>
+            <div class="action-buttons">
+                <button class="primary-button" onclick="copyWalletAddress()">Copy Address</button>
+                <button class="secondary-button" onclick="shareAddress()">Share</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swap Modal -->
+    <div id="swapModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Swap Tokens</h2>
+                <span class="close" onclick="closeWalletModal('swapModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="swapFrom">From</label>
+                <select id="swapFrom">
+                    <option value="ikb">KABIRU (iKb)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="swapFromAmount">Amount</label>
+                <input type="number" id="swapFromAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div style="text-align: center; margin: 15px 0;">
+                <span style="font-size: 20px;">🔄</span>
+            </div>
+            <div class="input-group">
+                <label for="swapTo">To</label>
+                <select id="swapTo">
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="ikb">KABIRU (iKb)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>You'll receive approximately</label>
+                <input type="text" id="swapToAmount" placeholder="0.0000" readonly>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('swapModal')">Cancel</button>
+                <button class="primary-button" onclick="processSwap()">Swap Tokens</button>
             </div>
         </div>
     </div>
@@ -2595,12 +2296,12 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        // Firebase Configuration
+        // Firebase Configuration - CORRECTED
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
             projectId: "kabiru-mining-app",
-            storageBucket: "kabiru-mining-app.firebasestorage.app",
+            storageBucket: "kabiru-mining-app.appspot.com",
             messagingSenderId: "217095254990",
             appId: "1:217095254990:web:9eb44eff825666995fb19f",
             measurementId: "G-W6070RT4PB"
@@ -2619,6 +2320,9 @@
         let miningRate = 0.001;
         let isMining = false;
         let totalTasksCompleted = 0;
+        let selectedSovereignType = null;
+        let selectedValueType = null;
+        let selectedValueAmount = 0;
 
         // Exchange rates (these would normally come from an API)
         const exchangeRates = {
@@ -2833,12 +2537,14 @@
         function showLoginPage() {
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('miningApp').style.display = 'none';
+            hideAllPages();
         }
 
         function showMiningApp(user) {
             console.log('=== SHOWING MINING APP ===');
             console.log('User data received:', user);
             
+            hideAllPages();
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('miningApp').style.display = 'block';
             
@@ -2851,6 +2557,33 @@
             startMiningTimer();
             
             console.log('Mining app loaded with balance:', userBalance);
+        }
+
+        function hideAllPages() {
+            const pages = ['walletPage', 'readPage', 'documentPage', 'utilitiesPage'];
+            pages.forEach(pageId => {
+                const page = document.getElementById(pageId);
+                if (page) page.style.display = 'none';
+            });
+        }
+
+        function showWallet() {
+            hideAllPages();
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'block';
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
+        }
+
+        function showReadPage() {
+            hideAllPages();
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('readPage').style.display = 'block';
+        }
+
+        function showUtilities() {
+            hideAllPages();
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'block';
         }
 
         function showLogin() {
@@ -2919,7 +2652,7 @@
             document.getElementById('successContainer').style.display = 'none';
         }
 
-        // Password Reset Functions
+        // Authentication Functions
         async function handlePasswordReset() {
             const email = document.getElementById('resetEmail').value.trim();
             
@@ -2988,7 +2721,7 @@
             try {
                 // Configure email verification settings
                 const actionCodeSettings = {
-                    url: 'https://magero1985.github.io/Kabiru-Mining-Portal-/', // Your live URL
+                    url: window.location.origin + window.location.pathname, // Use current URL
                     handleCodeInApp: false
                 };
                 
@@ -3581,7 +3314,7 @@
 
         // Mining App Functions
         function updateBalanceDisplay() {
-            const balanceElements = document.querySelectorAll('#balance, #totalBalance');
+            const balanceElements = document.querySelectorAll('#balance, #totalBalance, #walletBalance');
             balanceElements.forEach(el => {
                 if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
             });
@@ -3644,67 +3377,310 @@
             }, 3000);
         }
 
-        function incrementTasksCompleted() {
-            totalTasksCompleted++;
-            const tasksElement = document.getElementById('tasksCompleted');
-            tasksElement.textContent = totalTasksCompleted;
-            
-            // Save updated data
-            if (currentUser) {
-                saveUserData(currentUser);
+        // Modal and Navigation Functions
+        function openSovereignModal() {
+            document.getElementById('sovereignModal').style.display = 'block';
+        }
+
+        function openValueModal() {
+            document.getElementById('valueModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function selectSovereignValue(type) {
+            selectedSovereignType = type;
+            // Remove previous selections
+            document.querySelectorAll('#sovereignOptions .value-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            // Enable start button
+            document.getElementById('sovereignStartBtn').disabled = false;
+        }
+
+        function selectValue(type, amount) {
+            selectedValueType = type;
+            selectedValueAmount = amount;
+            // Remove previous selections
+            document.querySelectorAll('#valueOptions .value-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            // Enable start button
+            document.getElementById('valueStartBtn').disabled = false;
+        }
+
+        function startSovereignMining() {
+            if (selectedSovereignType) {
+                mineTokens(`sovereign-${selectedSovereignType}`, 0.003);
+                closeModal('sovereignModal');
             }
         }
 
-        // Wallet/Exchange Functions
-        function showWalletSwap() {
-            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
-            document.getElementById('walletModal').style.display = 'block';
-            calculateExchange();
-        }
-
-        function closeWalletSwap() {
-            document.getElementById('walletModal').style.display = 'none';
-            document.getElementById('exchangeAmount').value = '';
-        }
-
-        function calculateExchange() {
-            const amount = parseFloat(document.getElementById('exchangeAmount').value) || 0;
-            const currency = document.getElementById('exchangeCurrency').value;
-            const rate = exchangeRates[currency];
-            const result = amount * rate;
-            
-            document.getElementById('exchangeResult').textContent = result.toFixed(currency === 'BTC' || currency === 'ETH' ? 8 : 2) + ' ' + currency;
-            document.getElementById('exchangeRate').textContent = `Exchange rate: 1 iKb = ${rate.toFixed(currency === 'BTC' || currency === 'ETH' ? 8 : 4)} ${currency}`;
-        }
-
-        function executeExchange() {
-            const amount = parseFloat(document.getElementById('exchangeAmount').value);
-            
-            if (!amount || amount <= 0) {
-                showNotification('Please enter a valid amount');
-                return;
+        function startValueMining() {
+            if (selectedValueType && selectedValueAmount) {
+                mineTokens(`value-${selectedValueType}`, selectedValueAmount);
+                closeModal('valueModal');
             }
+        }
+
+        function selectTask(taskType) {
+            // Remove active class from all categories
+            document.querySelectorAll('.task-category').forEach(cat => {
+                cat.classList.remove('active');
+            });
+            // Add active class to selected
+            event.target.classList.add('active');
+            showNotification(`Selected ${taskType} task category`);
+        }
+
+        function performTask(valueType) {
+            const rewards = {
+                service: 0.0015,
+                skill: 0.0025,
+                knowledge: 0.0035
+            };
             
-            if (amount > userBalance) {
-                showNotification('Insufficient iKb balance');
-                return;
+            mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
+        }
+
+        // Language and Corporate Functions
+        function showLanguageModal() {
+            document.getElementById('languageModal').style.display = 'block';
+        }
+
+        function closeLanguageModal() {
+            document.getElementById('languageModal').style.display = 'none';
+        }
+
+        function selectLanguage(code, name) {
+            showNotification(`Language changed to ${name}`);
+            closeLanguageModal();
+        }
+
+        function showCorporateModal() {
+            document.getElementById('corporateModal').style.display = 'block';
+        }
+
+        function closeCorporateModal() {
+            document.getElementById('corporateModal').style.display = 'none';
+        }
+
+        function selectCorporate(type) {
+            showNotification(`Selected ${type} corporate structure`);
+            closeCorporateModal();
+        }
+
+        // Utility Functions
+        function openUtilityModal(category) {
+            const subcategories = {
+                education: [
+                    { icon: '🎓', name: 'Universities', desc: 'Higher education institutions' },
+                    { icon: '📚', name: 'Online Courses', desc: 'Digital learning platforms' },
+                    { icon: '👶', name: 'Kindergarten', desc: 'Early childhood education' },
+                    { icon: '🏫', name: 'Schools', desc: 'Primary and secondary education' }
+                ],
+                transport: [
+                    { icon: '✈️', name: 'Airlines', desc: 'Air travel booking' },
+                    { icon: '🚗', name: 'Car Rental', desc: 'Vehicle rental services' },
+                    { icon: '🚌', name: 'Bus Travel', desc: 'Public transportation' },
+                    { icon: '🚢', name: 'Ships', desc: 'Maritime transport' }
+                ],
+                agriculture: [
+                    { icon: '🌱', name: 'Seeds', desc: 'Quality farming seeds' },
+                    { icon: '🚜', name: 'Equipment', desc: 'Agricultural machinery' },
+                    { icon: '🌾', name: 'Crops', desc: 'Crop management' },
+                    { icon: '💧', name: 'Irrigation', desc: 'Water management systems' }
+                ],
+                marketplace: [
+                    { icon: '🛍️', name: 'Shopping', desc: 'Buy and sell goods' },
+                    { icon: '🏪', name: 'Local Stores', desc: 'Community businesses' },
+                    { icon: '📱', name: 'Digital', desc: 'Online marketplace' },
+                    { icon: '🤝', name: 'Services', desc: 'Professional services' }
+                ]
+            };
+
+            if (subcategories[category]) {
+                document.getElementById('subcategoryTitle').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                const grid = document.getElementById('subcategoryGrid');
+                grid.innerHTML = '';
+                
+                subcategories[category].forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'subcategory-item';
+                    div.innerHTML = `
+                        <span class="subcategory-item-icon">${item.icon}</span>
+                        <div class="subcategory-item-name">${item.name}</div>
+                        <div class="subcategory-item-desc">${item.desc}</div>
+                    `;
+                    div.onclick = () => {
+                        showNotification(`Opening ${item.name}...`);
+                        closeSubcategoryModal();
+                    };
+                    grid.appendChild(div);
+                });
+                
+                document.getElementById('subcategoryModal').style.display = 'block';
+            } else {
+                showNotification(`${category} utilities coming soon!`);
             }
-            
-            const currency = document.getElementById('exchangeCurrency').value;
-            const rate = exchangeRates[currency];
-            const result = amount * rate;
-            
-            // Deduct from user balance
-            userBalance -= amount;
+        }
+
+        function closeSubcategoryModal() {
+            document.getElementById('subcategoryModal').style.display = 'none';
+        }
+
+        // Document Functions
+        function showDocument(docType) {
+            const documents = {
+                whitepaper: {
+                    title: 'KABIRU Whitepaper',
+                    content: `
+                        <div class="version-info">Version 1.0 - Published January 2024</div>
+                        
+                        <div class="document-section-title">Executive Summary</div>
+                        <div class="document-text">
+                            KABIRU is a revolutionary value-based token mining ecosystem that enables individuals to mine cryptocurrency through meaningful contributions to their communities and society. Unlike traditional energy-intensive mining, KABIRU rewards users for creating real-world value through services, skills, knowledge sharing, and leadership.
+                        </div>
+                        
+                        <div class="document-section-title">Technology</div>
+                        <div class="document-text">
+                            Built on a sustainable blockchain architecture, KABIRU utilizes a Proof-of-Value consensus mechanism that validates contributions rather than computational power. The platform integrates Firebase authentication, real-time data synchronization, and cross-platform compatibility.
+                        </div>
+                        
+                        <div class="document-section-title">Tokenomics</div>
+                        <div class="document-text">
+                            Total Supply: 1,000,000,000 iKb tokens<br>
+                            Mining Distribution: 60% (600M tokens)<br>
+                            Development Fund: 20% (200M tokens)<br>
+                            Community Rewards: 15% (150M tokens)<br>
+                            Team & Advisors: 5% (50M tokens)
+                        </div>
+                        
+                        <div class="document-section-title">Roadmap</div>
+                        <div class="document-text">
+                            Q1 2024: Platform Launch & Beta Testing<br>
+                            Q2 2024: Mobile App Release<br>
+                            Q3 2024: Utility Integration<br>
+                            Q4 2024: Global Expansion
+                        </div>
+                    `
+                },
+                rules: {
+                    title: 'Platform Rules',
+                    content: `
+                        <div class="document-section-title">General Guidelines</div>
+                        <div class="document-text">
+                            1. Users must verify their identity through email or phone authentication<br>
+                            2. All mining activities must contribute genuine value to the community<br>
+                            3. Fraudulent or spam activities will result in account suspension<br>
+                            4. One account per person - multiple accounts are prohibited
+                        </div>
+                        
+                        <div class="document-section-title">Mining Rules</div>
+                        <div class="document-text">
+                            1. Mining rewards are distributed based on value contribution<br>
+                            2. Daily mining limits apply to prevent abuse<br>
+                            3. Mining sessions must be completed within specified timeframes<br>
+                            4. Quality of contribution affects reward multipliers
+                        </div>
+                        
+                        <div class="document-section-title">Community Standards</div>
+                        <div class="document-text">
+                            1. Respect all community members<br>
+                            2. No harassment, discrimination, or hate speech<br>
+                            3. Maintain professional conduct in all interactions<br>
+                            4. Report violations to the moderation team
+                        </div>
+                    `
+                },
+                terms: {
+                    title: 'Terms of Service',
+                    content: `
+                        <div class="document-section-title">Acceptance of Terms</div>
+                        <div class="document-text">
+                            By using KABIRU, you agree to these terms and conditions. If you disagree with any part of these terms, you may not use the service.
+                        </div>
+                        
+                        <div class="document-section-title">User Responsibilities</div>
+                        <div class="document-text">
+                            Users are responsible for maintaining the security of their accounts, providing accurate information, and complying with all applicable laws and regulations.
+                        </div>
+                        
+                        <div class="document-section-title">Service Availability</div>
+                        <div class="document-text">
+                            We strive to maintain 99.9% uptime but cannot guarantee uninterrupted service. Scheduled maintenance will be announced in advance.
+                        </div>
+                        
+                        <div class="document-section-title">Limitation of Liability</div>
+                        <div class="document-text">
+                            KABIRU is not liable for any indirect, incidental, or consequential damages arising from use of the platform.
+                        </div>
+                    `
+                }
+            };
+
+            if (documents[docType]) {
+                document.getElementById('documentTitle').textContent = documents[docType].title;
+                document.getElementById('documentContent').innerHTML = `
+                    <div class="document-title">${documents[docType].title}</div>
+                    ${documents[docType].content}
+                `;
+                
+                hideAllPages();
+                document.getElementById('miningApp').style.display = 'none';
+                document.getElementById('documentPage').style.display = 'block';
+            } else {
+                showNotification(`${docType} documentation coming soon!`);
+            }
+        }
+
+        // Wallet Functions
+        function openWalletModal(modalType) {
+            // For now, just show notification - full modals would be implemented here
+            showNotification(`${modalType.charAt(0).toUpperCase() + modalType.slice(1)} feature coming soon!`);
+        }
+
+        function closeWalletModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function copyWalletAddress() {
+            const address = '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address);
+                showNotification('Wallet address copied to clipboard!');
+            } else {
+                showNotification('Unable to copy address');
+            }
+        }
+
+        function copyAddress() {
+            copyWalletAddress();
+        }
+
+        function shareAddress() {
+            const address = '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2';
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My KABIRU Wallet Address',
+                    text: `Send KABIRU tokens to: ${address}`
+                });
+            } else {
+                copyWalletAddress();
+            }
+        }
+
+        // Navigation between pages
+        function showMiningApp() {
+            hideAllPages();
+            document.getElementById('miningApp').style.display = 'block';
             updateBalanceDisplay();
-            
-            // Save updated balance
-            if (currentUser) {
-                saveUserData(currentUser);
-            }
-            
-            closeWalletSwap();
-            showNotification(`Successfully exchanged ${amount.toFixed(4)} iKb for ${result.toFixed(currency === 'BTC' || currency === 'ETH' ? 8 : 2)} ${currency}!`);
         }
 
         function showNotification(message) {
@@ -3735,6 +3711,7 @@
             }
         });
 
+        // OTP Input restrictions
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.otp-input').forEach(input => {
                 input.addEventListener('input', function(e) {
@@ -3743,7 +3720,19 @@
             });
         });
 
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['sovereignModal', 'valueModal', 'languageModal', 'corporateModal', 'subcategoryModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        };
+
         // App initialization complete
+        console.log('KABIRU Mining App initialized successfully');
     </script>
 </body>
-        </html>
+    </html>
