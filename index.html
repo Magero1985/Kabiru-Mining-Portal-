@@ -767,7 +767,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Email (Optional)</label>
+                    <label class="label">Email (Optional)</label>
                     <input type="email" class="form-input" id="phoneSignupEmail" placeholder="john@example.com">
                 </div>
                 
@@ -814,6 +814,33 @@
                     <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 3)">
                     <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 4)">
                     <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 5)">
+                </div>
+                
+                <button class="auth-button" onclick="verifyOTP()">Verify & Continue</button>
+                
+                <div style="font-size: 12px; opacity: 0.7; margin-top: 10px;">
+                    Didn't receive code? <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendOTP()">Resend SMS</span>
+                    <div id="resendTimer" style="margin-top: 5px; opacity: 0.6;"></div>
+                </div>
+            </div>
+
+            <!-- Email Verification -->
+            <div id="emailVerificationContainer" class="email-verification-container">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">📧 Verify Your Email</h3>
+                
+                <div class="verification-info">
+                    <strong>Email Verification:</strong><br>
+                    We've sent a verification link to your email address.<br>
+                    Please check your inbox and click the verification link, then return here.
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📬</div>
+                    <div style="font-size: 16px; margin-bottom: 10px;">Check your email!</div>
+                    <div style="font-size: 12px; opacity: 0.8;">
+                        Didn't receive the email? Check your spam folder or 
+                        <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">resend verification email</span>
+                    </div>
                 </div>
                 
                 <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
@@ -1215,7 +1242,7 @@
             try {
                 // Configure email verification settings
                 const actionCodeSettings = {
-                    url: window.location.origin, // Return to current page after verification
+                    url: 'https://magero1985.github.io/Kabiru-Mining-Portal-/', // Your live URL
                     handleCodeInApp: false
                 };
                 
@@ -1895,34 +1922,4 @@
         // App initialization complete
     </script>
 </body>
-</html>
-    </script>
-</body>
-</html>verifyOTP()">Verify & Continue</button>
-                
-                <div style="font-size: 12px; opacity: 0.7; margin-top: 10px;">
-                    Didn't receive code? <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendOTP()">Resend SMS</span>
-                    <div id="resendTimer" style="margin-top: 5px; opacity: 0.6;"></div>
-                </div>
-            </div>
-
-            <!-- Email Verification -->
-            <div id="emailVerificationContainer" class="email-verification-container">
-                <h3 style="color: #FFD700; margin-bottom: 15px;">📧 Verify Your Email</h3>
-                
-                <div class="verification-info">
-                    <strong>Email Verification:</strong><br>
-                    We've sent a verification link to your email address.<br>
-                    Please check your inbox and click the verification link, then return here.
-                </div>
-                
-                <div style="margin: 20px 0;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">📬</div>
-                    <div style="font-size: 16px; margin-bottom: 10px;">Check your email!</div>
-                    <div style="font-size: 12px; opacity: 0.8;">
-                        Didn't receive the email? Check your spam folder or 
-                        <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">resend verification email</span>
-                    </div>
-                </div>
-                
-                <button class="auth-button" onclick="
+                    </html>
