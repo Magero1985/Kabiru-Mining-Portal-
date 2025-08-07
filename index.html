@@ -1054,23 +1054,13 @@
                     // Clean the URL
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
-                    // Show success message and redirect to mining app
-                    showNotification('✅ Email verified successfully! Welcome to KABIRU Mining!');
+                    // Show success message
+                    showNotification('✅ Email verified successfully! Please sign in to start mining.');
                     
-                    // Wait a moment then show mining app directly
+                    // Redirect to login so user can sign in with their verified account
                     setTimeout(() => {
-                        // Create a verified user object
-                        const verifiedUser = {
-                            email: 'verified-user@example.com',
-                            emailVerified: true,
-                            loginType: 'email',
-                            verifiedAt: new Date().toISOString(),
-                            uid: 'verified-' + Date.now()
-                        };
-                        
-                        currentUser = verifiedUser;
-                        saveUserData(verifiedUser);
-                        showMiningApp(verifiedUser);
+                        showLoginPage();
+                        showLogin();
                     }, 2000);
                     
                 } else if (mode === 'resetPassword') {
@@ -1201,17 +1191,20 @@
             // Monitor Firebase auth state
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
-                    console.log('Firebase user found:', user.uid);
+                    console.log('Firebase user found:', user.uid, 'Email verified:', user.emailVerified);
                     if (user.emailVerified || user.phoneNumber) {
-                        // User is verified
+                        // User is verified - create proper user data with real Firebase UID
                         const userData = {
-                            uid: user.uid,
+                            uid: user.uid, // Use real Firebase UID
                             email: user.email,
                             phone: user.phoneNumber,
+                            displayName: user.displayName,
                             emailVerified: user.emailVerified,
-                            loginType: user.email ? 'email' : 'phone'
+                            loginType: user.email ? 'email' : 'phone',
+                            verifiedAt: new Date().toISOString()
                         };
                         currentUser = userData;
+                        console.log('Setting current user:', userData);
                         showMiningApp(userData);
                         return;
                     }
@@ -1802,6 +1795,11 @@
         // Storage Functions - Enhanced for permanent mining data
         function saveUserData(userData) {
             try {
+                if (!userData.uid) {
+                    console.error('Cannot save user data without UID');
+                    return false;
+                }
+                
                 const miningData = {
                     ...userData,
                     balance: userBalance,
@@ -1811,16 +1809,19 @@
                 };
                 localStorage.setItem('kabiruUser', JSON.stringify(miningData));
                 
-                // Also save to a separate mining-specific key for extra persistence
-                const miningKey = `kabiruMining_${userData.uid || userData.phone || userData.email}`;
-                localStorage.setItem(miningKey, JSON.stringify({
+                // Also save to a separate mining-specific key using real Firebase UID for extra persistence
+                const miningKey = `kabiruMining_${userData.uid}`;
+                const persistentData = {
                     balance: userBalance,
                     tasksCompleted: totalTasksCompleted,
                     lastMined: new Date().toISOString(),
-                    totalEarnings: userBalance
-                }));
+                    totalEarnings: userBalance,
+                    uid: userData.uid,
+                    email: userData.email
+                };
+                localStorage.setItem(miningKey, JSON.stringify(persistentData));
                 
-                console.log('User mining data saved permanently:', miningData);
+                console.log('User mining data saved permanently for UID:', userData.uid, miningData);
                 return true;
             } catch (error) {
                 console.log('Storage not available');
@@ -1831,30 +1832,39 @@
         function loadUserMiningData() {
             try {
                 const userData = getUserData();
-                if (userData) {
+                if (userData && userData.uid) {
+                    console.log('Loading mining data for UID:', userData.uid);
+                    
                     // Load balance and tasks from saved data
                     userBalance = userData.balance || 0.0000;
                     totalTasksCompleted = userData.tasksCompleted || 0;
                     miningRate = userData.miningRate || 0.001;
                     
-                    // Also check separate mining key for extra data
-                    const miningKey = `kabiruMining_${userData.uid || userData.phone || userData.email}`;
+                    // Also check separate mining key for extra data using real Firebase UID
+                    const miningKey = `kabiruMining_${userData.uid}`;
                     const miningData = localStorage.getItem(miningKey);
                     
                     if (miningData) {
                         const parsed = JSON.parse(miningData);
                         userBalance = parsed.balance || userBalance;
                         totalTasksCompleted = parsed.tasksCompleted || totalTasksCompleted;
+                        console.log('Loaded persistent mining data:', parsed);
+                    } else {
+                        console.log('No persistent mining data found for UID:', userData.uid);
                     }
                     
-                    console.log('Loaded mining data:', { balance: userBalance, tasks: totalTasksCompleted });
+                    console.log('Final mining data:', { balance: userBalance, tasks: totalTasksCompleted });
                     
                     // Update UI with loaded data
                     updateBalanceDisplay();
                     document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
+                } else {
+                    console.log('No valid user data for mining data loading');
+                    userBalance = 0.0000;
+                    totalTasksCompleted = 0;
                 }
             } catch (error) {
-                console.log('Error loading mining data, starting fresh');
+                console.log('Error loading mining data, starting fresh:', error);
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
             }
@@ -1876,14 +1886,16 @@
             try {
                 // Don't clear mining data, only auth data
                 const userData = getUserData();
-                if (userData) {
-                    // Save mining data before clearing
-                    const miningKey = `kabiruMining_${userData.uid || userData.phone || userData.email}`;
+                if (userData && userData.uid) {
+                    // Save mining data before clearing using the real Firebase UID
+                    const miningKey = `kabiruMining_${userData.uid}`;
                     localStorage.setItem(miningKey, JSON.stringify({
                         balance: userBalance,
                         tasksCompleted: totalTasksCompleted,
-                        lastSaved: new Date().toISOString()
+                        lastSaved: new Date().toISOString(),
+                        totalEarnings: userBalance
                     }));
+                    console.log('Mining data preserved for UID:', userData.uid);
                 }
                 
                 localStorage.removeItem('kabiruUser');
