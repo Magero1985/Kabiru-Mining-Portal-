@@ -2543,9 +2543,8 @@
         function showMiningApp(user) {
             console.log('=== SHOWING MINING APP ===');
             console.log('User data received:', user);
-            
+            document.getElementById('loginPage').style.display = 'none';  //
             hideAllPages();
-            document.getElementById('loginPage').style.display = 'none';
             document.getElementById('miningApp').style.display = 'block';
             
             // Set current user BEFORE loading mining data
