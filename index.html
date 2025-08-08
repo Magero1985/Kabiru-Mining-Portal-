@@ -2518,6 +2518,7 @@
                         currentUser = userData;
                         console.log('Setting current user:', userData);
                         showMiningApp(userData);
+                        document.getElementById('loginPage').style.display = 'none';
                         return;
                     }
                 }
@@ -2535,6 +2536,7 @@
         }
 
         function showLoginPage() {
+            console.log('=== SHOWING LOGIN PAGE ===');
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('miningApp').style.display = 'none';
             hideAllPages();
