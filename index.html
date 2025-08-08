@@ -2505,23 +2505,23 @@
                 if (user) {
                     console.log('Firebase user found:', user.uid, 'Email verified:', user.emailVerified);
                     if (user.emailVerified || user.phoneNumber) {
-    // SAFE FIX: Load saved mining data first
-    const savedData = getUserData();
-    const userData = {
-        uid: user.uid,
-        email: user.email,
-        phone: user.phoneNumber,
-        displayName: user.displayName,
-        emailVerified: user.emailVerified,
-        loginType: user.email ? 'email' : 'phone',
-        verifiedAt: new Date().toISOString(),
-        // PRESERVE existing balance and tasks
-        balance: savedData?.balance || userBalance || 0.0000,
-        tasksCompleted: savedData?.tasksCompleted || totalTasksCompleted || 0
-    };
-    currentUser = userData;
-    console.log('Setting current user with preserved balance:', userData);
-    showMiningApp(userData);
+                        // User is verified - create proper user data with real Firebase UID
+                        const userData = {
+                            uid: user.uid, // Use real Firebase UID
+                            email: user.email,
+                            phone: user.phoneNumber,
+                            displayName: user.displayName,
+                            emailVerified: user.emailVerified,
+                            loginType: user.email ? 'email' : 'phone',
+                            verifiedAt: new Date().toISOString()
+                        };
+                        currentUser = userData;
+                        console.log('Setting current user:', userData);
+                        showMiningApp(userData);
+                        document.getElementById('loginPage').style.display = 'none';
+                        return;
+                    }
+                }
                 
                 // Check localStorage as fallback
                 const savedUser = getUserData();
@@ -3190,16 +3190,11 @@
                 console.log('Current user for mining data:', userData);
                 
                 if (!userData || !userData.uid) {
-    console.log('No valid user UID found, checking for any saved data');
-    // SAFE FIX: Don't reset if we already have a balance
-    const savedUser = getUserData();
-    if (savedUser && savedUser.balance !== undefined) {
-        userBalance = savedUser.balance;
-        totalTasksCompleted = savedUser.tasksCompleted || 0;
-        console.log('Preserved balance without UID:', userBalance);
-    }
-    return;
-}
+                    console.log('No valid user UID found, starting fresh');
+                    userBalance = 0.0000;
+                    totalTasksCompleted = 0;
+                    return;
+                }
                 
                 console.log('Loading mining data for UID:', userData.uid);
                 
