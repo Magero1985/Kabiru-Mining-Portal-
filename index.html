@@ -1707,7 +1707,7 @@
                 </div>
             </div>
 
-            <!-- Personal Ledger Section -->
+            <!-- Personal Le8dger Section -->
             <div class="personal-ledger">
                 <div class="ledger-grid">
                     <div class="ledger-item">
@@ -1738,110 +1738,88 @@
         </div>
     </div>
 
-    <!-- Wallet Page -->
-    <div id="walletPage" class="wallet-page">
-        <div class="container">
-            <!-- Wallet Header -->
-            <div class="utilities-header">
-                <button class="back-button" onclick="showMiningApp()">←</button>
-                <div class="utilities-title">KABIRU Wallet</div>
+    <!-- Wallet Page  -->
+<div id="walletPage" class="wallet-page">
+    <div class="container">
+        <!-- Wallet Header -->
+        <div class="utilities-header">
+            <button class="back-button" onclick="showMiningApp()">←</button>
+            <div class="utilities-title">KABIRU Wallet</div>
+        </div>
+
+        <!-- Wallet Balance Header -->
+        <div class="wallet-header">
+            <div class="wallet-balance" id="walletBalance">0.0000 iKb</div>
+            <div class="wallet-address">0x742d35...4B76A2</div>
+            <div class="wallet-quick-actions">
+                <button class="quick-action-btn" onclick="openWalletModal('send')">
+                    📤<br>Send
+                </button>
+                <button class="quick-action-btn" onclick="openWalletModal('receive')">
+                    📥<br>Receive
+                </button>
+                <button class="quick-action-btn" onclick="openWalletModal('swap')">
+                    🔄<br>Swap
+                </button>
+                <button class="quick-action-btn" onclick="copyAddress()">
+                    📋<br>Copy
+                </button>
+            </div>
+        </div>
+
+        <!-- Wallet Features Grid -->
+        <div class="wallet-features">
+            <div class="wallet-feature" onclick="openWalletModal('lockup')">
+                <span class="feature-icon">🔒</span>
+                <div class="feature-name">Lockup</div>
+                <div class="feature-desc">Stake tokens for rewards</div>
             </div>
 
-            <!-- Wallet Balance Header -->
-            <div class="wallet-header">
-                <div class="wallet-balance" id="walletBalance">0.0000 iKb</div>
-                <div class="wallet-address">0x742d35...4B76A2</div>
-                <div class="wallet-quick-actions">
-                    <button class="quick-action-btn" onclick="openWalletModal('send')">
-                        📤<br>Send
-                    </button>
-                    <button class="quick-action-btn" onclick="openWalletModal('receive')">
-                        📥<br>Receive
-                    </button>
-                    <button class="quick-action-btn" onclick="openWalletModal('swap')">
-                        🔄<br>Swap
-                    </button>
-                    <button class="quick-action-btn" onclick="copyAddress()">
-                        📋<br>Copy
-                    </button>
-                </div>
+            <div class="wallet-feature" onclick="openWalletModal('reserve')">
+                <span class="feature-icon">💎</span>
+                <div class="feature-name">Reserve</div>
+                <div class="feature-desc">Emergency token reserve</div>
             </div>
 
-            <!-- Wallet Features Grid -->
-            <div class="wallet-features">
-                <div class="wallet-feature" onclick="openWalletModal('lockup')">
-                    <span class="feature-icon">🔒</span>
-                    <div class="feature-name">Lockup</div>
-                    <div class="feature-desc">Stake tokens for rewards</div>
-                </div>
-
-                <div class="wallet-feature" onclick="openWalletModal('reserve')">
-                    <span class="feature-icon">💎</span>
-                    <div class="feature-name">Reserve</div>
-                    <div class="feature-desc">Emergency token reserve</div>
-                </div>
-
-                <div class="wallet-feature" onclick="openWalletModal('trust')">
-                    <span class="feature-icon">🤝</span>
-                    <div class="feature-name">Trust</div>
-                    <div class="feature-desc">Trust fund management</div>
-                </div>
-
-                <div class="wallet-feature" onclick="openWalletModal('savings')">
-                    <span class="feature-icon">🏦</span>
-                    <div class="feature-name">Savings</div>
-                    <div class="feature-desc">High-yield savings account</div>
-                </div>
-
-                <div class="wallet-feature" onclick="openWalletModal('investment')">
-                    <span class="feature-icon">📈</span>
-                    <div class="feature-name">Investment</div>
-                    <div class="feature-desc">Portfolio management</div>
-                </div>
-
-                <div class="wallet-feature" onclick="openWalletModal('insurance')">
-                    <span class="feature-icon">🛡️</span>
-                    <div class="feature-name">Insurance</div>
-                    <div class="feature-desc">Asset protection plans</div>
-                </div>
+            <div class="wallet-feature" onclick="openWalletModal('trust')">
+                <span class="feature-icon">🤝</span>
+                <div class="feature-name">Trust</div>
+                <div class="feature-desc">Trust fund management</div>
             </div>
 
-            <!-- Wallet Sections -->
-            <div class="wallet-sections">
-                <!-- Recent Transactions -->
-                <div class="section-header">
-                    <div class="section-title">Recent Transactions</div>
-                    <div class="section-action" onclick="showAllTransactions()">View All</div>
-                </div>
-                
-                <div id="transactionsList">
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-type">Mining Reward</div>
-                            <div class="transaction-date">2 hours ago</div>
-                        </div>
-                        <div class="transaction-amount amount-positive">+0.0025 iKb</div>
-                    </div>
-                    
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-type">Lockup Reward</div>
-                            <div class="transaction-date">1 day ago</div>
-                        </div>
-                        <div class="transaction-amount amount-positive">+0.0015 iKb</div>
-                    </div>
-                    
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-type">Trust Fund Deposit</div>
-                            <div class="transaction-date">3 days ago</div>
-                        </div>
-                        <div class="transaction-amount amount-negative">-0.1000 iKb</div>
-                    </div>
-                </div>
+            <div class="wallet-feature" onclick="openWalletModal('savings')">
+                <span class="feature-icon">🏦</span>
+                <div class="feature-name">Savings</div>
+                <div class="feature-desc">High-yield savings account</div>
+            </div>
+
+            <div class="wallet-feature" onclick="openWalletModal('investment')">
+                <span class="feature-icon">📈</span>
+                <div class="feature-name">Investment</div>
+                <div class="feature-desc">Portfolio management</div>
+            </div>
+
+            <div class="wallet-feature" onclick="openWalletModal('insurance')">
+                <span class="feature-icon">🛡️</span>
+                <div class="feature-name">Insurance</div>
+                <div class="feature-desc">Asset protection plans</div>
+            </div>
+        </div>
+
+        <!-- Wallet Sections -->
+        <div class="wallet-sections">
+            <!-- Recent Transactions -->
+            <div class="section-header">
+                <div class="section-title">Recent Transactions</div>
+                <div class="section-action" onclick="showAllTransactions()">View All</div>
+            </div>
+            
+            <div id="transactionsList">
+                <!-- Transactions will be populated here -->
             </div>
         </div>
     </div>
+</div>
 
     <!-- Read Page -->
     <div id="readPage" class="read-page">
@@ -2201,33 +2179,35 @@
 
     <!-- Wallet modals -->
     
-    <!-- Send Modal -->
-    <div id="sendModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Send KABIRU</h2>
-                <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
-            </div>
-            <div class="input-group">
-                <label for="sendAddress">Recipient Address</label>
-                <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
-            </div>
-            <div class="input-group">
-                <label for="sendAmount">Amount (iKb)</label>
-                <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001">
-            </div>
-            <div class="input-group">
-                <label for="sendNote">Note (Optional)</label>
-                <input type="text" id="sendNote" placeholder="Payment for...">
-            </div>
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
-                <button class="primary-button" onclick="processSend()">Send iKb</button>
-            </div>
+<!-- Send Modal -->
+<div id="sendModal" class="wallet-modal">
+    <div class="wallet-modal-content">
+        <div class="subcategory-header">
+            <h2 class="subcategory-title">Send KABIRU</h2>
+            <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
+        </div>
+        <div class="input-group">
+            <label for="sendAddress">Recipient Address</label>
+            <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
+        </div>
+        <div class="input-group">
+            <label for="sendAmount">Amount (iKb)</label>
+            <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001" onchange="validateSendAmount()">
+        </div>
+        <div class="input-group">
+            <label for="sendNote">Note (Optional)</label>
+            <input type="text" id="sendNote" placeholder="Payment for...">
+        </div>
+        <div style="font-size: 12px; margin: 10px 0; opacity: 0.8;">
+            Available Balance: <span id="availableBalance">0.0000 iKb</span>
+        </div>
+        <div class="action-buttons">
+            <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
+            <button class="primary-button" onclick="processSend()">Send iKb</button>
         </div>
     </div>
-
-    <!-- Receive Modal -->
+</div>
+     <!-- Receive Modal -->
     <div id="receiveModal" class="wallet-modal">
         <div class="wallet-modal-content">
             <div class="subcategory-header">
@@ -2236,13 +2216,14 @@
             </div>
             <div style="text-align: center; margin: 20px 0;">
                 <div style="background: white; padding: 20px; border-radius: 10px; display: inline-block;">
-                    <div style="color: #333; font-size: 16px; font-weight: bold;">QR Code</div>
+                    <div style="color: #333; font-size: 16px; font-weight: bold;">📱 QR Code</div>
                     <div style="color: #666; font-size: 12px; margin-top: 5px;">Scan to send iKb</div>
+                    <div style="font-size: 48px; margin: 10px 0; color: #333;">⬜⬛⬜⬛⬜<br>⬛⬜⬛⬜⬛<br>⬜⬛⬜⬛⬜</div>
                 </div>
             </div>
             <div class="input-group">
                 <label>Your Wallet Address</label>
-                <input type="text" value="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2" readonly>
+                <input type="text" id="walletAddressDisplay" value="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2" readonly>
             </div>
             <div class="action-buttons">
                 <button class="primary-button" onclick="copyWalletAddress()">Copy Address</button>
@@ -2250,7 +2231,138 @@
             </div>
         </div>
     </div>
+    <!    <!-- Lockup Modal -->
+    <div id="lockupModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Lockup Staking</h2>
+                <span class="close" onclick="closeWalletModal('lockupModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="lockupAmount">Amount to Stake (iKb)</label>
+                <input type="number" id="lockupAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="lockupPeriod">Lockup Period</label>
+                <select id="lockupPeriod" onchange="updateLockupRewards()">
+                    <option value="30">30 Days - 5% APY</option>
+                    <option value="90">90 Days - 8% APY</option>
+                    <option value="180">180 Days - 12% APY</option>
+                    <option value="365">1 Year - 18% APY</option>
+                </select>
+            </div>
+            <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <div style="font-size: 12px; margin-bottom: 5px;">Estimated Rewards:</div>
+                <div style="font-size: 16px; font-weight: bold; color: #FFD700;" id="estimatedRewards">0.0000 iKb</div>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('lockupModal')">Cancel</button>
+                <button class="primary-button" onclick="processLockup()">Start Staking</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Reserve Modal -->
+    <div id="reserveModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Emergency Reserve</h2>
+                <span class="close" onclick="closeWalletModal('reserveModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="reserveAmount">Amount to Reserve (iKb)</label>
+                <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="reserveReason">Reason for Reserve</label>
+                <select id="reserveReason">
+                    <option value="emergency">Emergency Fund</option>
+                    <option value="medical">Medical Emergency</option>
+                    <option value="education">Education Fund</option>
+                    <option value="business">Business Emergency</option>
+                    <option value="family">Family Support</option>
+                </select>
+            </div>
+            <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <div style="font-size: 12px; color: #ff6b6b;">
+                    ⚠️ Reserved tokens are locked and can only be accessed during verified emergencies
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('reserveModal')">Cancel</button>
+                <button class="primary-button" onclick="processReserve()">Create Reserve</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust Modal -->
+    <div id="trustModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Trust Fund</h2>
+                <span class="close" onclick="closeWalletModal('trustModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="trustAmount">Trust Fund Amount (iKb)</label>
+                <input type="number" id="trustAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="trustBeneficiary">Beneficiary Address</label>
+                <input type="text" id="trustBeneficiary" placeholder="0x742d35...4B76A2">
+            </div>
+            <div class="input-group">
+                <label for="trustCondition">Release Condition</label>
+                <select id="trustCondition">
+                    <option value="age">Age-based (18 years)</option>
+                    <option value="date">Date-based</option>
+                    <option value="condition">Condition-based</option>
+                    <option value="death">Death certificate</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="trustNotes">Special Instructions</label>
+                <textarea id="trustNotes" placeholder="Enter any special instructions for the trust..." rows="3"></textarea>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('trustModal')">Cancel</button>
+                <button class="primary-button" onclick="processTrust()">Create Trust</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Savings Modal -->
+    <div id="savingsModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Savings Account</h2>
+                <span class="close" onclick="closeWalletModal('savingsModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="savingsAmount">Initial Deposit (iKb)</label>
+                <input type="number" id="savingsAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="savingsType">Savings Type</label>
+                <select id="savingsType" onchange="updateSavingsRate()">
+                    <option value="flexible">Flexible - 3% APY</option>
+                    <option value="fixed">Fixed Term - 6% APY</option>
+                    <option value="compound">Compound Growth - 9% APY</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="savingsGoal">Savings Goal</label>
+                <input type="number" id="savingsGoal" placeholder="Target amount..." step="0.0001">
+            </div>
+            <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <div style="font-size: 12px; margin-bottom: 5px;">Projected Annual Earnings:</div>
+                <div style="font-size: 16px; font-weight: bold; color: #00ff87;" id="projectedEarnings">0.0000 iKb</div>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('savingsModal')">Cancel</button>
+                <button class="primary-button" onclick="processSavings()">Open Savings Account</button>
+            </div>
+        </div>
+    </div>
     <!-- Swap Modal -->
     <div id="swapModal" class="wallet-modal">
         <div class="wallet-modal-content">
