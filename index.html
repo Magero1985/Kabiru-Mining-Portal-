@@ -8,6 +8,7 @@
     <!-- Firebase SDK -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
     
     <style>
         * {
@@ -2308,21 +2309,92 @@
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firestore
+const db = firebase.firestore();
+
+// Check user permissions/features from Firestore
+async function checkUserFeatures(userId) {
+    try {
+        const userDoc = await db.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+            return userData.enabledFeatures || [];
+        }
+    } catch (error) {
+        console.error('Error checking user features:', error);
+    }
+    return [];
+        }
 
         // Global variables
-        let appVerifier;
-        let confirmationResult;
-        let currentUser = null;
-        let otpTimer = null;
-        let resendCountdown = 60;
-        let userBalance = 0.0000;
-        let miningRate = 0.001;
-        let isMining = false;
-        let totalTasksCompleted = 0;
-        let selectedSovereignType = null;
-        let selectedValueType = null;
-        let selectedValueAmount = 0;
+        // Global variables
+let appVerifier;
+let confirmationResult;
+let currentUser = null;
+let otpTimer = null;
+let resendCountdown = 60;
+let userBalance = 0.0000;
+let miningRate = 0.001;
+let isMining = false;
+let totalTasksCompleted = 0;
+let selectedSovereignType = null;
+let selectedValueType = null;
+let selectedValueAmount = 0;
+
+// Firestore Feature Management Functions
+async function checkUserFeatures(userId) {
+    try {
+        const userDoc = await db.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+            return userData.enabledFeatures || [];
+        }
+    } catch (error) {
+        console.error('Error checking user features:', error);
+    }
+    return [];
+}
+
+async function saveUserToFirestore(userData) {
+    try {
+        await db.collection('users').doc(userData.uid).set({
+            email: userData.email,
+            phone: userData.phone,
+            displayName: userData.displayName,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            enabledFeatures: [
+                'wallet_send',
+                'wallet_receive', 
+                'wallet_swap',
+                'wallet_lockup',
+                'wallet_reserve',
+                'wallet_trust',
+                'wallet_savings',
+                'wallet_investment',
+                'wallet_insurance'
+            ],
+            balance: 0,
+            tasksCompleted: 0
+        }, { merge: true });
+        console.log('User saved to Firestore');
+    } catch (error) {
+        console.error('Error saving user to Firestore:', error);
+    }
+}
+
+async function updateUserBalance(userId, newBalance, tasksCompleted) {
+    try {
+        await db.collection('users').doc(userId).update({
+            balance: newBalance,
+            tasksCompleted: tasksCompleted,
+            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+        });
+    } catch (error) {
+        console.error('Error updating user balance:', error);
+    }
+}
 
         // Exchange rates (these would normally come from an API)
         const exchangeRates = {
@@ -2543,22 +2615,27 @@
         }
 
         function showMiningApp(user) {
-            console.log('=== SHOWING MINING APP ===');
-            console.log('User data received:', user);
-            document.getElementById('loginPage').style.display = 'none';  //
-            hideAllPages();
-            document.getElementById('miningApp').style.display = 'block';
-            
-            // Set current user BEFORE loading mining data
-            currentUser = user;
-            
-            // Load mining data for this specific user
-            loadUserMiningData();
-            updateBalanceDisplay();
-            startMiningTimer();
-            
-            console.log('Mining app loaded with balance:', userBalance);
-        }
+                console.log('=== SHOWING MINING APP ===');
+    console.log('User data received:', user);
+    document.getElementById('loginPage').style.display = 'none';
+    hideAllPages();
+    document.getElementById('miningApp').style.display = 'block';
+    
+    // Set current user BEFORE loading mining data
+    currentUser = user;
+    
+    // Save user to Firestore (creates document if doesn't exist)
+    if (user.uid) {
+        saveUserToFirestore(user);
+    }
+    
+    // Load mining data for this specific user
+    loadUserMiningData();
+    updateBalanceDisplay();
+    startMiningTimer();
+    
+    console.log('Mining app loaded with balance:', userBalance);
+}
 
         function hideAllPages() {
             const pages = ['walletPage', 'readPage', 'documentPage', 'utilitiesPage'];
@@ -3347,36 +3424,39 @@
         }
 
         function mineTokens(type, reward) {
-            console.log('=== MINING TOKENS ===');
-            console.log('Mining type:', type, 'Reward:', reward);
-            console.log('Current user:', currentUser);
+                console.log('=== MINING TOKENS ===');
+    console.log('Mining type:', type, 'Reward:', reward);
+    console.log('Current user:', currentUser);
+    
+    isMining = true;
+    document.getElementById('miningStatus').textContent = 'Active';
+    
+    showNotification('Mining started! Please wait...');
+    
+    setTimeout(async () => {
+        const oldBalance = userBalance;
+        userBalance += reward;
+        totalTasksCompleted++;
+        
+        console.log('Balance updated:', oldBalance, '->', userBalance);
+        console.log('Tasks updated to:', totalTasksCompleted);
+        
+        updateBalanceDisplay();
+        document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
+        showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
+        
+        // Save updated mining data permanently
+        if (currentUser && currentUser.uid) {
+            console.log('Saving mining data for UID:', currentUser.uid);
+            saveUserData(currentUser);
             
-            isMining = true;
-            document.getElementById('miningStatus').textContent = 'Active';
-            
-            showNotification('Mining started! Please wait...');
-            
-            setTimeout(() => {
-                const oldBalance = userBalance;
-                userBalance += reward;
-                totalTasksCompleted++;
-                
-                console.log('Balance updated:', oldBalance, '->', userBalance);
-                console.log('Tasks updated to:', totalTasksCompleted);
-                
-                updateBalanceDisplay();
-                document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-                showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
-                
-                // Save updated mining data permanently
-                if (currentUser && currentUser.uid) {
-                    console.log('Saving mining data for UID:', currentUser.uid);
-                    saveUserData(currentUser);
-                } else {
-                    console.error('Cannot save mining data - no valid current user with UID');
-                }
-            }, 3000);
+            // Also sync to Firestore
+            await updateUserBalance(currentUser.uid, userBalance, totalTasksCompleted);
+        } else {
+            console.error('Cannot save mining data - no valid current user with UID');
         }
+    }, 3000);
+}
 
         // Modal and Navigation Functions
         function openSovereignModal() {
@@ -3643,9 +3723,35 @@
 
         // Wallet Functions
         function openWalletModal(modalType) {
-            // For now, just show notification - full modals would be implemented here
-            showNotification(`${modalType.charAt(0).toUpperCase() + modalType.slice(1)} feature coming soon!`);
+            async function openWalletModal(modalType) {
+    const userFeatures = await checkUserFeatures(currentUser.uid);
+    async function openWalletModal(modalType) {
+    if (!currentUser || !currentUser.uid) {
+        showNotification('Please sign in to access wallet features');
+        return;
+    }
+    
+    try {
+        const userFeatures = await checkUserFeatures(currentUser.uid);
+        const featureName = `wallet_${modalType}`;
+        
+        if (userFeatures.includes(featureName) || userFeatures.includes('all_wallet_features')) {
+            const modalId = modalType + 'Modal';
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+            } else {
+                showNotification(`${modalType.charAt(0).toUpperCase() + modalType.slice(1)} interface coming soon!`);
+            }
+        } else {
+            showNotification(`${modalType.charAt(0).toUpperCase() + modalType.slice(1)} feature not enabled for your account`);
         }
+    } catch (error) {
+        console.error('Error checking wallet features:', error);
+        showNotification('Error accessing wallet features. Please try again.');
+    }
+}
+        
 
         function closeWalletModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
