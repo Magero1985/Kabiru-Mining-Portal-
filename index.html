@@ -2342,6 +2342,15 @@ let totalTasksCompleted = 0;
 let selectedSovereignType = null;
 let selectedValueType = null;
 let selectedValueAmount = 0;
+function debugLoginFlow() {
+    console.log('=== DEBUG LOGIN FLOW ===');
+    console.log('loginPage display:', document.getElementById('loginPage').style.display);
+    console.log('miningApp display:', document.getElementById('miningApp').style.display);
+    console.log('currentUser:', currentUser);
+    console.log('Firebase auth user:', firebase.auth().currentUser);
+}
+
+// Call this in your browser console to debug
 
 // Firestore Feature Management Functions
 async function checkUserFeatures(userId) {
@@ -2570,30 +2579,42 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
 
         // Navigation Functions
         function checkLoginStatus() {
-            console.log('Checking login status...');
-            
-            // Monitor Firebase auth state
-            firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                    console.log('Firebase user found:', user.uid, 'Email verified:', user.emailVerified);
-                    if (user.emailVerified || user.phoneNumber) {
-                        // User is verified - create proper user data with real Firebase UID
-                        const userData = {
-                            uid: user.uid, // Use real Firebase UID
-                            email: user.email,
-                            phone: user.phoneNumber,
-                            displayName: user.displayName,
-                            emailVerified: user.emailVerified,
-                            loginType: user.email ? 'email' : 'phone',
-                            verifiedAt: new Date().toISOString()
-                        };
-                        currentUser = userData;
-                        console.log('Setting current user:', userData);
-                        showMiningApp(userData);
-                        document.getElementById('loginPage').style.display = 'none';
-                        return;
-                    }
-                }
+    console.log('Checking login status...');
+    
+    // Monitor Firebase auth state
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            console.log('Firebase user found:', user.uid, 'Email verified:', user.emailVerified);
+            if (user.emailVerified || user.phoneNumber) {
+                // User is verified - create proper user data with real Firebase UID
+                const userData = {
+                    uid: user.uid, // Use real Firebase UID
+                    email: user.email,
+                    phone: user.phoneNumber,
+                    displayName: user.displayName,
+                    emailVerified: user.emailVerified,
+                    loginType: user.email ? 'email' : 'phone',
+                    verifiedAt: new Date().toISOString()
+                };
+                currentUser = userData;
+                console.log('Setting current user:', userData);
+                showMiningApp(userData);
+                document.getElementById('loginPage').style.display = 'none';
+                return;
+            }
+        }
+        
+        // Check localStorage as fallback
+        const savedUser = getUserData();
+        if (savedUser && savedUser.verifiedAt) {
+            console.log('Local user found, showing mining app');
+            showMiningApp(savedUser);
+        } else {
+            console.log('No verified user found, showing login page');
+            showLoginPage();
+        }
+    });
+}
                 
                 // Check localStorage as fallback
                 const savedUser = getUserData();
@@ -2615,7 +2636,7 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
         }
 
         function showMiningApp(user) {
-                console.log('=== SHOWING MINING APP ===');
+    console.log('=== SHOWING MINING APP ===');
     console.log('User data received:', user);
     document.getElementById('loginPage').style.display = 'none';
     hideAllPages();
@@ -2624,9 +2645,11 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
     // Set current user BEFORE loading mining data
     currentUser = user;
     
-    // Save user to Firestore (creates document if doesn't exist)
+    // Save user to Firestore (non-blocking)
     if (user.uid) {
-        saveUserToFirestore(user);
+        saveUserToFirestore(user).catch(error => {
+            console.error('Firestore save failed, continuing with localStorage:', error);
+        });
     }
     
     // Load mining data for this specific user
@@ -2635,7 +2658,7 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
     startMiningTimer();
     
     console.log('Mining app loaded with balance:', userBalance);
-}
+        }
 
         function hideAllPages() {
             const pages = ['walletPage', 'readPage', 'documentPage', 'utilitiesPage'];
@@ -3424,7 +3447,7 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
         }
 
         function mineTokens(type, reward) {
-                console.log('=== MINING TOKENS ===');
+    console.log('=== MINING TOKENS ===');
     console.log('Mining type:', type, 'Reward:', reward);
     console.log('Current user:', currentUser);
     
@@ -3433,7 +3456,7 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
     
     showNotification('Mining started! Please wait...');
     
-    setTimeout(async () => {
+    setTimeout(() => {
         const oldBalance = userBalance;
         userBalance += reward;
         totalTasksCompleted++;
@@ -3450,8 +3473,10 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
             console.log('Saving mining data for UID:', currentUser.uid);
             saveUserData(currentUser);
             
-            // Also sync to Firestore
-            await updateUserBalance(currentUser.uid, userBalance, totalTasksCompleted);
+            // Also sync to Firestore (non-blocking)
+            updateUserBalance(currentUser.uid, userBalance, totalTasksCompleted).catch(error => {
+                console.error('Firestore sync failed:', error);
+            });
         } else {
             console.error('Cannot save mining data - no valid current user with UID');
         }
@@ -3723,19 +3748,16 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
 
         // Wallet Functions
         function openWalletModal(modalType) {
-            async function openWalletModal(modalType) {
-    const userFeatures = await checkUserFeatures(currentUser.uid);
-    async function openWalletModal(modalType) {
     if (!currentUser || !currentUser.uid) {
         showNotification('Please sign in to access wallet features');
         return;
     }
     
-    try {
-        const userFeatures = await checkUserFeatures(currentUser.uid);
+    // Try Firestore check, but don't block if it fails
+    checkUserFeatures(currentUser.uid).then(userFeatures => {
         const featureName = `wallet_${modalType}`;
         
-        if (userFeatures.includes(featureName) || userFeatures.includes('all_wallet_features')) {
+        if (userFeatures.includes(featureName) || userFeatures.includes('all_wallet_features') || userFeatures.length === 0) {
             const modalId = modalType + 'Modal';
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -3746,10 +3768,17 @@ async function updateUserBalance(userId, newBalance, tasksCompleted) {
         } else {
             showNotification(`${modalType.charAt(0).toUpperCase() + modalType.slice(1)} feature not enabled for your account`);
         }
-    } catch (error) {
-        console.error('Error checking wallet features:', error);
-        showNotification('Error accessing wallet features. Please try again.');
-    }
+    }).catch(error => {
+        console.error('Firestore check failed, allowing feature:', error);
+        // Fallback: allow the feature if Firestore fails
+        const modalId = modalType + 'Modal';
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'block';
+        } else {
+            showNotification(`${modalType.charAt(0).toUpperCase() + modalType.slice(1)} interface coming soon!`);
+        }
+    });
 }
         
 
