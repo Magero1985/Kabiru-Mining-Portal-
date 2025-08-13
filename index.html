@@ -642,6 +642,212 @@
             color: #FFD700;
         }
 
+        /* WALLET MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #FFD700;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .wallet-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .wallet-balance {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .wallet-balance-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .wallet-address {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .address-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .wallet-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .wallet-button {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .send-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+        }
+
+        .receive-btn {
+            background: linear-gradient(45deg, #00ff87, #60efff);
+            color: #333;
+        }
+
+        .swap-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+        }
+
+        .lockup-btn {
+            background: linear-gradient(45deg, #8e44ad, #c0392b);
+            color: white;
+        }
+
+        .reserve-btn {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .wallet-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .transaction-form {
+            display: none;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .form-group-wallet {
+            margin-bottom: 15px;
+        }
+
+        .form-label-wallet {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #FFD700;
+            font-weight: 500;
+        }
+
+        .form-input-wallet {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input-wallet:focus {
+            border-color: #FFD700;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-input-wallet::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 8px;
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
         .notification {
             position: fixed;
             top: 20px;
@@ -678,6 +884,10 @@
             animation: pulse 1s ease-in-out infinite;
         }
 
+        .hidden {
+            display: none;
+        }
+
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -688,14 +898,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
-        }
-
-        .hidden {
-            display: none;
         }
 
         /* Responsive Design */
@@ -710,6 +921,10 @@
             }
 
             .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .wallet-buttons {
                 grid-template-columns: 1fr;
             }
         }
@@ -895,11 +1110,11 @@
         <div class="container">
             <!-- Top Navigation Bar -->
             <div class="top-bar">
-                <div onclick="showNotification('Utilities coming soon!')">UTILITIES</div>
-                <div onclick="showNotification('Wallet coming soon!')">WALLET</div>
-                <div onclick="showNotification('Read page coming soon!')">READ</div>
-                <div onclick="showNotification('Language selection coming soon!')">LANGUAGE</div>
-                <div onclick="showNotification('Corporate options coming soon!')">CORPORATE</div>
+                <div onclick="showUtilities()">UTILITIES</div>
+                <div onclick="showWallet()">WALLET</div>
+                <div onclick="showRead()">READ</div>
+                <div onclick="showLanguage()">LANGUAGE</div>
+                <div onclick="showCorporate()">CORPORATE</div>
             </div>
 
             <!-- Header -->
@@ -1014,11 +1229,291 @@
         </div>
     </div>
 
+    <!-- Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">💳 KABIRU Wallet</h2>
+                <span class="close" onclick="closeWallet()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Wallet Balance -->
+                <div class="wallet-section">
+                    <div class="wallet-balance">
+                        <div class="wallet-balance-amount" id="walletBalance">0.0000 iKb</div>
+                        <div style="font-size: 12px; opacity: 0.7;">Available Balance</div>
+                    </div>
+                </div>
+
+                <!-- Wallet Address -->
+                <div class="wallet-section">
+                    <div class="wallet-address">
+                        <div style="font-size: 14px; margin-bottom: 10px; color: #FFD700; font-weight: bold;">Your Wallet Address:</div>
+                        <div class="address-display" id="walletAddress">iKb_0x742d35Cc6Bf00532F4e8C90...</div>
+                        <button class="wallet-button copy-btn" onclick="copyWalletAddress()">📋 Copy Address</button>
+                    </div>
+                </div>
+
+                <!-- Main Wallet Functions -->
+                <div class="wallet-section">
+                    <div class="wallet-buttons">
+                        <button class="wallet-button send-btn" onclick="showSendForm()">📤 Send</button>
+                        <button class="wallet-button receive-btn" onclick="showReceiveForm()">📥 Receive</button>
+                        <button class="wallet-button swap-btn" onclick="showSwapForm()">🔄 Swap</button>
+                        <button class="wallet-button lockup-btn" onclick="showLockupForm()">🔒 Lockup</button>
+                        <button class="wallet-button reserve-btn" onclick="showReserveForm()">💰 Reserve</button>
+                        <button class="wallet-button copy-btn" onclick="showTransactionHistory()">📜 History</button>
+                    </div>
+                </div>
+
+                <!-- Send Form -->
+                <div id="sendForm" class="transaction-form">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">📤 Send KABIRU</h3>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Recipient Address:</label>
+                        <input type="text" class="form-input-wallet" id="sendAddress" placeholder="iKb_0x742d35Cc6Bf00532F4e8C90...">
+                    </div>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Amount (iKb):</label>
+                        <input type="number" class="form-input-wallet" id="sendAmount" placeholder="0.0000" step="0.0001" min="0.0001">
+                    </div>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Note (Optional):</label>
+                        <input type="text" class="form-input-wallet" id="sendNote" placeholder="Payment for...">
+                    </div>
+                    <button class="submit-btn" onclick="processSend()">Send KABIRU</button>
+                    <button class="submit-btn" style="background: #666; margin-top: 10px;" onclick="hideForms()">Cancel</button>
+                </div>
+
+                <!-- Receive Form -->
+                <div id="receiveForm" class="transaction-form">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">📥 Receive KABIRU</h3>
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="font-size: 14px; margin-bottom: 10px;">Share this address to receive KABIRU:</div>
+                        <div class="address-display" id="receiveAddress">iKb_0x742d35Cc6Bf00532F4e8C90...</div>
+                        <button class="submit-btn" onclick="copyReceiveAddress()">📋 Copy Address</button>
+                        <button class="submit-btn" style="background: #666; margin-top: 10px;" onclick="hideForms()">Close</button>
+                    </div>
+                </div>
+
+                <!-- Swap Form -->
+                <div id="swapForm" class="transaction-form">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">🔄 Swap iKb ↔ KSH</h3>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">From:</label>
+                        <select class="form-input-wallet" id="swapFrom">
+                            <option value="ikb">KABIRU (iKb)</option>
+                            <option value="ksh">Kenyan Shilling (KSH)</option>
+                        </select>
+                    </div>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Amount:</label>
+                        <input type="number" class="form-input-wallet" id="swapAmount" placeholder="0.0000" step="0.0001" min="0.0001">
+                    </div>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">To:</label>
+                        <select class="form-input-wallet" id="swapTo">
+                            <option value="ksh">Kenyan Shilling (KSH)</option>
+                            <option value="ikb">KABIRU (iKb)</option>
+                        </select>
+                    </div>
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 12px;">
+                        <strong>Exchange Rate:</strong> 1 iKb = 150 KSH<br>
+                        <strong>You will receive:</strong> <span id="swapPreview">0.00 KSH</span>
+                    </div>
+                    <button class="submit-btn" onclick="processSwap()">Execute Swap</button>
+                    <button class="submit-btn" style="background: #666; margin-top: 10px;" onclick="hideForms()">Cancel</button>
+                </div>
+
+                <!-- Lockup Form -->
+                <div id="lockupForm" class="transaction-form">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">🔒 Lockup (Commit)</h3>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Amount to Lock:</label>
+                        <input type="number" class="form-input-wallet" id="lockupAmount" placeholder="0.0000" step="0.0001" min="0.0001">
+                    </div>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Lock Period:</label>
+                        <select class="form-input-wallet" id="lockupPeriod">
+                            <option value="30">30 Days (5% bonus)</option>
+                            <option value="90">90 Days (15% bonus)</option>
+                            <option value="180">180 Days (35% bonus)</option>
+                            <option value="365">1 Year (100% bonus)</option>
+                        </select>
+                    </div>
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 12px;">
+                        <strong>Bonus Rewards:</strong> Earn extra KABIRU for locking your tokens!<br>
+                        <strong>Note:</strong> Locked tokens cannot be withdrawn until the period ends.
+                    </div>
+                    <button class="submit-btn" onclick="processLockup()">Lock Tokens</button>
+                    <button class="submit-btn" style="background: #666; margin-top: 10px;" onclick="hideForms()">Cancel</button>
+                </div>
+
+                <!-- Reserve Form -->
+                <div id="reserveForm" class="transaction-form">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">💰 Reserve (Save)</h3>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Amount to Reserve:</label>
+                        <input type="number" class="form-input-wallet" id="reserveAmount" placeholder="0.0000" step="0.0001" min="0.0001">
+                    </div>
+                    <div class="form-group-wallet">
+                        <label class="form-label-wallet">Reserve Goal:</label>
+                        <input type="text" class="form-input-wallet" id="reserveGoal" placeholder="Emergency fund, vacation, etc.">
+                    </div>
+                    <div style="background: rgba(0, 255, 135, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 12px;">
+                        <strong>Reserve Benefits:</strong> Earn 2% annual interest on reserved tokens!<br>
+                        <strong>Current Reserve:</strong> <span id="currentReserve">0.0000 iKb</span>
+                    </div>
+                    <button class="submit-btn" onclick="processReserve()">Add to Reserve</button>
+                    <button class="submit-btn" style="background: #666; margin-top: 10px;" onclick="hideForms()">Cancel</button>
+                </div>
+
+                <!-- Transaction History -->
+                <div id="transactionHistory" class="transaction-form">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">📜 Transaction History</h3>
+                    <div id="historyList" style="max-height: 200px; overflow-y: auto;">
+                        <div style="padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 10px; font-size: 12px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>📤 Sent to iKb_0x742...</span>
+                                <span style="color: #ff6b6b;">-0.0500 iKb</span>
+                            </div>
+                            <div style="opacity: 0.7; margin-top: 5px;">2024-01-15 14:30</div>
+                        </div>
+                        <div style="padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 10px; font-size: 12px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>⛏️ Mining Reward</span>
+                                <span style="color: #00ff87;">+0.0030 iKb</span>
+                            </div>
+                            <div style="opacity: 0.7; margin-top: 5px;">2024-01-15 12:15</div>
+                        </div>
+                        <div style="padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 10px; font-size: 12px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>📥 Received from iKb_0x892...</span>
+                                <span style="color: #00ff87;">+0.1000 iKb</span>
+                            </div>
+                            <div style="opacity: 0.7; margin-top: 5px;">2024-01-14 09:45</div>
+                        </div>
+                    </div>
+                    <button class="submit-btn" style="background: #666;" onclick="hideForms()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Utilities Modal -->
+    <div id="utilitiesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔧 Utilities</h2>
+                <span class="close" onclick="closeUtilities()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="wallet-section">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">⚙️</div>
+                        <h3 style="color: #FFD700; margin-bottom: 15px;">System Utilities</h3>
+                        <p style="opacity: 0.8; margin-bottom: 20px;">Advanced tools and utilities coming soon!</p>
+                        <div class="wallet-buttons">
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #667eea, #764ba2);" onclick="showNotification('Bulk payments coming soon!')">💳 Bulk Payments</button>
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #f093fb, #f5576c);" onclick="showNotification('API access coming soon!')">🔌 API Access</button>
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #4facfe, #00f2fe);" onclick="showNotification('Payroll integration coming soon!')">👥 Payroll</button>
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #43e97b, #38f9d7);" onclick="showNotification('Custom solutions coming soon!')">⚙️ Custom</button>
+                        </div>
+                        <p style="opacity: 0.8; margin-top: 15px; font-size: 12px;">Contact us for enterprise solutions!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Mining Indicator -->
     <div id="miningIndicator" class="mining-indicator">
         <div class="mining-animation">⛏️ Mining in Progress...</div>
         <div style="font-size: 12px; margin-top: 10px;">Please wait...</div>
     </div>
+Notification('Backup feature coming soon!')">🔄 Backup</button>
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #f093fb, #f5576c);" onclick="showNotification('Import feature coming soon!')">📁 Import</button>
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #4facfe, #00f2fe);" onclick="showNotification('Security tools coming soon!')">🔐 Security</button>
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #43e97b, #38f9d7);" onclick="
+showNotification('Analytics coming soon!')">📊 Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Read Modal -->
+    <div id="readModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📚 Learn About KABIRU</h2>
+                <span class="close" onclick="closeRead()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="wallet-section">
+                    <h3 style="color: #FFD700; margin-bottom: 15px;">Welcome to KABIRU</h3>
+                    <p style="margin-bottom: 15px; line-height: 1.6;">KABIRU (iKb) is a revolutionary digital token designed to reward value creation and community participation. Our mining system allows you to earn tokens through Proof-of-Value:</p>
+                    
+                    <h4 style="color: #00ff87; margin-bottom: 10px;">Mining Categories:</h4>
+                    <ul style="margin-bottom: 15px; padding-left: 20px; line-height: 1.6;">
+                        <li><strong>Sovereign Mining:</strong> Highest rewards for leadership activities</li>
+                        <li><strong>Value Mining:</strong> Earn through skill and service provision</li>
+                        <li><strong>Reserve Mining:</strong> Steady rewards for consistent participation</li>
+                    </ul>
+                    
+                    <h4 style="color: #00ff87; margin-bottom: 10px;">Key Features:</h4>
+                    <ul style="margin-bottom: 15px; padding-left: 20px; line-height: 1.6;">
+                        <li>Secure wallet with send/receive functionality</li>
+                        <li>Token swap with Kenyan Shilling (KSH)</li>
+                        <li>Lockup rewards for long-term holders</li>
+                        <li>Reserve system with interest earnings</li>
+                    </ul>
+                    
+                    <p style="opacity: 0.8;">Start mining today and be part of the KABIRU ecosystem!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🌍 Language Settings</h2>
+                <span class="close" onclick="closeLanguage()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="wallet-section">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">🗣️</div>
+                        <h3 style="color: #FFD700; margin-bottom: 15px;">Select Language</h3>
+                        <div class="wallet-buttons">
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #667eea, #764ba2);" onclick="setLanguage('en')">🇺🇸 English</button>
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #f093fb, #f5576c);" onclick="setLanguage('sw')">🇰🇪 Kiswahili</button>
+                        </div>
+                        <p style="opacity: 0.8; margin-top: 15px; font-size: 12px;">More languages coming soon!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Corporate Modal -->
+    <div id="corporateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🏢 Corporate Services</h2>
+                <span class="close" onclick="closeCorporate()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="wallet-section">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">💼</div>
+                        <h3 style="color: #FFD700; margin-bottom: 15px;">Enterprise Solutions</h3>
+                        <p style="opacity: 0.8; margin-bottom: 20px;">Corporate KABIRU services for businesses and organizations</p>
+                        <div class="wallet-buttons">
+                            <button class="wallet-button" style="background: linear-gradient(45deg, #667eea, #764ba2);" onclick="show>
 
     <!-- Notification -->
     <div id="notification" class="notification"></div>
@@ -1046,14 +1541,31 @@
         let miningRate = 0.001;
         let isMining = false;
         let totalTasksCompleted = 0;
+        let reserveBalance = 0.0000;
+        let lockedBalance = 0.0000;
+        let userWalletAddress = '';
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('KABIRU Mining App starting...');
             checkLoginStatus();
+            generateWalletAddress();
         });
 
-        // FIXED: Enhanced Authentication State Management
+        // Generate unique wallet address for user
+        function generateWalletAddress() {
+            const prefix = 'iKb_0x';
+            const randomHex = Math.random().toString(16).substr(2, 30);
+            userWalletAddress = prefix + randomHex;
+            
+            // Update address displays
+            const addressElements = document.querySelectorAll('#walletAddress, #receiveAddress');
+            addressElements.forEach(el => {
+                if (el) el.textContent = userWalletAddress;
+            });
+        }
+
+        // Enhanced Authentication State Management
         function checkLoginStatus() {
             console.log('Checking login status...');
             
@@ -1067,7 +1579,6 @@
                         emailVerified: user.emailVerified
                     };
                     
-                    // FIXED: Always load user data from Firestore on login
                     await loadUserDataFromFirestore(user.uid);
                     showMiningApp();
                 } else {
@@ -1080,7 +1591,7 @@
             });
         }
 
-        // FIXED: Load user data from Firestore with better error handling
+        // Load user data from Firestore
         async function loadUserDataFromFirestore(uid) {
             try {
                 console.log('Loading user data from Firestore for UID:', uid);
@@ -1091,10 +1602,12 @@
                     const userData = userDoc.data();
                     console.log('User data loaded from Firestore:', userData);
                     
-                    // FIXED: Set values from Firestore with proper fallbacks
                     userBalance = parseFloat(userData.balance) || 0.0000;
                     totalTasksCompleted = parseInt(userData.tasksCompleted) || 0;
                     miningRate = parseFloat(userData.miningRate) || 0.001;
+                    reserveBalance = parseFloat(userData.reserveBalance) || 0.0000;
+                    lockedBalance = parseFloat(userData.lockedBalance) || 0.0000;
+                    userWalletAddress = userData.walletAddress || userWalletAddress;
                     
                     console.log('LOADED - Balance:', userBalance, 'Tasks:', totalTasksCompleted);
                 } else {
@@ -1103,6 +1616,7 @@
                 }
                 
                 updateBalanceDisplay();
+                updateWalletDisplay();
                 if (document.getElementById('tasksCompleted')) {
                     document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
                 }
@@ -1111,7 +1625,6 @@
                 console.error('Error loading user data from Firestore:', error);
                 showError('Failed to load your account data. Using default values.');
                 
-                // Set default values if Firestore fails
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
                 miningRate = 0.001;
@@ -1119,7 +1632,7 @@
             }
         }
 
-        // FIXED: Create initial user document in Firestore
+        // Create initial user document
         async function createInitialUserDocument(uid) {
             try {
                 const user = auth.currentUser;
@@ -1130,6 +1643,9 @@
                     balance: 0.0000,
                     tasksCompleted: 0,
                     miningRate: 0.001,
+                    reserveBalance: 0.0000,
+                    lockedBalance: 0.0000,
+                    walletAddress: userWalletAddress,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     totalEarnings: 0.0000,
@@ -1139,10 +1655,11 @@
                 await db.collection('users').doc(uid).set(initialData);
                 console.log('Initial user document created in Firestore');
                 
-                // Set local variables
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
                 miningRate = 0.001;
+                reserveBalance = 0.0000;
+                lockedBalance = 0.0000;
                 
             } catch (error) {
                 console.error('Error creating initial user document:', error);
@@ -1150,7 +1667,7 @@
             }
         }
 
-        // FIXED: Save user data to Firestore with retry logic
+        // Save user data to Firestore
         async function saveUserDataToFirestore() {
             if (!currentUser || !currentUser.uid) {
                 console.error('Cannot save data - no authenticated user');
@@ -1168,6 +1685,9 @@
                     balance: parseFloat(userBalance.toFixed(4)),
                     tasksCompleted: parseInt(totalTasksCompleted),
                     miningRate: parseFloat(miningRate),
+                    reserveBalance: parseFloat(reserveBalance.toFixed(4)),
+                    lockedBalance: parseFloat(lockedBalance.toFixed(4)),
+                    walletAddress: userWalletAddress,
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     totalEarnings: parseFloat(userBalance.toFixed(4)),
                     miningStatus: isMining ? 'active' : 'inactive'
@@ -1176,7 +1696,6 @@
                 await db.collection('users').doc(currentUser.uid).update(updateData);
                 console.log('User data saved to Firestore successfully');
                 
-                // Save mining transaction
                 await saveMiningTransaction();
                 
                 return true;
@@ -1188,7 +1707,7 @@
             }
         }
 
-        // FIXED: Save individual mining transactions with proper data
+        // Save mining transaction
         async function saveMiningTransaction() {
             if (!currentUser || !currentUser.uid) return;
             
@@ -1220,9 +1739,7 @@
             }
 
             try {
-                // Check if credential is email or phone
                 if (credential.includes('@')) {
-                    // Email login
                     const userCredential = await auth.signInWithEmailAndPassword(credential, password);
                     const user = userCredential.user;
                     
@@ -1413,7 +1930,7 @@
             }
         }
 
-        // FIXED: Mining function with proper Firestore saving
+        // Mining function with Firestore saving
         async function mineTokens(type, reward) {
             if (!currentUser || !currentUser.uid) {
                 showError('Please login to mine tokens');
@@ -1440,9 +1957,9 @@
                 console.log('Tasks updated to:', totalTasksCompleted);
                 
                 updateBalanceDisplay();
+                updateWalletDisplay();
                 document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
                 
-                // FIXED: Save to Firestore immediately after mining
                 const saved = await saveUserDataToFirestore();
                 
                 document.getElementById('miningIndicator').style.display = 'none';
@@ -1479,13 +1996,380 @@
             mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
         }
 
-        // UI Update Functions
+        // Top Bar Navigation Functions
+        function showUtilities() {
+            document.getElementById('utilitiesModal').style.display = 'block';
+        }
+
+        function showWallet() {
+            updateWalletDisplay();
+            document.getElementById('walletModal').style.display = 'block';
+        }
+
+        function showRead() {
+            document.getElementById('readModal').style.display = 'block';
+        }
+
+        function showLanguage() {
+            document.getElementById('languageModal').style.display = 'block';
+        }
+
+        function showCorporate() {
+            document.getElementById('corporateModal').style.display = 'block';
+        }
+
+        // Close modal functions
+        function closeUtilities() {
+            document.getElementById('utilitiesModal').style.display = 'none';
+        }
+
+        function closeWallet() {
+            document.getElementById('walletModal').style.display = 'none';
+            hideForms();
+        }
+
+        function closeRead() {
+            document.getElementById('readModal').style.display = 'none';
+        }
+
+        function closeLanguage() {
+            document.getElementById('languageModal').style.display = 'none';
+        }
+
+        function closeCorporate() {
+            document.getElementById('corporateModal').style.display = 'none';
+        }
+
+        // Wallet Functions
+        function updateWalletDisplay() {
+            const walletBalanceEl = document.getElementById('walletBalance');
+            const currentReserveEl = document.getElementById('currentReserve');
+            
+            if (walletBalanceEl) walletBalanceEl.textContent = userBalance.toFixed(4) + ' iKb';
+            if (currentReserveEl) currentReserveEl.textContent = reserveBalance.toFixed(4) + ' iKb';
+        }
+
+        function copyWalletAddress() {
+            navigator.clipboard.writeText(userWalletAddress).then(() => {
+                showNotification('Wallet address copied to clipboard!');
+            }).catch(() => {
+                showNotification('Failed to copy address');
+            });
+        }
+
+        function copyReceiveAddress() {
+            navigator.clipboard.writeText(userWalletAddress).then(() => {
+                showNotification('Receive address copied to clipboard!');
+            }).catch(() => {
+                showNotification('Failed to copy address');
+            });
+        }
+
+        // Wallet Form Functions
+        function showSendForm() {
+            hideForms();
+            document.getElementById('sendForm').style.display = 'block';
+        }
+
+        function showReceiveForm() {
+            hideForms();
+            document.getElementById('receiveForm').style.display = 'block';
+        }
+
+        function showSwapForm() {
+            hideForms();
+            document.getElementById('swapForm').style.display = 'block';
+            updateSwapPreview();
+        }
+
+        function showLockupForm() {
+            hideForms();
+            document.getElementById('lockupForm').style.display = 'block';
+        }
+
+        function showReserveForm() {
+            hideForms();
+            document.getElementById('reserveForm').style.display = 'block';
+        }
+
+        function showTransactionHistory() {
+            hideForms();
+            document.getElementById('transactionHistory').style.display = 'block';
+        }
+
+        function hideForms() {
+            const forms = ['sendForm', 'receiveForm', 'swapForm', 'lockupForm', 'reserveForm', 'transactionHistory'];
+            forms.forEach(formId => {
+                const form = document.getElementById(formId);
+                if (form) form.style.display = 'none';
+            });
+        }
+
+        // Wallet Transaction Functions
+        async function processSend() {
+            const address = document.getElementById('sendAddress').value.trim();
+            const amount = parseFloat(document.getElementById('sendAmount').value);
+            const note = document.getElementById('sendNote').value.trim();
+            
+            if (!address || !amount || amount <= 0) {
+                showError('Please enter valid recipient address and amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            if (!address.startsWith('iKb_0x')) {
+                showError('Invalid KABIRU wallet address format');
+                return;
+            }
+            
+            try {
+                userBalance -= amount;
+                
+                // Save transaction
+                const transactionData = {
+                    userId: currentUser.uid,
+                    type: 'send',
+                    amount: -amount,
+                    recipient: address,
+                    note: note,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    balance: userBalance
+                };
+                
+                await db.collection('transactions').add(transactionData);
+                await saveUserDataToFirestore();
+                
+                updateBalanceDisplay();
+                updateWalletDisplay();
+                hideForms();
+                
+                showNotification(`Successfully sent ${amount.toFixed(4)} iKb!`);
+                
+                // Clear form
+                document.getElementById('sendAddress').value = '';
+                document.getElementById('sendAmount').value = '';
+                document.getElementById('sendNote').value = '';
+                
+            } catch (error) {
+                console.error('Send transaction error:', error);
+                showError('Failed to send transaction');
+                userBalance += amount; // Revert balance
+            }
+        }
+
+        function updateSwapPreview() {
+            const amount = parseFloat(document.getElementById('swapAmount').value) || 0;
+            const fromCurrency = document.getElementById('swapFrom').value;
+            const exchangeRate = 150; // 1 iKb = 150 KSH
+            
+            let preview = '';
+            if (fromCurrency === 'ikb') {
+                preview = (amount * exchangeRate).toFixed(2) + ' KSH';
+            } else {
+                preview = (amount / exchangeRate).toFixed(4) + ' iKb';
+            }
+            
+            const previewEl = document.getElementById('swapPreview');
+            if (previewEl) previewEl.textContent = preview;
+        }
+
+        async function processSwap() {
+            const amount = parseFloat(document.getElementById('swapAmount').value);
+            const fromCurrency = document.getElementById('swapFrom').value;
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (fromCurrency === 'ikb' && amount > userBalance) {
+                showError('Insufficient KABIRU balance');
+                return;
+            }
+            
+            try {
+                const exchangeRate = 150;
+                let newBalance = userBalance;
+                
+                if (fromCurrency === 'ikb') {
+                    newBalance -= amount;
+                    showNotification(`Swapped ${amount.toFixed(4)} iKb for ${(amount * exchangeRate).toFixed(2)} KSH`);
+                } else {
+                    const ikbAmount = amount / exchangeRate;
+                    newBalance += ikbAmount;
+                    showNotification(`Swapped ${amount.toFixed(2)} KSH for ${ikbAmount.toFixed(4)} iKb`);
+                }
+                
+                userBalance = newBalance;
+                
+                // Save transaction
+                const transactionData = {
+                    userId: currentUser.uid,
+                    type: 'swap',
+                    amount: fromCurrency === 'ikb' ? -amount : amount / exchangeRate,
+                    fromCurrency: fromCurrency,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    balance: userBalance
+                };
+                
+                await db.collection('transactions').add(transactionData);
+                await saveUserDataToFirestore();
+                
+                updateBalanceDisplay();
+                updateWalletDisplay();
+                hideForms();
+                
+                // Clear form
+                document.getElementById('swapAmount').value = '';
+                
+            } catch (error) {
+                console.error('Swap transaction error:', error);
+                showError('Failed to process swap');
+            }
+        }
+
+        async function processLockup() {
+            const amount = parseFloat(document.getElementById('lockupAmount').value);
+            const period = parseInt(document.getElementById('lockupPeriod').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            try {
+                const bonusRates = { 30: 0.05, 90: 0.15, 180: 0.35, 365: 1.0 };
+                const bonusAmount = amount * bonusRates[period];
+                
+                userBalance -= amount;
+                lockedBalance += amount + bonusAmount;
+                
+                // Save lockup transaction
+                const lockupData = {
+                    userId: currentUser.uid,
+                    type: 'lockup',
+                    amount: amount,
+                    bonusAmount: bonusAmount,
+                    period: period,
+                    unlockDate: new Date(Date.now() + period * 24 * 60 * 60 * 1000),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    balance: userBalance
+                };
+                
+                await db.collection('transactions').add(lockupData);
+                await saveUserDataToFirestore();
+                
+                updateBalanceDisplay();
+                updateWalletDisplay();
+                hideForms();
+                
+                showNotification(`Locked ${amount.toFixed(4)} iKb for ${period} days with ${(bonusAmount * 100 / amount).toFixed(0)}% bonus!`);
+                
+                // Clear form
+                document.getElementById('lockupAmount').value = '';
+                
+            } catch (error) {
+                console.error('Lockup transaction error:', error);
+                showError('Failed to process lockup');
+            }
+        }
+
+        async function processReserve() {
+            const amount = parseFloat(document.getElementById('reserveAmount').value);
+            const goal = document.getElementById('reserveGoal').value.trim();
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            try {
+                userBalance -= amount;
+                reserveBalance += amount;
+                
+                // Save reserve transaction
+                const reserveData = {
+                    userId: currentUser.uid,
+                    type: 'reserve',
+                    amount: amount,
+                    goal: goal,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    balance: userBalance
+                };
+                
+                await db.collection('transactions').add(reserveData);
+                await saveUserDataToFirestore();
+                
+                updateBalanceDisplay();
+                updateWalletDisplay();
+                hideForms();
+                
+                showNotification(`Added ${amount.toFixed(4)} iKb to reserves! Goal: ${goal || 'General savings'}`);
+                
+                // Clear form
+                document.getElementById('reserveAmount').value = '';
+                document.getElementById('reserveGoal').value = '';
+                
+            } catch (error) {
+                console.error('Reserve transaction error:', error);
+                showError('Failed to add to reserves');
+            }
+        }
+
+        // Language setting function
+        function setLanguage(lang) {
+            if (lang === 'en') {
+                showNotification('Language set to English');
+            } else if (lang === 'sw') {
+                showNotification('Lugha imewekwa kuwa Kiswahili');
+            }
+            closeLanguage();
+        }
+
+        // Update balance display
         function updateBalanceDisplay() {
             const balanceElements = document.querySelectorAll('#balance, #totalBalance');
             balanceElements.forEach(el => {
                 if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
             });
         }
+
+        // Add event listeners for swap form
+        document.addEventListener('DOMContentLoaded', function() {
+            const swapAmountInput = document.getElementById('swapAmount');
+            const swapFromSelect = document.getElementById('swapFrom');
+            const swapToSelect = document.getElementById('swapTo');
+            
+            if (swapAmountInput) {
+                swapAmountInput.addEventListener('input', updateSwapPreview);
+            }
+            
+            if (swapFromSelect) {
+                swapFromSelect.addEventListener('change', function() {
+                    const toSelect = document.getElementById('swapTo');
+                    if (this.value === 'ikb') {
+                        toSelect.value = 'ksh';
+                    } else {
+                        toSelect.value = 'ikb';
+                    }
+                    updateSwapPreview();
+                });
+            }
+        });
 
         // Navigation Functions
         function showLoginPage() {
@@ -1499,6 +2383,7 @@
             document.getElementById('miningApp').style.display = 'block';
             hideAllMessages();
             updateBalanceDisplay();
+            updateWalletDisplay();
             startMiningTimer();
         }
 
@@ -1600,6 +2485,7 @@
                 if (seconds % 30 === 0 && currentUser && document.getElementById('miningApp').style.display === 'block') {
                     userBalance += 0.0001;
                     updateBalanceDisplay();
+                    updateWalletDisplay();
                     
                     // Save progress every few minutes
                     if (seconds % 180 === 0) {
@@ -1633,8 +2519,166 @@
             }, 3000);
         }
 
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['walletModal', 'utilitiesModal', 'readModal', 'languageModal', 'corporateModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    if (modalId === 'walletModal') {
+                        hideForms();
+                    }
+                }
+            });
+        }
+
+        // Initialize event listeners for wallet forms
+        document.addEventListener('DOMContentLoaded', function() {
+            // Swap amount input listener
+            const swapAmountInput = document.getElementById('swapAmount');
+            if (swapAmountInput) {
+                swapAmountInput.addEventListener('input', updateSwapPreview);
+            }
+            
+            // Swap currency change listeners
+            const swapFromSelect = document.getElementById('swapFrom');
+            if (swapFromSelect) {
+                swapFromSelect.addEventListener('change', function() {
+                    const toSelect = document.getElementById('swapTo');
+                    if (this.value === 'ikb') {
+                        toSelect.value = 'ksh';
+                    } else {
+                        toSelect.value = 'ikb';
+                    }
+                    updateSwapPreview();
+                });
+            }
+            
+            const swapToSelect = document.getElementById('swapTo');
+            if (swapToSelect) {
+                swapToSelect.addEventListener('change', function() {
+                    const fromSelect = document.getElementById('swapFrom');
+                    if (this.value === 'ikb') {
+                        fromSelect.value = 'ksh';
+                    } else {
+                        fromSelect.value = 'ikb';
+                    }
+                    updateSwapPreview();
+                });
+            }
+            
+            // Form validation listeners
+            const sendAmountInput = document.getElementById('sendAmount');
+            if (sendAmountInput) {
+                sendAmountInput.addEventListener('input', function() {
+                    const amount = parseFloat(this.value);
+                    if (amount > userBalance) {
+                        this.style.borderColor = '#ff6b6b';
+                    } else {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                    }
+                });
+            }
+            
+            const lockupAmountInput = document.getElementById('lockupAmount');
+            if (lockupAmountInput) {
+                lockupAmountInput.addEventListener('input', function() {
+                    const amount = parseFloat(this.value);
+                    if (amount > userBalance) {
+                        this.style.borderColor = '#ff6b6b';
+                    } else {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                    }
+                });
+            }
+            
+            const reserveAmountInput = document.getElementById('reserveAmount');
+            if (reserveAmountInput) {
+                reserveAmountInput.addEventListener('input', function() {
+                    const amount = parseFloat(this.value);
+                    if (amount > userBalance) {
+                        this.style.borderColor = '#ff6b6b';
+                    } else {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                    }
+                });
+            }
+        });
+
+        // Enhanced error handling for wallet operations
+        function validateWalletOperation(operation, amount) {
+            if (!currentUser || !currentUser.uid) {
+                showError('Please login to perform wallet operations');
+                return false;
+            }
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return false;
+            }
+            
+            if (operation !== 'receive' && amount > userBalance) {
+                showError('Insufficient balance');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Auto-save functionality
+        let autoSaveInterval;
+        function startAutoSave() {
+            // Save user data every 2 minutes
+            autoSaveInterval = setInterval(() => {
+                if (currentUser && currentUser.uid) {
+                    saveUserDataToFirestore();
+                }
+            }, 120000); // 2 minutes
+        }
+
+        function stopAutoSave() {
+            if (autoSaveInterval) {
+                clearInterval(autoSaveInterval);
+            }
+        }
+
+        // Enhanced auth state management
+        auth.onAuthStateChanged((user) => {
+            if (user && user.emailVerified) {
+                startAutoSave();
+            } else {
+                stopAutoSave();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Escape key closes modals
+            if (event.key === 'Escape') {
+                const modals = ['walletModal', 'utilitiesModal', 'readModal', 'languageModal', 'corporateModal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (modal.style.display === 'block') {
+                        modal.style.display = 'none';
+                        if (modalId === 'walletModal') {
+                            hideForms();
+                        }
+                    }
+                });
+            }
+            
+            // Ctrl/Cmd + W opens wallet
+            if ((event.ctrlKey || event.metaKey) && event.key === 'w') {
+                event.preventDefault();
+                if (currentUser) {
+                    showWallet();
+                }
+            }
+        });
+
         // App initialization complete
-        console.log('KABIRU Mining App with fixed data persistence initialized successfully');
+        console.log('KABIRU Mining App with full wallet functionality initialized successfully');
     </script>
 </body>
-            </html>
+    </html>
