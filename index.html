@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +18,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             background-attachment: fixed;
             min-height: 100vh;
@@ -26,7 +26,6 @@
             overflow-x: hidden;
         }
 
-        /* LOGIN STYLES - ORIGINAL DESIGN */
         .login-page {
             display: flex;
             align-items: center;
@@ -37,82 +36,89 @@
 
         .auth-container {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
             padding: 40px 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             width: 100%;
-            max-width: 400px;
-            animation: fadeInUp 0.8s ease-out;
-            margin: 20px auto;
+            max-width: 380px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .auth-logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
         .auth-logo-img {
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
             background: linear-gradient(45deg, #FFD700, #FFA500);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #333;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
             animation: pulse 2s infinite;
-            border: 2px solid #FFD700;
-            margin: 0 auto 15px;
+            border: 3px solid #FFD700;
+            margin: 0 auto 20px;
         }
 
         .auth-title {
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 700;
             color: #FFD700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
             margin-bottom: 8px;
+            letter-spacing: 1px;
         }
 
         .auth-subtitle {
-            font-size: 14px;
-            opacity: 0.8;
-            margin-bottom: 20px;
+            font-size: 15px;
+            opacity: 0.85;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             position: relative;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 14px;
             color: #FFD700;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .form-input {
             width: 100%;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
+            padding: 16px 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 16px;
             outline: none;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
 
         .form-input:focus {
             border-color: #FFD700;
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
 
         .form-input::placeholder {
@@ -125,116 +131,94 @@
 
         .password-toggle {
             position: absolute;
-            right: 15px;
+            right: 18px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
             color: #FFD700;
             cursor: pointer;
-            font-size: 18px;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .password-toggle:hover {
-            opacity: 0.7;
+            font-size: 20px;
+            padding: 4px;
         }
 
         .auth-button {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             background: linear-gradient(45deg, #FFD700, #FFA500);
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             color: #333;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
         }
 
         .auth-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
-        }
-
-        .auth-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
         }
 
         .auth-toggle {
             text-align: center;
             margin-top: 20px;
             font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .auth-toggle-link {
             color: #FFD700;
             cursor: pointer;
             text-decoration: underline;
-            transition: all 0.3s ease;
-        }
-
-        .auth-toggle-link:hover {
-            opacity: 0.8;
+            font-weight: 600;
         }
 
         .forgot-password-link {
             display: block;
             text-align: right;
             color: #FFD700;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             text-decoration: underline;
-            margin-top: 8px;
-            transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
-        .forgot-password-link:hover {
-            opacity: 0.8;
-        }
-
-        .signup-method-selection {
+        .signup-method-selection, .password-reset-container, .email-signup-container, .phone-signup-container, .email-verification-container {
             display: none;
-            text-align: center;
         }
 
         .method-title {
-            font-size: 18px;
+            font-size: 20px;
             color: #FFD700;
             font-weight: bold;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .method-subtitle {
-            font-size: 13px;
+            font-size: 14px;
             opacity: 0.8;
             margin-bottom: 25px;
-            line-height: 1.4;
+            line-height: 1.5;
+            text-align: center;
         }
 
         .signup-methods {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .method-button {
             flex: 1;
-            padding: 18px 15px;
+            padding: 20px 15px;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
+            border-radius: 16px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 14px;
@@ -245,88 +229,74 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .method-button:hover {
             border-color: #FFD700;
             background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .method-icon {
-            font-size: 24px;
-            margin-bottom: 4px;
+            font-size: 28px;
+            margin-bottom: 5px;
         }
 
         .method-name {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
         }
 
         .method-desc {
-            font-size: 10px;
+            font-size: 11px;
             opacity: 0.7;
-            line-height: 1.2;
-        }
-
-        .password-reset-container,
-        .email-signup-container,
-        .phone-signup-container {
-            display: none;
+            line-height: 1.3;
         }
 
         .signup-header {
             text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .signup-method-badge {
             display: inline-block;
-            padding: 6px 12px;
+            padding: 8px 16px;
             background: rgba(255, 215, 0, 0.2);
-            border-radius: 15px;
-            font-size: 12px;
+            border-radius: 20px;
+            font-size: 13px;
             color: #FFD700;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .back-to-methods {
             color: #FFD700;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             text-decoration: underline;
             opacity: 0.8;
-            transition: all 0.3s ease;
-        }
-
-        .back-to-methods:hover {
-            opacity: 1;
-        }
-
-        .email-verification-container {
-            display: none;
-            text-align: center;
         }
 
         .verification-info {
             background: rgba(255, 215, 0, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 25px;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .success-message, .error-message {
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 12px;
             margin-bottom: 20px;
             text-align: center;
             display: none;
+            font-weight: 500;
         }
 
         .success-message {
@@ -341,43 +311,94 @@
             color: #ff6b6b;
         }
 
-        /* MINING APP STYLES - ORIGINAL DESIGN RESTORED */
         .mining-app {
             display: none;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
             padding: 15px;
-            position: relative;
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            font-size: 12px;
-            opacity: 0.8;
+            margin-bottom: 25px;
+            gap: 10px;
         }
 
-        .top-bar div {
-            padding: 5px 10px;
+        .top-bar-btn {
+            padding: 10px 14px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 12px;
+            text-align: center;
+            flex: 1;
+            font-weight: 500;
         }
 
-        .top-bar div:hover {
+        .top-bar-btn:hover {
             background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .user-account-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1.3;
+        }
+
+        .user-account-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 11px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .user-number {
+            font-size: 9px;
+            opacity: 0.7;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             animation: fadeInDown 1s ease-out;
         }
 
@@ -386,143 +407,143 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 18px;
+            margin-bottom: 18px;
         }
 
         .logo-img {
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
             background: linear-gradient(45deg, #FFD700, #FFA500);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #333;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
             animation: pulse 2s infinite;
-            border: 2px solid #FFD700;
+            border: 3px solid #FFD700;
         }
 
         .app-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             color: #FFD700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .subtitle {
-            font-size: 14px;
+            font-size: 15px;
             opacity: 0.8;
-            margin-top: 5px;
+            margin-top: 8px;
         }
 
         .balance-section {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 25px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: fadeInUp 1s ease-out 0.2s both;
         }
 
         .balance-title {
-            font-size: 14px;
+            font-size: 15px;
             opacity: 0.8;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
         .balance-amount {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             color: #FFD700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            margin-bottom: 8px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
         }
 
         .mining-rate {
-            font-size: 12px;
+            font-size: 13px;
             opacity: 0.7;
             color: #00ff87;
         }
 
-        /* ORIGINAL BUTTON LAYOUT RESTORED */
         .main-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 18px;
+            margin-bottom: 30px;
         }
 
         .main-button {
             background: linear-gradient(45deg, #667eea, #764ba2);
             border: none;
-            padding: 20px 10px;
-            border-radius: 15px;
-            font-size: 14px;
+            padding: 22px 12px;
+            border-radius: 18px;
+            font-size: 15px;
             font-weight: bold;
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
             animation: fadeInUp 1s ease-out 0.4s both;
             text-align: center;
         }
 
         .main-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
         }
 
         .sovereign-btn {
             background: linear-gradient(45deg, #FFD700, #FFA500);
             color: #333;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
         }
 
         .value-btn {
             background: linear-gradient(45deg, #00ff87, #60efff);
             color: #333;
+            box-shadow: 0 10px 30px rgba(0, 255, 135, 0.3);
         }
 
         .reserve-btn {
             background: linear-gradient(45deg, #ff6b6b, #ffa726);
             color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
         }
 
         .stats-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 18px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            border-radius: 12px;
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            border-radius: 16px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: fadeInUp 1s ease-out 0.6s both;
         }
 
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: #FFD700;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .stat-label {
-            font-size: 11px;
+            font-size: 12px;
             opacity: 0.7;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -530,10 +551,10 @@
 
         .tasks-section {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -541,31 +562,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .tasks-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #FFD700;
         }
 
         .reward-info {
-            font-size: 12px;
+            font-size: 13px;
             opacity: 0.8;
         }
 
         .task-categories {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 18px;
         }
 
         .task-category {
             background: rgba(255, 255, 255, 0.1);
-            padding: 12px 8px;
-            border-radius: 10px;
+            padding: 15px 10px;
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -575,6 +596,7 @@
         .task-category:hover {
             background: rgba(255, 255, 255, 0.2);
             border-color: #FFD700;
+            transform: translateY(-2px);
         }
 
         .task-category.active {
@@ -583,78 +605,229 @@
         }
 
         .category-title {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .category-subtitle {
-            font-size: 9px;
+            font-size: 10px;
             opacity: 0.7;
         }
 
         .value-categories {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
         }
 
         .value-item {
             background: rgba(0, 255, 135, 0.1);
-            padding: 8px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             text-align: center;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 135, 0.2);
         }
 
         .value-item:hover {
             background: rgba(0, 255, 135, 0.2);
+            transform: translateY(-2px);
         }
 
         .personal-ledger {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .ledger-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
         .ledger-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 12px;
             text-align: center;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         .ledger-title {
             font-weight: bold;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             color: #FFD700;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 420px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+            padding: 5px;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        .modal-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .modal-btn.active {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #333;
+        }
+
+        .wallet-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .wallet-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .wallet-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .language-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
         .notification {
             position: fixed;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             color: white;
-            padding: 12px 20px;
-            border-radius: 25px;
+            padding: 15px 25px;
+            border-radius: 30px;
             font-size: 14px;
             opacity: 0;
             transition: opacity 0.3s ease;
-            z-index: 1000;
+            z-index: 1001;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .notification.show {
@@ -667,15 +840,18 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 15px;
+            padding: 30px;
+            border-radius: 20px;
             text-align: center;
             display: none;
-            z-index: 1000;
+            z-index: 1001;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         .mining-animation {
             animation: pulse 1s ease-in-out infinite;
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
         @keyframes fadeInDown {
@@ -694,15 +870,10 @@
             100% { transform: scale(1); }
         }
 
-        .hidden {
-            display: none;
-        }
-
-        /* Responsive Design */
         @media (max-width: 480px) {
             .auth-container {
-                margin: 20px;
-                padding: 30px 20px;
+                margin: 15px;
+                padding: 30px 25px;
             }
             
             .signup-methods {
@@ -712,21 +883,33 @@
             .stats-section {
                 grid-template-columns: 1fr;
             }
+
+            .main-buttons {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .auth-title {
+                font-size: 28px;
+            }
+
+            .balance-amount {
+                font-size: 30px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Login Page -->
-    <div id="loginPage" class="login-page" style="display: flex;">
-        <div class="auth-container" id="authContainer">
-            <!-- Logo Section -->
+    <div id="loginPage" class="login-page">
+        <div class="auth-container">
             <div class="auth-logo">
                 <div class="auth-logo-img">iKb</div>
                 <div class="auth-title">KABIRU</div>
                 <div class="auth-subtitle">Secure Login Portal</div>
             </div>
 
-            <!-- Login Form -->
+            <!-- Main Login Form -->
             <div id="loginContainer">
                 <div class="form-group">
                     <label class="form-label">Email or Phone</label>
@@ -754,7 +937,9 @@
                     <div class="back-to-methods" onclick="showLogin()">← Back to Sign In</div>
                 </div>
                 
-                <div class="verification-info">
+  <div class="verification-info">
+                    <strong>Reset Your Password:
+<div class="verification-info">
                     <strong>Reset Your Password:</strong><br>
                     Enter your email address and we'll send you a link to reset your password.
                 </div>
@@ -827,7 +1012,7 @@
                     </div>
                 </div>
                 
-                <button type="button" class="auth-button" onclick="handleEmailSignup()">📧 CREATE ACCOUNT WITH EMAIL</button>
+                <button type="button" class="auth-button" onclick="handleEmailSignup()">Create Account</button>
                 
                 <div class="auth-toggle">
                     Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
@@ -846,7 +1031,7 @@
                     Phone number verification will be available in the next update. Please use email signup for now.
                 </div>
                 
-                <button type="button" class="auth-button" onclick="showEmailSignup()">📧 USE EMAIL INSTEAD</button>
+                <button type="button" class="auth-button" onclick="showEmailSignup()">Use Email Instead</button>
                 
                 <div class="auth-toggle">
                     Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
@@ -890,16 +1075,21 @@
         </div>
     </div>
 
-    <!-- Mining App - ORIGINAL DESIGN RESTORED -->
+    <!-- Mining App -->
     <div id="miningApp" class="mining-app">
         <div class="container">
             <!-- Top Navigation Bar -->
             <div class="top-bar">
-                <div onclick="showUtilities()">UTILITIES</div>
-                <div onclick="showWallet()">WALLET</div>
-                <div onclick="showReadPage()">READ</div>
-                <div onclick="showLanguageModal()">LANGUAGE</div>
-                <div onclick="showUserAccount()">ACCOUNT</div>
+                <div class="top-bar-btn" onclick="openEducationModal()">📚 Education</div>
+                <div class="top-bar-btn" onclick="openWalletModal()">💰 Wallet</div>
+                <div class="top-bar-btn" onclick="openLanguageModal()">🌍 Language</div>
+                <div class="user-account-btn" onclick="openUserAccountModal()">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">User</div>
+                        <div class="user-number" id="userNumber">#001</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Header -->
@@ -921,7 +1111,7 @@
                 <div style="font-size: 12px; margin-top: 5px; color: #00ff87;" id="miningTimer"></div>
             </div>
 
-            <!-- Main Action Buttons - ORIGINAL LAYOUT -->
+            <!-- Main Action Buttons -->
             <div class="main-buttons">
                 <button class="main-button sovereign-btn" onclick="openSovereignModal()">
                     SOVEREIGN
@@ -1014,6 +1204,267 @@
         </div>
     </div>
 
+    <!-- Education Modal -->
+    <div id="educationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📚 Educational Resources</h2>
+                <span class="close" onclick="closeModal('educationModal')">&times;</span>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🎨 Early Childhood Development (ECD)</h3>
+                <p>Foundation learning for ages 3-6</p>
+                <button class="modal-btn" onclick="openEducationLevel('ecd')">Access ECD Resources</button>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🏫 Lower Primary School</h3>
+                <p>Grade 1-3 curriculum and activities</p>
+                <button class="modal-btn" onclick="openEducationLevel('lower')">Grade 1-3 Resources</button>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🎓 Upper Primary School</h3>
+                <p>Grade 4-8 advanced learning</p>
+                <button class="modal-btn" onclick="openEducationLevel('upper')">Grade 4-8 Resources</button>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🏛️ High School</h3>
+                <p>Form 1-4 secondary education</p>
+                <button class="modal-btn" onclick="openEducationLevel('high')">Form 1-4 Resources</button>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🎯 Tertiary Education</h3>
+                <p>College & technical training</p>
+                <button class="modal-btn" onclick="openEducationLevel('tertiary')">College & Technical Training</button>
+            </div>
+            
+            <div class="modal-section">
+                <h3>🏆 University</h3>
+                <p>Undergraduate & graduate programs</p>
+                <button class="modal-btn" onclick="openEducationLevel('university')">University Resources</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">💰 Wallet Management</h2>
+                <span class="close" onclick="closeModal('walletModal')">&times;</span>
+            </div>
+            
+            <div class="modal-section">
+                <h3>💳 Current Balance</h3>
+                <div style="text-align: center; font-size: 24px; margin: 15px 0;">
+                    <span id="walletBalance">0.0000</span> KABIRU
+                </div>
+                <div style="text-align: center; opacity: 0.7;">
+                    Available: <span id="availableBalance">0.0000</span> | 
+                    Reserved: <span id="reservedBalance">0.0000</span>
+                </div>
+            </div>
+            
+            <div class="wallet-actions">
+                <button class="wallet-btn" onclick="openWalletAction('send')">📤 Send</button>
+                <button class="wallet-btn" onclick="openWalletAction('receive')">📥 Receive</button>
+                <button class="wallet-btn" onclick="openWalletAction('swap')">🔄 Swap KSH</button>
+                <button class="wallet-btn" onclick="copyAddress()">📋 Copy Address</button>
+                <button class="wallet-btn" onclick="openWalletAction('lockup')">🔒 Lock Up</button>
+                <button class="wallet-btn" onclick="openWalletAction('reserve')">💎 Reserve</button>
+            </div>
+            
+            <div id="walletActionPanel" style="display: none; margin-top: 20px;">
+                <div id="sendPanel" class="wallet-panel" style="display: none;">
+                    <h4>📤 Send Kabiru</h4>
+                    <div class="input-group">
+                        <label>Recipient Address</label>
+                        <input type="text" id="sendAddress" placeholder="Enter recipient address">
+                    </div>
+                    <div class="input-group">
+                        <label>Amount</label>
+                        <input type="number" id="sendAmount" placeholder="Enter amount" step="0.0001">
+                    </div>
+                    <button class="modal-btn" onclick="sendKabiru()">Send Kabiru</button>
+                </div>
+                
+                <div id="receivePanel" class="wallet-panel" style="display: none;">
+                    <h4>📥 Receive Kabiru</h4>
+                    <p>Your Wallet Address:</p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; word-break: break-all; margin: 10px 0;">
+                        <span id="userAddress">KBR1234567890ABCDEF</span>
+                    </div>
+                    <button class="modal-btn" onclick="copyAddress()">Copy Address</button>
+                </div>
+                
+                <div id="swapPanel" class="wallet-panel" style="display: none;">
+                    <h4>🔄 Swap to KSH</h4>
+                    <div class="input-group">
+                        <label>Kabiru Amount</label>
+                        <input type="number" id="swapAmount" placeholder="Enter Kabiru amount" step="0.0001">
+                    </div>
+                    <div style="margin: 10px 0; opacity: 0.8;">
+                        Rate: 1 KABIRU = 50 KSH
+                    </div>
+                    <button class="modal-btn" onclick="swapToKsh()">Swap to KSH</button>
+                </div>
+                
+                <div id="lockupPanel" class="wallet-panel" style="display: none;">
+                    <h4>🔒 Lock Up Kabiru</h4>
+                    <div class="input-group">
+                        <label>Amount to Lock</label>
+                        <input type="number" id="lockupAmount" placeholder="Enter amount" step="0.0001">
+                    </div>
+                    <div class="input-group">
+                        <label>Lock Duration (days)</label>
+                        <input type="number" id="lockupDays" placeholder="Enter days" min="1">
+                    </div>
+                    <p style="font-size: 12px; opacity: 0.7;">Earn 5% APY on locked Kabiru</p>
+                    <button class="modal-btn" onclick="lockupKabiru()">Lock Up</button>
+                </div>
+                
+                <div id="reservePanel" class="wallet-panel" style="display: none;">
+                    <h4>💎 Reserve Kabiru</h4>
+                    <div class="input-group">
+                        <label>Amount to Reserve</label>
+                        <input type="number" id="reserveAmount" placeholder="Enter amount" step="0.0001">
+                    </div>
+                    <p style="font-size: 12px; opacity: 0.7;">Reserved Kabiru is saved and protected from spending</p>
+                    <button class="modal-btn" onclick="reserveKabiru()">Reserve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🌍 Language Settings</h2>
+                <span class="close" onclick="closeModal('languageModal')">&times;</span>
+            </div>
+            
+            <div class="modal-section">
+                <h3>Select Your Language</h3>
+                <div class="language-grid">
+                    <button class="modal-btn" onclick="changeLanguage('en')" id="lang-en">🇬🇧 English</button>
+                    <button class="modal-btn" onclick="changeLanguage('sw')" id="lang-sw">🇰🇪 Kiswahili</button>
+                    <button class="modal-btn" onclick="changeLanguage('luo')" id="lang-luo">🏛️ Dholuo</button>
+                    <button class="modal-btn" onclick="changeLanguage('kik')" id="lang-kik">🗻 Kikuyu</button>
+                    <button class="modal-btn" onclick="changeLanguage('luh')" id="lang-luh">🌾 Luhya</button>
+                    <button class="modal-btn" onclick="changeLanguage('run')" id="lang-run">🇧🇮 Kirundi</button>
+                    <button class="modal-btn" onclick="changeLanguage('kam')" id="lang-kam">🏔️ Kikamba</button>
+                    <button class="modal-btn" onclick="changeLanguage('mer')" id="lang-mer">🌳 Kimeru</button>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <p style="opacity: 0.7; font-size: 12px;">
+                        Current Language: <span id="currentLanguage">English</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Account Modal -->
+    <div id="userAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">👤 User Account</h2>
+                <span class="close" onclick="closeModal('userAccountModal')">&times;</span>
+            </div>
+            
+            <div class="modal-section">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #FFD700, #FFA500); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: #333;" id="accountAvatar">U</div>
+                    <h3 id="accountName">User Account</h3>
+                    <p id="accountNumber">#001</p>
+                </div>
+            </div>
+            
+            <div class="modal-section">
+                <h4>Account Details</h4>
+                <div class="input-group">
+                    <label>Display Name</label>
+                    <input type="text" id="displayName" placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="userEmail" placeholder="Enter your email" readonly>
+                </div>
+                <button class="modal-btn" onclick="updateAccount()">Update Account</button>
+            </div>
+            
+            <div class="modal-section">
+                <h4>Account Statistics</h4>
+                <div class="stats-grid">
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountBalance">0.0000</div>
+                        <div style="font-size: 12px; opacity: 0.7;">Total Balance</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountMined">0.0000</div>
+                        <div style="font-size: 12px; opacity: 0.7;">Total Mined</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="miningDays">0</div>
+                        <div style="font-size: 12px; opacity: 0.7;">Mining Days</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountRank">Beginner</div>
+                        <div style="font-size: 12px; opacity: 0.7;">Miner Rank</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sovereign Modal -->
+    <div id="sovereignModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">👑 SOVEREIGN Mining</h2>
+                <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
+            </div>
+            
+            <div class="modal-section">
+                <h3>Sovereign Benefits</h3>
+                <p>Become a sovereign miner and enjoy premium benefits:</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>3x mining rate boost</li>
+                    <li>Exclusive governance rights</li>
+                    <li>Priority transaction processing</li>
+                    <li>Access to premium features</li>
+                </ul>
+                <button class="modal-btn" onclick="mineTokens('sovereign', 0.005)">Start Sovereign Mining</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Value Modal -->
+    <div id="valueModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">💎 VALUE Creation</h2>
+                <span class="close" onclick="closeModal('valueModal')">&times;</span>
+            </div>
+            
+            <div class="modal-section">
+                <h3>Create Value Through:</h3>
+                <div class="value-categories" style="grid-template-columns: 1fr; gap: 10px;">
+                    <button class="modal-btn" onclick="performValueTask('service')">🛠️ Service Value (+0.0015 iKb)</button>
+                    <button class="modal-btn" onclick="performValueTask('skill')">🎯 Skill Value (+0.0025 iKb)</button>
+                    <button class="modal-btn" onclick="performValueTask('knowledge')">📚 Knowledge Value (+0.0035 iKb)</button>
+                    <button class="modal-btn" onclick="performValueTask('innovation')">💡 Innovation Value (+0.005 iKb)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Mining Indicator -->
     <div id="miningIndicator" class="mining-indicator">
         <div class="mining-animation">⛏️ Mining in Progress...</div>
@@ -1046,14 +1497,24 @@
         let miningRate = 0.001;
         let isMining = false;
         let totalTasksCompleted = 0;
+        let reservedBalance = 0.0000;
+        let availableBalance = 0.0000;
+        let userLanguage = 'en';
+        let userDisplayName = 'User';
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('KABIRU Mining App starting...');
+            // Ensure login page is properly initialized
+            hideAllContainers();
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('miningApp').style.display = 'none';
+            hideAllMessages();
             checkLoginStatus();
         });
 
-        // FIXED: Enhanced Authentication State Management
+        // Enhanced Authentication State Management
         function checkLoginStatus() {
             console.log('Checking login status...');
             
@@ -1067,7 +1528,6 @@
                         emailVerified: user.emailVerified
                     };
                     
-                    // FIXED: Always load user data from Firestore on login
                     await loadUserDataFromFirestore(user.uid);
                     showMiningApp();
                 } else {
@@ -1080,7 +1540,7 @@
             });
         }
 
-        // FIXED: Load user data from Firestore with better error handling
+        // Load user data from Firestore
         async function loadUserDataFromFirestore(uid) {
             try {
                 console.log('Loading user data from Firestore for UID:', uid);
@@ -1091,10 +1551,13 @@
                     const userData = userDoc.data();
                     console.log('User data loaded from Firestore:', userData);
                     
-                    // FIXED: Set values from Firestore with proper fallbacks
                     userBalance = parseFloat(userData.balance) || 0.0000;
                     totalTasksCompleted = parseInt(userData.tasksCompleted) || 0;
                     miningRate = parseFloat(userData.miningRate) || 0.001;
+                    reservedBalance = parseFloat(userData.reservedBalance) || 0.0000;
+                    availableBalance = parseFloat(userData.availableBalance) || userBalance;
+                    userLanguage = userData.language || 'en';
+                    userDisplayName = userData.displayName || currentUser.displayName || 'User';
                     
                     console.log('LOADED - Balance:', userBalance, 'Tasks:', totalTasksCompleted);
                 } else {
@@ -1103,23 +1566,23 @@
                 }
                 
                 updateBalanceDisplay();
-                if (document.getElementById('tasksCompleted')) {
-                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-                }
+                updateUserInterface();
                 
             } catch (error) {
                 console.error('Error loading user data from Firestore:', error);
                 showError('Failed to load your account data. Using default values.');
                 
-                // Set default values if Firestore fails
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
                 miningRate = 0.001;
+                reservedBalance = 0.0000;
+                availableBalance = 0.0000;
                 updateBalanceDisplay();
+                updateUserInterface();
             }
         }
 
-        // FIXED: Create initial user document in Firestore
+        // Create initial user document in Firestore
         async function createInitialUserDocument(uid) {
             try {
                 const user = auth.currentUser;
@@ -1130,6 +1593,9 @@
                     balance: 0.0000,
                     tasksCompleted: 0,
                     miningRate: 0.001,
+                    reservedBalance: 0.0000,
+                    availableBalance: 0.0000,
+                    language: 'en',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     totalEarnings: 0.0000,
@@ -1139,10 +1605,13 @@
                 await db.collection('users').doc(uid).set(initialData);
                 console.log('Initial user document created in Firestore');
                 
-                // Set local variables
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
                 miningRate = 0.001;
+                reservedBalance = 0.0000;
+                availableBalance = 0.0000;
+                userLanguage = 'en';
+                userDisplayName = user.displayName || 'User';
                 
             } catch (error) {
                 console.error('Error creating initial user document:', error);
@@ -1150,7 +1619,7 @@
             }
         }
 
-        // FIXED: Save user data to Firestore with retry logic
+        // Save user data to Firestore
         async function saveUserDataToFirestore() {
             if (!currentUser || !currentUser.uid) {
                 console.error('Cannot save data - no authenticated user');
@@ -1168,6 +1637,10 @@
                     balance: parseFloat(userBalance.toFixed(4)),
                     tasksCompleted: parseInt(totalTasksCompleted),
                     miningRate: parseFloat(miningRate),
+                    reservedBalance: parseFloat(reservedBalance.toFixed(4)),
+                    availableBalance: parseFloat(availableBalance.toFixed(4)),
+                    language: userLanguage,
+                    displayName: userDisplayName,
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     totalEarnings: parseFloat(userBalance.toFixed(4)),
                     miningStatus: isMining ? 'active' : 'inactive'
@@ -1176,7 +1649,6 @@
                 await db.collection('users').doc(currentUser.uid).update(updateData);
                 console.log('User data saved to Firestore successfully');
                 
-                // Save mining transaction
                 await saveMiningTransaction();
                 
                 return true;
@@ -1188,7 +1660,7 @@
             }
         }
 
-        // FIXED: Save individual mining transactions with proper data
+        // Save individual mining transactions
         async function saveMiningTransaction() {
             if (!currentUser || !currentUser.uid) return;
             
@@ -1220,9 +1692,7 @@
             }
 
             try {
-                // Check if credential is email or phone
                 if (credential.includes('@')) {
-                    // Email login
                     const userCredential = await auth.signInWithEmailAndPassword(credential, password);
                     const user = userCredential.user;
                     
@@ -1413,7 +1883,7 @@
             }
         }
 
-        // FIXED: Mining function with proper Firestore saving
+        // Mining function with proper Firestore saving
         async function mineTokens(type, reward) {
             if (!currentUser || !currentUser.uid) {
                 showError('Please login to mine tokens');
@@ -1434,15 +1904,15 @@
             setTimeout(async () => {
                 const oldBalance = userBalance;
                 userBalance += reward;
+                availableBalance += reward;
                 totalTasksCompleted++;
                 
                 console.log('Balance updated:', oldBalance, '->', userBalance);
                 console.log('Tasks updated to:', totalTasksCompleted);
                 
                 updateBalanceDisplay();
-                document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
+                updateUserInterface();
                 
-                // FIXED: Save to Firestore immediately after mining
                 const saved = await saveUserDataToFirestore();
                 
                 document.getElementById('miningIndicator').style.display = 'none';
@@ -1456,6 +1926,8 @@
                 
                 isMining = false;
                 document.getElementById('miningStatus').textContent = 'Inactive';
+                
+                closeAllModals();
                 
             }, 3000);
         }
@@ -1479,6 +1951,284 @@
             mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
         }
 
+        function performValueTask(valueType) {
+            const rewards = {
+                service: 0.0015,
+                skill: 0.0025,
+                knowledge: 0.0035,
+                innovation: 0.005
+            };
+            
+            mineTokens(`value-${valueType}`, rewards[valueType] || 0.0015);
+        }
+
+        // Modal Functions
+        function openEducationModal() {
+            document.getElementById('educationModal').style.display = 'block';
+        }
+
+        function openWalletModal() {
+            updateWalletDisplay();
+            document.getElementById('walletModal').style.display = 'block';
+        }
+
+        function openLanguageModal() {
+            updateLanguageDisplay();
+            document.getElementById('languageModal').style.display = 'block';
+        }
+
+        function openUserAccountModal() {
+            updateAccountDisplay();
+            document.getElementById('userAccountModal').style.display = 'block';
+        }
+
+        function openSovereignModal() {
+            document.getElementById('sovereignModal').style.display = 'block';
+        }
+
+        function openValueModal() {
+            document.getElementById('valueModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            if (modalId === 'walletModal') {
+                document.getElementById('walletActionPanel').style.display = 'none';
+                document.querySelectorAll('.wallet-panel').forEach(panel => {
+                    panel.style.display = 'none';
+                });
+            }
+        }
+
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+
+        // Education Functions
+        function openEducationLevel(level) {
+            const levels = {
+                ecd: 'Early Childhood Development resources are being prepared...',
+                lower: 'Lower Primary School (Grade 1-3) curriculum loading...',
+                upper: 'Upper Primary School (Grade 4-8) resources available soon...',
+                high: 'High School (Form 1-4) materials coming soon...',
+                tertiary: 'Tertiary education resources in development...',
+                university: 'University level content being curated...'
+            };
+            
+            showNotification(levels[level] || 'Educational content loading...');
+            mineTokens('education', 0.001);
+        }
+
+        // Wallet Functions
+        function updateWalletDisplay() {
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4);
+            document.getElementById('availableBalance').textContent = availableBalance.toFixed(4);
+            document.getElementById('reservedBalance').textContent = reservedBalance.toFixed(4);
+            document.getElementById('userAddress').textContent = generateUserAddress();
+        }
+
+        function generateUserAddress() {
+            if (!currentUser) return 'KBR000000000000000';
+            const hash = currentUser.uid.slice(0, 15);
+            return `KBR${hash.toUpperCase()}`;
+        }
+
+        function openWalletAction(action) {
+            document.querySelectorAll('.wallet-panel').forEach(panel => {
+                panel.style.display = 'none';
+            });
+            
+            document.getElementById('walletActionPanel').style.display = 'block';
+            document.getElementById(action + 'Panel').style.display = 'block';
+        }
+
+        function sendKabiru() {
+            const address = document.getElementById('sendAddress').value.trim();
+            const amount = parseFloat(document.getElementById('sendAmount').value);
+            
+            if (!address || !amount || amount <= 0) {
+                showError('Please enter valid address and amount');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            availableBalance -= amount;
+            userBalance -= amount;
+            updateBalanceDisplay();
+            updateWalletDisplay();
+            saveUserDataToFirestore();
+            
+            showNotification(`Successfully sent ${amount.toFixed(4)} KABIRU to ${address.slice(0, 10)}...`);
+            closeModal('walletModal');
+        }
+
+        function copyAddress() {
+            const address = generateUserAddress();
+            navigator.clipboard.writeText(address).then(() => {
+                showNotification('Address copied to clipboard!');
+            }).catch(() => {
+                showNotification('Address: ' + address);
+            });
+        }
+
+        function swapToKsh() {
+            const amount = parseFloat(document.getElementById('swapAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter valid amount');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            const kshAmount = amount * 50;
+            availableBalance -= amount;
+            userBalance -= amount;
+            
+            updateBalanceDisplay();
+            updateWalletDisplay();
+            saveUserDataToFirestore();
+            
+            showNotification(`Successfully swapped ${amount.toFixed(4)} KABIRU for ${kshAmount} KSH`);
+            closeModal('walletModal');
+        }
+
+        function lockupKabiru() {
+            const amount = parseFloat(document.getElementById('lockupAmount').value);
+            const days = parseInt(document.getElementById('lockupDays').value);
+            
+            if (!amount || !days || amount <= 0 || days <= 0) {
+                showError('Please enter valid amount and duration');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            availableBalance -= amount;
+            
+            updateBalanceDisplay();
+            updateWalletDisplay();
+            saveUserDataToFirestore();
+            
+            showNotification(`Successfully locked ${amount.toFixed(4)} KABIRU for ${days} days at 5% APY`);
+            closeModal('walletModal');
+        }
+
+        function reserveKabiru() {
+            const amount = parseFloat(document.getElementById('reserveAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter valid amount');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            availableBalance -= amount;
+            reservedBalance += amount;
+            
+            updateBalanceDisplay();
+            updateWalletDisplay();
+            saveUserDataToFirestore();
+            
+            showNotification(`Successfully reserved ${amount.toFixed(4)} KABIRU`);
+            closeModal('walletModal');
+        }
+
+        // Language Functions
+        function updateLanguageDisplay() {
+            document.querySelectorAll('[id^="lang-"]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const currentBtn = document.getElementById('lang-' + userLanguage);
+            if (currentBtn) {
+                currentBtn.classList.add('active');
+            }
+            
+            document.getElementById('currentLanguage').textContent = getLanguageName(userLanguage);
+        }
+
+        function changeLanguage(langCode) {
+            userLanguage = langCode;
+            updateLanguageDisplay();
+            saveUserDataToFirestore();
+            
+            const langName = getLanguageName(langCode);
+            showNotification(`Language changed to ${langName}`);
+            
+            setTimeout(() => {
+                closeModal('languageModal');
+            }, 1000);
+        }
+
+        function getLanguageName(code) {
+            const languages = {
+                en: 'English',
+                sw: 'Kiswahili',
+                luo: 'Dholuo',
+                kik: 'Kikuyu',
+                luh: 'Luhya',
+                run: 'Kirundi',
+                kam: 'Kikamba',
+                mer: 'Kimeru'
+            };
+            return languages[code] || 'English';
+        }
+
+        // Account Functions
+        function updateAccountDisplay() {
+            document.getElementById('accountName').textContent = userDisplayName;
+            document.getElementById('accountNumber').textContent = '#' + (currentUser ? currentUser.uid.slice(-6).toUpperCase() : '001');
+            document.getElementById('accountAvatar').textContent = userDisplayName.charAt(0).toUpperCase();
+            document.getElementById('displayName').value = userDisplayName;
+            document.getElementById('userEmail').value = currentUser ? currentUser.email : '';
+            document.getElementById('accountBalance').textContent = userBalance.toFixed(4);
+            document.getElementById('accountMined').textContent = userBalance.toFixed(4);
+            document.getElementById('miningDays').textContent = Math.floor(totalTasksCompleted / 10);
+            document.getElementById('accountRank').textContent = getMinerRank();
+        }
+
+        function getMinerRank() {
+            if (userBalance < 0.01) return 'Beginner';
+            if (userBalance < 0.1) return 'Bronze';
+            if (userBalance < 1) return 'Silver';
+            if (userBalance < 10) return 'Gold';
+            return 'Diamond';
+        }
+
+        function updateAccount() {
+            const newName = document.getElementById('displayName').value.trim();
+            
+            if (!newName) {
+                showError('Please enter a display name');
+                return;
+            }
+            
+            userDisplayName = newName;
+            updateUserInterface();
+            saveUserDataToFirestore();
+            
+            showNotification('Account updated successfully!');
+            closeModal('userAccountModal');
+        }
+
         // UI Update Functions
         function updateBalanceDisplay() {
             const balanceElements = document.querySelectorAll('#balance, #totalBalance');
@@ -1487,11 +2237,32 @@
             });
         }
 
+        function updateUserInterface() {
+            if (document.getElementById('tasksCompleted')) {
+                document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
+            }
+            
+            if (document.getElementById('userName')) {
+                document.getElementById('userName').textContent = userDisplayName;
+            }
+            
+            if (document.getElementById('userNumber')) {
+                const userNum = currentUser ? '#' + currentUser.uid.slice(-6).toUpperCase() : '#001';
+                document.getElementById('userNumber').textContent = userNum;
+            }
+            
+            if (document.getElementById('userAvatar')) {
+                document.getElementById('userAvatar').textContent = userDisplayName.charAt(0).toUpperCase();
+            }
+        }
+
         // Navigation Functions
         function showLoginPage() {
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('miningApp').style.display = 'none';
             hideAllMessages();
+            hideAllContainers();
+            document.getElementById('loginContainer').style.display = 'block';
         }
 
         function showMiningApp() {
@@ -1499,6 +2270,7 @@
             document.getElementById('miningApp').style.display = 'block';
             hideAllMessages();
             updateBalanceDisplay();
+            updateUserInterface();
             startMiningTimer();
         }
 
@@ -1596,12 +2368,11 @@
                 timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                 seconds++;
                 
-                // Auto-mine every 30 seconds if user is active
                 if (seconds % 30 === 0 && currentUser && document.getElementById('miningApp').style.display === 'block') {
                     userBalance += 0.0001;
+                    availableBalance += 0.0001;
                     updateBalanceDisplay();
                     
-                    // Save progress every few minutes
                     if (seconds % 180 === 0) {
                         saveUserDataToFirestore();
                     }
@@ -1633,8 +2404,15 @@
             }, 3000);
         }
 
+        // Click outside modal to close
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
         // App initialization complete
-        console.log('KABIRU Mining App with fixed data persistence initialized successfully');
+        console.log('KABIRU Mining App - FINAL COMPLETE VERSION Loaded Successfully');
     </script>
-</body>
-            </html>
+                        </body>
+</html>
