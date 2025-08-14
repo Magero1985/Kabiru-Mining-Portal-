@@ -1,4 +1,4 @@
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -162,6 +162,12 @@
         .auth-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
+        }
+
+        .auth-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .auth-toggle {
@@ -897,6 +903,11 @@
                 font-size: 30px;
             }
         }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -923,7 +934,7 @@
                     </div>
                     <span class="forgot-password-link" onclick="showPasswordReset()">Forgot Password?</span>
                 </div>
-                <button type="button" class="auth-button" onclick="handleLogin()">Sign In</button>
+                <button type="button" class="auth-button" id="loginBtn" onclick="handleLogin()">Sign In</button>
                 
                 <div class="auth-toggle">
                     Don't have an account? <span class="auth-toggle-link" onclick="showSignupMethodSelection()">Sign Up</span>
@@ -937,9 +948,7 @@
                     <div class="back-to-methods" onclick="showLogin()">← Back to Sign In</div>
                 </div>
                 
-  <div class="verification-info">
-                    <strong>Reset Your Password:
-<div class="verification-info">
+                <div class="verification-info">
                     <strong>Reset Your Password:</strong><br>
                     Enter your email address and we'll send you a link to reset your password.
                 </div>
@@ -1012,7 +1021,7 @@
                     </div>
                 </div>
                 
-                <button type="button" class="auth-button" onclick="handleEmailSignup()">Create Account</button>
+                <button type="button" class="auth-button" id="signupBtn" onclick="handleEmailSignup()">Create Account</button>
                 
                 <div class="auth-toggle">
                     Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
@@ -1505,6 +1514,10 @@
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('KABIRU Mining App starting...');
+            initializeApp();
+        });
+
+        function initializeApp() {
             // Ensure login page is properly initialized
             hideAllContainers();
             document.getElementById('loginContainer').style.display = 'block';
@@ -1512,30 +1525,45 @@
             document.getElementById('miningApp').style.display = 'none';
             hideAllMessages();
             checkLoginStatus();
-        });
+        }
 
         // Enhanced Authentication State Management
         function checkLoginStatus() {
             console.log('Checking login status...');
             
             auth.onAuthStateChanged(async (user) => {
-                if (user && user.emailVerified) {
-                    console.log('Authenticated user found:', user.uid);
-                    currentUser = {
-                        uid: user.uid,
-                        email: user.email,
-                        displayName: user.displayName,
-                        emailVerified: user.emailVerified
-                    };
+                console.log('Auth state changed. User:', user ? user.uid : 'none');
+                
+                if (user) {
+                    console.log('User found. Email verified:', user.emailVerified);
                     
-                    await loadUserDataFromFirestore(user.uid);
-                    showMiningApp();
+                    if (user.emailVerified) {
+                        console.log('User is verified. Loading data...');
+                        currentUser = {
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: user.displayName,
+                            emailVerified: user.emailVerified
+                        };
+                        
+                        try {
+                            await loadUserDataFromFirestore(user.uid);
+                            console.log('User data loaded. Showing mining app...');
+                            showMiningApp();
+                        } catch (error) {
+                            console.error('Error loading user data:', error);
+                            showError('Failed to load your account data. Please try again.');
+                            showLoginPage();
+                        }
+                    } else {
+                        console.log('User email not verified');
+                        showError('Please verify your email address first');
+                        await auth.signOut();
+                        showLoginPage();
+                    }
                 } else {
                     console.log('No authenticated user found');
                     showLoginPage();
-                    if (user && !user.emailVerified) {
-                        showError('Please verify your email address first');
-                    }
                 }
             });
         }
@@ -1570,15 +1598,7 @@
                 
             } catch (error) {
                 console.error('Error loading user data from Firestore:', error);
-                showError('Failed to load your account data. Using default values.');
-                
-                userBalance = 0.0000;
-                totalTasksCompleted = 0;
-                miningRate = 0.001;
-                reservedBalance = 0.0000;
-                availableBalance = 0.0000;
-                updateBalanceDisplay();
-                updateUserInterface();
+                throw error;
             }
         }
 
@@ -1685,6 +1705,7 @@
         async function handleLogin() {
             const credential = document.getElementById('loginCredential').value.trim();
             const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
             
             if (!credential || !password) {
                 showError('Please fill in all fields');
@@ -1692,9 +1713,15 @@
             }
 
             try {
+                loginBtn.textContent = 'Signing In...';
+                loginBtn.disabled = true;
+                
                 if (credential.includes('@')) {
+                    console.log('Attempting email login for:', credential);
                     const userCredential = await auth.signInWithEmailAndPassword(credential, password);
                     const user = userCredential.user;
+                    
+                    console.log('Login successful. Email verified:', user.emailVerified);
                     
                     if (!user.emailVerified) {
                         showError('Please verify your email address first.');
@@ -1702,8 +1729,7 @@
                         return;
                     }
                     
-                    console.log('Login successful');
-                    showNotification('Login successful!');
+                    showNotification('Login successful! Loading your account...');
                 } else {
                     showError('Phone login not yet implemented. Please use email.');
                 }
@@ -1721,10 +1747,16 @@
                     case 'auth/invalid-email':
                         errorMessage = 'Invalid email address.';
                         break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many failed attempts. Please try again later.';
+                        break;
                     default:
                         errorMessage += error.message;
                 }
                 showError(errorMessage);
+            } finally {
+                loginBtn.textContent = 'Sign In';
+                loginBtn.disabled = false;
             }
         }
 
@@ -1733,6 +1765,7 @@
             const email = document.getElementById('emailSignupEmail').value.trim();
             const password = document.getElementById('emailSignupPassword').value;
             const confirmPassword = document.getElementById('emailConfirmPassword').value;
+            const signupBtn = document.getElementById('signupBtn');
             
             if (!name || !email || !password || !confirmPassword) {
                 showError('Please fill in all fields');
@@ -1750,13 +1783,19 @@
             }
 
             try {
+                signupBtn.textContent = 'Creating Account...';
+                signupBtn.disabled = true;
+                
+                console.log('Creating account for:', email);
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
                 
+                console.log('Account created. Updating profile...');
                 await user.updateProfile({
                     displayName: name
                 });
                 
+                console.log('Sending verification email...');
                 await user.sendEmailVerification();
                 
                 currentUser = {
@@ -1787,6 +1826,9 @@
                         errorMessage += error.message;
                 }
                 showError(errorMessage);
+            } finally {
+                signupBtn.textContent = 'Create Account';
+                signupBtn.disabled = false;
             }
         }
 
@@ -1832,9 +1874,11 @@
                 const user = auth.currentUser;
                 if (!user) {
                     showError('No user found. Please try signing in again.');
+                    showLogin();
                     return;
                 }
                 
+                console.log('Reloading user to check verification status...');
                 await user.reload();
                 
                 console.log('Current user email verification status:', user.emailVerified);
@@ -2412,7 +2456,7 @@
         }
 
         // App initialization complete
-        console.log('KABIRU Mining App - FINAL COMPLETE VERSION Loaded Successfully');
+        console.log('KABIRU Mining App - Authentication Fixed Version Loaded Successfully');
     </script>
-                        </body>
-</html>
+</body>
+    </html>
