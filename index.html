@@ -1703,67 +1703,65 @@
 
         // Authentication Functions
         async function handleLogin() {
-            const credential = document.getElementById('loginCredential').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const loginBtn = document.getElementById('loginBtn');
+    const credential = document.getElementById('loginCredential').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const loginBtn = document.getElementById('loginBtn');
+    
+    if (!credential || !password) {
+        showError('Please fill in all fields');
+        return;
+    }
+
+    try {
+        loginBtn.textContent = 'Signing In...';
+        loginBtn.disabled = true;
+        
+        if (credential.includes('@')) {
+            console.log('Attempting email login for:', credential);
+            const userCredential = await auth.signInWithEmailAndPassword(credential, password);
+            const user = userCredential.user;
             
-            if (!credential || !password) {
-                showError('Please fill in all fields');
+            console.log('Login successful. Email verified:', user.emailVerified);
+            
+            if (!user.emailVerified) {
+                showError('Please verify your email address first.');
+                await auth.signOut();
                 return;
             }
-
-            try {
-                loginBtn.textContent = 'Signing In...';
-                loginBtn.disabled = true;
-                
-                // Add connection test before login attempt
-                console.log('Testing Firebase connection...');
-                await testFirebaseConnection();
-                console.log('Firebase connection test passed');
-                
-                if (credential.includes('@')) {
-                    console.log('Attempting email login for:', credential);
-                    const userCredential = await auth.signInWithEmailAndPassword(credential, password);
-                    const user = userCredential.user;
-                    
-                    console.log('Login successful. Email verified:', user.emailVerified);
-                    
-                    if (!user.emailVerified) {
-                        showError('Please verify your email address first.');
-                        await auth.signOut();
-                        return;
-                    }
-                    
-                    // Set current user immediately
-                    currentUser = {
-                        uid: user.uid,
-                        email: user.email,
-                        displayName: user.displayName,
-                        emailVerified: user.emailVerified
-                    };
-                    
-                    // Load user data and show app directly
-                    await loadUserDataFromFirestore(user.uid);
-                    showMiningApp();
-                    showNotification('Login successful! Welcome back!');
-                    
-                } else {
-                    showError('Phone login not yet implemented. Please use email.');
-                }
-                
-            } catch (error) {
-                console.error('Login error:', error);
-                
-                // Enhanced error handling with user-friendly messages
-                let errorMessage = handleFirebaseError(error);
-                showError(errorMessage);
-                
-            } finally {
-                loginBtn.textContent = 'Sign In';
-                loginBtn.disabled = false;
-            }
+            
+            showNotification('Login successful! Loading your account...');
+        } else {
+            showError('Phone login not yet implemented. Please use email.');
         }
-
+        
+    } catch (error) {
+        console.error('Login error:', error);
+        let errorMessage = 'Login failed. ';
+        switch (error.code) {
+            case 'auth/user-not-found':
+                errorMessage = 'No account found with this email.';
+                break;
+            case 'auth/wrong-password':
+                errorMessage = 'Incorrect password.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Invalid email address.';
+                break;
+            case 'auth/too-many-requests':
+                errorMessage = 'Too many failed attempts. Please try again later.';
+                break;
+            case 'auth/network-request-failed':
+                errorMessage = '🚫 Connection blocked. Try disabling ad blockers or use incognito mode.';
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        showError(errorMessage);
+    } finally {
+        loginBtn.textContent = 'Sign In';
+        loginBtn.disabled = false;
+    }
+}
         async function handleEmailSignup() {
             const name = document.getElementById('emailSignupName').value.trim();
             const email = document.getElementById('emailSignupEmail').value.trim();
