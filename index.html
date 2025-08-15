@@ -1700,7 +1700,67 @@
                 console.error('Error saving mining transaction:', error);
             }
         }
+async function testFirebaseConnection() {
+    try {
+        console.log('Testing Firebase connection...');
+        
+        // Simple test - just check if Firebase is accessible
+        const testDoc = db.collection('_test').limit(1);
+        await testDoc.get();
+        console.log('Firestore connection: OK');
+        
+    } catch (error) {
+        console.error('Firebase connection test failed:', error);
+        
+        if (error.code === 'unavailable' || 
+            error.message.includes('Failed to fetch') || 
+            error.message.includes('network')) {
+            const blockError = new Error('NETWORK_BLOCKED');
+            blockError.originalError = error;
+            throw blockError;
+        }
+        
+        // Don't block login for other errors, just log them
+        console.log('Connection test had issues but allowing login to proceed');
+    }
+}
 
+// Enhanced error handling
+function handleFirebaseError(error) {
+    console.log('Handling error:', error.code, error.message);
+    
+    // Network/blocking related errors
+    if (error.code === 'auth/network-request-failed' || 
+        error.message.includes('network') ||
+        error.message.includes('Failed to fetch') ||
+        error.message === 'NETWORK_BLOCKED') {
+        return `🚫 Connection Issue
+
+Try these solutions:
+• Disable ad blockers (uBlock, AdBlock, etc.)
+• Use incognito/private browsing mode  
+• Try mobile data instead of WiFi
+• Check if workplace/school blocks Firebase
+
+This usually fixes 90% of login problems!`;
+    }
+    
+    // Standard Firebase Auth errors
+    switch (error.code) {
+        case 'auth/user-not-found':
+            return '❌ No account found with this email. Please check your email or sign up first.';
+        case 'auth/wrong-password':
+            return '❌ Incorrect password. Try again or use "Forgot Password".';
+        case 'auth/invalid-email':
+            return '❌ Please enter a valid email address.';
+        case 'auth/too-many-requests':
+            return '⚠️ Too many failed attempts. Wait 5 minutes and try again.';
+        default:
+            return `❌ Login failed: ${error.message}
+
+💡 Try: incognito mode, disable extensions, or different browser.`;
+    }
+}
         // Authentication Functions
         async function handleLogin() {
     const credential = document.getElementById('loginCredential').value.trim();
@@ -1716,6 +1776,13 @@
         loginBtn.textContent = 'Signing In...';
         loginBtn.disabled = true;
         
+        // Quick connection test (non-blocking)
+        try {
+            await testFirebaseConnection();
+        } catch (connError) {
+            console.log('Connection test failed, but proceeding with login');
+        }
+        
         if (credential.includes('@')) {
             console.log('Attempting email login for:', credential);
             const userCredential = await auth.signInWithEmailAndPassword(credential, password);
@@ -1729,39 +1796,32 @@
                 return;
             }
             
+            // Set current user immediately to prevent auth state conflicts
+            currentUser = {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+                emailVerified: user.emailVerified
+            };
+            
             showNotification('Login successful! Loading your account...');
+            
         } else {
             showError('Phone login not yet implemented. Please use email.');
         }
         
     } catch (error) {
         console.error('Login error:', error);
-        let errorMessage = 'Login failed. ';
-        switch (error.code) {
-            case 'auth/user-not-found':
-                errorMessage = 'No account found with this email.';
-                break;
-            case 'auth/wrong-password':
-                errorMessage = 'Incorrect password.';
-                break;
-            case 'auth/invalid-email':
-                errorMessage = 'Invalid email address.';
-                break;
-            case 'auth/too-many-requests':
-                errorMessage = 'Too many failed attempts. Please try again later.';
-                break;
-            case 'auth/network-request-failed':
-                errorMessage = '🚫 Connection blocked. Try disabling ad blockers or use incognito mode.';
-                break;
-            default:
-                errorMessage += error.message;
-        }
+        
+        // Use enhanced error handling
+        const errorMessage = handleFirebaseError(error);
         showError(errorMessage);
+        
     } finally {
         loginBtn.textContent = 'Sign In';
         loginBtn.disabled = false;
     }
-}
+        }
         async function handleEmailSignup() {
             const name = document.getElementById('emailSignupName').value.trim();
             const email = document.getElementById('emailSignupEmail').value.trim();
