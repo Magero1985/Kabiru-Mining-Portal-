@@ -2519,6 +2519,55 @@ This usually fixes 90% of login problems!`;
 
         // App initialization complete
         console.log('KABIRU Mining App - Authentication Fixed Version Loaded Successfully');
+        // Add troubleshooting help
+function showTroubleshootingHelp() {
+    const helpMessage = `🔧 LOGIN TROUBLESHOOTING:
+
+1️⃣ INCOGNITO MODE (Most Effective):
+   • Chrome: Ctrl+Shift+N
+   • Firefox: Ctrl+Shift+P  
+   • Safari: Cmd+Shift+N
+
+2️⃣ DISABLE AD BLOCKERS:
+   • uBlock Origin, AdBlock, etc.
+   • Temporarily turn off for this site
+
+3️⃣ NETWORK ISSUES:
+   • Try mobile data vs WiFi
+   • Corporate/school networks block Firebase
+   • Use different internet connection
+
+4️⃣ BROWSER SETTINGS:
+   • Enable cookies
+   • Allow JavaScript
+   • Clear browser cache
+
+5️⃣ DIFFERENT BROWSER:
+   • Try Chrome, Firefox, Safari, Edge
+
+90% of login issues are caused by ad blockers or network restrictions!`;
+    
+    alert(helpMessage);
+}
+
+// Add help button when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const authToggle = document.querySelector('.auth-toggle');
+        if (authToggle && !document.getElementById('help-btn')) {
+            const helpHTML = `
+            <div style="text-align: center; margin-top: 15px;">
+                <button id="help-btn" onclick="showTroubleshootingHelp()" 
+                        style="background: none; border: 1px solid #FFD700; color: #FFD700; 
+                               padding: 8px 16px; border-radius: 8px; font-size: 12px; 
+                               cursor: pointer;">
+                    ❓ Can't sign in? Get help
+                </button>
+            </div>`;
+            authToggle.insertAdjacentHTML('afterend', helpHTML);
+        }
+    }, 1000);
+});
     </script>
 </body>
     </html>
