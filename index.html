@@ -1716,6 +1716,11 @@
                 loginBtn.textContent = 'Signing In...';
                 loginBtn.disabled = true;
                 
+                // Add connection test before login attempt
+                console.log('Testing Firebase connection...');
+                await testFirebaseConnection();
+                console.log('Firebase connection test passed');
+                
                 if (credential.includes('@')) {
                     console.log('Attempting email login for:', credential);
                     const userCredential = await auth.signInWithEmailAndPassword(credential, password);
@@ -1729,31 +1734,30 @@
                         return;
                     }
                     
-                    showNotification('Login successful! Loading your account...');
+                    // Set current user immediately
+                    currentUser = {
+                        uid: user.uid,
+                        email: user.email,
+                        displayName: user.displayName,
+                        emailVerified: user.emailVerified
+                    };
+                    
+                    // Load user data and show app directly
+                    await loadUserDataFromFirestore(user.uid);
+                    showMiningApp();
+                    showNotification('Login successful! Welcome back!');
+                    
                 } else {
                     showError('Phone login not yet implemented. Please use email.');
                 }
                 
             } catch (error) {
                 console.error('Login error:', error);
-                let errorMessage = 'Login failed. ';
-                switch (error.code) {
-                    case 'auth/user-not-found':
-                        errorMessage = 'No account found with this email.';
-                        break;
-                    case 'auth/wrong-password':
-                        errorMessage = 'Incorrect password.';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = 'Invalid email address.';
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMessage = 'Too many failed attempts. Please try again later.';
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
+                
+                // Enhanced error handling with user-friendly messages
+                let errorMessage = handleFirebaseError(error);
                 showError(errorMessage);
+                
             } finally {
                 loginBtn.textContent = 'Sign In';
                 loginBtn.disabled = false;
