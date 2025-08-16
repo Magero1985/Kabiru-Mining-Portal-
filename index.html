@@ -4,14 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KABIRU Mining App</title>
-    
-<!-- Firebase SDK -->
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
-
-<style>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -1035,179 +1028,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Login Page -->
-    <div id="loginPage" class="login-page">
-        <div class="auth-container">
-            <div class="auth-logo">
-                <div class="auth-logo-img">iKb</div>
-                <div class="auth-title">KABIRU</div>
-                <div class="auth-subtitle">Secure Login Portal</div>
-            </div>
-
-            <!-- Main Login Form -->
-            <div id="loginContainer">
-                <div class="form-group">
-                    <label class="form-label">Email or Phone</label>
-                    <input type="text" class="form-input" id="loginCredential" placeholder="email@example.com or +254 700 000 000" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="password-input-container">
-                        <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁</button>
-                    </div>
-                    <span class="forgot-password-link" onclick="showPasswordReset()">Forgot Password?</span>
-                </div>
-                <button type="button" class="auth-button" id="loginBtn" onclick="handleLogin()">Sign In</button>
-                
-                <div class="auth-toggle">
-                    Don't have an account? <span class="auth-toggle-link" onclick="showSignupMethodSelection()">Sign Up</span>
-                </div>
-            </div>
-
-            <!-- Password Reset Form -->
-            <div id="passwordResetContainer" class="password-reset-container">
-                <div class="signup-header">
-                    <div class="signup-method-badge">🔒 Reset Password</div>
-                    <div class="back-to-methods" onclick="showLogin()">← Back to Sign In</div>
-                </div>
-                
-                <div class="verification-info">
-                    <strong>Reset Your Password:</strong><br>
-                    Enter your email address and we'll send you a link to reset your password.
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" id="resetEmail" placeholder="Enter your email address" required>
-                </div>
-                
-                <button type="button" class="auth-button" onclick="handlePasswordReset()">Send Reset Link</button>
-                
-                <div class="auth-toggle">
-                    Remember your password? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
-                </div>
-            </div>
-
-            <!-- Signup Method Selection -->
-            <div id="signupMethodSelection" class="signup-method-selection">
-                <div class="method-title">Choose Signup Method</div>
-                <div class="method-subtitle">Select your preferred way to verify your account</div>
-                
-                <div class="signup-methods">
-                    <div class="method-button" onclick="showEmailSignup()">
-                        <div class="method-icon">📧</div>
-                        <div class="method-name">Email</div>
-                        <div class="method-desc">Free & Instant<br>Verification Link</div>
-                    </div>
-                    <div class="method-button" onclick="showPhoneSignup()">
-                        <div class="method-icon">📱</div>
-                        <div class="method-name">SMS</div>
-                        <div class="method-desc">6-Digit Code<br>To Your Phone</div>
-                    </div>
-                </div>
-                
-                <div class="auth-toggle">
-                    Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
-                </div>
-            </div>
-   <!-- Email Signup Form -->
-            <div id="emailSignupContainer" class="email-signup-container">
-                <div class="signup-header">
-                    <div class="signup-method-badge">📧 Email Signup</div>
-                    <div class="back-to-methods" onclick="showSignupMethodSelection()">← Choose Different Method</div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="emailSignupName" placeholder="John Doe" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" id="emailSignupEmail" placeholder="john@example.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="password-input-container">
-                        <input type="password" class="form-input" id="emailSignupPassword" placeholder="Create a strong password (min 6 chars)" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('emailSignupPassword')">👁</button>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <div class="password-input-container">
-                        <input type="password" class="form-input" id="emailConfirmPassword" placeholder="Confirm your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('emailConfirmPassword')">👁</button>
-                    </div>
-                </div>
-                
-                <button type="button" class="auth-button" id="signupBtn" onclick="handleEmailSignup()">Create Account</button>
-                
-                <div class="auth-toggle">
-                    Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
-                </div>
-            </div>
-
-            <!-- Phone Signup Form -->
-            <div id="phoneSignupContainer" class="phone-signup-container">
-                <div class="signup-header">
-                    <div class="signup-method-badge">📱 SMS Signup</div>
-                    <div class="back-to-methods" onclick="showSignupMethodSelection()">← Choose Different Method</div>
-                </div>
-
-                <div class="verification-info">
-                    <strong>SMS Verification Coming Soon!</strong><br>
-                    Phone number verification will be available in the next update. Please use email signup for now.
-                </div>
-                
-                <button type="button" class="auth-button" onclick="showEmailSignup()">Use Email Instead</button>
-                
-                <div class="auth-toggle">
-                    Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
-                </div>
-            </div>
-
-            <!-- Email Verification -->
-            <div id="emailVerificationContainer" class="email-verification-container">
-                <h3 style="color: #FFD700; margin-bottom: 15px;">📧 Verify Your Email</h3>
-                
-                <div class="verification-info">
-                    <strong>Email Verification:</strong><br>
-                    We've sent a verification link to your email address.<br>
-                    Please check your inbox and click the verification link, then return here.
-                </div>
-                
-                <div style="margin: 20px 0;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">📬</div>
-                    <div style="font-size: 16px; margin-bottom: 10px;">Check your email!</div>
-                    <div style="font-size: 12px; opacity: 0.8;">
-                        Didn't receive the email? Check your spam folder or 
-                        <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">resend verification email</span>
-                    </div>
-                </div>
-                
-                <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
-            </div>
-
-            <!-- Success Message -->
-            <div id="successContainer" class="success-message">
-                <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
-                <div><strong>Account Verified Successfully!</strong></div>
-                <div style="font-size: 12px; margin-top: 8px;">Redirecting to your mining dashboard...</div>
-            </div>
-
-            <!-- Error Message -->
-            <div id="errorMessage" class="error-message">
-                <div><strong>⚠️ Error</strong></div>
-                <div id="errorText">Something went wrong. Please try again.</div>
-            </div>
-        </div>
-    </div>
-
     <!-- Mining App (Now directly visible) -->
     <div id="miningApp" class="mining-app">
         <div class="container">
@@ -1226,7 +1046,7 @@
                     <div class="logo-img">iKb</div>
                     <div>
                         <div class="app-title">KABIRU[iKb]</div>
-                        <div class="subtitle">Kabiru - Intelligent Token</div>
+                        <div class="subtitle">Mine Kabiru Token</div>
                     </div>
                 </div>
             </div>
@@ -1315,15 +1135,12 @@
                 </div>
             </div>
 
-          <!-- Footer with Logout -->
+            <!-- Footer -->
             <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
-                <button onclick="logout()" style="background: none; border: none; color: #FFD700; font-size: 12px; cursor: pointer; text-decoration: underline; opacity: 0.8; transition: opacity 0.3s ease;">
-                    Logout
-                </button>
+                kabiru mining App
             </div>
         </div>
     </div>
-
 
     <!-- Wallet Page -->
     <div id="walletPage" class="wallet-page">
@@ -1840,55 +1657,48 @@
         </div>
     </div>
 
-     <!-- User Account Modal -->
-    <div id="userAccountModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">👤 User Account</h2>
-                <span class="close" onclick="closeModal('userAccountModal')">&times;</span>
+    <!-- Corporate Modal -->
+    <div id="corporateModal" class="subcategory-modal">
+        <div class="subcategory-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Corporate Structure</h2>
+                <span class="close" onclick="closeCorporateModal()">&times;</span>
             </div>
-            
-            <div class="modal-section">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #FFD700, #FFA500); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: #333;" id="accountAvatar">U</div>
-                    <h3 id="accountName">User Account</h3>
-                    <p id="accountNumber">#001</p>
+            <div class="subcategory-grid">
+                <div class="subcategory-item" onclick="selectCorporate('Foundation')">
+                    <span class="subcategory-item-icon">🏛️</span>
+                    <div class="subcategory-item-name">Foundation</div>
+                    <div class="subcategory-item-desc">Charitable foundations</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Trust')">
+                    <span class="subcategory-item-icon">🤝</span>
+                    <div class="subcategory-item-name">Trust</div>
+                    <div class="subcategory-item-desc">Trust management</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Holding Company')">
+                    <span class="subcategory-item-icon">🏢</span>
+                    <div class="subcategory-item-name">Holding Company</div>
+                    <div class="subcategory-item-desc">Corporate holdings</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectCorporate('Strawmanship')">
+                    <span class="subcategory-item-icon">👤</span>
+                    <div class="subcategory-item-name">Strawmanship</div>
+                    <div class="subcategory-item-desc">Legal representation</div>
                 </div>
             </div>
-            
-            <div class="modal-section">
-                <h4>Account Details</h4>
-                <div class="input-group">
-                    <label>Display Name</label>
-                    <input type="text" id="displayName" placeholder="Enter your name">
-                </div>
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="userEmail" placeholder="Enter your email" readonly>
-                </div>
-                <button class="modal-btn" onclick="updateAccount()">Update Account</button>
+        </div>
+    </div>
+    <div id="subcategoryModal" class="subcategory-modal">
+        <div class="subcategory-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title" id="subcategoryTitle">Utility Categories</h2>
+                <span class="close" onclick="closeSubcategoryModal()">&times;</span>
             </div>
-            
-            <div class="modal-section">
-                <h4>Account Statistics</h4>
-                <div class="stats-grid">
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountBalance">0.0000</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Total Balance</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountMined">0.0000</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Total Mined</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="miningDays">0</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Mining Days</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountRank">Beginner</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Miner Rank</div>
-                    </div>
-                </div>
+            <div id="subcategoryGrid" class="subcategory-grid">
+                <!-- Subcategory items will be populated here -->
             </div>
         </div>
     </div>
@@ -1957,565 +1767,28 @@
 
     <!-- Mining Indicator -->
     <div id="miningIndicator" class="mining-indicator">
-        <div class="mining-animation">⛏️ Mining in Progress...</div>
-        <div style="font-size: 12px; margin-top: 10px;">Please wait...</div>
+        <div>⛏️ Mining in Progress...</div>
+        <div style="font-size: 12px; margin-top: 10px;">Mining tokens...</div>
     </div>
 
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
     <script>
-            // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
-            authDomain: "kabiru-mining-app.firebaseapp.com",
-            projectId: "kabiru-mining-app",
-            storageBucket: "kabiru-mining-app.appspot.com",
-            messagingSenderId: "217095254990",
-            appId: "1:217095254990:web:9eb44eff825666995fb19f",
-            measurementId: "G-W6070RT4PB"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
         // Global variables
-        let currentUser = null;
         let userBalance = 0.0000;
         let miningRate = 0.001;
-        let isMining = false;
-        let totalTasksCompleted = 0;
-        let reservedBalance = 0.0000;
-        let availableBalance = 0.0000;
-        let userLanguage = 'en';
-        let userDisplayName = 'User';
+        let isMinig = false;
+        let selectedSovereignType = null;
+        let selectedValueType = null;
+        let selectedValueAmount = 0;
+        let miningInterval = null;
 
-        // Initialize app on page load
+        // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('KABIRU Mining App starting...');
-            initializeApp();
+            updateBalanceDisplay();
+            startMiningTimer();
         });
-
-        function initializeApp() {
-            // Ensure login page is properly initialized
-            hideAllContainers();
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('miningApp').style.display = 'none';
-            hideAllMessages();
-            checkLoginStatus();
-        }
-
-        // Enhanced Authentication State Management
-        function checkLoginStatus() {
-            console.log('Checking login status...');
-            
-            auth.onAuthStateChanged(async (user) => {
-                console.log('Auth state changed. User:', user ? user.uid : 'none');
-                
-                if (user) {
-                    console.log('User found. Email verified:', user.emailVerified);
-                    
-                    if (user.emailVerified) {
-                        console.log('User is verified. Loading data...');
-                        currentUser = {
-                            uid: user.uid,
-                            email: user.email,
-                            displayName: user.displayName,
-                            emailVerified: user.emailVerified
-                        };
-                        
-                        try {
-                            await loadUserDataFromFirestore(user.uid);
-                            console.log('User data loaded. Showing mining app...');
-                            showMiningApp();
-                        } catch (error) {
-                            console.error('Error loading user data:', error);
-                            showError('Failed to load your account data. Please try again.');
-                            showLoginPage();
-                        }
-                    } else {
-                        console.log('User email not verified');
-                        showError('Please verify your email address first');
-                        await auth.signOut();
-                        showLoginPage();
-                    }
-                } else {
-                    console.log('No authenticated user found');
-                    showLoginPage();
-                }
-            });
-        }
-// Load user data from Firestore
-        async function loadUserDataFromFirestore(uid) {
-            try {
-                console.log('Loading user data from Firestore for UID:', uid);
-                
-                const userDoc = await db.collection('users').doc(uid).get();
-                
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    console.log('User data loaded from Firestore:', userData);
-                    
-                    userBalance = parseFloat(userData.balance) || 0.0000;
-                    totalTasksCompleted = parseInt(userData.tasksCompleted) || 0;
-                    miningRate = parseFloat(userData.miningRate) || 0.001;
-                    reservedBalance = parseFloat(userData.reservedBalance) || 0.0000;
-                    availableBalance = parseFloat(userData.availableBalance) || userBalance;
-                    userLanguage = userData.language || 'en';
-                    userDisplayName = userData.displayName || currentUser.displayName || 'User';
-                    
-                    console.log('LOADED - Balance:', userBalance, 'Tasks:', totalTasksCompleted);
-                } else {
-                    console.log('New user - creating initial document');
-                    await createInitialUserDocument(uid);
-                }
-                
-                updateBalanceDisplay();
-                updateUserInterface();
-                
-            } catch (error) {
-                console.error('Error loading user data from Firestore:', error);
-                throw error;
-            }
-        }
-
-        // Create initial user document in Firestore
-        async function createInitialUserDocument(uid) {
-            try {
-                const user = auth.currentUser;
-                const initialData = {
-                    uid: uid,
-                    email: user.email,
-                    displayName: user.displayName || 'User',
-                    balance: 0.0000,
-                    tasksCompleted: 0,
-                    miningRate: 0.001,
-                    reservedBalance: 0.0000,
-                    availableBalance: 0.0000,
-                    language: 'en',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalEarnings: 0.0000,
-                    miningStatus: 'inactive'
-                };
-                
-                await db.collection('users').doc(uid).set(initialData);
-                console.log('Initial user document created in Firestore');
-                
-                userBalance = 0.0000;
-                totalTasksCompleted = 0;
-                miningRate = 0.001;
-                reservedBalance = 0.0000;
-                availableBalance = 0.0000;
-                userLanguage = 'en';
-                userDisplayName = user.displayName || 'User';
-                
-            } catch (error) {
-                console.error('Error creating initial user document:', error);
-                throw error;
-            }
-        }
-// Save user data to Firestore
-        async function saveUserDataToFirestore() {
-            if (!currentUser || !currentUser.uid) {
-                console.error('Cannot save data - no authenticated user');
-                return false;
-            }
-            
-            try {
-                console.log('Saving user data to Firestore...', {
-                    balance: userBalance,
-                    tasks: totalTasksCompleted,
-                    uid: currentUser.uid
-                });
-                
-                const updateData = {
-                    balance: parseFloat(userBalance.toFixed(4)),
-                    tasksCompleted: parseInt(totalTasksCompleted),
-                    miningRate: parseFloat(miningRate),
-                    reservedBalance: parseFloat(reservedBalance.toFixed(4)),
-                    availableBalance: parseFloat(availableBalance.toFixed(4)),
-                    language: userLanguage,
-                    displayName: userDisplayName,
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalEarnings: parseFloat(userBalance.toFixed(4)),
-                    miningStatus: isMining ? 'active' : 'inactive'
-                };
-                
-                await db.collection('users').doc(currentUser.uid).update(updateData);
-                console.log('User data saved to Firestore successfully');
-                
-                await saveMiningTransaction();
-                
-                return true;
-                
-            } catch (error) {
-                console.error('Error saving user data to Firestore:', error);
-                showError('Failed to save your progress: ' + error.message);
-                return false;
-            }
-        }
-
-        // Save individual mining transactions
-        async function saveMiningTransaction() {
-            if (!currentUser || !currentUser.uid) return;
-            
-            try {
-                const transactionData = {
-                    userId: currentUser.uid,
-                    amount: parseFloat(miningRate.toFixed(4)),
-                    type: 'mining',
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    balance: parseFloat(userBalance.toFixed(4))
-                };
-                
-                await db.collection('transactions').add(transactionData);
-                console.log('Mining transaction saved:', transactionData);
-                
-            } catch (error) {
-                console.error('Error saving mining transaction:', error);
-            }
-        }
-async function testFirebaseConnection() {
-    try {
-        console.log('Testing Firebase connection...');
-        
-        // Simple test - just check if Firebase is accessible
-        const testDoc = db.collection('_test').limit(1);
-        await testDoc.get();
-        console.log('Firestore connection: OK');
-        
-    } catch (error) {
-        console.error('Firebase connection test failed:', error);
-        
-        if (error.code === 'unavailable' || 
-            error.message.includes('Failed to fetch') || 
-            error.message.includes('network')) {
-            const blockError = new Error('NETWORK_BLOCKED');
-            blockError.originalError = error;
-            throw blockError;
-        }
-        
-        // Don't block login for other errors, just log them
-        console.log('Connection test had issues but allowing login to proceed');
-    }
-}
-
-// Enhanced error handling
-function handleFirebaseError(error) {
-    console.log('Handling error:', error.code, error.message);
-    
-    // Network/blocking related errors
-    if (error.code === 'auth/network-request-failed' || 
-        error.message.includes('network') ||
-        error.message.includes('Failed to fetch') ||
-        error.message === 'NETWORK_BLOCKED') {
-        return `🚫 Connection Issue
-
-Try these solutions:
-• Disable ad blockers (uBlock, AdBlock, etc.)
-• Use incognito/private browsing mode  
-• Try mobile data instead of WiFi
-• Check if workplace/school blocks Firebase
-
-This usually fixes 90% of login problems!`;
-    }
-    
-    // Standard Firebase Auth errors
-    switch (error.code) {
-        case 'auth/user-not-found':
-            return '❌ No account found with this email. Please check your email or sign up first.';
-        case 'auth/wrong-password':
-            return '❌ Incorrect password. Try again or use "Forgot Password".';
-        case 'auth/invalid-email':
-            return '❌ Please enter a valid email address.';
-        case 'auth/too-many-requests':
-            return '⚠️ Too many failed attempts. Wait 5 minutes and try again.';
-        default:
-            return `❌ Login failed: ${error.message}
-
-💡 Try: incognito mode, disable extensions, or different browser.`;
-    }
-}
-// Authentication Functions
-        async function handleLogin() {
-    const credential = document.getElementById('loginCredential').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    const loginBtn = document.getElementById('loginBtn');
-    
-    if (!credential || !password) {
-        showError('Please fill in all fields');
-        return;
-    }
-
-    try {
-        loginBtn.textContent = 'Signing In...';
-        loginBtn.disabled = true;
-        
-        // Quick connection test (non-blocking)
-        try {
-            await testFirebaseConnection();
-        } catch (connError) {
-            console.log('Connection test failed, but proceeding with login');
-        }
-        
-        if (credential.includes('@')) {
-            console.log('Attempting email login for:', credential);
-            const userCredential = await auth.signInWithEmailAndPassword(credential, password);
-            const user = userCredential.user;
-            
-            console.log('Login successful. Email verified:', user.emailVerified);
-            
-            if (!user.emailVerified) {
-                showError('Please verify your email address first.');
-                await auth.signOut();
-                return;
-            }
-            
-            // Set current user immediately to prevent auth state conflicts
-            currentUser = {
-                uid: user.uid,
-                email: user.email,
-                displayName: user.displayName,
-                emailVerified: user.emailVerified
-            };
-            
-            showNotification('Login successful! Loading your account...');
-            
-        } else {
-            showError('Phone login not yet implemented. Please use email.');
-        }
-        
-    } catch (error) {
-        console.error('Login error:', error);
-        
-        // Use enhanced error handling
-        const errorMessage = handleFirebaseError(error);
-        showError(errorMessage);
-        
-    } finally {
-        loginBtn.textContent = 'Sign In';
-        loginBtn.disabled = false;
-    }
-        }
-        async function handleEmailSignup() {
-            const name = document.getElementById('emailSignupName').value.trim();
-            const email = document.getElementById('emailSignupEmail').value.trim();
-            const password = document.getElementById('emailSignupPassword').value;
-            const confirmPassword = document.getElementById('emailConfirmPassword').value;
-            const signupBtn = document.getElementById('signupBtn');
-            
-            if (!name || !email || !password || !confirmPassword) {
-                showError('Please fill in all fields');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters long');
-                return;
-            }
-
-            try {
-                signupBtn.textContent = 'Creating Account...';
-                signupBtn.disabled = true;
-                
-                console.log('Creating account for:', email);
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-                
-                console.log('Account created. Updating profile...');
-                await user.updateProfile({
-                    displayName: name
-                });
-                
-                console.log('Sending verification email...');
-                await user.sendEmailVerification();
-                
-                currentUser = {
-                    name: name,
-                    email: email,
-                    loginType: 'email',
-                    firebaseUid: user.uid,
-                    createdAt: new Date().toISOString()
-                };
-                
-                showEmailVerification();
-                showNotification('Verification email sent! Please check your inbox.');
-                
-            } catch (error) {
-                console.error('Email signup error:', error);
-                let errorMessage = 'Signup failed. ';
-                switch (error.code) {
-                    case 'auth/email-already-in-use':
-                        errorMessage = 'Email already registered. Please sign in instead.';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = 'Invalid email address.';
-                        break;
-                    case 'auth/weak-password':
-                        errorMessage = 'Password is too weak.';
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
-                showError(errorMessage);
-            } finally {
-                signupBtn.textContent = 'Create Account';
-                signupBtn.disabled = false;
-            }
-        }
-async function handlePasswordReset() {
-            const email = document.getElementById('resetEmail').value.trim();
-            
-            if (!email) {
-                showError('Please enter your email address');
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-
-            try {
-                await auth.sendPasswordResetEmail(email);
-                showNotification('Password reset email sent! Check your inbox.');
-                showLogin();
-            } catch (error) {
-                console.error('Password reset error:', error);
-                let errorMessage = 'Failed to send reset email. ';
-                switch (error.code) {
-                    case 'auth/user-not-found':
-                        errorMessage = 'No account found with this email address.';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = 'Please enter a valid email address.';
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMessage = 'Too many requests. Please try again later.';
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
-                showError(errorMessage);
-            }
-        }
-
-        async function checkEmailVerification() {
-            try {
-                const user = auth.currentUser;
-                if (!user) {
-                    showError('No user found. Please try signing in again.');
-                    showLogin();
-                    return;
-                }
-                
-                console.log('Reloading user to check verification status...');
-                await user.reload();
-                
-                console.log('Current user email verification status:', user.emailVerified);
-                
-                if (user.emailVerified) {
-                    console.log('Email is verified, proceeding to app');
-                    showSuccessAndRedirect();
-                } else {
-                    showError('Email not yet verified. Please check your inbox and click the verification link.');
-                }
-            } catch (error) {
-                console.error('Error checking email verification:', error);
-                showError('Error checking verification status. Please try signing in again.');
-            }
-        }
-
-        async function resendEmailVerification() {
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    await user.sendEmailVerification();
-                    showNotification('Verification email resent! Please check your inbox.');
-                } else {
-                    showError('No user found. Please try signing up again.');
-                }
-            } catch (error) {
-                console.error('Error resending email verification:', error);
-                showError('Failed to resend verification email. Please try again.');
-            }
-        }
-
-        async function logout() {
-            try {
-                await auth.signOut();
-                currentUser = null;
-                userBalance = 0.0000;
-                totalTasksCompleted = 0;
-                isMining = false;
-                
-                showLoginPage();
-                showNotification('Logged out successfully');
-                
-            } catch (error) {
-                console.error('Logout error:', error);
-                showError('Failed to logout');
-            }
-        }
-
-        // Mining function with proper Firestore saving
-        async function mineTokens(type, reward) {
-            if (!currentUser || !currentUser.uid) {
-                showError('Please login to mine tokens');
-                return;
-            }
-            
-            console.log('=== MINING TOKENS ===');
-            console.log('Mining type:', type, 'Reward:', reward);
-            console.log('Current user UID:', currentUser.uid);
-            console.log('Current balance before mining:', userBalance);
-            
-            isMining = true;
-            document.getElementById('miningStatus').textContent = 'Active';
-            
-            showNotification('Mining started! Please wait...');
-            document.getElementById('miningIndicator').style.display = 'block';
-            
-            setTimeout(async () => {
-                const oldBalance = userBalance;
-                userBalance += reward;
-                availableBalance += reward;
-                totalTasksCompleted++;
-                
-                console.log('Balance updated:', oldBalance, '->', userBalance);
-                console.log('Tasks updated to:', totalTasksCompleted);
-                
-                updateBalanceDisplay();
-                updateUserInterface();
-                
-                const saved = await saveUserDataToFirestore();
-                
-                document.getElementById('miningIndicator').style.display = 'none';
-                
-                if (saved) {
-                    showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
-                    console.log('Mining data saved to Firestore successfully');
-                } else {
-                    showError('Mining successful but failed to save progress. Please try again.');
-                }
-                
-                isMining = false;
-                document.getElementById('miningStatus').textContent = 'Inactive';
-                
-                closeAllModals();
-                
-            }, 3000);
-        }
-
 
         // Navigation functions
         function showMiningApp() {
@@ -2635,7 +1908,7 @@ async function handlePasswordReset() {
                     title: 'Terms of Service',
                     content: `
                         <div class="document-title">Terms of Service</div>
-                        <div class="version-info">Version 1.0 - Effective Date: April 10, 2026</div>
+                        <div class="version-info">Version 1.0 - Effective Date: August 1, 2025</div>
                         
                         <div class="document-section-title">1. Acceptance of Terms</div>
                         <div class="document-text">
@@ -2913,6 +2186,18 @@ async function handlePasswordReset() {
             }
         }
 
+        function showCorporateModal() {
+            document.getElementById('corporateModal').style.display = 'block';
+        }
+
+        function closeCorporateModal() {
+            document.getElementById('corporateModal').style.display = 'none';
+        }
+
+        function selectCorporate(corporateType) {
+            showNotification(`${corporateType} corporate service selected! Feature coming soon.`);
+            closeCorporateModal();
+        }
 
         // Balance and mining functions
         function updateBalanceDisplay() {
@@ -3059,32 +2344,29 @@ async function handlePasswordReset() {
 
         // Task functions
         function selectTask(taskType) {
-            document.querySelectorAll('.task-category').forEach(cat => {
-                cat.classList.remove('active');
+            // Remove active class from all categories
+            document.querySelectorAll('.task-category').forEach(el => {
+                el.classList.remove('active');
             });
-            event.target.classList.add('active');
+            
+            // Add active class to selected category
+            event.target.closest('.task-category').classList.add('active');
+            
             showNotification(`Selected ${taskType} task category`);
         }
 
-        function performTask(valueType) {
-            const rewards = {
-                service: 0.0015,
-                skill: 0.0025,
-                knowledge: 0.0035
-            };
+        function performTask(taskType) {
+            isMinig = true;
+            showMiningIndicator();
             
-            mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
-        }
-
-        function performValueTask(valueType) {
-            const rewards = {
-                service: 0.0015,
-                skill: 0.0025,
-                knowledge: 0.0035,
-                innovation: 0.005
-            };
-            
-            mineTokens(`value-${valueType}`, rewards[valueType] || 0.0015);
+            setTimeout(() => {
+                const reward = Math.random() * 0.003 + 0.001; // Random reward between 0.001-0.004
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`${taskType} task completed! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 2000);
         }
 
         // Utility functions
@@ -3102,22 +2384,22 @@ async function handlePasswordReset() {
                     title: 'Education Services',
                     items: [
                         {icon: '📚', name: 'Online Courses', desc: 'Access premium courses'},
-                        {icon: '🎓', name: 'Universities', desc: 'Higher education, Trade courses, Tech training'},
+                        {icon: '🎓', name: 'Universities', desc: 'Higher education'},
                         {icon: '👨‍🏫', name: 'Tutoring', desc: 'Personal tutoring'},
-                        {icon: '📝', name: 'Certifications', desc: 'Professional certs, Artisans, NITA'},
-                        {icon: '🔬', name: 'Research', desc: 'Academic research, Health Research, Engineering Research, Agriculture Research, IT Research'},
-                        {icon: '📖', name: 'Libraries', desc: 'Resource centers, online materials, History, Culture, Civilization, spirituality, government'}
+                        {icon: '📝', name: 'Certifications', desc: 'Professional certs'},
+                        {icon: '🔬', name: 'Research', desc: 'Academic research'},
+                        {icon: '📖', name: 'Libraries', desc: 'Digital libraries'}
                     ]
                 },
                 transport: {
                     title: 'Transportation Services',
                     items: [
-                        {icon: '✈️', name: 'Air and freight', desc: 'Flight bookings'},
-                        {icon: '🚗', name: 'Car Land and Road, desc: 'Vehicle rentals, public transport sector'},
+                        {icon: '✈️', name: 'Airlines', desc: 'Flight bookings'},
+                        {icon: '🚗', name: 'Car Rental', desc: 'Vehicle rentals'},
                         {icon: '🚌', name: 'Public Transit', desc: 'Bus & train tickets'},
                         {icon: '🚲', name: 'Bike Sharing', desc: 'Bicycle rentals'},
-                        {icon: '🛵', name: 'Ride Mobility', desc: 'Taxi services'},
-                        {icon: '🚢', name: 'Water and Marine', desc: 'Boat & ferry services, bookings'}
+                        {icon: '🛵', name: 'Ride Sharing', desc: 'Taxi services'},
+                        {icon: '🚢', name: 'Marine', desc: 'Boat & ferry services'}
                     ]
                 },
                 agriculture: {
@@ -3125,7 +2407,7 @@ async function handlePasswordReset() {
                     items: [
                         {icon: '🌱', name: 'Seeds', desc: 'Premium seed varieties'},
                         {icon: '🚜', name: 'Equipment', desc: 'Farm machinery'},
-                        {icon: '🌾', name: 'Crops', desc: 'Crop Research and management'},
+                        {icon: '🌾', name: 'Crops', desc: 'Crop management'},
                         {icon: '🐄', name: 'Livestock', desc: 'Animal farming'},
                         {icon: '💧', name: 'Irrigation', desc: 'Water systems'},
                         {icon: '🧪', name: 'Fertilizers', desc: 'Soil nutrients'}
@@ -3135,22 +2417,22 @@ async function handlePasswordReset() {
                     title: 'Marketplace',
                     items: [
                         {icon: '🛍️', name: 'Shopping', desc: 'Online marketplace'},
-                        {icon: '🏪', name: 'Local Stores', desc: 'Local shops, markets'},
-                        {icon: '🍔', name: 'Food and Nutrition', desc: 'Restaurant,  delivery, indoor and outside catering'},
-                        {icon: '👕', name: 'Fashion', desc: 'Textile Clothing & accessories'},
-                        {icon: '📱', name: 'Electronics', desc: ' Sales, repair and maintenance of electronic and electrical devices'},
-                        {icon: '🏠', name: 'Home & Garden', desc: 'Home decor, interior, flowering, '}
+                        {icon: '🏪', name: 'Local Stores', desc: 'Neighborhood shops'},
+                        {icon: '🍔', name: 'Food Delivery', desc: 'Restaurant delivery'},
+                        {icon: '👕', name: 'Fashion', desc: 'Clothing & accessories'},
+                        {icon: '📱', name: 'Electronics', desc: 'Tech products'},
+                        {icon: '🏠', name: 'Home & Garden', desc: 'Home improvement'}
                     ]
                 },
                 media: {
                     title: 'TV & Media',
                     items: [
-                        {icon: '📺', name: 'Media services', desc: 'Radio and Television channels, recording Studios, Social media'},
-                        {icon: '🎬', name: 'Movies', desc: 'Film production, streaming'},
-                        {icon: '🎵', name: 'Music', desc: 'Audio production'},
+                        {icon: '📺', name: 'Live TV', desc: 'Television channels'},
+                        {icon: '🎬', name: 'Movies', desc: 'Film streaming'},
+                        {icon: '🎵', name: 'Music', desc: 'Audio streaming'},
                         {icon: '📰', name: 'News', desc: 'Latest updates'},
                         {icon: '🎮', name: 'Gaming', desc: 'Video games'},
-                        {icon: '📻', name: 'Podcasts', desc: 'video, Audio shows'}
+                        {icon: '📻', name: 'Podcasts', desc: 'Audio shows'}
                     ]
                 },
                 realestate: {
@@ -3168,20 +2450,20 @@ async function handlePasswordReset() {
                     title: 'Climate Services',
                     items: [
                         {icon: '🌡️', name: 'Weather', desc: 'Weather forecasts'},
-                        {icon: '🌍', name: 'Environment', desc: 'Environmental data, climate programs'},
+                        {icon: '🌍', name: 'Environment', desc: 'Environmental data'},
                         {icon: '🌊', name: 'Ocean', desc: 'Marine conditions'},
                         {icon: '🌪️', name: 'Disasters', desc: 'Natural disasters'},
-                        {icon: '📊', name: 'Analytics', desc: 'environmental  analysis, weather analysis'},
-                        {icon: '🛰️', name: 'Satellite', desc: 'Satellite and space technology'}
+                        {icon: '📊', name: 'Analytics', desc: 'Climate analysis'},
+                        {icon: '🛰️', name: 'Satellite', desc: 'Satellite imagery'}
                     ]
                 },
                 energy: {
-                    title: 'Free Energy technology',
+                    title: 'Free Energy',
                     items: [
                         {icon: '☀️', name: 'Solar', desc: 'Solar power systems'},
                         {icon: '💨', name: 'Wind', desc: 'Wind energy'},
                         {icon: '💧', name: 'Hydro', desc: 'Water power'},
-                        {icon: '🔋', name: 'permanent Battery', desc: ' perpetual Energy production, storage'},
+                        {icon: '🔋', name: 'Battery', desc: 'Energy storage'},
                         {icon: '⚡', name: 'Grid', desc: 'Smart grid services'},
                         {icon: '🌱', name: 'Biomass', desc: 'Organic energy'}
                     ]
@@ -3189,10 +2471,10 @@ async function handlePasswordReset() {
                 workshops: {
                     title: 'Workshops',
                     items: [
-                        {icon: '🔨', name: 'Carpentry', desc: 'Woodworking skills, Engineering skills, Artistry, cultural workshops'},
-                        {icon: '⚡', name: 'Electronics', desc: 'Logic Circuit building'},
+                        {icon: '🔨', name: 'Carpentry', desc: 'Woodworking skills'},
+                        {icon: '⚡', name: 'Electronics', desc: 'Circuit building'},
                         {icon: '🎨', name: 'Arts & Crafts', desc: 'Creative workshops'},
-                        {icon: '💻', name: 'Programming', desc: 'Coding bootcamps, websites, utility Applications,'},
+                        {icon: '💻', name: 'Programming', desc: 'Coding bootcamps'},
                         {icon: '🍳', name: 'Cooking', desc: 'Culinary classes'},
                         {icon: '🧵', name: 'Sewing', desc: 'Textile skills'}
                     ]
@@ -3345,248 +2627,8 @@ async function handlePasswordReset() {
         function showAllTransactions() {
             showNotification('Transaction history feature coming soon!');
         }
-// Language Functions
-        function updateLanguageDisplay() {
-            document.querySelectorAll('[id^="lang-"]').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            const currentBtn = document.getElementById('lang-' + userLanguage);
-            if (currentBtn) {
-                currentBtn.classList.add('active');
-            }
-            
-            document.getElementById('currentLanguage').textContent = getLanguageName(userLanguage);
-        }
 
-        function changeLanguage(langCode) {
-            userLanguage = langCode;
-            updateLanguageDisplay();
-            saveUserDataToFirestore();
-            
-            const langName = getLanguageName(langCode);
-            showNotification(`Language changed to ${langName}`);
-            
-            setTimeout(() => {
-                closeModal('languageModal');
-            }, 1000);
-        }
-
-        function getLanguageName(code) {
-            const languages = {
-                en: 'English',
-                sw: 'Kiswahili',
-                luo: 'Dholuo',
-                kik: 'Kikuyu',
-                luh: 'Luhya',
-                run: 'Kirundi',
-                kam: 'Kikamba',
-                mer: 'Kimeru'
-            };
-            return languages[code] || 'English';
-        }
-
-        // Account Functions
-        function updateAccountDisplay() {
-            document.getElementById('accountName').textContent = userDisplayName;
-            document.getElementById('accountNumber').textContent = '#' + (currentUser ? currentUser.uid.slice(-6).toUpperCase() : '001');
-            document.getElementById('accountAvatar').textContent = userDisplayName.charAt(0).toUpperCase();
-            document.getElementById('displayName').value = userDisplayName;
-            document.getElementById('userEmail').value = currentUser ? currentUser.email : '';
-            document.getElementById('accountBalance').textContent = userBalance.toFixed(4);
-            document.getElementById('accountMined').textContent = userBalance.toFixed(4);
-            document.getElementById('miningDays').textContent = Math.floor(totalTasksCompleted / 10);
-            document.getElementById('accountRank').textContent = getMinerRank();
-        }
-
-        function getMinerRank() {
-            if (userBalance < 0.001) return 'Beginner';
-            if (userBalance < 0.01) return 'Bronze';
-            if (userBalance < 0.1) return 'Silver';
-            if (userBalance < 1.0) return 'Gold';
-            return 'Diamond';
-        }
-
-        function updateAccount() {
-            const newName = document.getElementById('displayName').value.trim();
-            
-            if (!newName) {
-                showError('Please enter a display name');
-                return;
-            }
-            
-            userDisplayName = newName;
-            updateUserInterface();
-            saveUserDataToFirestore();
-            
-            showNotification('Account updated successfully!');
-            closeModal('userAccountModal');
-        }
-
-        // UI Update Functions
-        function updateBalanceDisplay() {
-            const balanceElements = document.querySelectorAll('#balance, #totalBalance');
-            balanceElements.forEach(el => {
-                if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
-            });
-        }
-
-        function updateUserInterface() {
-            if (document.getElementById('tasksCompleted')) {
-                document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-            }
-            
-            if (document.getElementById('userName')) {
-                document.getElementById('userName').textContent = userDisplayName;
-            }
-            
-            if (document.getElementById('userNumber')) {
-                const userNum = currentUser ? '#' + currentUser.uid.slice(-6).toUpperCase() : '#001';
-                document.getElementById('userNumber').textContent = userNum;
-            }
-            
-            if (document.getElementById('userAvatar')) {
-                document.getElementById('userAvatar').textContent = userDisplayName.charAt(0).toUpperCase();
-            }
-        }
-// Navigation Functions
-        function showLoginPage() {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('miningApp').style.display = 'none';
-            hideAllMessages();
-            hideAllContainers();
-            document.getElementById('loginContainer').style.display = 'block';
-        }
-
-        function showMiningApp() {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('miningApp').style.display = 'block';
-            hideAllMessages();
-            updateBalanceDisplay();
-            updateUserInterface();
-            startMiningTimer();
-        }
-
-        function showLogin() {
-            hideAllContainers();
-            document.getElementById('loginContainer').style.display = 'block';
-            hideAllMessages();
-        }
-
-        function showPasswordReset() {
-            hideAllContainers();
-            document.getElementById('passwordResetContainer').style.display = 'block';
-            hideAllMessages();
-        }
-
-        function showSignupMethodSelection() {
-            hideAllContainers();
-            document.getElementById('signupMethodSelection').style.display = 'block';
-            hideAllMessages();
-        }
-
-        function showEmailSignup() {
-            hideAllContainers();
-            document.getElementById('emailSignupContainer').style.display = 'block';
-            hideAllMessages();
-        }
-
-        function showPhoneSignup() {
-            hideAllContainers();
-            document.getElementById('phoneSignupContainer').style.display = 'block';
-            hideAllMessages();
-        }
-
-        function showEmailVerification() {
-            hideAllContainers();
-            document.getElementById('emailVerificationContainer').style.display = 'block';
-            hideAllMessages();
-        }
-
-        function hideAllContainers() {
-            const containers = [
-                'loginContainer', 
-                'passwordResetContainer',
-                'signupMethodSelection',
-                'emailSignupContainer', 
-                'phoneSignupContainer',
-                'emailVerificationContainer'
-            ];
-            
-            containers.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) element.style.display = 'none';
-            });
-        }
-
-        function hideAllMessages() {
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('successContainer').style.display = 'none';
-        }
-
-        // Password toggle functionality
-        function togglePassword(inputId) {
-            const passwordInput = document.getElementById(inputId);
-            const toggleButton = passwordInput.nextElementSibling;
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleButton.textContent = '🙈';
-            } else {
-                passwordInput.type = 'password';
-                toggleButton.textContent = '👁';
-            }
-        }
-
-        // Success and Utility Functions
-        function showSuccessAndRedirect() {
-            hideAllContainers();
-            document.getElementById('successContainer').style.display = 'block';
-            
-            setTimeout(() => {
-                document.getElementById('successContainer').style.display = 'none';
-            }, 1500);
-        }
-
-   // Mining Timer Function
-        function startMiningTimer() {
-            const timerElement = document.getElementById('miningTimer');
-            if (!timerElement) return;
-
-            let seconds = 0;
-            setInterval(() => {
-                const hours = Math.floor(seconds / 3600);
-                const minutes = Math.floor((seconds % 3600) / 60);
-                const secs = seconds % 60;
-                timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                seconds++;
-                
-                if (seconds % 30 === 0 && currentUser && document.getElementById('miningApp').style.display === 'block') {
-                    userBalance += 0.0001;
-                    availableBalance += 0.0001;
-                    updateBalanceDisplay();
-                    
-                    if (seconds % 180 === 0) {
-                        saveUserDataToFirestore();
-                    }
-                }
-            }, 1000);
-        }
-
-        // Validation Functions
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function showError(message) {
-            document.getElementById('errorText').textContent = message;
-            document.getElementById('errorMessage').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('errorMessage').style.display = 'none';
-            }, 5000);
-        }
-
+        // Notification function
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -3597,66 +2639,23 @@ async function handlePasswordReset() {
             }, 3000);
         }
 
-        // Click outside modal to close
+        // Close modal when clicking outside
         window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
+            const modals = document.querySelectorAll('.modal, .wallet-modal, .subcategory-modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
         }
-
-        // App initialization complete
-        console.log('KABIRU Mining App - Authentication Fixed Version Loaded Successfully');
-        // Add troubleshooting help
-function showTroubleshootingHelp() {
-    const helpMessage = `🔧 LOGIN TROUBLESHOOTING:
-
-1️⃣ INCOGNITO MODE (Most Effective):
-   • Chrome: Ctrl+Shift+N
-   • Firefox: Ctrl+Shift+P  
-   • Safari: Cmd+Shift+N
-
-2️⃣ DISABLE AD BLOCKERS:
-   • uBlock Origin, AdBlock, etc.
-   • Temporarily turn off for this site
-
-3️⃣ NETWORK ISSUES:
-   • Try mobile data vs WiFi
-   • Corporate/school networks block Firebase
-   • Use different internet connection
-
-4️⃣ BROWSER SETTINGS:
-   • Enable cookies
-   • Allow JavaScript
-   • Clear browser cache
-
-5️⃣ DIFFERENT BROWSER:
-   • Try Chrome, Firefox, Safari, Edge
-
-90% of login issues are caused by ad blockers or network restrictions!`;
-    
-    alert(helpMessage);
-}
-
-// Add help button when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        const authToggle = document.querySelector('.auth-toggle');
-        if (authToggle && !document.getElementById('help-btn')) {
-            const helpHTML = `
-            <div style="text-align: center; margin-top: 15px;">
-                <button id="help-btn" onclick="showTroubleshootingHelp()" 
-                        style="background: none; border: 1px solid #FFD700; color: #FFD700; 
-                               padding: 8px 16px; border-radius: 8px; font-size: 12px; 
-                               cursor: pointer;">
-                    ❓ Can't sign in? Get help
-                </button>
-            </div>`;
-            authToggle.insertAdjacentHTML('afterend', helpHTML);
-        }
-    }, 1000);
-});
     </script>
 </body>
-    </html>
-    </html>
-    </html>
+</html>">mining</div>
+                    </div>
+                    <div class="task-category" onclick="selectTask('partnership')">
+                        <div class="category-title">iKb(P)</div>
+                        <div class="category-subtitle">Partnership</div>
+                    </div>
+                    <div class="task-category" onclick="selectTask('genledger')">
+                        <div class="category-title">iKb(GL)</div>
+                        <div class="category-subtitle
