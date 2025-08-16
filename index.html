@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KABIRU Mining App</title>
     
-    <!-- Firebase SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+<!-- Firebase SDK -->
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
-    
-    <style>
+
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -18,578 +19,462 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            background-attachment: fixed;
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
         }
 
-        .login-page {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .auth-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            padding: 40px 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 380px;
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .auth-logo {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .auth-logo-img {
-            width: 85px;
-            height: 85px;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
-            animation: pulse 2s infinite;
-            border: 3px solid #FFD700;
-            margin: 0 auto 20px;
-        }
-
-        .auth-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #FFD700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
-
-        .auth-subtitle {
-            font-size: 15px;
-            opacity: 0.85;
-            margin-bottom: 25px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .form-group {
-            margin-bottom: 22px;
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 15px;
             position: relative;
         }
 
-        .form-label {
+        /* Mining App Styles */
+        .mining-app {
             display: block;
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #FFD700;
-            font-weight: 600;
         }
 
-        .form-input {
-            width: 100%;
-            padding: 16px 18px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .form-input:focus {
-            border-color: #FFD700;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .password-input-container {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #FFD700;
-            cursor: pointer;
-            font-size: 20px;
-            padding: 4px;
-        }
-
-        .auth-button {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            border: none;
-            border-radius: 14px;
-            color: #333;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 18px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
-        }
-
-        .auth-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
-        }
-
-        .auth-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .auth-toggle {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .auth-toggle-link {
-            color: #FFD700;
-            cursor: pointer;
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
-        .forgot-password-link {
-            display: block;
-            text-align: right;
-            color: #FFD700;
-            font-size: 13px;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: 10px;
-        }
-
-        .signup-method-selection, .password-reset-container, .email-signup-container, .phone-signup-container, .email-verification-container {
+        /* Read Page Styles */
+        .read-page {
             display: none;
         }
 
-        .method-title {
-            font-size: 20px;
-            color: #FFD700;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .method-subtitle {
-            font-size: 14px;
-            opacity: 0.8;
-            margin-bottom: 25px;
-            line-height: 1.5;
-            text-align: center;
-        }
-
-        .signup-methods {
-            display: flex;
+        .read-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        .method-button {
-            flex: 1;
-            padding: 20px 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
+        .read-card {
             background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
 
-        .method-button:hover {
+        .read-card:hover {
+            transform: translateY(-5px);
             border-color: #FFD700;
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
         }
 
-        .method-icon {
-            font-size: 28px;
+        .read-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .read-card:hover::before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+
+        .read-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .read-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFD700;
             margin-bottom: 5px;
         }
 
-        .method-name {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .method-desc {
+        .read-desc {
             font-size: 11px;
-            opacity: 0.7;
+            opacity: 0.8;
             line-height: 1.3;
         }
 
-        .signup-header {
-            text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        /* Document Page Styles */
+        .document-page {
+            display: none;
         }
 
-        .signup-method-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            background: rgba(255, 215, 0, 0.2);
-            border-radius: 20px;
-            font-size: 13px;
+        .document-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .document-title {
+            font-size: 24px;
             color: #FFD700;
             font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .back-to-methods {
-            color: #FFD700;
-            cursor: pointer;
-            font-size: 13px;
-            text-decoration: underline;
-            opacity: 0.8;
-        }
-
-        .verification-info {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            font-size: 14px;
-            line-height: 1.5;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .success-message, .error-message {
-            padding: 18px;
-            border-radius: 12px;
             margin-bottom: 20px;
             text-align: center;
+        }
+
+        .document-section-title {
+            font-size: 18px;
+            color: #FFD700;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .document-text {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .version-info {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .coming-soon {
+            text-align: center;
+            color: #FFD700;
+            font-style: italic;
+            margin: 40px 0;
+            font-size: 16px;
+        }
+        .utilities-page {
             display: none;
-            font-weight: 500;
         }
 
-        .success-message {
-            background: rgba(0, 255, 135, 0.1);
-            border: 1px solid rgba(0, 255, 135, 0.3);
-            color: #00ff87;
-        }
-
-        .error-message {
-            background: rgba(255, 107, 107, 0.1);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            color: #ff6b6b;
-        }
-
-        .mining-app {
-            display: none;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        .top-bar {
+        .utilities-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            padding: 15px 0;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #FFD700;
+            font-size: 20px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .utilities-title {
+            font-size: 24px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .utilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .utility-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .utility-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .utility-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .utility-card:hover::before {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
+        }
+
+        .utility-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .utility-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .utility-desc {
+            font-size: 11px;
+            opacity: 0.8;
+            line-height: 1.3;
+        }
+
+        /* Wallet Page Styles */
+        .wallet-page {
+            display: none;
+        }
+
+        .wallet-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .wallet-balance {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .wallet-address {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+
+        .wallet-quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
         }
 
-        .top-bar-btn {
-            padding: 10px 14px;
+        .quick-action-btn {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            border: none;
+            padding: 12px 8px;
+            border-radius: 10px;
+            color: white;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 12px;
             text-align: center;
-            flex: 1;
-            font-weight: 500;
         }
 
-        .top-bar-btn:hover {
+        .quick-action-btn:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
 
-        .user-account-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 16px;
+        .wallet-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .wallet-feature {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            flex: 1.3;
+            border: 2px solid transparent;
         }
 
-        .user-account-btn:hover {
-            background: rgba(255, 215, 0, 0.2);
-            transform: translateY(-2px);
+        .wallet-feature:hover {
+            transform: translateY(-3px);
+            border-color: #FFD700;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
         }
 
-        .user-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-name {
+            font-size: 14px;
             font-weight: bold;
-            color: #333;
+            color: #FFD700;
+            margin-bottom: 5px;
         }
 
-        .user-info {
+        .feature-desc {
+            font-size: 11px;
+            opacity: 0.8;
+            line-height: 1.3;
+        }
+
+        .wallet-sections {
+            margin-bottom: 20px;
+        }
+
+        .section-header {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .section-action {
+            font-size: 12px;
+            color: #FFD700;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .section-action:hover {
+            opacity: 1;
+        }
+
+        .transaction-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-info {
             flex: 1;
         }
 
-        .user-name {
+        .transaction-type {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .transaction-date {
             font-size: 11px;
-            font-weight: bold;
-            color: #FFD700;
-        }
-
-        .user-number {
-            font-size: 9px;
             opacity: 0.7;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        .logo-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
-            margin-bottom: 18px;
-        }
-
-        .logo-img {
-            width: 85px;
-            height: 85px;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+        .transaction-amount {
+            font-size: 14px;
             font-weight: bold;
-            color: #333;
-            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
-            animation: pulse 2s infinite;
-            border: 3px solid #FFD700;
         }
 
-        .app-title {
-            font-size: 26px;
-            font-weight: bold;
-            color: #FFD700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        .subtitle {
-            font-size: 15px;
-            opacity: 0.8;
-            margin-top: 8px;
-        }
-
-        .balance-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-
-        .balance-title {
-            font-size: 15px;
-            opacity: 0.8;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .balance-amount {
-            font-size: 36px;
-            font-weight: bold;
-            color: #FFD700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-            margin-bottom: 10px;
-        }
-
-        .mining-rate {
-            font-size: 13px;
-            opacity: 0.7;
+        .amount-positive {
             color: #00ff87;
         }
 
-        .main-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 30px;
+        .amount-negative {
+            color: #ff6b6b;
         }
 
-        .main-button {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border: none;
-            padding: 22px 12px;
-            border-radius: 18px;
-            font-size: 15px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            animation: fadeInUp 1s ease-out 0.4s both;
-            text-align: center;
+        /* Subcategory Modal Styles */
+        .subcategory-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
         }
 
-        .main-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
-        }
-
-        .sovereign-btn {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            color: #333;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-        }
-
-        .value-btn {
-            background: linear-gradient(45deg, #00ff87, #60efff);
-            color: #333;
-            box-shadow: 0 10px 30px rgba(0, 255, 135, 0.3);
-        }
-
-        .reserve-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ffa726);
-            color: white;
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
-        }
-
-        .stats-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
+        .subcategory-content {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeInUp 1s ease-out 0.6s both;
-        }
-
-        .stat-value {
-            font-size: 20px;
-            font-weight: bold;
-            color: #FFD700;
-            margin-bottom: 6px;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tasks-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(10px);
+            margin: 10% auto;
+            padding: 30px;
             border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
+            width: 90%;
+            max-width: 400px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.3s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        .tasks-header {
+        .subcategory-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
 
-        .tasks-title {
-            font-size: 18px;
+        .subcategory-title {
+            color: #FFD700;
+            font-size: 20px;
             font-weight: bold;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
             color: #FFD700;
         }
 
-        .reward-info {
-            font-size: 13px;
-            opacity: 0.8;
-        }
-
-        .task-categories {
+        .subcategory-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 18px;
         }
 
-        .task-category {
+        .subcategory-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px 10px;
             border-radius: 12px;
@@ -599,10 +484,255 @@
             border: 2px solid transparent;
         }
 
+        .subcategory-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+            transform: scale(1.05);
+        }
+
+        .subcategory-item-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .subcategory-item-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 3px;
+        }
+
+        .subcategory-item-desc {
+            font-size: 10px;
+            opacity: 0.7;
+            line-height: 1.2;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .top-bar div {
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar div:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            animation: pulse 2s infinite;
+            border: 2px solid #FFD700;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .balance-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .balance-title {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .mining-rate {
+            font-size: 12px;
+            opacity: 0.7;
+            color: #00ff87;
+        }
+
+        .main-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .main-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 20px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            text-align: center;
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .main-button:active {
+            transform: translateY(0);
+        }
+
+        .sovereign-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+        }
+
+        .value-btn {
+            background: linear-gradient(45deg, #00ff87, #60efff);
+            color: #333;
+        }
+
+        .reserve-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tasks-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .tasks-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .reward-info {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .task-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-category {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
         .task-category:hover {
             background: rgba(255, 255, 255, 0.2);
             border-color: #FFD700;
-            transform: translateY(-2px);
         }
 
         .task-category.active {
@@ -611,67 +741,83 @@
         }
 
         .category-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .category-subtitle {
-            font-size: 10px;
+            font-size: 9px;
             opacity: 0.7;
         }
 
         .value-categories {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
         }
 
         .value-item {
             background: rgba(0, 255, 135, 0.1);
-            padding: 12px;
-            border-radius: 10px;
+            padding: 8px;
+            border-radius: 8px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid rgba(0, 255, 135, 0.2);
         }
 
         .value-item:hover {
             background: rgba(0, 255, 135, 0.2);
-            transform: translateY(-2px);
         }
 
         .personal-ledger {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .ledger-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .ledger-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: 8px;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .ledger-title {
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             color: #FFD700;
         }
 
+        .mining-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
+        .mining-animation {
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -681,183 +827,164 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
         }
 
         .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            margin: 5% auto;
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 15% auto;
+            padding: 30px;
             border-radius: 20px;
             width: 90%;
-            max-width: 420px;
-            max-height: 80vh;
-            overflow-y: auto;
+            max-width: 400px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeInUp 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.3s ease-out;
         }
 
         .modal-title {
+            color: #FFD700;
             font-size: 20px;
             font-weight: bold;
-            color: #FFD700;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
-        .close {
-            color: #aaa;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-            line-height: 1;
-            padding: 5px;
-        }
-
-        .close:hover {
-            color: white;
-        }
-
-        .modal-section {
-            margin-bottom: 25px;
-            padding: 20px;
+        .value-option {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-        }
-
-        .modal-btn {
-            width: 100%;
             padding: 15px;
             margin: 10px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 15px;
-            font-weight: 600;
+            border: 2px solid transparent;
         }
 
-        .modal-btn:hover {
-            opacity: 0.8;
-            transform: translateY(-2px);
+        .value-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
         }
 
-        .modal-btn.active {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #333;
+        .value-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
         }
 
-        .wallet-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
+        /* Wallet Feature Modals */
+        .wallet-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
         }
 
-        .wallet-btn {
-            padding: 15px;
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .wallet-btn:hover {
-            opacity: 0.8;
-            transform: translateY(-2px);
+        .wallet-modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.3s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .input-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .input-group label {
             display: block;
             margin-bottom: 8px;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
+            color: #FFD700;
         }
 
-        .input-group input {
+        .input-group input,
+        .input-group select {
             width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 14px;
+            font-size: 16px;
+            outline: none;
             transition: all 0.3s ease;
         }
 
-        .input-group input:focus {
+        .input-group input:focus,
+        .input-group select:focus {
             border-color: #FFD700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
         }
 
-        .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        .language-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .notification {
-            position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 30px;
+        .action-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
             font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1001;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .notification.show {
-            opacity: 1;
+        .primary-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
         }
 
-        .mining-indicator {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            display: none;
-            z-index: 1001;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
         }
 
-        .mining-animation {
-            animation: pulse 1s ease-in-out infinite;
-            font-size: 18px;
-            margin-bottom: 10px;
+        .secondary-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .secondary-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 10px;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .auth-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         @keyframes fadeInDown {
@@ -876,41 +1003,39 @@
             100% { transform: scale(1); }
         }
 
-        @media (max-width: 480px) {
-            .auth-container {
-                margin: 15px;
-                padding: 30px 25px;
-            }
-            
-            .signup-methods {
-                flex-direction: column;
-            }
-
-            .stats-section {
-                grid-template-columns: 1fr;
-            }
-
-            .main-buttons {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .auth-title {
-                font-size: 28px;
-            }
-
-            .balance-amount {
-                font-size: 30px;
-            }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        .mining-timer {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #00ff87;
         }
     </style>
 </head>
 <body>
+
     <!-- Login Page -->
     <div id="loginPage" class="login-page">
         <div class="auth-container">
@@ -987,8 +1112,7 @@
                     Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
                 </div>
             </div>
-
-            <!-- Email Signup Form -->
+   <!-- Email Signup Form -->
             <div id="emailSignupContainer" class="email-signup-container">
                 <div class="signup-header">
                     <div class="signup-method-badge">📧 Email Signup</div>
@@ -1084,21 +1208,16 @@
         </div>
     </div>
 
-    <!-- Mining App -->
+    <!-- Mining App (Now directly visible) -->
     <div id="miningApp" class="mining-app">
         <div class="container">
             <!-- Top Navigation Bar -->
             <div class="top-bar">
-                <div class="top-bar-btn" onclick="openEducationModal()">📚 Education</div>
-                <div class="top-bar-btn" onclick="openWalletModal()">💰 Wallet</div>
-                <div class="top-bar-btn" onclick="openLanguageModal()">🌍 Language</div>
-                <div class="user-account-btn" onclick="openUserAccountModal()">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <div class="user-info">
-                        <div class="user-name" id="userName">User</div>
-                        <div class="user-number" id="userNumber">#001</div>
-                    </div>
-                </div>
+                <div onclick="showUtilities()">UTILITIES</div>
+                <div onclick="showWallet()">WALLET</div>
+                <div onclick="showReadPage()">READ</div>
+                <div onclick="showLanguageModal()">LANGUAGE</div>
+                <div onclick="showCorporateModal()">CORPORATE</div>
             </div>
 
             <!-- Header -->
@@ -1107,7 +1226,7 @@
                     <div class="logo-img">iKb</div>
                     <div>
                         <div class="app-title">KABIRU[iKb]</div>
-                        <div class="subtitle">Mine Kabiru Token</div>
+                        <div class="subtitle">Kabiru - Intelligent Token</div>
                     </div>
                 </div>
             </div>
@@ -1117,7 +1236,7 @@
                 <div class="balance-title">Your KABIRU BALANCE</div>
                 <div class="balance-amount" id="balance">0.0000 iKb</div>
                 <div class="mining-rate">mining rate <span id="miningRate">0.001</span>iKb/day</div>
-                <div style="font-size: 12px; margin-top: 5px; color: #00ff87;" id="miningTimer"></div>
+                <div class="mining-timer" id="miningTimer"></div>
             </div>
 
             <!-- Main Action Buttons -->
@@ -1128,7 +1247,7 @@
                 <button class="main-button value-btn" onclick="openValueModal()">
                     VALUE
                 </button>
-                <button class="main-button reserve-btn" onclick="mineTokens('reserve', 0.002)">
+                <button class="main-button reserve-btn" onclick="mineTokens('reserve')">
                     RESERVE
                 </button>
             </div>
@@ -1165,14 +1284,6 @@
                         <div class="category-title">iKb(M)</div>
                         <div class="category-subtitle">Gen ledger</div>
                     </div>
-                    <div class="task-category" onclick="selectTask('partnership')">
-                        <div class="category-title">iKb(P)</div>
-                        <div class="category-subtitle">Partnership</div>
-                    </div>
-                    <div class="task-category" onclick="selectTask('genledger')">
-                        <div class="category-title">iKb(GL)</div>
-                        <div class="category-subtitle">Gen ledger</div>
-                    </div>
                 </div>
 
                 <div class="value-categories">
@@ -1204,7 +1315,7 @@
                 </div>
             </div>
 
-            <!-- Footer with Logout -->
+          <!-- Footer with Logout -->
             <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
                 <button onclick="logout()" style="background: none; border: none; color: #FFD700; font-size: 12px; cursor: pointer; text-decoration: underline; opacity: 0.8; transition: opacity 0.3s ease;">
                     Logout
@@ -1213,173 +1324,523 @@
         </div>
     </div>
 
-    <!-- Education Modal -->
-    <div id="educationModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">📚 Educational Resources</h2>
-                <span class="close" onclick="closeModal('educationModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🎨 Early Childhood Development (ECD)</h3>
-                <p>Foundation learning for ages 3-6</p>
-                <button class="modal-btn" onclick="openEducationLevel('ecd')">Access ECD Resources</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🏫 Lower Primary School</h3>
-                <p>Grade 1-3 curriculum and activities</p>
-                <button class="modal-btn" onclick="openEducationLevel('lower')">Grade 1-3 Resources</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🎓 Upper Primary School</h3>
-                <p>Grade 4-8 advanced learning</p>
-                <button class="modal-btn" onclick="openEducationLevel('upper')">Grade 4-8 Resources</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🏛️ High School</h3>
-                <p>Form 1-4 secondary education</p>
-                <button class="modal-btn" onclick="openEducationLevel('high')">Form 1-4 Resources</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🎯 Tertiary Education</h3>
-                <p>College & technical training</p>
-                <button class="modal-btn" onclick="openEducationLevel('tertiary')">College & Technical Training</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🏆 University</h3>
-                <p>Undergraduate & graduate programs</p>
-                <button class="modal-btn" onclick="openEducationLevel('university')">University Resources</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Wallet Modal -->
-    <div id="walletModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">💰 Wallet Management</h2>
-                <span class="close" onclick="closeModal('walletModal')">&times;</span>
+    <!-- Wallet Page -->
+    <div id="walletPage" class="wallet-page">
+        <div class="container">
+            <!-- Wallet Header -->
+            <div class="utilities-header">
+                <button class="back-button" onclick="showMiningApp()">←</button>
+                <div class="utilities-title">KABIRU Wallet</div>
             </div>
-            
-            <div class="modal-section">
-                <h3>💳 Current Balance</h3>
-                <div style="text-align: center; font-size: 24px; margin: 15px 0;">
-                    <span id="walletBalance">0.0000</span> KABIRU
-                </div>
-                <div style="text-align: center; opacity: 0.7;">
-                    Available: <span id="availableBalance">0.0000</span> | 
-                    Reserved: <span id="reservedBalance">0.0000</span>
+
+            <!-- Wallet Balance Header -->
+            <div class="wallet-header">
+                <div class="wallet-balance" id="walletBalance">0.0000 iKb</div>
+                <div class="wallet-address">0x742d35...4B76A2</div>
+                <div class="wallet-quick-actions">
+                    <button class="quick-action-btn" onclick="openWalletModal('send')">
+                        📤<br>Send
+                    </button>
+                    <button class="quick-action-btn" onclick="openWalletModal('receive')">
+                        📥<br>Receive
+                    </button>
+                    <button class="quick-action-btn" onclick="openWalletModal('swap')">
+                        🔄<br>Swap
+                    </button>
+                    <button class="quick-action-btn" onclick="copyAddress()">
+                        📋<br>Copy
+                    </button>
                 </div>
             </div>
-            
-            <div class="wallet-actions">
-                <button class="wallet-btn" onclick="openWalletAction('send')">📤 Send</button>
-                <button class="wallet-btn" onclick="openWalletAction('receive')">📥 Receive</button>
-                <button class="wallet-btn" onclick="openWalletAction('swap')">🔄 Swap KSH</button>
-                <button class="wallet-btn" onclick="copyAddress()">📋 Copy Address</button>
-                <button class="wallet-btn" onclick="openWalletAction('lockup')">🔒 Lock Up</button>
-                <button class="wallet-btn" onclick="openWalletAction('reserve')">💎 Reserve</button>
+
+            <!-- Wallet Features Grid -->
+            <div class="wallet-features">
+                <div class="wallet-feature" onclick="openWalletModal('lockup')">
+                    <span class="feature-icon">🔒</span>
+                    <div class="feature-name">Lockup</div>
+                    <div class="feature-desc">Stake tokens for rewards</div>
+                </div>
+
+                <div class="wallet-feature" onclick="openWalletModal('reserve')">
+                    <span class="feature-icon">💎</span>
+                    <div class="feature-name">Reserve</div>
+                    <div class="feature-desc">Emergency token reserve</div>
+                </div>
+
+                <div class="wallet-feature" onclick="openWalletModal('trust')">
+                    <span class="feature-icon">🤝</span>
+                    <div class="feature-name">Trust</div>
+                    <div class="feature-desc">Trust fund management</div>
+                </div>
+
+                <div class="wallet-feature" onclick="openWalletModal('savings')">
+                    <span class="feature-icon">🏦</span>
+                    <div class="feature-name">Savings</div>
+                    <div class="feature-desc">High-yield savings account</div>
+                </div>
+
+                <div class="wallet-feature" onclick="openWalletModal('investment')">
+                    <span class="feature-icon">📈</span>
+                    <div class="feature-name">Investment</div>
+                    <div class="feature-desc">Portfolio management</div>
+                </div>
+
+                <div class="wallet-feature" onclick="openWalletModal('insurance')">
+                    <span class="feature-icon">🛡️</span>
+                    <div class="feature-name">Insurance</div>
+                    <div class="feature-desc">Asset protection plans</div>
+                </div>
             </div>
-            
-            <div id="walletActionPanel" style="display: none; margin-top: 20px;">
-                <div id="sendPanel" class="wallet-panel" style="display: none;">
-                    <h4>📤 Send Kabiru</h4>
-                    <div class="input-group">
-                        <label>Recipient Address</label>
-                        <input type="text" id="sendAddress" placeholder="Enter recipient address">
-                    </div>
-                    <div class="input-group">
-                        <label>Amount</label>
-                        <input type="number" id="sendAmount" placeholder="Enter amount" step="0.0001">
-                    </div>
-                    <button class="modal-btn" onclick="sendKabiru()">Send Kabiru</button>
+
+            <!-- Wallet Sections -->
+            <div class="wallet-sections">
+                <!-- Recent Transactions -->
+                <div class="section-header">
+                    <div class="section-title">Recent Transactions</div>
+                    <div class="section-action" onclick="showAllTransactions()">View All</div>
                 </div>
                 
-                <div id="receivePanel" class="wallet-panel" style="display: none;">
-                    <h4>📥 Receive Kabiru</h4>
-                    <p>Your Wallet Address:</p>
-                    <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; word-break: break-all; margin: 10px 0;">
-                        <span id="userAddress">KBR1234567890ABCDEF</span>
+                <div id="transactionsList">
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div class="transaction-type">Mining Reward</div>
+                            <div class="transaction-date">2 hours ago</div>
+                        </div>
+                        <div class="transaction-amount amount-positive">+0.0025 iKb</div>
                     </div>
-                    <button class="modal-btn" onclick="copyAddress()">Copy Address</button>
-                </div>
-                
-                <div id="swapPanel" class="wallet-panel" style="display: none;">
-                    <h4>🔄 Swap to KSH</h4>
-                    <div class="input-group">
-                        <label>Kabiru Amount</label>
-                        <input type="number" id="swapAmount" placeholder="Enter Kabiru amount" step="0.0001">
+                    
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div class="transaction-type">Lockup Reward</div>
+                            <div class="transaction-date">1 day ago</div>
+                        </div>
+                        <div class="transaction-amount amount-positive">+0.0015 iKb</div>
                     </div>
-                    <div style="margin: 10px 0; opacity: 0.8;">
-                        Rate: 1 KABIRU = 50 KSH
+                    
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div class="transaction-type">Trust Fund Deposit</div>
+                            <div class="transaction-date">3 days ago</div>
+                        </div>
+                        <div class="transaction-amount amount-negative">-0.1000 iKb</div>
                     </div>
-                    <button class="modal-btn" onclick="swapToKsh()">Swap to KSH</button>
-                </div>
-                
-                <div id="lockupPanel" class="wallet-panel" style="display: none;">
-                    <h4>🔒 Lock Up Kabiru</h4>
-                    <div class="input-group">
-                        <label>Amount to Lock</label>
-                        <input type="number" id="lockupAmount" placeholder="Enter amount" step="0.0001">
-                    </div>
-                    <div class="input-group">
-                        <label>Lock Duration (days)</label>
-                        <input type="number" id="lockupDays" placeholder="Enter days" min="1">
-                    </div>
-                    <p style="font-size: 12px; opacity: 0.7;">Earn 5% APY on locked Kabiru</p>
-                    <button class="modal-btn" onclick="lockupKabiru()">Lock Up</button>
-                </div>
-                
-                <div id="reservePanel" class="wallet-panel" style="display: none;">
-                    <h4>💎 Reserve Kabiru</h4>
-                    <div class="input-group">
-                        <label>Amount to Reserve</label>
-                        <input type="number" id="reserveAmount" placeholder="Enter amount" step="0.0001">
-                    </div>
-                    <p style="font-size: 12px; opacity: 0.7;">Reserved Kabiru is saved and protected from spending</p>
-                    <button class="modal-btn" onclick="reserveKabiru()">Reserve</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Language Modal -->
-    <div id="languageModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🌍 Language Settings</h2>
-                <span class="close" onclick="closeModal('languageModal')">&times;</span>
+    <!-- Read Page -->
+    <div id="readPage" class="read-page">
+        <div class="container">
+            <!-- Read Header -->
+            <div class="utilities-header">
+                <button class="back-button" onclick="showMiningApp()">←</button>
+                <div class="utilities-title">Documentation</div>
             </div>
-            
-            <div class="modal-section">
-                <h3>Select Your Language</h3>
-                <div class="language-grid">
-                    <button class="modal-btn" onclick="changeLanguage('en')" id="lang-en">🇬🇧 English</button>
-                    <button class="modal-btn" onclick="changeLanguage('sw')" id="lang-sw">🇰🇪 Kiswahili</button>
-                    <button class="modal-btn" onclick="changeLanguage('luo')" id="lang-luo">🏛️ Dholuo</button>
-                    <button class="modal-btn" onclick="changeLanguage('kik')" id="lang-kik">🗻 Kikuyu</button>
-                    <button class="modal-btn" onclick="changeLanguage('luh')" id="lang-luh">🌾 Luhya</button>
-                    <button class="modal-btn" onclick="changeLanguage('run')" id="lang-run">🇧🇮 Kirundi</button>
-                    <button class="modal-btn" onclick="changeLanguage('kam')" id="lang-kam">🏔️ Kikamba</button>
-                    <button class="modal-btn" onclick="changeLanguage('mer')" id="lang-mer">🌳 Kimeru</button>
+
+            <!-- Documentation Grid -->
+            <div class="read-grid">
+                <div class="read-card" onclick="showDocument('whitepaper')">
+                    <span class="read-icon">📄</span>
+                    <div class="read-name">Whitepaper</div>
+                    <div class="read-desc">Technical documentation and project overview</div>
                 </div>
-                
-                <div style="margin-top: 20px;">
-                    <p style="opacity: 0.7; font-size: 12px;">
-                        Current Language: <span id="currentLanguage">English</span>
-                    </p>
+
+                <div class="read-card" onclick="showDocument('rules')">
+                    <span class="read-icon">📋</span>
+                    <div class="read-name">Rules</div>
+                    <div class="read-desc">Platform rules and community guidelines</div>
+                </div>
+
+                <div class="read-card" onclick="showDocument('terms')">
+                    <span class="read-icon">📜</span>
+                    <div class="read-name">Terms</div>
+                    <div class="read-desc">Terms of service and usage agreement</div>
+                </div>
+
+                <div class="read-card" onclick="showDocument('privacy')">
+                    <span class="read-icon">🔒</span>
+                    <div class="read-name">Privacy Policy</div>
+                    <div class="read-desc">Data protection and privacy information</div>
+                </div>
+
+                <div class="read-card" onclick="showDocument('roadmap')">
+                    <span class="read-icon">🗺️</span>
+                    <div class="read-name">Roadmap</div>
+                    <div class="read-desc">Project timeline and future developments</div>
+                </div>
+
+                <div class="read-card" onclick="showDocument('faq')">
+                    <span class="read-icon">❓</span>
+                    <div class="read-name">FAQ</div>
+                    <div class="read-desc">Frequently asked questions and answers</div>
+                </div>
+
+                <div class="read-card" onclick="showDocument('changelog')">
+                    <span class="read-icon">📝</span>
+                    <div class="read-name">Changelog</div>
+                    <div class="read-desc">Version history and updates</div>
+                </div>
+
+                <div class="read-card" onclick="showDocument('api')">
+                    <span class="read-icon">🔗</span>
+                    <div class="read-name">API Docs</div>
+                    <div class="read-desc">Developer API documentation</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- User Account Modal -->
+    <!-- Document Viewer Page -->
+    <div id="documentPage" class="document-page">
+        <div class="container">
+            <!-- Document Header -->
+            <div class="utilities-header">
+                <button class="back-button" onclick="showReadPage()">←</button>
+                <div class="utilities-title" id="documentTitle">Document</div>
+            </div>
+
+            <!-- Document Content -->
+            <div id="documentContent" class="document-content">
+                <!-- Content will be populated here -->
+            </div>
+        </div>
+    </div>
+    <div id="utilitiesPage" class="utilities-page">
+        <div class="container">
+            <!-- Utilities Header -->
+            <div class="utilities-header">
+                <button class="back-button" onclick="showMiningApp()">←</button>
+                <div class="utilities-title">Utility Apps</div>
+            </div>
+
+            <!-- Utilities Grid -->
+            <div class="utilities-grid">
+                <div class="utility-card" onclick="openUtilityModal('education')">
+                    <span class="utility-icon">🎓</span>
+                    <div class="utility-name">Education</div>
+                    <div class="utility-desc">Learning platforms, courses, and academic resources</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('transport')">
+                    <span class="utility-icon">🚗</span>
+                    <div class="utility-name">Transport</div>
+                    <div class="utility-desc">Air, land, and water transportation services</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('agriculture')">
+                    <span class="utility-icon">🌾</span>
+                    <div class="utility-name">Agriculture</div>
+                    <div class="utility-desc">Farming tools, seeds, and agricultural services</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('marketplace')">
+                    <span class="utility-icon">🛒</span>
+                    <div class="utility-name">Marketplace</div>
+                    <div class="utility-desc">Buy and sell goods and services</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('media')">
+                    <span class="utility-icon">📺</span>
+                    <div class="utility-name">TV & Media</div>
+                    <div class="utility-desc">Entertainment, news, and media content</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('realestate')">
+                    <span class="utility-icon">🏠</span>
+                    <div class="utility-name">Real Estate</div>
+                    <div class="utility-desc">Property buying, selling, and rentals</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('climate')">
+                    <span class="utility-icon">🌍</span>
+                    <div class="utility-name">Climate</div>
+                    <div class="utility-desc">Weather, environmental monitoring</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('energy')">
+                    <span class="utility-icon">⚡</span>
+                    <div class="utility-name">Free Energy</div>
+                    <div class="utility-desc">Renewable energy solutions and resources</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('workshops')">
+                    <span class="utility-icon">⚒️</span>
+                    <div class="utility-name">Workshops</div>
+                    <div class="utility-desc">Skills training and workshop services</div>
+                </div>
+
+                <div class="utility-card" onclick="openUtilityModal('resources')">
+                    <span class="utility-icon">📚</span>
+                    <div class="utility-name">Resources</div>
+                    <div class="utility-desc">Tools, materials, and digital resources</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Feature Modals -->
+    
+    <!-- Send Modal -->
+    <div id="sendModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Send KABIRU</h2>
+                <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="sendAddress">Recipient Address</label>
+                <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
+            </div>
+            <div class="input-group">
+                <label for="sendAmount">Amount (iKb)</label>
+                <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="sendNote">Note (Optional)</label>
+                <input type="text" id="sendNote" placeholder="Payment for...">
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
+                <button class="primary-button" onclick="processSend()">Send iKb</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div id="receiveModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Receive KABIRU</h2>
+                <span class="close" onclick="closeWalletModal('receiveModal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="background: white; padding: 20px; border-radius: 10px; display: inline-block;">
+                    <div style="color: #333; font-size: 16px; font-weight: bold;">QR Code</div>
+                    <div style="color: #666; font-size: 12px; margin-top: 5px;">Scan to send iKb</div>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Your Wallet Address</label>
+                <input type="text" value="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2" readonly>
+            </div>
+            <div class="action-buttons">
+                <button class="primary-button" onclick="copyAddress()">Copy Address</button>
+                <button class="secondary-button" onclick="shareAddress()">Share</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swap Modal -->
+    <div id="swapModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Swap Tokens</h2>
+                <span class="close" onclick="closeWalletModal('swapModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="swapFrom">From</label>
+                <select id="swapFrom">
+                    <option value="ikb">KABIRU (iKb)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="swapFromAmount">Amount</label>
+                <input type="number" id="swapFromAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div style="text-align: center; margin: 15px 0;">
+                <span style="font-size: 20px;">🔄</span>
+            </div>
+            <div class="input-group">
+                <label for="swapTo">To</label>
+                <select id="swapTo">
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="ikb">KABIRU (iKb)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>You'll receive approximately</label>
+                <input type="text" id="swapToAmount" placeholder="0.0000" readonly>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('swapModal')">Cancel</button>
+                <button class="primary-button" onclick="processSwap()">Swap Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lockup Modal -->
+    <div id="lockupModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Token Lockup</h2>
+                <span class="close" onclick="closeWalletModal('lockupModal')">&times;</span>
+            </div>
+            <div class="input-group">
+                <label for="lockupAmount">Amount to Lock (iKb)</label>
+                <input type="number" id="lockupAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="lockupPeriod">Lock Period</label>
+                <select id="lockupPeriod">
+                    <option value="30">30 Days (5% APY)</option>
+                    <option value="90">90 Days (8% APY)</option>
+                    <option value="180">180 Days (12% APY)</option>
+                    <option value="365">1 Year (18% APY)</option>
+                </select>
+            </div>
+            <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <div style="font-size: 12px; opacity: 0.8;">Estimated Rewards:</div>
+                <div style="color: #FFD700; font-weight: bold;" id="lockupRewards">0.0000 iKb</div>
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('lockupModal')">Cancel</button>
+                <button class="primary-button" onclick="processLockup()">Lock Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reserve Modal -->
+    <div id="reserveModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Emergency Reserve</h2>
+                <span class="close" onclick="closeWalletModal('reserveModal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="font-size: 24px; color: #FFD700; font-weight: bold;">Reserve Balance</div>
+                <div style="font-size: 32px; color: #FFD700; margin: 10px 0;" id="reserveBalance">0.0000 iKb</div>
+                <div style="font-size: 12px; opacity: 0.7;">Protected emergency funds</div>
+            </div>
+            <div class="input-group">
+                <label for="reserveAmount">Amount</label>
+                <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="addToReserve()">Add to Reserve</button>
+                <button class="primary-button" onclick="withdrawFromReserve()">Emergency Withdraw</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust Modal -->
+    <div id="trustModal" class="wallet-modal">
+        <div class="wallet-modal-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Trust Fund</h2>
+                <span class="close" onclick="closeWalletModal('trustModal')">&times;</span>
+            </div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="font-size: 24px; color: #FFD700; font-weight: bold;">Trust Balance</div>
+                <div style="font-size: 32px; color: #FFD700; margin: 10px 0;" id="trustBalance">0.0000 iKb</div>
+                <div style="font-size: 12px; opacity: 0.7;">Growing at 15% annually</div>
+            </div>
+            <div class="input-group">
+                <label for="trustAmount">Contribution Amount (iKb)</label>
+                <input type="number" id="trustAmount" placeholder="0.0000" step="0.0001">
+            </div>
+            <div class="input-group">
+                <label for="trustBeneficiary">Beneficiary Address (Optional)</label>
+                <input type="text" id="trustBeneficiary" placeholder="0x742d35...4B76A2">
+            </div>
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('trustModal')">Cancel</button>
+                <button class="primary-button" onclick="addToTrust()">Add to Trust</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Selection Modal -->
+    <div id="languageModal" class="subcategory-modal">
+        <div class="subcategory-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Select Language</h2>
+                <span class="close" onclick="closeLanguageModal()">&times;</span>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-item" onclick="selectLanguage('english', 'English')">
+                    <span class="subcategory-item-icon">🇺🇸</span>
+                    <div class="subcategory-item-name">English</div>
+                    <div class="subcategory-item-desc">Default language</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('swahili', 'Kiswahili')">
+                    <span class="subcategory-item-icon">🇰🇪</span>
+                    <div class="subcategory-item-name">Kiswahili</div>
+                    <div class="subcategory-item-desc">East Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('hausa', 'Hausa')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Hausa</div>
+                    <div class="subcategory-item-desc">West Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('yoruba', 'Yorùbá')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Yorùbá</div>
+                    <div class="subcategory-item-desc">Nigeria, Benin</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('igbo', 'Igbo')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Igbo</div>
+                    <div class="subcategory-item-desc">Southeast Nigeria</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('amharic', 'አማርኛ')">
+                    <span class="subcategory-item-icon">🇪🇹</span>
+                    <div class="subcategory-item-name">Amharic</div>
+                    <div class="subcategory-item-desc">Ethiopia</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('arabic', 'العربية')">
+                    <span class="subcategory-item-icon">🇪🇬</span>
+                    <div class="subcategory-item-name">Arabic</div>
+                    <div class="subcategory-item-desc">North Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('french', 'Français')">
+                    <span class="subcategory-item-icon">🇫🇷</span>
+                    <div class="subcategory-item-name">Français</div>
+                    <div class="subcategory-item-desc">West/Central Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('zulu', 'isiZulu')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiZulu</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('xhosa', 'isiXhosa')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiXhosa</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('afrikaans', 'Afrikaans')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">Afrikaans</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('luganda', 'Luganda')">
+                    <span class="subcategory-item-icon">🇺🇬</span>
+                    <div class="subcategory-item-name">Luganda</div>
+                    <div class="subcategory-item-desc">Uganda</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; font-size: 12px; opacity: 0.7;">
+                More European languages coming soon...
+            </div>
+        </div>
+    </div>
+
+     <!-- User Account Modal -->
     <div id="userAccountModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1432,45 +1893,65 @@
         </div>
     </div>
 
-    <!-- Sovereign Modal -->
+    <!-- Sovereign Values Modal -->
     <div id="sovereignModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">👑 SOVEREIGN Mining</h2>
-                <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
+            <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
+            <h2 class="modal-title">Select Your Sovereignty Value</h2>
+            <div id="sovereignOptions">
+                <div class="value-option" onclick="selectSovereignValue('personal')">
+                    <strong>Personal Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Individual autonomy and self-governance</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('economic')">
+                    <strong>Economic Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Financial independence and control</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('digital')">
+                    <strong>Digital Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Control over digital identity and data</p>
+                </div>
+                <div class="value-option" onclick="selectSovereignValue('territorial')">
+                    <strong>Territorial Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Land and resource ownership rights</p>
+                </div>
             </div>
-            
-            <div class="modal-section">
-                <h3>Sovereign Benefits</h3>
-                <p>Become a sovereign miner and enjoy premium benefits:</p>
-                <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li>3x mining rate boost</li>
-                    <li>Exclusive governance rights</li>
-                    <li>Priority transaction processing</li>
-                    <li>Access to premium features</li>
-                </ul>
-                <button class="modal-btn" onclick="mineTokens('sovereign', 0.005)">Start Sovereign Mining</button>
-            </div>
+            <button class="auth-button" onclick="startSovereignMining()" style="margin-top: 20px;" disabled id="sovereignStartBtn">
+                Start Mining
+            </button>
         </div>
     </div>
 
-    <!-- Value Modal -->
+    <!-- Value Selection Modal -->
     <div id="valueModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">💎 VALUE Creation</h2>
-                <span class="close" onclick="closeModal('valueModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>Create Value Through:</h3>
-                <div class="value-categories" style="grid-template-columns: 1fr; gap: 10px;">
-                    <button class="modal-btn" onclick="performValueTask('service')">🛠️ Service Value (+0.0015 iKb)</button>
-                    <button class="modal-btn" onclick="performValueTask('skill')">🎯 Skill Value (+0.0025 iKb)</button>
-                    <button class="modal-btn" onclick="performValueTask('knowledge')">📚 Knowledge Value (+0.0035 iKb)</button>
-                    <button class="modal-btn" onclick="performValueTask('innovation')">💡 Innovation Value (+0.005 iKb)</button>
+            <span class="close" onclick="closeModal('valueModal')">&times;</span>
+            <h2 class="modal-title">Select Your Value Type</h2>
+            <div id="valueOptions">
+                <div class="value-option" onclick="selectValue('service', 0.0015)">
+                    <strong>Service Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Community service and assistance - 0.0015 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('skill', 0.0025)">
+                    <strong>Skill Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Professional skills and expertise - 0.0025 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('knowledge', 0.0035)">
+                    <strong>Knowledge Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Information and wisdom sharing - 0.0035 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('innovation', 0.0045)">
+                    <strong>Innovation Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Creative solutions and inventions - 0.0045 iKb</p>
+                </div>
+                <div class="value-option" onclick="selectValue('leadership', 0.0055)">
+                    <strong>Leadership Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px;">Guidance and mentorship - 0.0055 iKb</p>
                 </div>
             </div>
+            <button class="auth-button" onclick="startValueMining()" style="margin-top: 20px;" disabled id="valueStartBtn">
+                Start Mining
+            </button>
         </div>
     </div>
 
@@ -1484,7 +1965,7 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        // Firebase Configuration
+            // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
@@ -1567,8 +2048,7 @@
                 }
             });
         }
-
-        // Load user data from Firestore
+// Load user data from Firestore
         async function loadUserDataFromFirestore(uid) {
             try {
                 console.log('Loading user data from Firestore for UID:', uid);
@@ -1638,8 +2118,7 @@
                 throw error;
             }
         }
-
-        // Save user data to Firestore
+// Save user data to Firestore
         async function saveUserDataToFirestore() {
             if (!currentUser || !currentUser.uid) {
                 console.error('Cannot save data - no authenticated user');
@@ -1761,7 +2240,7 @@ This usually fixes 90% of login problems!`;
 💡 Try: incognito mode, disable extensions, or different browser.`;
     }
 }
-        // Authentication Functions
+// Authentication Functions
         async function handleLogin() {
     const credential = document.getElementById('loginCredential').value.trim();
     const password = document.getElementById('loginPassword').value;
@@ -1893,8 +2372,7 @@ This usually fixes 90% of login problems!`;
                 signupBtn.disabled = false;
             }
         }
-
-        async function handlePasswordReset() {
+async function handlePasswordReset() {
             const email = document.getElementById('resetEmail').value.trim();
             
             if (!email) {
@@ -2038,6 +2516,547 @@ This usually fixes 90% of login problems!`;
             }, 3000);
         }
 
+
+        // Navigation functions
+        function showMiningApp() {
+            document.getElementById('miningApp').style.display = 'block';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'none';
+            document.getElementById('documentPage').style.display = 'none';
+        }
+
+        function showWallet() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'block';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'none';
+            document.getElementById('documentPage').style.display = 'none';
+            updateWalletBalance();
+        }
+
+        function showUtilities() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'block';
+            document.getElementById('readPage').style.display = 'none';
+            document.getElementById('documentPage').style.display = 'none';
+        }
+
+        function showReadPage() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'block';
+            document.getElementById('documentPage').style.display = 'none';
+        }
+
+        function showLanguageModal() {
+            document.getElementById('languageModal').style.display = 'block';
+        }
+
+        function closeLanguageModal() {
+            document.getElementById('languageModal').style.display = 'none';
+        }
+
+        function selectLanguage(langCode, langName) {
+            showNotification(`Language changed to ${langName}`);
+            closeLanguageModal();
+            // Store selected language (in a real app, this would update the UI language)
+            localStorage.setItem('selectedLanguage', langCode);
+        }
+
+        function showReadPage() {
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'none';
+            document.getElementById('utilitiesPage').style.display = 'none';
+            document.getElementById('readPage').style.display = 'block';
+            document.getElementById('documentPage').style.display = 'none';
+        }
+
+        function showDocument(docType) {
+            document.getElementById('readPage').style.display = 'none';
+            document.getElementById('documentPage').style.display = 'block';
+            
+            const titleElement = document.getElementById('documentTitle');
+            const contentElement = document.getElementById('documentContent');
+            
+            const documents = {
+                whitepaper: {
+                    title: 'KABIRU Whitepaper',
+                    content: `
+                        <div class="coming-soon">
+                            📄 Whitepaper PDF will be available here soon
+                            <br><br>
+                            Please check back later for the complete technical documentation.
+                        </div>
+                    `
+                },
+                rules: {
+                    title: 'Platform Rules',
+                    content: `
+                        <div class="document-title">KABIRU Platform Rules</div>
+                        <div class="version-info">Version 1.0 - Last updated: August 2025</div>
+                        
+                        <div class="document-section-title">1. General Conduct</div>
+                        <div class="document-text">
+                            All users must maintain respectful and professional behavior within the KABIRU ecosystem. 
+                            Harassment, spam, or malicious activities are strictly prohibited.
+                        </div>
+                        
+                        <div class="document-section-title">2. Mining Guidelines</div>
+                        <div class="document-text">
+                            • Mining activities must be performed honestly without attempts to manipulate rewards<br>
+                            • Users are limited to one account per individual<br>
+                            • Automated mining tools or bots are not permitted<br>
+                            • All mining must represent genuine value creation
+                        </div>
+                        
+                        <div class="document-section-title">3. Token Usage</div>
+                        <div class="document-text">
+                            KABIRU tokens (iKb) should be used within the intended ecosystem. Trading, transferring, 
+                            or using tokens for illegal activities is prohibited.
+                        </div>
+                        
+                        <div class="document-section-title">4. Account Security</div>
+                        <div class="document-text">
+                            Users are responsible for maintaining the security of their accounts. Sharing credentials 
+                            or allowing unauthorized access may result in account suspension.
+                        </div>
+                        
+                        <div class="document-section-title">5. Violations and Penalties</div>
+                        <div class="document-text">
+                            Violations of these rules may result in warnings, temporary suspension, or permanent 
+                            account termination depending on severity.
+                        </div>
+                    `
+                },
+                terms: {
+                    title: 'Terms of Service',
+                    content: `
+                        <div class="document-title">Terms of Service</div>
+                        <div class="version-info">Version 1.0 - Effective Date: April 10, 2026</div>
+                        
+                        <div class="document-section-title">1. Acceptance of Terms</div>
+                        <div class="document-text">
+                            By accessing and using the KABIRU platform, you agree to be bound by these Terms of Service 
+                            and all applicable laws and regulations.
+                        </div>
+                        
+                        <div class="document-section-title">2. Description of Service</div>
+                        <div class="document-text">
+                            KABIRU is a digital token mining platform that allows users to earn tokens through 
+                            various value-creation activities including sovereignty, value creation, and reserve contributions.
+                        </div>
+                        
+                        <div class="document-section-title">3. User Responsibilities</div>
+                        <div class="document-text">
+                            Users are responsible for providing accurate information, maintaining account security, 
+                            and complying with all platform rules and applicable laws.
+                        </div>
+                        
+                        <div class="document-section-title">4. Intellectual Property</div>
+                        <div class="document-text">
+                            All content, trademarks, and intellectual property on the KABIRU platform remain the 
+                            property of their respective owners.
+                        </div>
+                        
+                        <div class="document-section-title">5. Limitation of Liability</div>
+                        <div class="document-text">
+                            KABIRU shall not be liable for any indirect, incidental, special, or consequential damages 
+                            resulting from the use of the platform.
+                        </div>
+                        
+                        <div class="document-section-title">6. Modifications</div>
+                        <div class="document-text">
+                            These terms may be updated periodically. Continued use of the platform constitutes 
+                            acceptance of any modifications.
+                        </div>
+                    `
+                },
+                privacy: {
+                    title: 'Privacy Policy',
+                    content: `
+                        <div class="document-title">Privacy Policy</div>
+                        <div class="version-info">Version 1.0 - Last updated: August 1, 2025</div>
+                        
+                        <div class="document-section-title">1. Information We Collect</div>
+                        <div class="document-text">
+                            We collect information you provide directly, such as account creation details, 
+                            mining activities, and transaction data necessary for platform operation.
+                        </div>
+                        
+                        <div class="document-section-title">2. How We Use Information</div>
+                        <div class="document-text">
+                            Your information is used to provide services, process transactions, communicate updates, 
+                            and improve platform functionality.
+                        </div>
+                        
+                        <div class="document-section-title">3. Information Sharing</div>
+                        <div class="document-text">
+                            We do not sell or rent personal information to third parties. Information may be shared 
+                            only as required by law or to protect platform security.
+                        </div>
+                        
+                        <div class="document-section-title">4. Data Security</div>
+                        <div class="document-text">
+                            We implement appropriate technical and organizational measures to protect your personal 
+                            information against unauthorized access, alteration, or destruction.
+                        </div>
+                        
+                        <div class="document-section-title">5. Your Rights</div>
+                        <div class="document-text">
+                            You have the right to access, update, or delete your personal information. 
+                            Contact support for assistance with data requests.
+                        </div>
+                        
+                        <div class="document-section-title">6. Contact Us</div>
+                        <div class="document-text">
+                            For privacy-related questions or concerns, please contact our support team through 
+                            the platform's official channels.
+                        </div>
+                    `
+                },
+                roadmap: {
+                    title: 'Project Roadmap',
+                    content: `
+                        <div class="document-title">KABIRU Development Roadmap</div>
+                        <div class="version-info">Updated: August 2025</div>
+                        
+                        <div class="document-section-title">Q3 2025 - Foundation</div>
+                        <div class="document-text">
+                            ✅ Core mining platform launch<br>
+                            ✅ Basic wallet functionality<br>
+                            ✅ Utility apps framework<br>
+                            🔄 Community building and onboarding
+                        </div>
+                        
+                        <div class="document-section-title">Q4 2025 - Expansion</div>
+                        <div class="document-text">
+                            📅 Advanced mining algorithms<br>
+                            📅 Enhanced security features<br>
+                            📅 Mobile app release<br>
+                            📅 Partnership integrations
+                        </div>
+                        
+                        <div class="document-section-title">Q1 2026 - Innovation</div>
+                        <div class="document-text">
+                            📅 AI-powered mining optimization<br>
+                            📅 Cross-chain compatibility<br>
+                            📅 Governance token introduction<br>
+                            📅 Decentralized exchange integration
+                        </div>
+                        
+                        <div class="document-section-title">Q2 2026 - Scale</div>
+                        <div class="document-text">
+                            📅 Global marketplace launch<br>
+                            📅 Enterprise solutions<br>
+                            📅 Educational platform<br>
+                            📅 Sustainability initiatives
+                        </div>
+                        
+                        <div class="document-section-title">Future Vision</div>
+                        <div class="document-text">
+                            Our long-term vision includes creating a comprehensive ecosystem for value creation, 
+                            sustainable development, and global economic empowerment through blockchain technology.
+                        </div>
+                    `
+                },
+                faq: {
+                    title: 'Frequently Asked Questions',
+                    content: `
+                        <div class="document-title">Frequently Asked Questions</div>
+                        <div class="version-info">Last updated: August 2025</div>
+                        
+                        <div class="document-section-title">What is KABIRU?</div>
+                        <div class="document-text">
+                            KABIRU is a digital token mining platform that rewards users for creating various forms of value, 
+                            including sovereignty, skills, knowledge, and community service.
+                        </div>
+                        
+                        <div class="document-section-title">How do I start mining?</div>
+                        <div class="document-text">
+                            Simply select one of the mining options (Sovereign, Value, or Reserve) on the main screen, 
+                            choose your specific category, and start the mining process.
+                        </div>
+                        
+                        <div class="document-section-title">What can I do with iKb tokens?</div>
+                        <div class="document-text">
+                            iKb tokens can be used within the KABIRU ecosystem for various utilities, stored in savings accounts, 
+                            locked up for rewards, or used in the integrated marketplace.
+                        </div>
+                        
+                        <div class="document-section-title">Is KABIRU safe to use?</div>
+                        <div class="document-text">
+                            Yes, KABIRU implements industry-standard security measures including encrypted transactions, 
+                            secure wallet storage, and regular security audits.
+                        </div>
+                        
+                        <div class="document-section-title">How often can I mine?</div>
+                        <div class="document-text">
+                            Mining frequency depends on the type of activity. Most mining activities have cooldown periods 
+                            to ensure fair distribution and prevent abuse.
+                        </div>
+                        
+                        <div class="document-section-title">Can I withdraw my tokens?</div>
+                        <div class="document-text">
+                            Currently, tokens are designed for use within the KABIRU ecosystem. External withdrawal options 
+                            may be available in future updates.
+                        </div>
+                        
+                        <div class="document-section-title">How do I contact support?</div>
+                        <div class="document-text">
+                            Support can be reached through the platform's official communication channels. 
+                            More contact options will be added as the platform grows.
+                        </div>
+                    `
+                },
+                changelog: {
+                    title: 'Version History',
+                    content: `
+                        <div class="document-title">Changelog</div>
+                        <div class="version-info">Track all platform updates and improvements</div>
+                        
+                        <div class="document-section-title">Version 1.2.0 - August 15, 2025</div>
+                        <div class="document-text">
+                            <strong>New Features:</strong><br>
+                            • Added Documentation section with comprehensive guides<br>
+                            • Enhanced wallet functionality with trust funds<br>
+                            • Improved mining reward calculations<br><br>
+                            
+                            <strong>Improvements:</strong><br>
+                            • Better mobile responsiveness<br>
+                            • Faster transaction processing<br>
+                            • Enhanced security measures<br><br>
+                            
+                            <strong>Bug Fixes:</strong><br>
+                            • Fixed balance update delays<br>
+                            • Resolved mining timer accuracy issues<br>
+                            • Corrected notification display problems
+                        </div>
+                        
+                        <div class="document-section-title">Version 1.1.0 - August 1, 2025</div>
+                        <div class="document-text">
+                            <strong>New Features:</strong><br>
+                            • Utility Apps marketplace<br>
+                            • Advanced wallet features (lockup, reserve, trust)<br>
+                            • Task completion tracking<br><br>
+                            
+                            <strong>Improvements:</strong><br>
+                            • Enhanced user interface<br>
+                            • Improved mining animations<br>
+                            • Better error handling
+                        </div>
+                        
+                        <div class="document-section-title">Version 1.0.0 - July 15, 2025</div>
+                        <div class="document-text">
+                            <strong>Initial Release:</strong><br>
+                            • Core mining functionality<br>
+                            • Basic wallet operations<br>
+                            • User account management<br>
+                            • Initial token distribution system
+                        </div>
+                    `
+                },
+                api: {
+                    title: 'API Documentation',
+                    content: `
+                        <div class="document-title">Developer API Documentation</div>
+                        <div class="version-info">API Version 1.0 - For developers and integrators</div>
+                        
+                        <div class="document-section-title">Getting Started</div>
+                        <div class="document-text">
+                            The KABIRU API provides programmatic access to mining operations, wallet management, 
+                            and utility services. Authentication is required for all API calls.
+                        </div>
+                        
+                        <div class="document-section-title">Authentication</div>
+                        <div class="document-text">
+                            <strong>Endpoint:</strong> POST /api/auth<br>
+                            <strong>Headers:</strong> Content-Type: application/json<br>
+                            <strong>Body:</strong> {"apiKey": "your-api-key", "signature": "request-signature"}
+                        </div>
+                        
+                        <div class="document-section-title">Mining Operations</div>
+                        <div class="document-text">
+                            <strong>Start Mining:</strong> POST /api/mining/start<br>
+                            <strong>Check Status:</strong> GET /api/mining/status<br>
+                            <strong>Get Rewards:</strong> GET /api/mining/rewards<br>
+                        </div>
+                        
+                        <div class="document-section-title">Wallet Management</div>
+                        <div class="document-text">
+                            <strong>Get Balance:</strong> GET /api/wallet/balance<br>
+                            <strong>Send Tokens:</strong> POST /api/wallet/send<br>
+                            <strong>Transaction History:</strong> GET /api/wallet/transactions<br>
+                        </div>
+                        
+                        <div class="document-section-title">Rate Limits</div>
+                        <div class="document-text">
+                            API calls are limited to 100 requests per minute per API key. 
+                            Higher limits available for verified developers.
+                        </div>
+                        
+                        <div class="document-section-title">Support</div>
+                        <div class="document-text">
+                            For API support and developer resources, please contact our technical team 
+                            through the official developer portal.
+                        </div>
+                    `
+                }
+            };
+            
+            const doc = documents[docType];
+            if (doc) {
+                titleElement.textContent = doc.title;
+                contentElement.innerHTML = doc.content;
+            }
+        }
+
+
+        // Balance and mining functions
+        function updateBalanceDisplay() {
+            const balanceElements = document.querySelectorAll('#balance, #totalBalance, #walletBalance');
+            balanceElements.forEach(el => {
+                if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
+            });
+        }
+
+        function updateWalletBalance() {
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
+        }
+
+        function startMiningTimer() {
+            const timerElement = document.getElementById('miningTimer');
+            if (!timerElement) return;
+
+            let seconds = 0;
+            setInterval(() => {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                seconds++;
+                
+                // Auto mine every 10 seconds for demo
+                if (seconds % 10 === 0 && isMinig) {
+                    userBalance += miningRate;
+                    updateBalanceDisplay();
+                    showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
+                }
+            }, 1000);
+        }
+
+        // Modal functions
+        function openSovereignModal() {
+            document.getElementById('sovereignModal').style.display = 'block';
+        }
+
+        function openValueModal() {
+            document.getElementById('valueModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function selectSovereignValue(type) {
+            selectedSovereignType = type;
+            
+            // Remove previous selections
+            document.querySelectorAll('#sovereignOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            
+            // Enable start button
+            document.getElementById('sovereignStartBtn').disabled = false;
+        }
+
+        function selectValue(type, amount) {
+            selectedValueType = type;
+            selectedValueAmount = amount;
+            
+            // Remove previous selections
+            document.querySelectorAll('#valueOptions .value-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.target.closest('.value-option').classList.add('selected');
+            
+            // Enable start button
+            document.getElementById('valueStartBtn').disabled = false;
+        }
+
+        function startSovereignMining() {
+            if (!selectedSovereignType) return;
+            
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += 0.005; // Base sovereign mining reward
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Sovereign mining complete! +0.0050 iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+            
+            closeModal('sovereignModal');
+        }
+
+        function startValueMining() {
+            if (!selectedValueType) return;
+            
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            setTimeout(() => {
+                userBalance += selectedValueAmount;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Value mining complete! +${selectedValueAmount.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+            
+            closeModal('valueModal');
+        }
+
+        function mineTokens(type) {
+            isMinig = true;
+            document.getElementById('miningStatus').textContent = 'Active';
+            showMiningIndicator();
+            
+            let reward = 0.002; // Base reserve mining reward
+            
+            setTimeout(() => {
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`Reserve mining complete! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 3000);
+        }
+
+        function showMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'block';
+        }
+
+        function hideMiningIndicator() {
+            document.getElementById('miningIndicator').style.display = 'none';
+        }
+
+        function incrementTasksCompleted() {
+            const tasksElement = document.getElementById('tasksCompleted');
+            let current = parseInt(tasksElement.textContent);
+            tasksElement.textContent = current + 1;
+        }
+
         // Task functions
         function selectTask(taskType) {
             document.querySelectorAll('.task-category').forEach(cat => {
@@ -2068,196 +3087,265 @@ This usually fixes 90% of login problems!`;
             mineTokens(`value-${valueType}`, rewards[valueType] || 0.0015);
         }
 
-        // Modal Functions
-        function openEducationModal() {
-            document.getElementById('educationModal').style.display = 'block';
-        }
-
-        function openWalletModal() {
-            updateWalletDisplay();
-            document.getElementById('walletModal').style.display = 'block';
-        }
-
-        function openLanguageModal() {
-            updateLanguageDisplay();
-            document.getElementById('languageModal').style.display = 'block';
-        }
-
-        function openUserAccountModal() {
-            updateAccountDisplay();
-            document.getElementById('userAccountModal').style.display = 'block';
-        }
-
-        function openSovereignModal() {
-            document.getElementById('sovereignModal').style.display = 'block';
-        }
-
-        function openValueModal() {
-            document.getElementById('valueModal').style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            if (modalId === 'walletModal') {
-                document.getElementById('walletActionPanel').style.display = 'none';
-                document.querySelectorAll('.wallet-panel').forEach(panel => {
-                    panel.style.display = 'none';
-                });
-            }
-        }
-
-        function closeAllModals() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                modal.style.display = 'none';
-            });
-        }
-
-        // Education Functions
-        function openEducationLevel(level) {
-            const levels = {
-                ecd: 'Early Childhood Development resources are being prepared...',
-                lower: 'Lower Primary School (Grade 1-3) curriculum loading...',
-                upper: 'Upper Primary School (Grade 4-8) resources available soon...',
-                high: 'High School (Form 1-4) materials coming soon...',
-                tertiary: 'Tertiary education resources in development...',
-                university: 'University level content being curated...'
+        // Utility functions
+        function openUtilityModal(utilityType) {
+            const modal = document.getElementById('subcategoryModal');
+            const title = document.getElementById('subcategoryTitle');
+            const grid = document.getElementById('subcategoryGrid');
+            
+            // Clear previous content
+            grid.innerHTML = '';
+            
+            // Set title and generate subcategories based on utility type
+            const utilities = {
+                education: {
+                    title: 'Education Services',
+                    items: [
+                        {icon: '📚', name: 'Online Courses', desc: 'Access premium courses'},
+                        {icon: '🎓', name: 'Universities', desc: 'Higher education, Trade courses, Tech training'},
+                        {icon: '👨‍🏫', name: 'Tutoring', desc: 'Personal tutoring'},
+                        {icon: '📝', name: 'Certifications', desc: 'Professional certs, Artisans, NITA'},
+                        {icon: '🔬', name: 'Research', desc: 'Academic research, Health Research, Engineering Research, Agriculture Research, IT Research'},
+                        {icon: '📖', name: 'Libraries', desc: 'Resource centers, online materials, History, Culture, Civilization, spirituality, government'}
+                    ]
+                },
+                transport: {
+                    title: 'Transportation Services',
+                    items: [
+                        {icon: '✈️', name: 'Air and freight', desc: 'Flight bookings'},
+                        {icon: '🚗', name: 'Car Land and Road, desc: 'Vehicle rentals, public transport sector'},
+                        {icon: '🚌', name: 'Public Transit', desc: 'Bus & train tickets'},
+                        {icon: '🚲', name: 'Bike Sharing', desc: 'Bicycle rentals'},
+                        {icon: '🛵', name: 'Ride Mobility', desc: 'Taxi services'},
+                        {icon: '🚢', name: 'Water and Marine', desc: 'Boat & ferry services, bookings'}
+                    ]
+                },
+                agriculture: {
+                    title: 'Agriculture Services',
+                    items: [
+                        {icon: '🌱', name: 'Seeds', desc: 'Premium seed varieties'},
+                        {icon: '🚜', name: 'Equipment', desc: 'Farm machinery'},
+                        {icon: '🌾', name: 'Crops', desc: 'Crop Research and management'},
+                        {icon: '🐄', name: 'Livestock', desc: 'Animal farming'},
+                        {icon: '💧', name: 'Irrigation', desc: 'Water systems'},
+                        {icon: '🧪', name: 'Fertilizers', desc: 'Soil nutrients'}
+                    ]
+                },
+                marketplace: {
+                    title: 'Marketplace',
+                    items: [
+                        {icon: '🛍️', name: 'Shopping', desc: 'Online marketplace'},
+                        {icon: '🏪', name: 'Local Stores', desc: 'Local shops, markets'},
+                        {icon: '🍔', name: 'Food and Nutrition', desc: 'Restaurant,  delivery, indoor and outside catering'},
+                        {icon: '👕', name: 'Fashion', desc: 'Textile Clothing & accessories'},
+                        {icon: '📱', name: 'Electronics', desc: ' Sales, repair and maintenance of electronic and electrical devices'},
+                        {icon: '🏠', name: 'Home & Garden', desc: 'Home decor, interior, flowering, '}
+                    ]
+                },
+                media: {
+                    title: 'TV & Media',
+                    items: [
+                        {icon: '📺', name: 'Media services', desc: 'Radio and Television channels, recording Studios, Social media'},
+                        {icon: '🎬', name: 'Movies', desc: 'Film production, streaming'},
+                        {icon: '🎵', name: 'Music', desc: 'Audio production'},
+                        {icon: '📰', name: 'News', desc: 'Latest updates'},
+                        {icon: '🎮', name: 'Gaming', desc: 'Video games'},
+                        {icon: '📻', name: 'Podcasts', desc: 'video, Audio shows'}
+                    ]
+                },
+                realestate: {
+                    title: 'Real Estate',
+                    items: [
+                        {icon: '🏠', name: 'Buy', desc: 'Purchase property'},
+                        {icon: '🏘️', name: 'Rent', desc: 'Property rental'},
+                        {icon: '🏢', name: 'Commercial', desc: 'Business properties'},
+                        {icon: '🏡', name: 'Residential', desc: 'Home properties'},
+                        {icon: '🏗️', name: 'Construction', desc: 'Building services'},
+                        {icon: '💰', name: 'Investment', desc: 'Property investment'}
+                    ]
+                },
+                climate: {
+                    title: 'Climate Services',
+                    items: [
+                        {icon: '🌡️', name: 'Weather', desc: 'Weather forecasts'},
+                        {icon: '🌍', name: 'Environment', desc: 'Environmental data, climate programs'},
+                        {icon: '🌊', name: 'Ocean', desc: 'Marine conditions'},
+                        {icon: '🌪️', name: 'Disasters', desc: 'Natural disasters'},
+                        {icon: '📊', name: 'Analytics', desc: 'environmental  analysis, weather analysis'},
+                        {icon: '🛰️', name: 'Satellite', desc: 'Satellite and space technology'}
+                    ]
+                },
+                energy: {
+                    title: 'Free Energy technology',
+                    items: [
+                        {icon: '☀️', name: 'Solar', desc: 'Solar power systems'},
+                        {icon: '💨', name: 'Wind', desc: 'Wind energy'},
+                        {icon: '💧', name: 'Hydro', desc: 'Water power'},
+                        {icon: '🔋', name: 'permanent Battery', desc: ' perpetual Energy production, storage'},
+                        {icon: '⚡', name: 'Grid', desc: 'Smart grid services'},
+                        {icon: '🌱', name: 'Biomass', desc: 'Organic energy'}
+                    ]
+                },
+                workshops: {
+                    title: 'Workshops',
+                    items: [
+                        {icon: '🔨', name: 'Carpentry', desc: 'Woodworking skills, Engineering skills, Artistry, cultural workshops'},
+                        {icon: '⚡', name: 'Electronics', desc: 'Logic Circuit building'},
+                        {icon: '🎨', name: 'Arts & Crafts', desc: 'Creative workshops'},
+                        {icon: '💻', name: 'Programming', desc: 'Coding bootcamps, websites, utility Applications,'},
+                        {icon: '🍳', name: 'Cooking', desc: 'Culinary classes'},
+                        {icon: '🧵', name: 'Sewing', desc: 'Textile skills'}
+                    ]
+                },
+                resources: {
+                    title: 'Resources',
+                    items: [
+                        {icon: '📚', name: 'Documents', desc: 'Document templates'},
+                        {icon: '🔧', name: 'Tools', desc: 'Digital tools'},
+                        {icon: '💾', name: 'Software', desc: 'Applications'},
+                        {icon: '🎨', name: 'Graphics', desc: 'Design resources'},
+                        {icon: '📊', name: 'Data', desc: 'Datasets'},
+                        {icon: '🔍', name: 'Research', desc: 'Research tools'}
+                    ]
+                }
             };
             
-            showNotification(levels[level] || 'Educational content loading...');
-            mineTokens('education', 0.001);
-        }
-
-        // Wallet Functions
-        function updateWalletDisplay() {
-            document.getElementById('walletBalance').textContent = userBalance.toFixed(4);
-            document.getElementById('availableBalance').textContent = availableBalance.toFixed(4);
-            document.getElementById('reservedBalance').textContent = reservedBalance.toFixed(4);
-            document.getElementById('userAddress').textContent = generateUserAddress();
-        }
-
-        function generateUserAddress() {
-            if (!currentUser) return 'KBR000000000000000';
-            const hash = currentUser.uid.slice(0, 15);
-            return `KBR${hash.toUpperCase()}`;
-        }
-
-        function openWalletAction(action) {
-            document.querySelectorAll('.wallet-panel').forEach(panel => {
-                panel.style.display = 'none';
-            });
-            
-            document.getElementById('walletActionPanel').style.display = 'block';
-            document.getElementById(action + 'Panel').style.display = 'block';
-        }
-
-        function sendKabiru() {
-            const address = document.getElementById('sendAddress').value.trim();
-            const amount = parseFloat(document.getElementById('sendAmount').value);
-            
-            if (!address || !amount || amount <= 0) {
-                showError('Please enter valid address and amount');
-                return;
+            const utility = utilities[utilityType];
+            if (utility) {
+                title.textContent = utility.title;
+                
+                utility.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'subcategory-item';
+                    itemDiv.onclick = () => useUtilityService(item.name);
+                    itemDiv.innerHTML = `
+                        <span class="subcategory-item-icon">${item.icon}</span>
+                        <div class="subcategory-item-name">${item.name}</div>
+                        <div class="subcategory-item-desc">${item.desc}</div>
+                    `;
+                    grid.appendChild(itemDiv);
+                });
             }
             
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            availableBalance -= amount;
-            userBalance -= amount;
-            updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully sent ${amount.toFixed(4)} KABIRU to ${address.slice(0, 10)}...`);
-            closeModal('walletModal');
+            modal.style.display = 'block';
+        }
+
+        function closeSubcategoryModal() {
+            document.getElementById('subcategoryModal').style.display = 'none';
+        }
+
+        function useUtilityService(serviceName) {
+            showNotification(`${serviceName} service activated! Feature coming soon.`);
+            closeSubcategoryModal();
+        }
+
+        // Wallet functions
+        function openWalletModal(modalType) {
+            const modalId = modalType + 'Modal';
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeWalletModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
         function copyAddress() {
-            const address = generateUserAddress();
+            const address = '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2';
             navigator.clipboard.writeText(address).then(() => {
-                showNotification('Address copied to clipboard!');
-            }).catch(() => {
-                showNotification('Address: ' + address);
+                showNotification('Wallet address copied to clipboard!');
             });
         }
 
-        function swapToKsh() {
-            const amount = parseFloat(document.getElementById('swapAmount').value);
+        function shareAddress() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My KABIRU Wallet Address',
+                    text: '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2'
+                });
+            } else {
+                copyAddress();
+            }
+        }
+
+        function processSend() {
+            const address = document.getElementById('sendAddress').value;
+            const amount = parseFloat(document.getElementById('sendAmount').value);
             
-            if (!amount || amount <= 0) {
-                showError('Please enter valid amount');
+            if (!address || !amount || amount <= 0) {
+                showNotification('Please enter valid address and amount');
                 return;
             }
             
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
+            if (amount > userBalance) {
+                showNotification('Insufficient balance');
                 return;
             }
             
-            const kshAmount = amount * 50;
-            availableBalance -= amount;
             userBalance -= amount;
-            
             updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully swapped ${amount.toFixed(4)} KABIRU for ${kshAmount} KSH`);
-            closeModal('walletModal');
+            showNotification(`Successfully sent ${amount.toFixed(4)} iKb`);
+            closeWalletModal('sendModal');
         }
 
-        function lockupKabiru() {
+        function processSwap() {
+            const fromAmount = parseFloat(document.getElementById('swapFromAmount').value);
+            if (!fromAmount || fromAmount <= 0) {
+                showNotification('Please enter valid amount');
+                return;
+            }
+            
+            showNotification('Swap completed successfully!');
+            closeWalletModal('swapModal');
+        }
+
+        function processLockup() {
             const amount = parseFloat(document.getElementById('lockupAmount').value);
-            const days = parseInt(document.getElementById('lockupDays').value);
-            
-            if (!amount || !days || amount <= 0 || days <= 0) {
-                showError('Please enter valid amount and duration');
+            if (!amount || amount <= 0 || amount > userBalance) {
+                showNotification('Please enter valid amount');
                 return;
             }
             
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            availableBalance -= amount;
-            
+            userBalance -= amount;
             updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully locked ${amount.toFixed(4)} KABIRU for ${days} days at 5% APY`);
-            closeModal('walletModal');
+            showNotification(`Successfully locked ${amount.toFixed(4)} iKb`);
+            closeWalletModal('lockupModal');
         }
 
-        function reserveKabiru() {
+        function addToReserve() {
             const amount = parseFloat(document.getElementById('reserveAmount').value);
-            
-            if (!amount || amount <= 0) {
-                showError('Please enter valid amount');
+            if (!amount || amount <= 0 || amount > userBalance) {
+                showNotification('Please enter valid amount');
                 return;
             }
             
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            availableBalance -= amount;
-            reservedBalance += amount;
-            
+            userBalance -= amount;
             updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully reserved ${amount.toFixed(4)} KABIRU`);
-            closeModal('walletModal');
+            showNotification(`Added ${amount.toFixed(4)} iKb to reserve`);
+            closeWalletModal('reserveModal');
         }
 
-        // Language Functions
+        function withdrawFromReserve() {
+            showNotification('Emergency withdrawal processed');
+            closeWalletModal('reserveModal');
+        }
+
+        function addToTrust() {
+            const amount = parseFloat(document.getElementById('trustAmount').value);
+            if (!amount || amount <= 0 || amount > userBalance) {
+                showNotification('Please enter valid amount');
+                return;
+            }
+            
+            userBalance -= amount;
+            updateBalanceDisplay();
+            showNotification(`Added ${amount.toFixed(4)} iKb to trust fund`);
+            closeWalletModal('trustModal');
+        }
+
+        function showAllTransactions() {
+            showNotification('Transaction history feature coming soon!');
+        }
+// Language Functions
         function updateLanguageDisplay() {
             document.querySelectorAll('[id^="lang-"]').forEach(btn => {
                 btn.classList.remove('active');
@@ -2312,10 +3400,10 @@ This usually fixes 90% of login problems!`;
         }
 
         function getMinerRank() {
-            if (userBalance < 0.01) return 'Beginner';
-            if (userBalance < 0.1) return 'Bronze';
-            if (userBalance < 1) return 'Silver';
-            if (userBalance < 10) return 'Gold';
+            if (userBalance < 0.001) return 'Beginner';
+            if (userBalance < 0.01) return 'Bronze';
+            if (userBalance < 0.1) return 'Silver';
+            if (userBalance < 1.0) return 'Gold';
             return 'Diamond';
         }
 
@@ -2361,8 +3449,7 @@ This usually fixes 90% of login problems!`;
                 document.getElementById('userAvatar').textContent = userDisplayName.charAt(0).toUpperCase();
             }
         }
-
-        // Navigation Functions
+// Navigation Functions
         function showLoginPage() {
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('miningApp').style.display = 'none';
@@ -2461,7 +3548,7 @@ This usually fixes 90% of login problems!`;
             }, 1500);
         }
 
-        // Mining Timer Function
+   // Mining Timer Function
         function startMiningTimer() {
             const timerElement = document.getElementById('miningTimer');
             if (!timerElement) return;
@@ -2570,4 +3657,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
     </script>
 </body>
+    </html>
+    </html>
     </html>
