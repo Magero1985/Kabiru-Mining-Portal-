@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>KABIRU Mining App</title>
+    <title>KABIRU Mining App</title>
     
     <!-- Firebase SDK -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
@@ -524,51 +524,32 @@
             box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
         }
 
-        /* Updated scattered stats layout */
         .stats-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
             margin-bottom: 30px;
-            justify-content: space-between;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            padding: 18px 16px;
+            padding: 20px;
             border-radius: 16px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: fadeInUp 1s ease-out 0.6s both;
-            flex: 0 1 calc(48% - 6px);
-            min-width: 140px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .stat-card:nth-child(1) {
-            flex: 0 1 calc(55% - 6px);
-        }
-
-        .stat-card:nth-child(2) {
-            flex: 0 1 calc(43% - 6px);
         }
 
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: #FFD700;
             margin-bottom: 6px;
         }
 
         .stat-label {
-            font-size: 11px;
+            font-size: 12px;
             opacity: 0.7;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -601,25 +582,21 @@
             opacity: 0.8;
         }
 
-        /* Updated scattered task categories */
         .task-categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
             margin-bottom: 18px;
-            justify-content: space-between;
         }
 
         .task-category {
             background: rgba(255, 255, 255, 0.1);
-            padding: 12px 8px;
+            padding: 15px 10px;
             border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
-            flex: 0 1 calc(32% - 4px);
-            min-width: 80px;
         }
 
         .task-category:hover {
@@ -634,35 +611,31 @@
         }
 
         .category-title {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             margin-bottom: 4px;
         }
 
         .category-subtitle {
-            font-size: 9px;
+            font-size: 10px;
             opacity: 0.7;
         }
 
-        /* Updated scattered value categories */
         .value-categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
         }
 
         .value-item {
             background: rgba(0, 255, 135, 0.1);
-            padding: 10px 8px;
+            padding: 12px;
             border-radius: 10px;
             text-align: center;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 255, 135, 0.2);
-            flex: 0 1 calc(32% - 4px);
-            min-width: 80px;
         }
 
         .value-item:hover {
@@ -679,21 +652,18 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Updated scattered ledger layout */
         .ledger-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
         .ledger-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
+            padding: 15px;
             border-radius: 12px;
             text-align: center;
-            font-size: 11px;
-            flex: 0 1 calc(48% - 5px);
+            font-size: 12px;
         }
 
         .ledger-title {
@@ -824,7 +794,7 @@
             font-weight: 500;
         }
 
-        .input-group input, .input-group select, .input-group textarea {
+        .input-group input {
             width: 100%;
             padding: 14px;
             background: rgba(255, 255, 255, 0.1);
@@ -833,22 +803,15 @@
             color: white;
             font-size: 14px;
             transition: all 0.3s ease;
-            font-family: inherit;
         }
 
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+        .input-group input:focus {
             border-color: #FFD700;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-            outline: none;
         }
 
-        .input-group input::placeholder, .input-group textarea::placeholder {
+        .input-group input::placeholder {
             color: rgba(255, 255, 255, 0.5);
-        }
-
-        .input-group select option {
-            background: #1a1a2e;
-            color: white;
         }
 
         .language-grid {
@@ -897,55 +860,7 @@
             margin-bottom: 10px;
         }
 
-        .received-transactions {
-            background: rgba(0, 255, 135, 0.1);
-            border: 1px solid rgba(0, 255, 135, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 12px;
-        }
-
-        .transaction-item:last-child {
-            border-bottom: none;
-        }
-
-        .corporate-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .corporate-btn {
-            flex: 0 1 calc(50% - 5px);
-            padding: 12px 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: white;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .corporate-btn:hover {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: #FFD700;
-        }
-
         @keyframes fadeInDown {
-            from { opacity: 0; transform:
-@keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -972,11 +887,7 @@
             }
 
             .stats-section {
-                justify-content: center;
-            }
-
-            .stat-card {
-                flex: 0 1 calc(48% - 6px);
+                grid-template-columns: 1fr;
             }
 
             .main-buttons {
@@ -991,72 +902,11 @@
             .balance-amount {
                 font-size: 30px;
             }
-
-            .task-categories, .value-categories {
-                justify-content: center;
-            }
-
-            .task-category, .value-item {
-                flex: 0 1 calc(45% - 4px);
-            }
         }
 
         .loading {
             opacity: 0.6;
             pointer-events: none;
-        }
-
-        .form-step {
-            display: none;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
-        .step-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .step-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-prev {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .btn-next, .btn-submit {
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            color: #333;
-        }
-
-        .step-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .progress-bar {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, #FFD700, #FFA500);
-            width: 0%;
-            transition: width 0.3s ease;
         }
     </style>
 </head>
@@ -1080,7 +930,7 @@
                     <label class="form-label">Password</label>
                     <div class="password-input-container">
                         <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword')">👁</button>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁</button>
                     </div>
                     <span class="forgot-password-link" onclick="showPasswordReset()">Forgot Password?</span>
                 </div>
@@ -1159,7 +1009,7 @@
                     <label class="form-label">Password</label>
                     <div class="password-input-container">
                         <input type="password" class="form-input" id="emailSignupPassword" placeholder="Create a strong password (min 6 chars)" required>
-                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('emailSignupPassword')">👁</button>
+                        <button type="button" class="password-toggle" onclick="togglePassword('emailSignupPassword')">👁</button>
                     </div>
                 </div>
                 
@@ -1167,7 +1017,7 @@
                     <label class="form-label">Confirm Password</label>
                     <div class="password-input-container">
                         <input type="password" class="form-input" id="emailConfirmPassword" placeholder="Confirm your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('emailConfirmPassword')">👁</button>
+                        <button type="button" class="password-toggle" onclick="togglePassword('emailConfirmPassword')">👁</button>
                     </div>
                 </div>
                 
@@ -1278,20 +1128,20 @@
                 <button class="main-button value-btn" onclick="openValueModal()">
                     VALUE
                 </button>
-                <button class="main-button reserve-btn" onclick="openReserveModal()">
+                <button class="main-button reserve-btn" onclick="mineTokens('reserve', 0.002)">
                     RESERVE
                 </button>
             </div>
 
-            <!-- Stats Section with scattered layout -->
+            <!-- Stats Section -->
             <div class="stats-section">
-                <div class="stat-card" onclick="openUtilityModal()">
-                    <div class="stat-value">UTILITY</div>
-                    <div class="stat-label">Services</div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalBalance">0.0000 iKb</div>
+                    <div class="stat-label">TOTAL</div>
                 </div>
-                <div class="stat-card" onclick="openCorporateModal()">
-                    <div class="stat-value">CORPORATE</div>
-                    <div class="stat-label">Business</div>
+                <div class="stat-card">
+                    <div class="stat-value" id="miningStatus">Inactive</div>
+                    <div class="stat-label">My Status</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="networkSize">144,000</div>
@@ -1303,7 +1153,7 @@
                 </div>
             </div>
 
-            <!-- Tasks & Rewards Section with scattered layout -->
+            <!-- Tasks & Rewards Section -->
             <div class="tasks-section">
                 <div class="tasks-header">
                     <div class="tasks-title">Tasks</div>
@@ -1313,7 +1163,7 @@
                 <div class="task-categories">
                     <div class="task-category" onclick="selectTask('mining')">
                         <div class="category-title">iKb(M)</div>
-                        <div class="category-subtitle">Mining</div>
+                        <div class="category-subtitle">Gen ledger</div>
                     </div>
                     <div class="task-category" onclick="selectTask('partnership')">
                         <div class="category-title">iKb(P)</div>
@@ -1332,7 +1182,7 @@
                 </div>
             </div>
 
-            <!-- Personal Ledger Section with scattered layout -->
+            <!-- Personal Ledger Section -->
             <div class="personal-ledger">
                 <div class="ledger-grid">
                     <div class="ledger-item">
@@ -1425,14 +1275,6 @@
                 <div style="text-align: center; opacity: 0.7;">
                     Available: <span id="availableBalance">0.0000</span> | 
                     Reserved: <span id="reservedBalance">0.0000</span>
-                </div>
-                
-                <!-- Received Transactions Section -->
-                <div class="received-transactions">
-                    <h4 style="color: #00ff87; margin-bottom: 10px;">📥 Received KABIRU</h4>
-                    <div id="receivedTransactionsList">
-                        <div style="opacity: 0.7; font-size: 12px; text-align: center;">No received transactions yet</div>
-                    </div>
                 </div>
             </div>
             
@@ -1590,7 +1432,7 @@
         </div>
     </div>
 
-    <!-- Sovereign Modal with Multi-step Form -->
+    <!-- Sovereign Modal -->
     <div id="sovereignModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1598,69 +1440,21 @@
                 <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
             </div>
             
-            <div class="progress-bar">
-                <div class="progress-fill" id="sovereignProgress"></div>
-            </div>
-<!-- Step 1: Type Selection -->
-            <div class="form-step active" id="sovereignStep1">
-                <div class="modal-section">
-                    <h3>Select Sovereign Type</h3>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <button class="modal-btn" onclick="selectSovereignType('individual')">👤 Individual Sovereign</button>
-                        <button class="modal-btn" onclick="selectSovereignType('business')">🏢 Business Sovereign</button>
-                        <button class="modal-btn" onclick="selectSovereignType('community')">🏘️ Community Sovereign</button>
-                        <button class="modal-btn" onclick="selectSovereignType('institutional')">🏛️ Institutional Sovereign</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2: Registration Form -->
-            <div class="form-step" id="sovereignStep2">
-                <div class="modal-section">
-                    <h3>Sovereign Registration</h3>
-                    <div class="input-group">
-                        <label>Sovereign Name/Title</label>
-                        <input type="text" id="sovereignName" placeholder="Enter your sovereign name">
-                    </div>
-                    <div class="input-group">
-                        <label>Jurisdiction/Location</label>
-                        <input type="text" id="sovereignLocation" placeholder="Enter your jurisdiction">
-                    </div>
-                    <div class="input-group">
-                        <label>Sovereign Declaration</label>
-                        <textarea id="sovereignDeclaration" placeholder="Declare your sovereign intent and purpose..." rows="4"></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Stake Amount (iKb)</label>
-                        <input type="number" id="sovereignStake" placeholder="Minimum 1.0000 iKb" min="1" step="0.0001">
-                    </div>
-                </div>
-                <div class="step-buttons">
-                    <button class="step-btn btn-prev" onclick="prevSovereignStep()">Back</button>
-                    <button class="step-btn btn-next" onclick="nextSovereignStep()">Next</button>
-                </div>
-            </div>
-
-            <!-- Step 3: Confirmation -->
-            <div class="form-step" id="sovereignStep3">
-                <div class="modal-section">
-                    <h3>Confirm Sovereign Registration</h3>
-                    <div id="sovereignSummary" style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
-                        <!-- Summary will be populated here -->
-                    </div>
-                    <div style="font-size: 12px; opacity: 0.8; margin: 15px 0;">
-                        By confirming, you agree to the sovereign mining terms and stake the specified amount.
-                    </div>
-                </div>
-                <div class="step-buttons">
-                    <button class="step-btn btn-prev" onclick="prevSovereignStep()">Back</button>
-                    <button class="step-btn btn-submit" onclick="confirmSovereignMining()">Confirm & Start Mining</button>
-                </div>
+            <div class="modal-section">
+                <h3>Sovereign Benefits</h3>
+                <p>Become a sovereign miner and enjoy premium benefits:</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>3x mining rate boost</li>
+                    <li>Exclusive governance rights</li>
+                    <li>Priority transaction processing</li>
+                    <li>Access to premium features</li>
+                </ul>
+                <button class="modal-btn" onclick="mineTokens('sovereign', 0.005)">Start Sovereign Mining</button>
             </div>
         </div>
     </div>
 
-    <!-- Value Modal with Multi-step Form -->
+    <!-- Value Modal -->
     <div id="valueModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1668,177 +1462,13 @@
                 <span class="close" onclick="closeModal('valueModal')">&times;</span>
             </div>
             
-            <div class="progress-bar">
-                <div class="progress-fill" id="valueProgress"></div>
-            </div>
-
-            <!-- Step 1: Value Type Selection -->
-            <div class="form-step active" id="valueStep1">
-                <div class="modal-section">
-                    <h3>Select Value Type</h3>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <button class="modal-btn" onclick="selectValueType('service')">🛠️ Service Value (+0.0015 iKb)</button>
-                        <button class="modal-btn" onclick="selectValueType('skill')">🎯 Skill Value (+0.0025 iKb)</button>
-                        <button class="modal-btn" onclick="selectValueType('knowledge')">📚 Knowledge Value (+0.0035 iKb)</button>
-                        <button class="modal-btn" onclick="selectValueType('innovation')">💡 Innovation Value (+0.005 iKb)</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2: Input/Output Form -->
-            <div class="form-step" id="valueStep2">
-                <div class="modal-section">
-                    <h3 id="valueTypeTitle">Value Creation Form</h3>
-                    <div class="input-group">
-                        <label>Value Title</label>
-                        <input type="text" id="valueTitle" placeholder="Brief title of your value creation">
-                    </div>
-                    <div class="input-group">
-                        <label>Input Description</label>
-                        <textarea id="valueInput" placeholder="Describe what you're putting in (time, resources, skills)..." rows="3"></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Output/Result Description</label>
-                        <textarea id="valueOutput" placeholder="Describe the value you're creating (service, product, knowledge)..." rows="3"></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Beneficiaries</label>
-                        <input type="text" id="valueBeneficiaries" placeholder="Who benefits from this value?">
-                    </div>
-                    <div class="input-group">
-                        <label>Estimated Completion Time</label>
-                        <select id="valueTimeframe">
-                            <option value="">Select timeframe</option>
-                            <option value="immediate">Immediate (0-1 hour)</option>
-                            <option value="short">Short-term (1-24 hours)</option>
-                            <option value="medium">Medium-term (1-7 days)</option>
-                            <option value="long">Long-term (1+ weeks)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="step-buttons">
-                    <button class="step-btn btn-prev" onclick="prevValueStep()">Back</button>
-                    <button class="step-btn btn-next" onclick="nextValueStep()">Next</button>
-                </div>
-            </div>
-
-            <!-- Step 3: Confirmation -->
-            <div class="form-step" id="valueStep3">
-                <div class="modal-section">
-                    <h3>Confirm Value Creation</h3>
-                    <div id="valueSummary" style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
-                        <!-- Summary will be populated here -->
-                    </div>
-                    <div style="font-size: 12px; opacity: 0.8; margin: 15px 0;">
-                        By confirming, you commit to creating this value and will receive the specified mining reward.
-                    </div>
-                </div>
-                <div class="step-buttons">
-                    <button class="step-btn btn-prev" onclick="prevValueStep()">Back</button>
-                    <button class="step-btn btn-submit" onclick="confirmValueCreation()">Confirm & Start Mining</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reserve Modal -->
-    <div id="reserveModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">💎 RESERVE Mining</h2>
-                <span class="close" onclick="closeModal('reserveModal')">&times;</span>
-            </div>
-            
             <div class="modal-section">
-                <h3>Reserve KABIRU Tokens</h3>
-                <p>Reserve mining allows you to set aside KABIRU for future use with enhanced security.</p>
-                
-                <div class="input-group">
-                    <label>Amount to Reserve</label>
-                    <input type="number" id="reserveMiningAmount" placeholder="Enter amount to reserve" step="0.0001" min="0.001">
-                </div>
-                
-                <div class="input-group">
-                    <label>Reserve Purpose</label>
-                    <select id="reservePurpose">
-                        <option value="">Select purpose</option>
-                        <option value="savings">Long-term Savings</option>
-                        <option value="investment">Future Investment</option>
-                        <option value="staking">Staking Preparation</option>
-                        <option value="emergency">Emergency Fund</option>
-                        <option value="other">Other Purpose</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label>Reserve Duration (days)</label>
-                    <input type="number" id="reserveDuration" placeholder="Number of days" min="1" max="365">
-                </div>
-                
-                <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 12px;">
-                    <strong>Reserve Benefits:</strong><br>
-                    • Enhanced security for your tokens<br>
-                    • 2% bonus on reserved amount<br>
-                    • Protected from accidental spending<br>
-                    • Earns mining rewards: +0.002 iKb
-                </div>
-                
-                <button class="modal-btn" onclick="confirmReserveMining()">Confirm Reserve Mining</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Utility Modal -->
-    <div id="utilityModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">⚡ Utility Services</h2>
-                <span class="close" onclick="closeModal('utilityModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>Available Utilities</h3>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="modal-btn" onclick="openUtilityService('payment')">💳 Payment Processing</button>
-                    <button class="modal-btn" onclick="openUtilityService('exchange')">🔄 Token Exchange</button>
-                    <button class="modal-btn" onclick="openUtilityService('storage')">💾 Data Storage</button>
-                    <button class="modal-btn" onclick="openUtilityService('computing')">🖥️ Computing Power</button>
-                    <button class="modal-btn" onclick="openUtilityService('verification')">✅ Identity Verification</button>
-                    <button class="modal-btn" onclick="openUtilityService('messaging')">📧 Secure Messaging</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Corporate Modal -->
-    <div id="corporateModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🏢 Corporate Services</h2>
-                <span class="close" onclick="closeModal('corporateModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>Corporate Structures</h3>
-                <div class="corporate-options">
-                    <button class="corporate-btn" onclick="openCorporateType('foundation')">🏛️ Foundation</button>
-                    <button class="corporate-btn" onclick="openCorporateType('trust')">🤝 Trust</button>
-                    <button class="corporate-btn" onclick="openCorporateType('holding')">🏢 Holding Company</button>
-                    <button class="corporate-btn" onclick="openCorporateType('corporate')">🏭 Corporate Company</button>
-                    <button class="corporate-btn" onclick="openCorporateType('llc')">📄 LLC</button>
-                    <button class="corporate-btn" onclick="openCorporateType('partnership')">🤝 Partnership</button>
-                    <button class="corporate-btn" onclick="openCorporateType('cooperative')">🌐 Cooperative</button>
-                    <button class="corporate-btn" onclick="openCorporateType('nonprofit')">❤️ Non-Profit</button>
-                </div>
-            </div>
-            
-            <div class="modal-section">
-                <h3>Corporate Services</h3>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <button class="modal-btn" onclick="openCorporateService('registration')">📋 Entity Registration</button>
-                    <button class="modal-btn" onclick="openCorporateService('governance')">⚖️ Governance Setup</button>
-                    <button class="modal-btn" onclick="openCorporateService('compliance')">📊 Compliance Management</button>
-                    <button class="modal-btn" onclick="openCorporateService('finance')">💰 Financial Services</button>
+                <h3>Create Value Through:</h3>
+                <div class="value-categories" style="grid-template-columns: 1fr; gap: 10px;">
+                    <button class="modal-btn" onclick="performValueTask('service')">🛠️ Service Value (+0.0015 iKb)</button>
+                    <button class="modal-btn" onclick="performValueTask('skill')">🎯 Skill Value (+0.0025 iKb)</button>
+                    <button class="modal-btn" onclick="performValueTask('knowledge')">📚 Knowledge Value (+0.0035 iKb)</button>
+                    <button class="modal-btn" onclick="performValueTask('innovation')">💡 Innovation Value (+0.005 iKb)</button>
                 </div>
             </div>
         </div>
@@ -1880,13 +1510,6 @@
         let availableBalance = 0.0000;
         let userLanguage = 'en';
         let userDisplayName = 'User';
-        let receivedTransactions = [];
-
-        // Form state variables
-        let sovereignStep = 1;
-        let valueStep = 1;
-        let selectedSovereignType = '';
-        let selectedValueType = '';
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -1895,6 +1518,7 @@
         });
 
         function initializeApp() {
+            // Ensure login page is properly initialized
             hideAllContainers();
             document.getElementById('loginContainer').style.display = 'block';
             document.getElementById('loginPage').style.display = 'flex';
@@ -1962,7 +1586,6 @@
                     availableBalance = parseFloat(userData.availableBalance) || userBalance;
                     userLanguage = userData.language || 'en';
                     userDisplayName = userData.displayName || currentUser.displayName || 'User';
-                    receivedTransactions = userData.receivedTransactions || [];
                     
                     console.log('LOADED - Balance:', userBalance, 'Tasks:', totalTasksCompleted);
                 } else {
@@ -1993,7 +1616,6 @@
                     reservedBalance: 0.0000,
                     availableBalance: 0.0000,
                     language: 'en',
-                    receivedTransactions: [],
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     totalEarnings: 0.0000,
@@ -2010,7 +1632,6 @@
                 availableBalance = 0.0000;
                 userLanguage = 'en';
                 userDisplayName = user.displayName || 'User';
-                receivedTransactions = [];
                 
             } catch (error) {
                 console.error('Error creating initial user document:', error);
@@ -2040,7 +1661,6 @@
                     availableBalance: parseFloat(availableBalance.toFixed(4)),
                     language: userLanguage,
                     displayName: userDisplayName,
-                    receivedTransactions: receivedTransactions,
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     totalEarnings: parseFloat(userBalance.toFixed(4)),
                     miningStatus: isMining ? 'active' : 'inactive'
@@ -2080,46 +1700,69 @@
                 console.error('Error saving mining transaction:', error);
             }
         }
-
-        // Password toggle functionality - FIXED
-        function togglePasswordVisibility(inputId) {
-            const passwordInput = document.getElementById(inputId);
-            const toggleButton = passwordInput.nextElementSibling;
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleButton.textContent = '🙈';
-            } else {
-                passwordInput.type = 'password';
-                toggleButton.textContent = '👁';
-            }
+async function testFirebaseConnection() {
+    try {
+        console.log('Testing Firebase connection...');
+        
+        // Simple test - just check if Firebase is accessible
+        const testDoc = db.collection('_test').limit(1);
+        await testDoc.get();
+        console.log('Firestore connection: OK');
+        
+    } catch (error) {
+        console.error('Firebase connection test failed:', error);
+        
+        if (error.code === 'unavailable' || 
+            error.message.includes('Failed to fetch') || 
+            error.message.includes('network')) {
+            const blockError = new Error('NETWORK_BLOCKED');
+            blockError.originalError = error;
+            throw blockError;
         }
-// Test Firebase connection 
-async function testFirebaseConnection() { try 
-{ console.log('Testing Firebase connection...'); 
+        
+        // Don't block login for other errors, just log them
+        console.log('Connection test had issues but allowing login to proceed');
+    }
+}
 
-// Simple test - just check if Firebase is accessible 
-const testDoc=db.collection('_test').limit(1); 
-await testDoc.get(); 
-console.log('Firestore connection: OK'); } 
+// Enhanced error handling
+function handleFirebaseError(error) {
+    console.log('Handling error:', error.code, error.message);
+    
+    // Network/blocking related errors
+    if (error.code === 'auth/network-request-failed' || 
+        error.message.includes('network') ||
+        error.message.includes('Failed to fetch') ||
+        error.message === 'NETWORK_BLOCKED') {
+        return `🚫 Connection Issue
 
-catch (error) { console.error('Firebase connection test failed:', error); 
-if (error.code === 'unavailable' 
-|| error.message.includes('Failed to fetch') || error.message.includes('network')) 
-{
- const blockError = new Error('NETWORK_BLOCKED'); blockError.originalError = error; throw blockError; } 
-// Don't block login for other errors, just log them console.log('Connection test had issues but allowing login to proceed'); } } 
-// Enhanced error handling function handleFirebaseError(error) { console.log('Handling error:', error.code, error.message); 
-// Network/blocking related errors if (error.code === 'auth/network-request-failed' 
-|| error.message.includes('network') 
-|| error.message.includes('Failed to fetch') || error.message === 'NETWORK_BLOCKED') { return `🚫 Connection Issue Try these solutions: • Disable ad blockers (uBlock, AdBlock, etc.) • Use incognito/private browsing mode • Try mobile data instead of WiFi • Check if workplace/school blocks Firebase This usually fixes 90% of login problems!`; } 
-// Standard Firebase Auth errors switch (error.code) { case 'auth/user-not-found': return '❌ No account found with this email. Please check your email or sign up first.'; case 'auth/wrong-password': 
-return '❌ Incorrect password. 
-Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Please enter a valid email address.'; case 'auth/too-many-requests': return '⚠️ Too many failed attempts. Wait 5 minutes and try again.'; default: return `❌ Login failed: ${error.message} 💡 Try: incognito mode, disable extensions, or different browser.`; 
-   } 
+Try these solutions:
+• Disable ad blockers (uBlock, AdBlock, etc.)
+• Use incognito/private browsing mode  
+• Try mobile data instead of WiFi
+• Check if workplace/school blocks Firebase
+
+This usually fixes 90% of login problems!`;
+    }
+    
+    // Standard Firebase Auth errors
+    switch (error.code) {
+        case 'auth/user-not-found':
+            return '❌ No account found with this email. Please check your email or sign up first.';
+        case 'auth/wrong-password':
+            return '❌ Incorrect password. Try again or use "Forgot Password".';
+        case 'auth/invalid-email':
+            return '❌ Please enter a valid email address.';
+        case 'auth/too-many-requests':
+            return '⚠️ Too many failed attempts. Wait 5 minutes and try again.';
+        default:
+            return `❌ Login failed: ${error.message}
+
+💡 Try: incognito mode, disable extensions, or different browser.`;
+    }
 }
         // Authentication Functions
-       async function handleLogin() {
+        async function handleLogin() {
     const credential = document.getElementById('loginCredential').value.trim();
     const password = document.getElementById('loginPassword').value;
     const loginBtn = document.getElementById('loginBtn');
@@ -2178,8 +1821,7 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
         loginBtn.textContent = 'Sign In';
         loginBtn.disabled = false;
     }
-}                                                                                                                                                                                                                                                                                                                                // Quick connection test (non-blocking) try { await testFirebaseConnection(); } catch (connError) { console.log('Connection test failed, but proceeding with login'); } if (credential.includes('@')) { console.log('Attempting email login for:', credential); const userCredential = await auth.signInWithEmailAndPassword(credential, password); const user = userCredential.user; console.log('Login successful. Email verified:', user.emailVerified); if (!user.emailVerified) { showError('Please verify your email address first.'); await auth.signOut(); return; } // Set current user immediately to prevent auth state conflicts currentUser = { uid: user.uid, email: user.email, displayName: user.displayName, emailVerified: user.emailVerified }; showNotification('Login successful! Loading your account...'); } else { showError('Phone login not yet implemented. Please use email.'); } } catch (error) { console.error('Login error:', error); // Use enhanced error handling const errorMessage = handleFirebaseError(error); showError(errorMessage); } finally { loginBtn.textContent = 'Sign In'; loginBtn.disabled = false; } }
-
+        }
         async function handleEmailSignup() {
             const name = document.getElementById('emailSignupName').value.trim();
             const email = document.getElementById('emailSignupEmail').value.trim();
@@ -2337,7 +1979,6 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
                 isMining = false;
-                receivedTransactions = [];
                 
                 showLoginPage();
                 showNotification('Logged out successfully');
@@ -2346,84 +1987,6 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
                 console.error('Logout error:', error);
                 showError('Failed to logout');
             }
-        }
-
-        // Enhanced Wallet Functions with Received Transactions
-        async function sendKabiru() {
-            const address = document.getElementById('sendAddress').value.trim();
-            const amount = parseFloat(document.getElementById('sendAmount').value);
-            
-            if (!address || !amount || amount <= 0) {
-                showError('Please enter valid address and amount');
-                return;
-            }
-            
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-
-            try {
-                // Deduct from sender
-                availableBalance -= amount;
-                userBalance -= amount;
-                
-                // Add to recipient's received transactions
-                await addReceivedTransaction(address, amount);
-                
-                updateBalanceDisplay();
-                updateWalletDisplay();
-                saveUserDataToFirestore();
-                
-                showNotification(`Successfully sent ${amount.toFixed(4)} KABIRU to ${address.slice(0, 10)}...`);
-                closeModal('walletModal');
-                
-            } catch (error) {
-                console.error('Error sending KABIRU:', error);
-                showError('Failed to send KABIRU. Please try again.');
-            }
-        }
-
-        async function addReceivedTransaction(recipientAddress, amount) {
-            try {
-                // Find recipient by address pattern (simplified for demo)
-                const users = await db.collection('users').get();
-                
-                users.forEach(async (doc) => {
-                    const userData = doc.data();
-                    const userAddress = generateUserAddressFromUid(doc.id);
-                    
-                    if (userAddress === recipientAddress) {
-                        const receivedTx = {
-                            amount: amount,
-                            from: generateUserAddress(),
-                            timestamp: new Date().toISOString(),
-                            type: 'received'
-                        };
-                        
-                        const currentReceived = userData.receivedTransactions || [];
-                        currentReceived.push(receivedTx);
-                        
-                        // Update recipient's balance and received transactions
-                        await db.collection('users').doc(doc.id).update({
-                            balance: (userData.balance || 0) + amount,
-                            availableBalance: (userData.availableBalance || 0) + amount,
-                            receivedTransactions: currentReceived,
-                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        
-                        console.log('Added received transaction for:', doc.id);
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Error adding received transaction:', error);
-            }
-        }
-
-        function generateUserAddressFromUid(uid) {
-            const hash = uid.slice(0, 15);
-            return `KBR${hash.toUpperCase()}`;
         }
 
         // Mining function with proper Firestore saving
@@ -2439,6 +2002,7 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
             console.log('Current balance before mining:', userBalance);
             
             isMining = true;
+            document.getElementById('miningStatus').textContent = 'Active';
             
             showNotification('Mining started! Please wait...');
             document.getElementById('miningIndicator').style.display = 'block';
@@ -2467,249 +2031,11 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
                 }
                 
                 isMining = false;
+                document.getElementById('miningStatus').textContent = 'Inactive';
                 
                 closeAllModals();
                 
             }, 3000);
-        }
-
-        // Sovereign Modal Functions
-        function selectSovereignType(type) {
-            selectedSovereignType = type;
-            nextSovereignStep();
-        }
-
-        function nextSovereignStep() {
-            if (sovereignStep < 3) {
-                document.getElementById(`sovereignStep${sovereignStep}`).classList.remove('active');
-                sovereignStep++;
-                document.getElementById(`sovereignStep${sovereignStep}`).classList.add('active');
-                updateSovereignProgress();
-                
-                if (sovereignStep === 3) {
-                    populateSovereignSummary();
-                }
-            }
-        }
-
-        function prevSovereignStep() {
-            if (sovereignStep > 1) {
-                document.getElementById(`sovereignStep${sovereignStep}`).classList.remove('active');
-                sovereignStep--;
-                document.getElementById(`sovereignStep${sovereignStep}`).classList.add('active');
-                updateSovereignProgress();
-            }
-        }
-
-        function updateSovereignProgress() {
-            const progress = (sovereignStep / 3) * 100;
-            document.getElementById('sovereignProgress').style.width = progress + '%';
-        }
-
-        function populateSovereignSummary() {
-            const name = document.getElementById('sovereignName').value;
-            const location = document.getElementById('sovereignLocation').value;
-            const declaration = document.getElementById('sovereignDeclaration').value;
-            const stake = document.getElementById('sovereignStake').value;
-            
-            const summary = `
-                <strong>Sovereign Type:</strong> ${selectedSovereignType}<br>
-                <strong>Name:</strong> ${name}<br>
-                <strong>Location:</strong> ${location}<br>
-                <strong>Stake Amount:</strong> ${stake} iKb<br>
-                <strong>Declaration:</strong> ${declaration.substring(0, 100)}...
-            `;
-            
-            document.getElementById('sovereignSummary').innerHTML = summary;
-        }
-
-        function confirmSovereignMining() {
-            const stake = parseFloat(document.getElementById('sovereignStake').value);
-            
-            if (!stake || stake < 1) {
-                showError('Minimum stake amount is 1.0000 iKb');
-                return;
-            }
-            
-            if (stake > availableBalance) {
-                showError('Insufficient balance for staking');
-                return;
-            }
-            
-            // Process sovereign mining
-            mineTokens('sovereign', 0.005);
-            sovereignStep = 1; // Reset for next time
-            updateSovereignProgress();
-        }
-
-        // Value Modal Functions
-        function selectValueType(type) {
-            selectedValueType = type;
-            const titles = {
-                service: 'Service Value Creation',
-                skill: 'Skill Value Creation',
-                knowledge: 'Knowledge Value Creation',
-                innovation: 'Innovation Value Creation'
-            };
-            document.getElementById('valueTypeTitle').textContent = titles[type];
-            nextValueStep();
-        }
-
-        function nextValueStep() {
-            if (valueStep < 3) {
-                document.getElementById(`valueStep${valueStep}`).classList.remove('active');
-                valueStep++;
-                document.getElementById(`valueStep${valueStep}`).classList.add('active');
-                updateValueProgress();
-                
-                if (valueStep === 3) {
-                    populateValueSummary();
-                }
-            }
-        }
-
-        function prevValueStep() {
-            if (valueStep > 1) {
-                document.getElementById(`valueStep${valueStep}`).classList.remove('active');
-                valueStep--;
-                document.getElementById(`valueStep${valueStep}`).classList.add('active');
-                updateValueProgress();
-            }
-        }
-
-        function updateValueProgress() {
-            const progress = (valueStep / 3) * 100;
-            document.getElementById('valueProgress').style.width = progress + '%';
-        }
-
-        function populateValueSummary() {
-            const title = document.getElementById('valueTitle').value;
-            const input = document.getElementById('valueInput').value;
-            const output = document.getElementById('valueOutput').value;
-            const beneficiaries = document.getElementById('valueBeneficiaries').value;
-            const timeframe = document.getElementById('valueTimeframe').value;
-            
-            const rewards = {
-                service: 0.0015,
-                skill: 0.0025,
-                knowledge: 0.0035,
-                innovation: 0.005
-            };
-            
-            const summary = `
-                <strong>Value Type:</strong> ${selectedValueType}<br>
-                <strong>Title:</strong> ${title}<br>
-                <strong>Input:</strong> ${input.substring(0, 50)}...<br>
-                <strong>Output:</strong> ${output.substring(0, 50)}...<br>
-                <strong>Beneficiaries:</strong> ${beneficiaries}<br>
-                <strong>Timeframe:</strong> ${timeframe}<br>
-                <strong>Reward:</strong> +${rewards[selectedValueType]} iKb
-            `;
-            
-            document.getElementById('valueSummary').innerHTML = summary;
-        }
-
-        function confirmValueCreation() {
-            const rewards = {
-                service: 0.0015,
-                skill: 0.0025,
-                knowledge: 0.0035,
-                innovation: 0.005
-            };
-            
-            mineTokens(`value-${selectedValueType}`, rewards[selectedValueType]);
-            valueStep = 1; // Reset for next time
-            updateValueProgress();
-        }
-
-        // Reserve Modal Functions
-        function openReserveModal() {
-            document.getElementById('reserveModal').style.display = 'block';
-        }
-
-        function confirmReserveMining() {
-            const amount = parseFloat(document.getElementById('reserveMiningAmount').value);
-            const purpose = document.getElementById('reservePurpose').value;
-            const duration = parseInt(document.getElementById('reserveDuration').value);
-            
-            if (!amount || amount <= 0) {
-                showError('Please enter a valid amount');
-                return;
-            }
-            
-            if (!purpose) {
-                showError('Please select a reserve purpose');
-                return;
-            }
-            
-            if (!duration || duration <= 0) {
-                showError('Please enter a valid duration');
-                return;
-            }
-            
-            if (amount > availableBalance) {
-                showError('Insufficient available balance');
-                return;
-            }
-            
-            // Move to reserved balance
-            availableBalance -= amount;
-            reservedBalance += amount;
-            
-            // Mine reserve tokens
-            mineTokens('reserve', 0.002);
-        }
-
-        // Utility Modal Functions
-        function openUtilityModal() {
-            document.getElementById('utilityModal').style.display = 'block';
-        }
-
-        function openUtilityService(service) {
-            const services = {
-                payment: 'Payment processing service activated',
-                exchange: 'Token exchange service activated',
-                storage: 'Data storage service activated',
-                computing: 'Computing power service activated',
-                verification: 'Identity verification service activated',
-                messaging: 'Secure messaging service activated'
-            };
-            
-            showNotification(services[service]);
-            mineTokens(`utility-${service}`, 0.001);
-        }
-
-        // Corporate Modal Functions
-        function openCorporateModal() {
-            document.getElementById('corporateModal').style.display = 'block';
-        }
-
-        function openCorporateType(type) {
-            const types = {
-                foundation: 'Foundation structure selected',
-                trust: 'Trust structure selected',
-                holding: 'Holding company structure selected',
-                corporate: 'Corporate company structure selected',
-                llc: 'LLC structure selected',
-                partnership: 'Partnership structure selected',
-                cooperative: 'Cooperative structure selected',
-                nonprofit: 'Non-profit structure selected'
-            };
-            
-            showNotification(types[type]);
-            mineTokens(`corporate-${type}`, 0.0015);
-        }
-
-        function openCorporateService(service) {
-            const services = {
-                registration: 'Entity registration service activated',
-                governance: 'Governance setup service activated',
-                compliance: 'Compliance management service activated',
-                finance: 'Financial services activated'
-            };
-            
-            showNotification(services[service]);
-            mineTokens(`corporate-service-${service}`, 0.002);
         }
 
         // Task functions
@@ -2731,6 +2057,17 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
             mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
         }
 
+        function performValueTask(valueType) {
+            const rewards = {
+                service: 0.0015,
+                skill: 0.0025,
+                knowledge: 0.0035,
+                innovation: 0.005
+            };
+            
+            mineTokens(`value-${valueType}`, rewards[valueType] || 0.0015);
+        }
+
         // Modal Functions
         function openEducationModal() {
             document.getElementById('educationModal').style.display = 'block';
@@ -2738,7 +2075,6 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
 
         function openWalletModal() {
             updateWalletDisplay();
-            updateReceivedTransactions();
             document.getElementById('walletModal').style.display = 'block';
         }
 
@@ -2753,18 +2089,10 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
         }
 
         function openSovereignModal() {
-            sovereignStep = 1;
-            document.querySelectorAll('#sovereignModal .form-step').forEach(step => step.classList.remove('active'));
-            document.getElementById('sovereignStep1').classList.add('active');
-            updateSovereignProgress();
             document.getElementById('sovereignModal').style.display = 'block';
         }
 
         function openValueModal() {
-            valueStep = 1;
-            document.querySelectorAll('#valueModal .form-step').forEach(step => step.classList.remove('active'));
-            document.getElementById('valueStep1').classList.add('active');
-            updateValueProgress();
             document.getElementById('valueModal').style.display = 'block';
         }
 
@@ -2808,20 +2136,6 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
             document.getElementById('userAddress').textContent = generateUserAddress();
         }
 
-        function updateReceivedTransactions() {
-            const list = document.getElementById('receivedTransactionsList');
-            if (receivedTransactions.length === 0) {
-                list.innerHTML = '<div style="opacity: 0.7; font-size: 12px; text-align: center;">No received transactions yet</div>';
-            } else {
-                list.innerHTML = receivedTransactions.slice(-5).map(tx => `
-                    <div class="transaction-item">
-                        <span>+${tx.amount.toFixed(4)} iKb</span>
-                        <span>from ${tx.from.slice(0, 10)}...</span>
-                    </div>
-                `).join('');
-            }
-        }
-
         function generateUserAddress() {
             if (!currentUser) return 'KBR000000000000000';
             const hash = currentUser.uid.slice(0, 15);
@@ -2835,6 +2149,30 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
             
             document.getElementById('walletActionPanel').style.display = 'block';
             document.getElementById(action + 'Panel').style.display = 'block';
+        }
+
+        function sendKabiru() {
+            const address = document.getElementById('sendAddress').value.trim();
+            const amount = parseFloat(document.getElementById('sendAmount').value);
+            
+            if (!address || !amount || amount <= 0) {
+                showError('Please enter valid address and amount');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            availableBalance -= amount;
+            userBalance -= amount;
+            updateBalanceDisplay();
+            updateWalletDisplay();
+            saveUserDataToFirestore();
+            
+            showNotification(`Successfully sent ${amount.toFixed(4)} KABIRU to ${address.slice(0, 10)}...`);
+            closeModal('walletModal');
         }
 
         function copyAddress() {
@@ -3099,6 +2437,20 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
             document.getElementById('successContainer').style.display = 'none';
         }
 
+        // Password toggle functionality
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleButton = passwordInput.nextElementSibling;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = '👁';
+            }
+        }
+
         // Success and Utility Functions
         function showSuccessAndRedirect() {
             hideAllContainers();
@@ -3166,22 +2518,56 @@ Try again or use "Forgot Password".'; case 'auth/invalid-email': return '❌ Ple
         }
 
         // App initialization complete
-        console.log('KABIRU Mining App - Complete. Loaded Successfully');
-function showTroubleshootingHelp() 
-{ const helpMessage = `🔧 LOGIN TROUBLESHOOTING: 
-1️⃣ INCOGNITO MODE (Most Effective): 
-• Chrome: Ctrl+Shift+N 
-• Firefox: Ctrl+Shift+P 
-• Safari: Cmd+Shift+N 
-2️⃣ DISABLE AD BLOCKERS: • uBlock Origin, AdBlock, etc. • Temporarily turn off for this site 
-3️⃣ NETWORK ISSUES: 
-• Try mobile data vs WiFi 
-• Corporate/school networks block Firebase 
-• Use different internet connection 
-4️⃣ BROWSER SETTINGS: • Enable cookies • Allow JavaScript • Clear browser cache 
-5️⃣ DIFFERENT BROWSER: • Try Chrome, Firefox, Safari, Edge 90% of login issues are caused by ad blockers or network restrictions!`; 
- alert(helpMessage); } 
-                                                                                                                                                                                                                                                                                                                                // Add help button when page loads document.addEventListener('DOMContentLoaded', function() { setTimeout(() => { const authToggle = document.querySelector('.auth-toggle'); if (authToggle && !document.getElementById('help-btn')) { const helpHTML = ` <div style="text-align: center; margin-top: 15px;"> <button id="help-btn" onclick="showTroubleshootingHelp()" style="background: none; border: 1px solid #FFD700; color: #FFD700; padding: 8px 16px; border-radius: 8px; font-size: 12px; cursor: pointer;"> ❓ Can't sign in? Get help </button> </div>`; authToggle.insertAdjacentHTML('afterend', helpHTML); } }, 1000); });
+        console.log('KABIRU Mining App - Authentication Fixed Version Loaded Successfully');
+        // Add troubleshooting help
+function showTroubleshootingHelp() {
+    const helpMessage = `🔧 LOGIN TROUBLESHOOTING:
+
+1️⃣ INCOGNITO MODE (Most Effective):
+   • Chrome: Ctrl+Shift+N
+   • Firefox: Ctrl+Shift+P  
+   • Safari: Cmd+Shift+N
+
+2️⃣ DISABLE AD BLOCKERS:
+   • uBlock Origin, AdBlock, etc.
+   • Temporarily turn off for this site
+
+3️⃣ NETWORK ISSUES:
+   • Try mobile data vs WiFi
+   • Corporate/school networks block Firebase
+   • Use different internet connection
+
+4️⃣ BROWSER SETTINGS:
+   • Enable cookies
+   • Allow JavaScript
+   • Clear browser cache
+
+5️⃣ DIFFERENT BROWSER:
+   • Try Chrome, Firefox, Safari, Edge
+
+90% of login issues are caused by ad blockers or network restrictions!`;
+    
+    alert(helpMessage);
+}
+
+// Add help button when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const authToggle = document.querySelector('.auth-toggle');
+        if (authToggle && !document.getElementById('help-btn')) {
+            const helpHTML = `
+            <div style="text-align: center; margin-top: 15px;">
+                <button id="help-btn" onclick="showTroubleshootingHelp()" 
+                        style="background: none; border: 1px solid #FFD700; color: #FFD700; 
+                               padding: 8px 16px; border-radius: 8px; font-size: 12px; 
+                               cursor: pointer;">
+                    ❓ Can't sign in? Get help
+                </button>
+            </div>`;
+            authToggle.insertAdjacentHTML('afterend', helpHTML);
+        }
+    }, 1000);
+});
     </script>
 </body>
     </html>
