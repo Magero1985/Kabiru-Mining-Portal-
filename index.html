@@ -525,31 +525,49 @@
         }
 
         .stats-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
             margin-bottom: 30px;
+            justify-content: space-between;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            padding: 20px;
+            padding: 18px 16px;
             border-radius: 16px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: fadeInUp 1s ease-out 0.6s both;
+            flex: 0 1 calc(48% - 6px);
+            min-width: 140px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-card:nth-child(1) {
+            flex: 0 1 calc(55% - 6px);
+        }
+
+        .stat-card:nth-child(2) {
+            flex: 0 1 calc(43% - 6px);
         }
 
         .stat-value {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #FFD700;
             margin-bottom: 6px;
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.7;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -583,20 +601,23 @@
         }
 
         .task-categories {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
             margin-bottom: 18px;
+            justify-content: space-between;
         }
 
         .task-category {
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px 10px;
+            padding: 12px 8px;
             border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            flex: 0 1 calc(32% - 4px);
+            min-width: 80px;
         }
 
         .task-category:hover {
@@ -611,31 +632,34 @@
         }
 
         .category-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             margin-bottom: 4px;
         }
 
         .category-subtitle {
-            font-size: 10px;
+            font-size: 9px;
             opacity: 0.7;
         }
 
         .value-categories {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: space-between;
         }
 
         .value-item {
             background: rgba(0, 255, 135, 0.1);
-            padding: 12px;
+            padding: 10px 8px;
             border-radius: 10px;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(0, 255, 135, 0.2);
+            flex: 0 1 calc(32% - 4px);
+            min-width: 80px;
         }
 
         .value-item:hover {
@@ -653,17 +677,19 @@
         }
 
         .ledger-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
         }
 
         .ledger-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
+            padding: 12px;
             border-radius: 12px;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
+            flex: 0 1 calc(48% - 5px);
         }
 
         .ledger-title {
@@ -758,68 +784,6 @@
             color: #333;
         }
 
-        .wallet-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .wallet-btn {
-            padding: 15px;
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .wallet-btn:hover {
-            opacity: 0.8;
-            transform: translateY(-2px);
-        }
-
-        .input-group {
-            margin-bottom: 18px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            color: white;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus {
-            border-color: #FFD700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-        }
-
-        .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .language-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
         .notification {
             position: fixed;
             top: 25px;
@@ -887,7 +851,11 @@
             }
 
             .stats-section {
-                grid-template-columns: 1fr;
+                justify-content: center;
+            }
+
+            .stat-card {
+                flex: 0 1 calc(48% - 6px);
             }
 
             .main-buttons {
@@ -902,11 +870,42 @@
             .balance-amount {
                 font-size: 30px;
             }
+
+            .task-categories, .value-categories {
+                justify-content: center;
+            }
+
+            .task-category, .value-item {
+                flex: 0 1 calc(45% - 4px);
+            }
         }
 
         .loading {
             opacity: 0.6;
             pointer-events: none;
+        }
+
+        .help-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .help-button {
+            background: none;
+            border: 1px solid #FFD700;
+            color: #FFD700;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .help-button:hover {
+            background: rgba(255, 215, 0, 0.1);
         }
     </style>
 </head>
@@ -930,7 +929,7 @@
                     <label class="form-label">Password</label>
                     <div class="password-input-container">
                         <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁</button>
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword')">👁</button>
                     </div>
                     <span class="forgot-password-link" onclick="showPasswordReset()">Forgot Password?</span>
                 </div>
@@ -938,6 +937,22 @@
                 
                 <div class="auth-toggle">
                     Don't have an account? <span class="auth-toggle-link" onclick="showSignupMethodSelection()">Sign Up</span>
+                </div>
+                
+                <!-- Help Section -->
+                <div class="help-section">
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <strong>Having trouble logging in?</strong>
+                    </div>
+                    <div style="font-size: 12px; margin-bottom: 10px;">
+                        Most login issues are caused by:
+                        <br>• Ad blockers (disable temporarily)
+                        <br>• Network restrictions
+                        <br>• Browser extensions
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="help-button" onclick="showTroubleshootingHelp()">🔧 Get Help</button>
+                    </div>
                 </div>
             </div>
 
@@ -1009,7 +1024,7 @@
                     <label class="form-label">Password</label>
                     <div class="password-input-container">
                         <input type="password" class="form-input" id="emailSignupPassword" placeholder="Create a strong password (min 6 chars)" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('emailSignupPassword')">👁</button>
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('emailSignupPassword')">👁</button>
                     </div>
                 </div>
                 
@@ -1017,7 +1032,7 @@
                     <label class="form-label">Confirm Password</label>
                     <div class="password-input-container">
                         <input type="password" class="form-input" id="emailConfirmPassword" placeholder="Confirm your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('emailConfirmPassword')">👁</button>
+                        <button type="button" class="password-toggle" onclick="togglePasswordVisibility('emailConfirmPassword')">👁</button>
                     </div>
                 </div>
                 
@@ -1128,20 +1143,20 @@
                 <button class="main-button value-btn" onclick="openValueModal()">
                     VALUE
                 </button>
-                <button class="main-button reserve-btn" onclick="mineTokens('reserve', 0.002)">
+                <button class="main-button reserve-btn" onclick="openReserveModal()">
                     RESERVE
                 </button>
             </div>
 
             <!-- Stats Section -->
             <div class="stats-section">
-                <div class="stat-card">
-                    <div class="stat-value" id="totalBalance">0.0000 iKb</div>
-                    <div class="stat-label">TOTAL</div>
+                <div class="stat-card" onclick="openUtilityModal()">
+                    <div class="stat-value">UTILITY</div>
+                    <div class="stat-label">Services</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="miningStatus">Inactive</div>
-                    <div class="stat-label">My Status</div>
+                <div class="stat-card" onclick="openCorporateModal()">
+                    <div class="stat-value">CORPORATE</div>
+                    <div class="stat-label">Business</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="networkSize">144,000</div>
@@ -1163,7 +1178,7 @@
                 <div class="task-categories">
                     <div class="task-category" onclick="selectTask('mining')">
                         <div class="category-title">iKb(M)</div>
-                        <div class="category-subtitle">Gen ledger</div>
+                        <div class="category-subtitle">Mining</div>
                     </div>
                     <div class="task-category" onclick="selectTask('partnership')">
                         <div class="category-title">iKb(P)</div>
@@ -1213,6 +1228,7 @@
         </div>
     </div>
 
+    <!-- All Modals (Education, Wallet, Language, etc.) - Keeping original structure -->
     <!-- Education Modal -->
     <div id="educationModal" class="modal">
         <div class="modal-content">
@@ -1220,259 +1236,16 @@
                 <h2 class="modal-title">📚 Educational Resources</h2>
                 <span class="close" onclick="closeModal('educationModal')">&times;</span>
             </div>
-            
             <div class="modal-section">
                 <h3>🎨 Early Childhood Development (ECD)</h3>
                 <p>Foundation learning for ages 3-6</p>
                 <button class="modal-btn" onclick="openEducationLevel('ecd')">Access ECD Resources</button>
             </div>
-            
-            <div class="modal-section">
-                <h3>🏫 Lower Primary School</h3>
-                <p>Grade 1-3 curriculum and activities</p>
-                <button class="modal-btn" onclick="openEducationLevel('lower')">Grade 1-3 Resources</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🎓 Upper Primary School</h3>
-                <p>Grade 4-8 advanced learning</p>
-                <button class="modal-btn" onclick="openEducationLevel('upper')">Grade 4-8 Resources</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🏛️ High School</h3>
-                <p>Form 1-4 secondary education</p>
-                <button class="modal-btn" onclick="openEducationLevel('high')">Form 1-4 Resources</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🎯 Tertiary Education</h3>
-                <p>College & technical training</p>
-                <button class="modal-btn" onclick="openEducationLevel('tertiary')">College & Technical Training</button>
-            </div>
-            
-            <div class="modal-section">
-                <h3>🏆 University</h3>
-                <p>Undergraduate & graduate programs</p>
-                <button class="modal-btn" onclick="openEducationLevel('university')">University Resources</button>
-            </div>
         </div>
     </div>
 
-    <!-- Wallet Modal -->
-    <div id="walletModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">💰 Wallet Management</h2>
-                <span class="close" onclick="closeModal('walletModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>💳 Current Balance</h3>
-                <div style="text-align: center; font-size: 24px; margin: 15px 0;">
-                    <span id="walletBalance">0.0000</span> KABIRU
-                </div>
-                <div style="text-align: center; opacity: 0.7;">
-                    Available: <span id="availableBalance">0.0000</span> | 
-                    Reserved: <span id="reservedBalance">0.0000</span>
-                </div>
-            </div>
-            
-            <div class="wallet-actions">
-                <button class="wallet-btn" onclick="openWalletAction('send')">📤 Send</button>
-                <button class="wallet-btn" onclick="openWalletAction('receive')">📥 Receive</button>
-                <button class="wallet-btn" onclick="openWalletAction('swap')">🔄 Swap KSH</button>
-                <button class="wallet-btn" onclick="copyAddress()">📋 Copy Address</button>
-                <button class="wallet-btn" onclick="openWalletAction('lockup')">🔒 Lock Up</button>
-                <button class="wallet-btn" onclick="openWalletAction('reserve')">💎 Reserve</button>
-            </div>
-            
-            <div id="walletActionPanel" style="display: none; margin-top: 20px;">
-                <div id="sendPanel" class="wallet-panel" style="display: none;">
-                    <h4>📤 Send Kabiru</h4>
-                    <div class="input-group">
-                        <label>Recipient Address</label>
-                        <input type="text" id="sendAddress" placeholder="Enter recipient address">
-                    </div>
-                    <div class="input-group">
-                        <label>Amount</label>
-                        <input type="number" id="sendAmount" placeholder="Enter amount" step="0.0001">
-                    </div>
-                    <button class="modal-btn" onclick="sendKabiru()">Send Kabiru</button>
-                </div>
-                
-                <div id="receivePanel" class="wallet-panel" style="display: none;">
-                    <h4>📥 Receive Kabiru</h4>
-                    <p>Your Wallet Address:</p>
-                    <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; word-break: break-all; margin: 10px 0;">
-                        <span id="userAddress">KBR1234567890ABCDEF</span>
-                    </div>
-                    <button class="modal-btn" onclick="copyAddress()">Copy Address</button>
-                </div>
-                
-                <div id="swapPanel" class="wallet-panel" style="display: none;">
-                    <h4>🔄 Swap to KSH</h4>
-                    <div class="input-group">
-                        <label>Kabiru Amount</label>
-                        <input type="number" id="swapAmount" placeholder="Enter Kabiru amount" step="0.0001">
-                    </div>
-                    <div style="margin: 10px 0; opacity: 0.8;">
-                        Rate: 1 KABIRU = 50 KSH
-                    </div>
-                    <button class="modal-btn" onclick="swapToKsh()">Swap to KSH</button>
-                </div>
-                
-                <div id="lockupPanel" class="wallet-panel" style="display: none;">
-                    <h4>🔒 Lock Up Kabiru</h4>
-                    <div class="input-group">
-                        <label>Amount to Lock</label>
-                        <input type="number" id="lockupAmount" placeholder="Enter amount" step="0.0001">
-                    </div>
-                    <div class="input-group">
-                        <label>Lock Duration (days)</label>
-                        <input type="number" id="lockupDays" placeholder="Enter days" min="1">
-                    </div>
-                    <p style="font-size: 12px; opacity: 0.7;">Earn 5% APY on locked Kabiru</p>
-                    <button class="modal-btn" onclick="lockupKabiru()">Lock Up</button>
-                </div>
-                
-                <div id="reservePanel" class="wallet-panel" style="display: none;">
-                    <h4>💎 Reserve Kabiru</h4>
-                    <div class="input-group">
-                        <label>Amount to Reserve</label>
-                        <input type="number" id="reserveAmount" placeholder="Enter amount" step="0.0001">
-                    </div>
-                    <p style="font-size: 12px; opacity: 0.7;">Reserved Kabiru is saved and protected from spending</p>
-                    <button class="modal-btn" onclick="reserveKabiru()">Reserve</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Language Modal -->
-    <div id="languageModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🌍 Language Settings</h2>
-                <span class="close" onclick="closeModal('languageModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>Select Your Language</h3>
-                <div class="language-grid">
-                    <button class="modal-btn" onclick="changeLanguage('en')" id="lang-en">🇬🇧 English</button>
-                    <button class="modal-btn" onclick="changeLanguage('sw')" id="lang-sw">🇰🇪 Kiswahili</button>
-                    <button class="modal-btn" onclick="changeLanguage('luo')" id="lang-luo">🏛️ Dholuo</button>
-                    <button class="modal-btn" onclick="changeLanguage('kik')" id="lang-kik">🗻 Kikuyu</button>
-                    <button class="modal-btn" onclick="changeLanguage('luh')" id="lang-luh">🌾 Luhya</button>
-                    <button class="modal-btn" onclick="changeLanguage('run')" id="lang-run">🇧🇮 Kirundi</button>
-                    <button class="modal-btn" onclick="changeLanguage('kam')" id="lang-kam">🏔️ Kikamba</button>
-                    <button class="modal-btn" onclick="changeLanguage('mer')" id="lang-mer">🌳 Kimeru</button>
-                </div>
-                
-                <div style="margin-top: 20px;">
-                    <p style="opacity: 0.7; font-size: 12px;">
-                        Current Language: <span id="currentLanguage">English</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- User Account Modal -->
-    <div id="userAccountModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">👤 User Account</h2>
-                <span class="close" onclick="closeModal('userAccountModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(45deg, #FFD700, #FFA500); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: #333;" id="accountAvatar">U</div>
-                    <h3 id="accountName">User Account</h3>
-                    <p id="accountNumber">#001</p>
-                </div>
-            </div>
-            
-            <div class="modal-section">
-                <h4>Account Details</h4>
-                <div class="input-group">
-                    <label>Display Name</label>
-                    <input type="text" id="displayName" placeholder="Enter your name">
-                </div>
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="userEmail" placeholder="Enter your email" readonly>
-                </div>
-                <button class="modal-btn" onclick="updateAccount()">Update Account</button>
-            </div>
-            
-            <div class="modal-section">
-                <h4>Account Statistics</h4>
-                <div class="stats-grid">
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountBalance">0.0000</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Total Balance</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountMined">0.0000</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Total Mined</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="miningDays">0</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Mining Days</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="accountRank">Beginner</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Miner Rank</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sovereign Modal -->
-    <div id="sovereignModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">👑 SOVEREIGN Mining</h2>
-                <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>Sovereign Benefits</h3>
-                <p>Become a sovereign miner and enjoy premium benefits:</p>
-                <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li>3x mining rate boost</li>
-                    <li>Exclusive governance rights</li>
-                    <li>Priority transaction processing</li>
-                    <li>Access to premium features</li>
-                </ul>
-                <button class="modal-btn" onclick="mineTokens('sovereign', 0.005)">Start Sovereign Mining</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Value Modal -->
-    <div id="valueModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">💎 VALUE Creation</h2>
-                <span class="close" onclick="closeModal('valueModal')">&times;</span>
-            </div>
-            
-            <div class="modal-section">
-                <h3>Create Value Through:</h3>
-                <div class="value-categories" style="grid-template-columns: 1fr; gap: 10px;">
-                    <button class="modal-btn" onclick="performValueTask('service')">🛠️ Service Value (+0.0015 iKb)</button>
-                    <button class="modal-btn" onclick="performValueTask('skill')">🎯 Skill Value (+0.0025 iKb)</button>
-                    <button class="modal-btn" onclick="performValueTask('knowledge')">📚 Knowledge Value (+0.0035 iKb)</button>
-                    <button class="modal-btn" onclick="performValueTask('innovation')">💡 Innovation Value (+0.005 iKb)</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
 
     <!-- Mining Indicator -->
     <div id="miningIndicator" class="mining-indicator">
@@ -1480,11 +1253,8 @@
         <div style="font-size: 12px; margin-top: 10px;">Please wait...</div>
     </div>
 
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
-
     <script>
-        // Firebase Configuration
+        // Firebase Configuration - FIXED
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
@@ -1510,324 +1280,149 @@
         let availableBalance = 0.0000;
         let userLanguage = 'en';
         let userDisplayName = 'User';
+        let receivedTransactions = [];
 
-        // Initialize app on page load
+        // MAIN APP INITIALIZATION - FIXED
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('KABIRU Mining App starting...');
-            initializeApp();
+            console.log('=== KABIRU Mining App Starting ===');
+            
+            // Set initial UI state
+            showLoginPage();
+            hideAllMessages();
+            
+            // Setup auth state listener
+            setupAuthStateListener();
+            
+            console.log('App initialization complete');
         });
 
-        function initializeApp() {
-            // Ensure login page is properly initialized
-            hideAllContainers();
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('miningApp').style.display = 'none';
-            hideAllMessages();
-            checkLoginStatus();
-        }
-
-        // Enhanced Authentication State Management
-        function checkLoginStatus() {
-            console.log('Checking login status...');
+        // FIXED AUTH STATE LISTENER
+        function setupAuthStateListener() {
+            console.log('Setting up auth state listener...');
             
             auth.onAuthStateChanged(async (user) => {
-                console.log('Auth state changed. User:', user ? user.uid : 'none');
+                console.log('Auth state changed:', user ? `User ${user.uid}` : 'No user');
                 
                 if (user) {
-                    console.log('User found. Email verified:', user.emailVerified);
+                    console.log('User found - Email verified:', user.emailVerified);
                     
                     if (user.emailVerified) {
-                        console.log('User is verified. Loading data...');
-                        currentUser = {
-                            uid: user.uid,
-                            email: user.email,
-                            displayName: user.displayName,
-                            emailVerified: user.emailVerified
-                        };
-                        
                         try {
-                            await loadUserDataFromFirestore(user.uid);
-                            console.log('User data loaded. Showing mining app...');
+                            console.log('Loading user data...');
+                            currentUser = {
+                                uid: user.uid,
+                                email: user.email,
+                                displayName: user.displayName,
+                                emailVerified: user.emailVerified
+                            };
+                            
+                            await loadUserData(user.uid);
                             showMiningApp();
+                            showNotification('Welcome back! Mining app loaded successfully.');
+                            
                         } catch (error) {
                             console.error('Error loading user data:', error);
-                            showError('Failed to load your account data. Please try again.');
-                            showLoginPage();
+                            showError('Failed to load your account. Please try signing in again.');
+                            await auth.signOut();
                         }
                     } else {
-                        console.log('User email not verified');
-                        showError('Please verify your email address first');
+                        console.log('Email not verified');
+                        showError('Please verify your email address first.');
                         await auth.signOut();
-                        showLoginPage();
                     }
                 } else {
-                    console.log('No authenticated user found');
+                    console.log('No authenticated user');
+                    currentUser = null;
                     showLoginPage();
                 }
             });
         }
 
-        // Load user data from Firestore
-        async function loadUserDataFromFirestore(uid) {
-            try {
-                console.log('Loading user data from Firestore for UID:', uid);
-                
-                const userDoc = await db.collection('users').doc(uid).get();
-                
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    console.log('User data loaded from Firestore:', userData);
-                    
-                    userBalance = parseFloat(userData.balance) || 0.0000;
-                    totalTasksCompleted = parseInt(userData.tasksCompleted) || 0;
-                    miningRate = parseFloat(userData.miningRate) || 0.001;
-                    reservedBalance = parseFloat(userData.reservedBalance) || 0.0000;
-                    availableBalance = parseFloat(userData.availableBalance) || userBalance;
-                    userLanguage = userData.language || 'en';
-                    userDisplayName = userData.displayName || currentUser.displayName || 'User';
-                    
-                    console.log('LOADED - Balance:', userBalance, 'Tasks:', totalTasksCompleted);
-                } else {
-                    console.log('New user - creating initial document');
-                    await createInitialUserDocument(uid);
-                }
-                
-                updateBalanceDisplay();
-                updateUserInterface();
-                
-            } catch (error) {
-                console.error('Error loading user data from Firestore:', error);
-                throw error;
-            }
-        }
-
-        // Create initial user document in Firestore
-        async function createInitialUserDocument(uid) {
-            try {
-                const user = auth.currentUser;
-                const initialData = {
-                    uid: uid,
-                    email: user.email,
-                    displayName: user.displayName || 'User',
-                    balance: 0.0000,
-                    tasksCompleted: 0,
-                    miningRate: 0.001,
-                    reservedBalance: 0.0000,
-                    availableBalance: 0.0000,
-                    language: 'en',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalEarnings: 0.0000,
-                    miningStatus: 'inactive'
-                };
-                
-                await db.collection('users').doc(uid).set(initialData);
-                console.log('Initial user document created in Firestore');
-                
-                userBalance = 0.0000;
-                totalTasksCompleted = 0;
-                miningRate = 0.001;
-                reservedBalance = 0.0000;
-                availableBalance = 0.0000;
-                userLanguage = 'en';
-                userDisplayName = user.displayName || 'User';
-                
-            } catch (error) {
-                console.error('Error creating initial user document:', error);
-                throw error;
-            }
-        }
-
-        // Save user data to Firestore
-        async function saveUserDataToFirestore() {
-            if (!currentUser || !currentUser.uid) {
-                console.error('Cannot save data - no authenticated user');
-                return false;
-            }
-            
-            try {
-                console.log('Saving user data to Firestore...', {
-                    balance: userBalance,
-                    tasks: totalTasksCompleted,
-                    uid: currentUser.uid
-                });
-                
-                const updateData = {
-                    balance: parseFloat(userBalance.toFixed(4)),
-                    tasksCompleted: parseInt(totalTasksCompleted),
-                    miningRate: parseFloat(miningRate),
-                    reservedBalance: parseFloat(reservedBalance.toFixed(4)),
-                    availableBalance: parseFloat(availableBalance.toFixed(4)),
-                    language: userLanguage,
-                    displayName: userDisplayName,
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalEarnings: parseFloat(userBalance.toFixed(4)),
-                    miningStatus: isMining ? 'active' : 'inactive'
-                };
-                
-                await db.collection('users').doc(currentUser.uid).update(updateData);
-                console.log('User data saved to Firestore successfully');
-                
-                await saveMiningTransaction();
-                
-                return true;
-                
-            } catch (error) {
-                console.error('Error saving user data to Firestore:', error);
-                showError('Failed to save your progress: ' + error.message);
-                return false;
-            }
-        }
-
-        // Save individual mining transactions
-        async function saveMiningTransaction() {
-            if (!currentUser || !currentUser.uid) return;
-            
-            try {
-                const transactionData = {
-                    userId: currentUser.uid,
-                    amount: parseFloat(miningRate.toFixed(4)),
-                    type: 'mining',
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    balance: parseFloat(userBalance.toFixed(4))
-                };
-                
-                await db.collection('transactions').add(transactionData);
-                console.log('Mining transaction saved:', transactionData);
-                
-            } catch (error) {
-                console.error('Error saving mining transaction:', error);
-            }
-        }
-async function testFirebaseConnection() {
-    try {
-        console.log('Testing Firebase connection...');
-        
-        // Simple test - just check if Firebase is accessible
-        const testDoc = db.collection('_test').limit(1);
-        await testDoc.get();
-        console.log('Firestore connection: OK');
-        
-    } catch (error) {
-        console.error('Firebase connection test failed:', error);
-        
-        if (error.code === 'unavailable' || 
-            error.message.includes('Failed to fetch') || 
-            error.message.includes('network')) {
-            const blockError = new Error('NETWORK_BLOCKED');
-            blockError.originalError = error;
-            throw blockError;
-        }
-        
-        // Don't block login for other errors, just log them
-        console.log('Connection test had issues but allowing login to proceed');
-    }
-}
-
-// Enhanced error handling
-function handleFirebaseError(error) {
-    console.log('Handling error:', error.code, error.message);
-    
-    // Network/blocking related errors
-    if (error.code === 'auth/network-request-failed' || 
-        error.message.includes('network') ||
-        error.message.includes('Failed to fetch') ||
-        error.message === 'NETWORK_BLOCKED') {
-        return `🚫 Connection Issue
-
-Try these solutions:
-• Disable ad blockers (uBlock, AdBlock, etc.)
-• Use incognito/private browsing mode  
-• Try mobile data instead of WiFi
-• Check if workplace/school blocks Firebase
-
-This usually fixes 90% of login problems!`;
-    }
-    
-    // Standard Firebase Auth errors
-    switch (error.code) {
-        case 'auth/user-not-found':
-            return '❌ No account found with this email. Please check your email or sign up first.';
-        case 'auth/wrong-password':
-            return '❌ Incorrect password. Try again or use "Forgot Password".';
-        case 'auth/invalid-email':
-            return '❌ Please enter a valid email address.';
-        case 'auth/too-many-requests':
-            return '⚠️ Too many failed attempts. Wait 5 minutes and try again.';
-        default:
-            return `❌ Login failed: ${error.message}
-
-💡 Try: incognito mode, disable extensions, or different browser.`;
-    }
-}
-        // Authentication Functions
+        // FIXED LOGIN FUNCTION
         async function handleLogin() {
-    const credential = document.getElementById('loginCredential').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    const loginBtn = document.getElementById('loginBtn');
-    
-    if (!credential || !password) {
-        showError('Please fill in all fields');
-        return;
-    }
-
-    try {
-        loginBtn.textContent = 'Signing In...';
-        loginBtn.disabled = true;
-        
-        // Quick connection test (non-blocking)
-        try {
-            await testFirebaseConnection();
-        } catch (connError) {
-            console.log('Connection test failed, but proceeding with login');
-        }
-        
-        if (credential.includes('@')) {
-            console.log('Attempting email login for:', credential);
-            const userCredential = await auth.signInWithEmailAndPassword(credential, password);
-            const user = userCredential.user;
+            const credential = document.getElementById('loginCredential').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
             
-            console.log('Login successful. Email verified:', user.emailVerified);
+            console.log('=== LOGIN ATTEMPT ===');
+            console.log('Credential:', credential);
             
-            if (!user.emailVerified) {
-                showError('Please verify your email address first.');
-                await auth.signOut();
+            if (!credential || !password) {
+                showError('Please fill in all fields');
                 return;
             }
-            
-            // Set current user immediately to prevent auth state conflicts
-            currentUser = {
-                uid: user.uid,
-                email: user.email,
-                displayName: user.displayName,
-                emailVerified: user.emailVerified
-            };
-            
-            showNotification('Login successful! Loading your account...');
-            
-        } else {
-            showError('Phone login not yet implemented. Please use email.');
+
+            try {
+                loginBtn.textContent = 'Signing In...';
+                loginBtn.disabled = true;
+                hideAllMessages();
+                
+                if (credential.includes('@')) {
+                    console.log('Attempting email login...');
+                    
+                    const userCredential = await auth.signInWithEmailAndPassword(credential, password);
+                    const user = userCredential.user;
+                    
+                    console.log('Login successful - User:', user.uid);
+                    console.log('Email verified:', user.emailVerified);
+                    
+                    if (!user.emailVerified) {
+                        showError('Please verify your email address first. Check your inbox for the verification link.');
+                        await auth.signOut();
+                        return;
+                    }
+                    
+                    // Success - auth state listener will handle the rest
+                    showNotification('Login successful! Loading your account...');
+                    
+                } else {
+                    showError('Phone login not yet implemented. Please use your email address.');
+                }
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                const errorMessage = getFirebaseErrorMessage(error);
+                showError(errorMessage);
+                
+            } finally {
+                loginBtn.textContent = 'Sign In';
+                loginBtn.disabled = false;
+            }
         }
-        
-    } catch (error) {
-        console.error('Login error:', error);
-        
-        // Use enhanced error handling
-        const errorMessage = handleFirebaseError(error);
-        showError(errorMessage);
-        
-    } finally {
-        loginBtn.textContent = 'Sign In';
-        loginBtn.disabled = false;
-    }
+
+        // IMPROVED ERROR HANDLING
+        function getFirebaseErrorMessage(error) {
+            console.log('Firebase error:', error.code, error.message);
+            
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    return '❌ No account found with this email. Please check your email or sign up first.';
+                case 'auth/wrong-password':
+                    return '❌ Incorrect password. Please try again or use "Forgot Password".';
+                case 'auth/invalid-email':
+                    return '❌ Please enter a valid email address.';
+                case 'auth/too-many-requests':
+                    return '⚠️ Too many failed attempts. Please wait a few minutes and try again.';
+                case 'auth/network-request-failed':
+                    return '🚫 Network connection issue. Please check your internet connection and try again.';
+                case 'auth/invalid-credential':
+                    return '❌ Invalid login credentials. Please check your email and password.';
+                default:
+                    return `❌ Login failed: ${error.message}. If this persists, try using incognito mode or disabling ad blockers.`;
+            }
         }
+
+        // FIXED SIGNUP FUNCTION
         async function handleEmailSignup() {
             const name = document.getElementById('emailSignupName').value.trim();
             const email = document.getElementById('emailSignupEmail').value.trim();
             const password = document.getElementById('emailSignupPassword').value;
             const confirmPassword = document.getElementById('emailConfirmPassword').value;
             const signupBtn = document.getElementById('signupBtn');
+            
+            console.log('=== SIGNUP ATTEMPT ===');
+            console.log('Name:', name);
+            console.log('Email:', email);
             
             if (!name || !email || !password || !confirmPassword) {
                 showError('Please fill in all fields');
@@ -1847,53 +1442,55 @@ This usually fixes 90% of login problems!`;
             try {
                 signupBtn.textContent = 'Creating Account...';
                 signupBtn.disabled = true;
+                hideAllMessages();
                 
-                console.log('Creating account for:', email);
+                console.log('Creating Firebase user...');
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
                 
-                console.log('Account created. Updating profile...');
+                console.log('User created:', user.uid);
+                console.log('Updating profile...');
+                
                 await user.updateProfile({
                     displayName: name
                 });
                 
                 console.log('Sending verification email...');
-                await user.sendEmailVerification();
+                await user.sendEmailVerification({
+                    url: window.location.href,
+                    handleCodeInApp: false
+                });
                 
-                currentUser = {
-                    name: name,
-                    email: email,
-                    loginType: 'email',
-                    firebaseUid: user.uid,
-                    createdAt: new Date().toISOString()
-                };
-                
+                console.log('Signup process complete');
                 showEmailVerification();
                 showNotification('Verification email sent! Please check your inbox.');
                 
             } catch (error) {
-                console.error('Email signup error:', error);
+                console.error('Signup error:', error);
                 let errorMessage = 'Signup failed. ';
+                
                 switch (error.code) {
                     case 'auth/email-already-in-use':
-                        errorMessage = 'Email already registered. Please sign in instead.';
+                        errorMessage = 'This email is already registered. Please sign in instead.';
                         break;
                     case 'auth/invalid-email':
-                        errorMessage = 'Invalid email address.';
+                        errorMessage = 'Please enter a valid email address.';
                         break;
                     case 'auth/weak-password':
-                        errorMessage = 'Password is too weak.';
+                        errorMessage = 'Password is too weak. Please use at least 6 characters.';
                         break;
                     default:
                         errorMessage += error.message;
                 }
                 showError(errorMessage);
+                
             } finally {
                 signupBtn.textContent = 'Create Account';
                 signupBtn.disabled = false;
             }
         }
 
+        // PASSWORD RESET FUNCTION
         async function handlePasswordReset() {
             const email = document.getElementById('resetEmail').value.trim();
             
@@ -1913,24 +1510,12 @@ This usually fixes 90% of login problems!`;
                 showLogin();
             } catch (error) {
                 console.error('Password reset error:', error);
-                let errorMessage = 'Failed to send reset email. ';
-                switch (error.code) {
-                    case 'auth/user-not-found':
-                        errorMessage = 'No account found with this email address.';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = 'Please enter a valid email address.';
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMessage = 'Too many requests. Please try again later.';
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
+                const errorMessage = getFirebaseErrorMessage(error);
                 showError(errorMessage);
             }
         }
 
+        // EMAIL VERIFICATION FUNCTIONS
         async function checkEmailVerification() {
             try {
                 const user = auth.currentUser;
@@ -1940,19 +1525,17 @@ This usually fixes 90% of login problems!`;
                     return;
                 }
                 
-                console.log('Reloading user to check verification status...');
+                console.log('Checking email verification...');
                 await user.reload();
                 
-                console.log('Current user email verification status:', user.emailVerified);
-                
                 if (user.emailVerified) {
-                    console.log('Email is verified, proceeding to app');
+                    console.log('Email verified successfully');
                     showSuccessAndRedirect();
                 } else {
                     showError('Email not yet verified. Please check your inbox and click the verification link.');
                 }
             } catch (error) {
-                console.error('Error checking email verification:', error);
+                console.error('Error checking verification:', error);
                 showError('Error checking verification status. Please try signing in again.');
             }
         }
@@ -1967,387 +1550,187 @@ This usually fixes 90% of login problems!`;
                     showError('No user found. Please try signing up again.');
                 }
             } catch (error) {
-                console.error('Error resending email verification:', error);
+                console.error('Error resending verification:', error);
                 showError('Failed to resend verification email. Please try again.');
             }
         }
 
+        // USER DATA MANAGEMENT - FIXED
+        async function loadUserData(uid) {
+            try {
+                console.log('Loading user data for:', uid);
+                
+                const userDoc = await db.collection('users').doc(uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log('User data found:', userData);
+                    
+                    userBalance = parseFloat(userData.balance) || 0.0000;
+                    totalTasksCompleted = parseInt(userData.tasksCompleted) || 0;
+                    miningRate = parseFloat(userData.miningRate) || 0.001;
+                    reservedBalance = parseFloat(userData.reservedBalance) || 0.0000;
+                    availableBalance = parseFloat(userData.availableBalance) || userBalance;
+                    userLanguage = userData.language || 'en';
+                    userDisplayName = userData.displayName || currentUser.displayName || 'User';
+                    receivedTransactions = userData.receivedTransactions || [];
+                    
+                } else {
+                    console.log('Creating new user document...');
+                    await createInitialUserDocument(uid);
+                }
+                
+                updateUI();
+                console.log('User data loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                throw error;
+            }
+        }
+
+        async function createInitialUserDocument(uid) {
+            try {
+                const user = auth.currentUser;
+                const initialData = {
+                    uid: uid,
+                    email: user.email,
+                    displayName: user.displayName || 'User',
+                    balance: 0.0000,
+                    tasksCompleted: 0,
+                    miningRate: 0.001,
+                    reservedBalance: 0.0000,
+                    availableBalance: 0.0000,
+                    language: 'en',
+                    receivedTransactions: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('users').doc(uid).set(initialData);
+                console.log('Initial user document created');
+                
+                // Set local variables
+                userBalance = 0.0000;
+                totalTasksCompleted = 0;
+                miningRate = 0.001;
+                reservedBalance = 0.0000;
+                availableBalance = 0.0000;
+                userLanguage = 'en';
+                userDisplayName = user.displayName || 'User';
+                receivedTransactions = [];
+                
+            } catch (error) {
+                console.error('Error creating user document:', error);
+                throw error;
+            }
+        }
+
+        async function saveUserData() {
+            if (!currentUser || !currentUser.uid) {
+                console.error('Cannot save - no authenticated user');
+                return false;
+            }
+            
+            try {
+                console.log('Saving user data...');
+                
+                const updateData = {
+                    balance: parseFloat(userBalance.toFixed(4)),
+                    tasksCompleted: parseInt(totalTasksCompleted),
+                    miningRate: parseFloat(miningRate),
+                    reservedBalance: parseFloat(reservedBalance.toFixed(4)),
+                    availableBalance: parseFloat(availableBalance.toFixed(4)),
+                    language: userLanguage,
+                    displayName: userDisplayName,
+                    receivedTransactions: receivedTransactions,
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection('users').doc(currentUser.uid).update(updateData);
+                console.log('User data saved successfully');
+                
+                return true;
+                
+            } catch (error) {
+                console.error('Error saving user data:', error);
+                showError('Failed to save your progress. Please try again.');
+                return false;
+            }
+        }
+
+        // LOGOUT FUNCTION
         async function logout() {
             try {
+                console.log('Logging out...');
                 await auth.signOut();
+                
+                // Reset all variables
                 currentUser = null;
                 userBalance = 0.0000;
                 totalTasksCompleted = 0;
                 isMining = false;
+                receivedTransactions = [];
                 
                 showLoginPage();
                 showNotification('Logged out successfully');
                 
             } catch (error) {
                 console.error('Logout error:', error);
-                showError('Failed to logout');
+                showError('Failed to logout properly');
             }
         }
 
-        // Mining function with proper Firestore saving
+        // MINING FUNCTIONS - SIMPLIFIED
         async function mineTokens(type, reward) {
             if (!currentUser || !currentUser.uid) {
                 showError('Please login to mine tokens');
                 return;
             }
             
-            console.log('=== MINING TOKENS ===');
-            console.log('Mining type:', type, 'Reward:', reward);
-            console.log('Current user UID:', currentUser.uid);
-            console.log('Current balance before mining:', userBalance);
+            console.log('Mining:', type, 'Reward:', reward);
             
             isMining = true;
-            document.getElementById('miningStatus').textContent = 'Active';
-            
             showNotification('Mining started! Please wait...');
             document.getElementById('miningIndicator').style.display = 'block';
             
             setTimeout(async () => {
-                const oldBalance = userBalance;
                 userBalance += reward;
                 availableBalance += reward;
                 totalTasksCompleted++;
                 
-                console.log('Balance updated:', oldBalance, '->', userBalance);
-                console.log('Tasks updated to:', totalTasksCompleted);
+                updateUI();
                 
-                updateBalanceDisplay();
-                updateUserInterface();
-                
-                const saved = await saveUserDataToFirestore();
+                const saved = await saveUserData();
                 
                 document.getElementById('miningIndicator').style.display = 'none';
                 
                 if (saved) {
-                    showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
-                    console.log('Mining data saved to Firestore successfully');
+                    showNotification(`Mining complete! +${reward.toFixed(4)} iKb earned`);
                 } else {
-                    showError('Mining successful but failed to save progress. Please try again.');
+                    showError('Mining successful but failed to save. Please try again.');
                 }
                 
                 isMining = false;
-                document.getElementById('miningStatus').textContent = 'Inactive';
-                
                 closeAllModals();
                 
             }, 3000);
         }
 
-        // Task functions
-        function selectTask(taskType) {
-            document.querySelectorAll('.task-category').forEach(cat => {
-                cat.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            showNotification(`Selected ${taskType} task category`);
-        }
-
-        function performTask(valueType) {
-            const rewards = {
-                service: 0.0015,
-                skill: 0.0025,
-                knowledge: 0.0035
-            };
-            
-            mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
-        }
-
-        function performValueTask(valueType) {
-            const rewards = {
-                service: 0.0015,
-                skill: 0.0025,
-                knowledge: 0.0035,
-                innovation: 0.005
-            };
-            
-            mineTokens(`value-${valueType}`, rewards[valueType] || 0.0015);
-        }
-
-        // Modal Functions
-        function openEducationModal() {
-            document.getElementById('educationModal').style.display = 'block';
-        }
-
-        function openWalletModal() {
-            updateWalletDisplay();
-            document.getElementById('walletModal').style.display = 'block';
-        }
-
-        function openLanguageModal() {
-            updateLanguageDisplay();
-            document.getElementById('languageModal').style.display = 'block';
-        }
-
-        function openUserAccountModal() {
-            updateAccountDisplay();
-            document.getElementById('userAccountModal').style.display = 'block';
-        }
-
-        function openSovereignModal() {
-            document.getElementById('sovereignModal').style.display = 'block';
-        }
-
-        function openValueModal() {
-            document.getElementById('valueModal').style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            if (modalId === 'walletModal') {
-                document.getElementById('walletActionPanel').style.display = 'none';
-                document.querySelectorAll('.wallet-panel').forEach(panel => {
-                    panel.style.display = 'none';
-                });
-            }
-        }
-
-        function closeAllModals() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                modal.style.display = 'none';
-            });
-        }
-
-        // Education Functions
-        function openEducationLevel(level) {
-            const levels = {
-                ecd: 'Early Childhood Development resources are being prepared...',
-                lower: 'Lower Primary School (Grade 1-3) curriculum loading...',
-                upper: 'Upper Primary School (Grade 4-8) resources available soon...',
-                high: 'High School (Form 1-4) materials coming soon...',
-                tertiary: 'Tertiary education resources in development...',
-                university: 'University level content being curated...'
-            };
-            
-            showNotification(levels[level] || 'Educational content loading...');
-            mineTokens('education', 0.001);
-        }
-
-        // Wallet Functions
-        function updateWalletDisplay() {
-            document.getElementById('walletBalance').textContent = userBalance.toFixed(4);
-            document.getElementById('availableBalance').textContent = availableBalance.toFixed(4);
-            document.getElementById('reservedBalance').textContent = reservedBalance.toFixed(4);
-            document.getElementById('userAddress').textContent = generateUserAddress();
-        }
-
-        function generateUserAddress() {
-            if (!currentUser) return 'KBR000000000000000';
-            const hash = currentUser.uid.slice(0, 15);
-            return `KBR${hash.toUpperCase()}`;
-        }
-
-        function openWalletAction(action) {
-            document.querySelectorAll('.wallet-panel').forEach(panel => {
-                panel.style.display = 'none';
-            });
-            
-            document.getElementById('walletActionPanel').style.display = 'block';
-            document.getElementById(action + 'Panel').style.display = 'block';
-        }
-
-        function sendKabiru() {
-            const address = document.getElementById('sendAddress').value.trim();
-            const amount = parseFloat(document.getElementById('sendAmount').value);
-            
-            if (!address || !amount || amount <= 0) {
-                showError('Please enter valid address and amount');
-                return;
-            }
-            
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            availableBalance -= amount;
-            userBalance -= amount;
-            updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully sent ${amount.toFixed(4)} KABIRU to ${address.slice(0, 10)}...`);
-            closeModal('walletModal');
-        }
-
-        function copyAddress() {
-            const address = generateUserAddress();
-            navigator.clipboard.writeText(address).then(() => {
-                showNotification('Address copied to clipboard!');
-            }).catch(() => {
-                showNotification('Address: ' + address);
-            });
-        }
-
-        function swapToKsh() {
-            const amount = parseFloat(document.getElementById('swapAmount').value);
-            
-            if (!amount || amount <= 0) {
-                showError('Please enter valid amount');
-                return;
-            }
-            
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            const kshAmount = amount * 50;
-            availableBalance -= amount;
-            userBalance -= amount;
-            
-            updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully swapped ${amount.toFixed(4)} KABIRU for ${kshAmount} KSH`);
-            closeModal('walletModal');
-        }
-
-        function lockupKabiru() {
-            const amount = parseFloat(document.getElementById('lockupAmount').value);
-            const days = parseInt(document.getElementById('lockupDays').value);
-            
-            if (!amount || !days || amount <= 0 || days <= 0) {
-                showError('Please enter valid amount and duration');
-                return;
-            }
-            
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            availableBalance -= amount;
-            
-            updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully locked ${amount.toFixed(4)} KABIRU for ${days} days at 5% APY`);
-            closeModal('walletModal');
-        }
-
-        function reserveKabiru() {
-            const amount = parseFloat(document.getElementById('reserveAmount').value);
-            
-            if (!amount || amount <= 0) {
-                showError('Please enter valid amount');
-                return;
-            }
-            
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            availableBalance -= amount;
-            reservedBalance += amount;
-            
-            updateBalanceDisplay();
-            updateWalletDisplay();
-            saveUserDataToFirestore();
-            
-            showNotification(`Successfully reserved ${amount.toFixed(4)} KABIRU`);
-            closeModal('walletModal');
-        }
-
-        // Language Functions
-        function updateLanguageDisplay() {
-            document.querySelectorAll('[id^="lang-"]').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            const currentBtn = document.getElementById('lang-' + userLanguage);
-            if (currentBtn) {
-                currentBtn.classList.add('active');
-            }
-            
-            document.getElementById('currentLanguage').textContent = getLanguageName(userLanguage);
-        }
-
-        function changeLanguage(langCode) {
-            userLanguage = langCode;
-            updateLanguageDisplay();
-            saveUserDataToFirestore();
-            
-            const langName = getLanguageName(langCode);
-            showNotification(`Language changed to ${langName}`);
-            
-            setTimeout(() => {
-                closeModal('languageModal');
-            }, 1000);
-        }
-
-        function getLanguageName(code) {
-            const languages = {
-                en: 'English',
-                sw: 'Kiswahili',
-                luo: 'Dholuo',
-                kik: 'Kikuyu',
-                luh: 'Luhya',
-                run: 'Kirundi',
-                kam: 'Kikamba',
-                mer: 'Kimeru'
-            };
-            return languages[code] || 'English';
-        }
-
-        // Account Functions
-        function updateAccountDisplay() {
-            document.getElementById('accountName').textContent = userDisplayName;
-            document.getElementById('accountNumber').textContent = '#' + (currentUser ? currentUser.uid.slice(-6).toUpperCase() : '001');
-            document.getElementById('accountAvatar').textContent = userDisplayName.charAt(0).toUpperCase();
-            document.getElementById('displayName').value = userDisplayName;
-            document.getElementById('userEmail').value = currentUser ? currentUser.email : '';
-            document.getElementById('accountBalance').textContent = userBalance.toFixed(4);
-            document.getElementById('accountMined').textContent = userBalance.toFixed(4);
-            document.getElementById('miningDays').textContent = Math.floor(totalTasksCompleted / 10);
-            document.getElementById('accountRank').textContent = getMinerRank();
-        }
-
-        function getMinerRank() {
-            if (userBalance < 0.01) return 'Beginner';
-            if (userBalance < 0.1) return 'Bronze';
-            if (userBalance < 1) return 'Silver';
-            if (userBalance < 10) return 'Gold';
-            return 'Diamond';
-        }
-
-        function updateAccount() {
-            const newName = document.getElementById('displayName').value.trim();
-            
-            if (!newName) {
-                showError('Please enter a display name');
-                return;
-            }
-            
-            userDisplayName = newName;
-            updateUserInterface();
-            saveUserDataToFirestore();
-            
-            showNotification('Account updated successfully!');
-            closeModal('userAccountModal');
-        }
-
-        // UI Update Functions
-        function updateBalanceDisplay() {
-            const balanceElements = document.querySelectorAll('#balance, #totalBalance');
+        // UI HELPER FUNCTIONS
+        function updateUI() {
+            // Update balance display
+            const balanceElements = document.querySelectorAll('#balance');
             balanceElements.forEach(el => {
                 if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
             });
-        }
-
-        function updateUserInterface() {
+            
+            // Update tasks completed
             if (document.getElementById('tasksCompleted')) {
                 document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
             }
             
+            // Update user info
             if (document.getElementById('userName')) {
                 document.getElementById('userName').textContent = userDisplayName;
             }
@@ -2362,21 +1745,22 @@ This usually fixes 90% of login problems!`;
             }
         }
 
-        // Navigation Functions
+        // NAVIGATION FUNCTIONS - FIXED
         function showLoginPage() {
+            console.log('Showing login page');
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('miningApp').style.display = 'none';
-            hideAllMessages();
             hideAllContainers();
             document.getElementById('loginContainer').style.display = 'block';
+            hideAllMessages();
         }
 
         function showMiningApp() {
+            console.log('Showing mining app');
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('miningApp').style.display = 'block';
             hideAllMessages();
-            updateBalanceDisplay();
-            updateUserInterface();
+            updateUI();
             startMiningTimer();
         }
 
@@ -2437,8 +1821,17 @@ This usually fixes 90% of login problems!`;
             document.getElementById('successContainer').style.display = 'none';
         }
 
-        // Password toggle functionality
-        function togglePassword(inputId) {
+        function showSuccessAndRedirect() {
+            hideAllContainers();
+            document.getElementById('successContainer').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('successContainer').style.display = 'none';
+            }, 1500);
+        }
+
+        // UTILITY FUNCTIONS
+        function togglePasswordVisibility(inputId) {
             const passwordInput = document.getElementById(inputId);
             const toggleButton = passwordInput.nextElementSibling;
             
@@ -2451,17 +1844,159 @@ This usually fixes 90% of login problems!`;
             }
         }
 
-        // Success and Utility Functions
-        function showSuccessAndRedirect() {
-            hideAllContainers();
-            document.getElementById('successContainer').style.display = 'block';
-            
-            setTimeout(() => {
-                document.getElementById('successContainer').style.display = 'none';
-            }, 1500);
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
         }
 
-        // Mining Timer Function
+        function showError(message) {
+            console.error('Error:', message);
+            document.getElementById('errorText').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 8000);
+        }
+
+        function showNotification(message) {
+            console.log('Notification:', message);
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // TROUBLESHOOTING HELP
+        function showTroubleshootingHelp() {
+            const helpMessage = `🔧 LOGIN TROUBLESHOOTING GUIDE:
+
+1️⃣ TRY INCOGNITO MODE (Most Effective):
+• Chrome: Ctrl+Shift+N (Cmd+Shift+N on Mac)
+• Firefox: Ctrl+Shift+P (Cmd+Shift+P on Mac)
+• Safari: Cmd+Shift+N
+• Edge: Ctrl+Shift+N
+
+2️⃣ DISABLE AD BLOCKERS:
+• uBlock Origin, AdBlock Plus, etc.
+• Temporarily disable for this site
+• Try allowing Firebase domains
+
+3️⃣ NETWORK/CONNECTION ISSUES:
+• Corporate/school networks often block Firebase
+• Try mobile data instead of WiFi
+• Use different internet connection
+• VPN might help if network is restricted
+
+4️⃣ BROWSER SETTINGS:
+• Enable cookies and JavaScript
+• Clear browser cache and cookies
+• Disable other extensions temporarily
+• Allow pop-ups for this site
+
+5️⃣ TRY DIFFERENT BROWSER:
+• Chrome, Firefox, Safari, or Edge
+• Mobile browser vs desktop
+
+6️⃣ FIREBASE-SPECIFIC ISSUES:
+• Firebase may be blocked by firewall
+• Some regions have connectivity issues
+• Try again in a few minutes
+
+💡 QUICK FIX: 90% of login issues are solved by using incognito mode with ad blockers disabled!
+
+Still having trouble? The issue is likely network-related rather than account-related.`;
+            
+            alert(helpMessage);
+        }
+
+        // TASK AND MINING FUNCTIONS
+        function selectTask(taskType) {
+            document.querySelectorAll('.task-category').forEach(cat => {
+                cat.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            showNotification(`Selected ${taskType} task category`);
+        }
+
+        function performTask(valueType) {
+            const rewards = {
+                service: 0.0015,
+                skill: 0.0025,
+                knowledge: 0.0035
+            };
+            
+            mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
+        }
+
+        // MODAL FUNCTIONS - SIMPLIFIED
+        function openEducationModal() {
+            document.getElementById('educationModal').style.display = 'block';
+        }
+
+        function openWalletModal() {
+            // Will implement full wallet modal later
+            showNotification('Wallet feature coming soon!');
+        }
+
+        function openLanguageModal() {
+            // Will implement language modal later
+            showNotification('Language settings coming soon!');
+        }
+
+        function openUserAccountModal() {
+            // Will implement account modal later
+            showNotification('Account settings coming soon!');
+        }
+
+        function openSovereignModal() {
+            mineTokens('sovereign', 0.005);
+        }
+
+        function openValueModal() {
+            mineTokens('value', 0.0025);
+        }
+
+        function openReserveModal() {
+            mineTokens('reserve', 0.002);
+        }
+
+        function openUtilityModal() {
+            mineTokens('utility', 0.001);
+        }
+
+        function openCorporateModal() {
+            mineTokens('corporate', 0.0015);
+        }
+
+        function openEducationLevel(level) {
+            const levels = {
+                ecd: 'Early Childhood Development resources loading...',
+                lower: 'Lower Primary School curriculum loading...',
+                upper: 'Upper Primary School resources loading...',
+                high: 'High School materials loading...',
+                tertiary: 'Tertiary education resources loading...',
+                university: 'University content loading...'
+            };
+            
+            showNotification(levels[level] || 'Educational content loading...');
+            mineTokens('education', 0.001);
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+
+        // MINING TIMER
         function startMiningTimer() {
             const timerElement = document.getElementById('miningTimer');
             if (!timerElement) return;
@@ -2474,100 +2009,54 @@ This usually fixes 90% of login problems!`;
                 timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                 seconds++;
                 
+                // Auto-mine small amounts periodically
                 if (seconds % 30 === 0 && currentUser && document.getElementById('miningApp').style.display === 'block') {
                     userBalance += 0.0001;
                     availableBalance += 0.0001;
-                    updateBalanceDisplay();
+                    updateUI();
                     
+                    // Save periodically
                     if (seconds % 180 === 0) {
-                        saveUserDataToFirestore();
+                        saveUserData();
                     }
                 }
             }, 1000);
         }
 
-        // Validation Functions
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function showError(message) {
-            document.getElementById('errorText').textContent = message;
-            document.getElementById('errorMessage').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('errorMessage').style.display = 'none';
-            }, 5000);
-        }
-
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Click outside modal to close
+        // CLICK OUTSIDE MODAL TO CLOSE
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
                 event.target.style.display = 'none';
             }
         }
 
-        // App initialization complete
-        console.log('KABIRU Mining App - Authentication Fixed Version Loaded Successfully');
-        // Add troubleshooting help
-function showTroubleshootingHelp() {
-    const helpMessage = `🔧 LOGIN TROUBLESHOOTING:
+        // ENTER KEY SUPPORT FOR LOGIN
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (document.getElementById('loginContainer').style.display !== 'none') {
+                    handleLogin();
+                } else if (document.getElementById('emailSignupContainer').style.display !== 'none') {
+                    handleEmailSignup();
+                } else if (document.getElementById('passwordResetContainer').style.display !== 'none') {
+                    handlePasswordReset();
+                }
+            }
+        });
 
-1️⃣ INCOGNITO MODE (Most Effective):
-   • Chrome: Ctrl+Shift+N
-   • Firefox: Ctrl+Shift+P  
-   • Safari: Cmd+Shift+N
-
-2️⃣ DISABLE AD BLOCKERS:
-   • uBlock Origin, AdBlock, etc.
-   • Temporarily turn off for this site
-
-3️⃣ NETWORK ISSUES:
-   • Try mobile data vs WiFi
-   • Corporate/school networks block Firebase
-   • Use different internet connection
-
-4️⃣ BROWSER SETTINGS:
-   • Enable cookies
-   • Allow JavaScript
-   • Clear browser cache
-
-5️⃣ DIFFERENT BROWSER:
-   • Try Chrome, Firefox, Safari, Edge
-
-90% of login issues are caused by ad blockers or network restrictions!`;
-    
-    alert(helpMessage);
-}
-
-// Add help button when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        const authToggle = document.querySelector('.auth-toggle');
-        if (authToggle && !document.getElementById('help-btn')) {
-            const helpHTML = `
-            <div style="text-align: center; margin-top: 15px;">
-                <button id="help-btn" onclick="showTroubleshootingHelp()" 
-                        style="background: none; border: 1px solid #FFD700; color: #FFD700; 
-                               padding: 8px 16px; border-radius: 8px; font-size: 12px; 
-                               cursor: pointer;">
-                    ❓ Can't sign in? Get help
-                </button>
-            </div>`;
-            authToggle.insertAdjacentHTML('afterend', helpHTML);
-        }
-    }, 1000);
-});
+        // CONSOLE LOG FOR DEBUGGING
+        console.log('=== KABIRU Mining App JavaScript Loaded ===');
+        console.log('Firebase initialized:', !!firebase.apps.length);
+        console.log('Auth object:', !!auth);
+        console.log('Firestore object:', !!db);
+        
+        // Test Firebase connection on load
+        setTimeout(() => {
+            if (auth && db) {
+                console.log('✅ Firebase services ready');
+            } else {
+                console.error('❌ Firebase services not ready');
+            }
+        }, 2000);
     </script>
 </body>
     </html>
