@@ -1312,12 +1312,14 @@
     <!-- Document Viewer Page -->
     <div id="documentPage" class="document-page">
         <div class="container">
-            <!-- Document Header -->
-            <div class="utilities-header">
-                <button class="back-button" onclick="showReadPage()">←</button>
-                <div class="utilities-title" id="documentTitle">Document</div>
+            <!-- Footer with Logout -->
+            <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
+                <button onclick="logout()" style="background: none; border: none; color: #FFD700; font-size: 12px; cursor: pointer; text-decoration: underline; opacity: 0.8; transition: opacity 0.3s ease;">
+                    Logout
+                </button>
             </div>
-
+        </div>
+    </div>
             <!-- Document Content -->
             <div id="documentContent" class="document-content">
                 <!-- Content will be populated here -->
@@ -2650,12 +2652,4 @@
         }
     </script>
 </body>
-</html>">mining</div>
-                    </div>
-                    <div class="task-category" onclick="selectTask('partnership')">
-                        <div class="category-title">iKb(P)</div>
-                        <div class="category-subtitle">Partnership</div>
-                    </div>
-                    <div class="task-category" onclick="selectTask('genledger')">
-                        <div class="category-title">iKb(GL)</div>
-                        <div class="category-subtitle
+</html>
