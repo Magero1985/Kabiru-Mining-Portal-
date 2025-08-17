@@ -2652,190 +2652,7 @@
             document.getElementById('errorMessage').style.display = 'none';
             document.getElementById('successContainer').style.display = 'none';
         }
-// Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
-            authDomain: "kabiru-mining-app.firebaseapp.com",
-            projectId: "kabiru-mining-app",
-            storageBucket: "kabiru-mining-app.appspot.com",
-            messagingSenderId: "217095254990",
-            appId: "1:217095254990:web:9eb44eff825666995fb19f",
-            measurementId: "G-W6070RT4PB"
-        };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // Global variables
-        let currentUser = null;
-        let userBalance = 0.0000;
-        let miningRate = 0.001;
-        let isMining = false;
-        let totalTasksCompleted = 0;
-
-        // Initialize app on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('KABIRU Mining App starting...');
-            checkLoginStatus();
-        });
-
-        // FIXED: Enhanced Authentication State Management
-        function checkLoginStatus() {
-            console.log('Checking login status...');
-            
-            auth.onAuthStateChanged(async (user) => {
-                if (user && user.emailVerified) {
-                    console.log('Authenticated user found:', user.uid);
-                    currentUser = {
-                        uid: user.uid,
-                        email: user.email,
-                        displayName: user.displayName,
-                        emailVerified: user.emailVerified
-                    };
-                    
-                    // FIXED: Always load user data from Firestore on login
-                    await loadUserDataFromFirestore(user.uid);
-                    showMiningApp();
-                } else {
-                    console.log('No authenticated user found');
-                    showLoginPage();
-                    if (user && !user.emailVerified) {
-                        showError('Please verify your email address first');
-                    }
-                }
-            });
-        }
-
-        // FIXED: Load user data from Firestore with better error handling
-        async function loadUserDataFromFirestore(uid) {
-            try {
-                console.log('Loading user data from Firestore for UID:', uid);
-                
-                const userDoc = await db.collection('users').doc(uid).get();
-                
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    console.log('User data loaded from Firestore:', userData);
-                    
-                    // FIXED: Set values from Firestore with proper fallbacks
-                    userBalance = parseFloat(userData.balance) || 0.0000;
-                    totalTasksCompleted = parseInt(userData.tasksCompleted) || 0;
-                    miningRate = parseFloat(userData.miningRate) || 0.001;
-                    
-                    console.log('LOADED - Balance:', userBalance, 'Tasks:', totalTasksCompleted);
-                } else {
-                    console.log('New user - creating initial document');
-                    await createInitialUserDocument(uid);
-                }
-                
-                updateBalanceDisplay();
-                if (document.getElementById('tasksCompleted')) {
-                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-                }
-                
-            } catch (error) {
-                console.error('Error loading user data from Firestore:', error);
-                showError('Failed to load your account data. Using default values.');
-                
-                // Set default values if Firestore fails
-                userBalance = 0.0000;
-                totalTasksCompleted = 0;
-                miningRate = 0.001;
-                updateBalanceDisplay();
-            }
-        }
-
-        // FIXED: Create initial user document in Firestore
-        async function createInitialUserDocument(uid) {
-            try {
-                const user = auth.currentUser;
-                const initialData = {
-                    uid: uid,
-                    email: user.email,
-                    displayName: user.displayName || 'User',
-                    balance: 0.0000,
-                    tasksCompleted: 0,
-                    miningRate: 0.001,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalEarnings: 0.0000,
-                    miningStatus: 'inactive'
-                };
-                
-                await db.collection('users').doc(uid).set(initialData);
-                console.log('Initial user document created in Firestore');
-                
-                // Set local variables
-                userBalance = 0.0000;
-                totalTasksCompleted = 0;
-                miningRate = 0.001;
-                
-            } catch (error) {
-                console.error('Error creating initial user document:', error);
-                throw error;
-            }
-        }
-
-        // FIXED: Save user data to Firestore with retry logic
-        async function saveUserDataToFirestore() {
-            if (!currentUser || !currentUser.uid) {
-                console.error('Cannot save data - no authenticated user');
-                return false;
-            }
-            
-            try {
-                console.log('Saving user data to Firestore...', {
-                    balance: userBalance,
-                    tasks: totalTasksCompleted,
-                    uid: currentUser.uid
-                });
-                
-                const updateData = {
-                    balance: parseFloat(userBalance.toFixed(4)),
-                    tasksCompleted: parseInt(totalTasksCompleted),
-                    miningRate: parseFloat(miningRate),
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalEarnings: parseFloat(userBalance.toFixed(4)),
-                    miningStatus: isMining ? 'active' : 'inactive'
-                };
-                
-                await db.collection('users').doc(currentUser.uid).update(updateData);
-                console.log('User data saved to Firestore successfully');
-                
-                // Save mining transaction
-                await saveMiningTransaction();
-                
-                return true;
-                
-            } catch (error) {
-                console.error('Error saving user data to Firestore:', error);
-                showError('Failed to save your progress: ' + error.message);
-                return false;
-            }
-        }
-
-        // FIXED: Save individual mining transactions with proper data
-        async function saveMiningTransaction() {
-            if (!currentUser || !currentUser.uid) return;
-            
-            try {
-                const transactionData = {
-                    userId: currentUser.uid,
-                    amount: parseFloat(miningRate.toFixed(4)),
-                    type: 'mining',
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    balance: parseFloat(userBalance.toFixed(4))
-                };
-                
-                await db.collection('transactions').add(transactionData);
-                console.log('Mining transaction saved:', transactionData);
-                
-            } catch (error) {
-                console.error('Error saving mining transaction:', error);
-            }
-        }
         // Authentication Functions
         async function handlePasswordReset() {
             const email = document.getElementById('resetEmail').value.trim();
@@ -3496,51 +3313,37 @@
             }, 5000);
         }
 
-        // FIXED: Mining function with proper Firestore saving
-        async function mineTokens(type, reward) {
-            if (!currentUser || !currentUser.uid) {
-                showError('Please login to mine tokens');
-                return;
-            }
-            
-            console.log('=== MINING TOKENS ===');
-            console.log('Mining type:', type, 'Reward:', reward);
-            console.log('Current user UID:', currentUser.uid);
-            console.log('Current balance before mining:', userBalance);
-            
-            isMining = true;
-            document.getElementById('miningStatus').textContent = 'Active';
-            
-            showNotification('Mining started! Please wait...');
-            document.getElementById('miningIndicator').style.display = 'block';
-            
-            setTimeout(async () => {
-                const oldBalance = userBalance;
-                userBalance += reward;
-                totalTasksCompleted++;
+        // Mining App Functions
+        function updateBalanceDisplay() {
+            const balanceElements = document.querySelectorAll('#balance, #totalBalance, #walletBalance');
+            balanceElements.forEach(el => {
+                if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
+            });
+        }
+
+        function startMiningTimer() {
+            const timerElement = document.getElementById('miningTimer');
+            if (!timerElement) return;
+
+            let seconds = 0;
+            setInterval(() => {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                seconds++;
                 
-                console.log('Balance updated:', oldBalance, '->', userBalance);
-                console.log('Tasks updated to:', totalTasksCompleted);
-                
-                updateBalanceDisplay();
-                document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-                
-                // FIXED: Save to Firestore immediately after mining
-                const saved = await saveUserDataToFirestore();
-                
-                document.getElementById('miningIndicator').style.display = 'none';
-                
-                if (saved) {
-                    showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
-                    console.log('Mining data saved to Firestore successfully');
-                } else {
-                    showError('Mining successful but failed to save progress. Please try again.');
+                if (seconds % 30 === 0 && isMining) {
+                    userBalance += miningRate;
+                    updateBalanceDisplay();
+                    showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
+                    
+                    // Save mining progress
+                    if (currentUser) {
+                        saveUserData(currentUser);
+                    }
                 }
-                
-                isMining = false;
-                document.getElementById('miningStatus').textContent = 'Inactive';
-                
-            }, 3000);
+            }, 1000);
         }
 
         function mineTokens(type, reward) {
