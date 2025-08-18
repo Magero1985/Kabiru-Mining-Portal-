@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KABIRU Mining App</title>
     
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK v9 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
     
     <style>
         * {
@@ -1325,6 +1326,66 @@
             letter-spacing: 0.5px;
         }
 
+        /* User Account Button */
+        .user-account-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-account-section:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .user-account-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            border: 2px solid #FFD700;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 2px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 2px;
+        }
+
+        .user-balance {
+            font-size: 14px;
+            color: #00ff87;
+            font-weight: bold;
+        }
+
         .notification {
             position: fixed;
             top: 20px;
@@ -1633,6 +1694,18 @@
                     <div>
                         <div class="app-title">KABIRU[iKb]</div>
                         <div class="subtitle">Mine Kabiru Token</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Account Section -->
+            <div class="user-account-section" onclick="showUserAccount()">
+                <div class="user-account-content">
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">User Name</div>
+                        <div class="user-email" id="userEmail">user@example.com</div>
+                        <div class="user-balance" id="userAccountBalance">0.0000 iKb</div>
                     </div>
                 </div>
             </div>
@@ -2296,7 +2369,7 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        // Firebase Configuration - CORRECTED
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
@@ -2309,6 +2382,7 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         // Global variables
         let appVerifier;
@@ -2323,15 +2397,6 @@
         let selectedSovereignType = null;
         let selectedValueType = null;
         let selectedValueAmount = 0;
-
-        // Exchange rates (these would normally come from an API)
-        const exchangeRates = {
-            KSH: 0.75,    // 1 iKb = 0.75 KSH
-            USD: 0.0057,  // 1 iKb = 0.0057 USD
-            PI: 0.012,    // 1 iKb = 0.012 PI
-            BTC: 0.00000015, // 1 iKb = 0.00000015 BTC
-            ETH: 0.0000023   // 1 iKb = 0.0000023 ETH
-        };
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -2482,6 +2547,121 @@
             }
         }
 
+        // FIRESTORE FUNCTIONS - NEW IMPLEMENTATION
+        
+        // Save user data to Firestore
+        async function saveUserDataToFirestore(userData) {
+            try {
+                if (!userData.uid) {
+                    console.error('Cannot save user data without UID');
+                    return false;
+                }
+
+                const userDoc = {
+                    uid: userData.uid,
+                    email: userData.email || null,
+                    phone: userData.phoneNumber || userData.phone || null,
+                    displayName: userData.displayName || userData.name || 'Anonymous User',
+                    balance: userBalance,
+                    tasksCompleted: totalTasksCompleted,
+                    miningRate: miningRate,
+                    lastActive: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdAt: userData.createdAt ? new Date(userData.createdAt) : firebase.firestore.FieldValue.serverTimestamp(),
+                    emailVerified: userData.emailVerified || false,
+                    loginType: userData.loginType || (userData.email ? 'email' : 'phone')
+                };
+
+                await db.collection('users').doc(userData.uid).set(userDoc, { merge: true });
+                console.log('✅ User data saved to Firestore successfully');
+                
+                // Also save to localStorage as backup
+                localStorage.setItem('kabiruUser', JSON.stringify(userData));
+                
+                return true;
+            } catch (error) {
+                console.error('❌ Error saving to Firestore:', error);
+                // Fallback to localStorage if Firestore fails
+                try {
+                    localStorage.setItem('kabiruUser', JSON.stringify(userData));
+                    console.log('💾 Saved to localStorage as fallback');
+                    return true;
+                } catch (localError) {
+                    console.error('Failed to save anywhere:', localError);
+                    return false;
+                }
+            }
+        }
+
+        // Load user data from Firestore
+        async function loadUserDataFromFirestore(uid) {
+            try {
+                console.log('🔍 Loading user data from Firestore for UID:', uid);
+                
+                const userDoc = await db.collection('users').doc(uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log('✅ User data loaded from Firestore:', userData);
+                    
+                    // Update global variables with Firestore data
+                    userBalance = userData.balance || 0.0000;
+                    totalTasksCompleted = userData.tasksCompleted || 0;
+                    miningRate = userData.miningRate || 0.001;
+                    
+                    console.log('📊 Loaded balance:', userBalance, 'tasks:', totalTasksCompleted);
+                    
+                    return userData;
+                } else {
+                    console.log('📄 No user document found in Firestore, creating new one');
+                    
+                    // Create new user document
+                    const newUserData = {
+                        uid: uid,
+                        balance: 0.0000,
+                        tasksCompleted: 0,
+                        miningRate: 0.001,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    await db.collection('users').doc(uid).set(newUserData);
+                    return newUserData;
+                }
+            } catch (error) {
+                console.error('❌ Error loading from Firestore:', error);
+                
+                // Fallback to localStorage
+                try {
+                    const localData = localStorage.getItem('kabiruUser');
+                    if (localData && localData !== 'null') {
+                        const userData = JSON.parse(localData);
+                        console.log('💾 Loaded from localStorage as fallback:', userData);
+                        return userData;
+                    }
+                } catch (localError) {
+                    console.error('Failed to load from localStorage:', localError);
+                }
+                
+                return null;
+            }
+        }
+
+        // Update balance in Firestore
+        async function updateBalanceInFirestore(uid, newBalance, newTasksCompleted) {
+            try {
+                await db.collection('users').doc(uid).update({
+                    balance: newBalance,
+                    tasksCompleted: newTasksCompleted,
+                    lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                console.log('💰 Balance updated in Firestore:', newBalance);
+                return true;
+            } catch (error) {
+                console.error('❌ Error updating balance in Firestore:', error);
+                return false;
+            }
+        }
+
         // Password toggle functionality
         function togglePassword(inputId) {
             const passwordInput = document.getElementById(inputId);
@@ -2498,66 +2678,129 @@
 
         // Navigation Functions
         function checkLoginStatus() {
-            console.log('Checking login status...');
+            console.log('🔍 Checking login status...');
             
             // Monitor Firebase auth state
-            firebase.auth().onAuthStateChanged((user) => {
+            firebase.auth().onAuthStateChanged(async (user) => {
                 if (user) {
-                    console.log('Firebase user found:', user.uid, 'Email verified:', user.emailVerified);
+                    console.log('🔐 Firebase user found:', user.uid, 'Email verified:', user.emailVerified);
                     if (user.emailVerified || user.phoneNumber) {
-                        // User is verified - create proper user data with real Firebase UID
-                        const userData = {
-                            uid: user.uid, // Use real Firebase UID
-                            email: user.email,
-                            phone: user.phoneNumber,
-                            displayName: user.displayName,
-                            emailVerified: user.emailVerified,
-                            loginType: user.email ? 'email' : 'phone',
-                            verifiedAt: new Date().toISOString()
-                        };
-                        currentUser = userData;
-                        console.log('Setting current user:', userData);
-                        showMiningApp(userData);
-                        document.getElementById('loginPage').style.display = 'none';
-                        return;
+                        try {
+                            // Load user data from Firestore
+                            const userData = await loadUserDataFromFirestore(user.uid);
+                            
+                            // Create user object with real Firebase data
+                            const currentUserData = {
+                                uid: user.uid,
+                                email: user.email,
+                                phone: user.phoneNumber,
+                                displayName: user.displayName || userData?.displayName || 'Anonymous User',
+                                emailVerified: user.emailVerified,
+                                loginType: user.email ? 'email' : 'phone',
+                                verifiedAt: new Date().toISOString(),
+                                balance: userData?.balance || 0.0000,
+                                tasksCompleted: userData?.tasksCompleted || 0,
+                                miningRate: userData?.miningRate || 0.001
+                            };
+                            
+                            currentUser = currentUserData;
+                            console.log('✅ Current user set:', currentUser);
+                            
+                            showMiningApp(currentUserData);
+                            document.getElementById('loginPage').style.display = 'none';
+                            return;
+                        } catch (error) {
+                            console.error('❌ Error loading user data:', error);
+                            showError('Error loading user data. Please try again.');
+                            return;
+                        }
                     }
                 }
                 
                 // Check localStorage as fallback
                 const savedUser = getUserData();
                 if (savedUser && savedUser.verifiedAt) {
-                    console.log('Local user found, showing mining app');
+                    console.log('💾 Local user found, showing mining app');
                     showMiningApp(savedUser);
                 } else {
-                    console.log('No verified user found, showing login page');
+                    console.log('🔑 No verified user found, showing login page');
                     showLoginPage();
                 }
             });
         }
 
         function showLoginPage() {
-            console.log('=== SHOWING LOGIN PAGE ===');
+            console.log('🔑 === SHOWING LOGIN PAGE ===');
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('miningApp').style.display = 'none';
             hideAllPages();
         }
 
         function showMiningApp(user) {
-            console.log('=== SHOWING MINING APP ===');
-            console.log('User data received:', user);
-            document.getElementById('loginPage').style.display = 'none';  //
+            console.log('⛏️ === SHOWING MINING APP ===');
+            console.log('👤 User data received:', user);
+            document.getElementById('loginPage').style.display = 'none';
             hideAllPages();
             document.getElementById('miningApp').style.display = 'block';
             
             // Set current user BEFORE loading mining data
             currentUser = user;
             
+            // Update user account display
+            updateUserAccountDisplay(user);
+            
             // Load mining data for this specific user
             loadUserMiningData();
             updateBalanceDisplay();
             startMiningTimer();
             
-            console.log('Mining app loaded with balance:', userBalance);
+            console.log('⛏️ Mining app loaded with balance:', userBalance);
+        }
+
+        // Update user account display in the UI
+        function updateUserAccountDisplay(user) {
+            try {
+                // Update user avatar with first letter of name
+                const userAvatar = document.getElementById('userAvatar');
+                const userName = document.getElementById('userName');
+                const userEmail = document.getElementById('userEmail');
+                const userAccountBalance = document.getElementById('userAccountBalance');
+                
+                if (userAvatar) {
+                    const displayName = user.displayName || user.name || 'User';
+                    userAvatar.textContent = displayName.charAt(0).toUpperCase();
+                }
+                
+                if (userName) {
+                    userName.textContent = user.displayName || user.name || 'Anonymous User';
+                }
+                
+                if (userEmail) {
+                    userEmail.textContent = user.email || user.phone || 'No contact info';
+                }
+                
+                if (userAccountBalance) {
+                    userAccountBalance.textContent = `${userBalance.toFixed(4)} iKb`;
+                }
+                
+                console.log('👤 User account display updated');
+            } catch (error) {
+                console.error('❌ Error updating user account display:', error);
+            }
+        }
+
+        // Show user account details
+        function showUserAccount() {
+            if (currentUser) {
+                const accountInfo = `
+                    👤 Name: ${currentUser.displayName || currentUser.name || 'Anonymous User'}
+                    📧 Contact: ${currentUser.email || currentUser.phone || 'N/A'}
+                    💰 Balance: ${userBalance.toFixed(4)} iKb
+                    🎯 Tasks: ${totalTasksCompleted}
+                    🆔 UID: ${currentUser.uid}
+                `;
+                showNotification(accountInfo);
+            }
         }
 
         function hideAllPages() {
@@ -2696,10 +2939,10 @@
             try {
                 const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
-                console.log('Email account created:', user.uid);
+                console.log('📧 Email account created:', user.uid);
                 return { success: true, user: user };
             } catch (error) {
-                console.error('Error creating email account:', error);
+                console.error('❌ Error creating email account:', error);
                 let errorMessage = 'Failed to create account. ';
                 switch (error.code) {
                     case 'auth/email-already-in-use':
@@ -2722,15 +2965,15 @@
             try {
                 // Configure email verification settings
                 const actionCodeSettings = {
-                    url: window.location.origin + window.location.pathname, // Use current URL
+                    url: window.location.origin + window.location.pathname,
                     handleCodeInApp: false
                 };
                 
                 await user.sendEmailVerification(actionCodeSettings);
-                console.log('Email verification sent');
+                console.log('📧 Email verification sent');
                 return true;
             } catch (error) {
-                console.error('Error sending email verification:', error);
+                console.error('❌ Error sending email verification:', error);
                 return false;
             }
         }
@@ -2739,10 +2982,10 @@
             try {
                 const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
                 const user = userCredential.user;
-                console.log('Email sign in successful:', user.uid);
+                console.log('✅ Email sign in successful:', user.uid);
                 return { success: true, user: user };
             } catch (error) {
-                console.error('Error signing in with email:', error);
+                console.error('❌ Error signing in with email:', error);
                 let errorMessage = 'Sign in failed. ';
                 switch (error.code) {
                     case 'auth/user-not-found':
@@ -2771,14 +3014,14 @@
                     phoneNumber = '+' + phoneNumber.replace(/^\+/, '');
                 }
 
-                console.log('Sending OTP to:', phoneNumber);
+                console.log('📱 Sending OTP to:', phoneNumber);
                 confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier);
-                console.log('OTP sent successfully');
+                console.log('✅ OTP sent successfully');
                 showNotification('SMS code sent to your phone!');
                 return true;
 
             } catch (error) {
-                console.error('Error sending OTP:', error);
+                console.error('❌ Error sending OTP:', error);
                 let errorMessage = 'Failed to send SMS. ';
                 switch (error.code) {
                     case 'auth/invalid-phone-number':
@@ -2801,14 +3044,14 @@
                     throw new Error('No SMS session found. Please request a new code.');
                 }
 
-                console.log('Verifying SMS code:', otp);
+                console.log('🔐 Verifying SMS code:', otp);
                 const result = await confirmationResult.confirm(otp);
                 const user = result.user;
-                console.log('SMS verified successfully:', user.uid);
+                console.log('✅ SMS verified successfully:', user.uid);
                 return { success: true, user: user };
 
             } catch (error) {
-                console.error('Error verifying SMS:', error);
+                console.error('❌ Error verifying SMS:', error);
                 let errorMessage = 'Invalid verification code. ';
                 switch (error.code) {
                     case 'auth/invalid-verification-code':
@@ -2852,7 +3095,7 @@
                             return;
                         }
                         
-                        console.log('Email verified, login successful');
+                        console.log('✅ Email verified, login successful');
                         showNotification('Login successful!');
                     } else {
                         showError(result.error);
@@ -2877,7 +3120,7 @@
                     }
                 }
             } catch (error) {
-                console.error('Login error:', error);
+                console.error('❌ Login error:', error);
                 showError('Login failed. Please try again.');
             }
         }
@@ -2937,7 +3180,8 @@
                             name: name,
                             email: email,
                             loginType: 'email',
-                            firebaseUid: result.user.uid,
+                            uid: result.user.uid,
+                            displayName: name,
                             createdAt: new Date().toISOString()
                         };
                         
@@ -2950,7 +3194,7 @@
                     showError(result.error);
                 }
             } catch (error) {
-                console.error('Email signup error:', error);
+                console.error('❌ Email signup error:', error);
                 showError('Signup failed. Please try again.');
             }
         }
@@ -3003,13 +3247,14 @@
                         phone: phone,
                         email: email,
                         loginType: 'phone',
+                        displayName: name,
                         createdAt: new Date().toISOString()
                     };
                     showOTPVerification();
                     showNotification('Account created! Please verify with SMS code');
                 }
             } catch (error) {
-                console.error('Phone signup error:', error);
+                console.error('❌ Phone signup error:', error);
                 showError('Signup failed. Please try again.');
             }
         }
@@ -3026,16 +3271,16 @@
                 // Force reload the user from server to get latest verification status
                 await user.reload();
                 
-                console.log('Current user email verification status:', user.emailVerified);
+                console.log('📧 Current user email verification status:', user.emailVerified);
                 
                 if (user.emailVerified) {
-                    console.log('Email is verified, proceeding to app');
+                    console.log('✅ Email is verified, proceeding to app');
                     showSuccessAndRedirect();
                 } else {
                     showError('Email not yet verified. Please check your inbox and click the verification link.');
                 }
             } catch (error) {
-                console.error('Error checking email verification:', error);
+                console.error('❌ Error checking email verification:', error);
                 showError('Error checking verification status. Please try signing in again.');
             }
         }
@@ -3050,7 +3295,7 @@
                     showError('No user found. Please try signing up again.');
                 }
             } catch (error) {
-                console.error('Error resending email verification:', error);
+                console.error('❌ Error resending email verification:', error);
                 showError('Failed to resend verification email. Please try again.');
             }
         }
@@ -3090,7 +3335,7 @@
                     otpInputs[0].focus();
                 }
             } catch (error) {
-                console.error('SMS verification error:', error);
+                console.error('❌ SMS verification error:', error);
                 showError('Verification failed. Please try again.');
                 otpInputs.forEach(input => input.value = '');
                 otpInputs[0].focus();
@@ -3114,7 +3359,7 @@
                     document.querySelector('.otp-input').focus();
                 }
             } catch (error) {
-                console.error('Resend SMS error:', error);
+                console.error('❌ Resend SMS error:', error);
                 showError('Failed to resend SMS code. Please try again.');
             }
         }
@@ -3130,134 +3375,31 @@
             }, 1500);
         }
 
-        function logout() {
-            firebase.auth().signOut();
-            clearUserData();
-            currentUser = null;
-            // userBalance = 0.0000;
-            
-            document.getElementById('miningStatus').textContent = 'Inactive';
-            // document.getElementById('tasksCompleted').textContent = '0';
-            
-            showLoginPage();
-            showLogin();
-            showNotification('Logged out successfully');
-        }
-
-        // Storage Functions - Enhanced for permanent mining data
-        function saveUserData(userData) {
+        async function logout() {
             try {
-                if (!userData.uid) {
-                    console.error('Cannot save user data without UID');
-                    return false;
+                // Save current mining data before logout
+                if (currentUser && currentUser.uid) {
+                    await saveUserDataToFirestore(currentUser);
                 }
                 
-                const miningData = {
-                    ...userData,
-                    balance: userBalance,
-                    tasksCompleted: totalTasksCompleted,
-                    lastSaved: new Date().toISOString(),
-                    miningRate: miningRate
-                };
-                localStorage.setItem('kabiruUser', JSON.stringify(miningData));
+                await firebase.auth().signOut();
+                clearUserData();
+                currentUser = null;
                 
-                // Also save to a separate mining-specific key using real Firebase UID for extra persistence
-                const miningKey = `kabiruMining_${userData.uid}`;
-                const persistentData = {
-                    balance: userBalance,
-                    tasksCompleted: totalTasksCompleted,
-                    lastMined: new Date().toISOString(),
-                    totalEarnings: userBalance,
-                    uid: userData.uid,
-                    email: userData.email
-                };
-                localStorage.setItem(miningKey, JSON.stringify(persistentData));
+                document.getElementById('miningStatus').textContent = 'Inactive';
                 
-                console.log('User mining data saved permanently for UID:', userData.uid, miningData);
-                return true;
+                showLoginPage();
+                showLogin();
+                showNotification('Logged out successfully');
             } catch (error) {
-                console.log('Storage not available');
-                return false;
+                console.error('❌ Logout error:', error);
+                showNotification('Logout completed');
+                showLoginPage();
+                showLogin();
             }
         }
 
-        function loadUserMiningData() {
-            console.log('=== LOADING MINING DATA ===');
-            
-            try {
-                // Get current user data
-                let userData = currentUser || getUserData();
-                console.log('Current user for mining data:', userData);
-                
-                if (!userData || !userData.uid) {
-                    console.log('No valid user UID found, starting fresh');
-                    userBalance = 0.0000;
-                    totalTasksCompleted = 0;
-                    return;
-                }
-                
-                console.log('Loading mining data for UID:', userData.uid);
-                
-                // First check the main user data for balance
-                if (userData.balance !== undefined) {
-                    userBalance = userData.balance;
-                    console.log('Loaded balance from user data:', userBalance);
-                }
-                
-                if (userData.tasksCompleted !== undefined) {
-                    totalTasksCompleted = userData.tasksCompleted;
-                    console.log('Loaded tasks from user data:', totalTasksCompleted);
-                }
-                
-                // Then check the separate mining storage
-                const miningKey = `kabiruMining_${userData.uid}`;
-                console.log('Checking mining storage with key:', miningKey);
-                
-                const miningData = localStorage.getItem(miningKey);
-                console.log('Raw mining data from storage:', miningData);
-                
-                if (miningData) {
-                    try {
-                        const parsed = JSON.parse(miningData);
-                        console.log('Parsed mining data:', parsed);
-                        
-                        if (parsed.balance !== undefined) {
-                            userBalance = parsed.balance;
-                            console.log('Updated balance from mining storage:', userBalance);
-                        }
-                        
-                        if (parsed.tasksCompleted !== undefined) {
-                            totalTasksCompleted = parsed.tasksCompleted;
-                            console.log('Updated tasks from mining storage:', totalTasksCompleted);
-                        }
-                    } catch (parseError) {
-                        console.error('Error parsing mining data:', parseError);
-                    }
-                } else {
-                    console.log('No separate mining data found for UID:', userData.uid);
-                }
-                
-                // Set mining rate
-                miningRate = userData.miningRate || 0.001;
-                
-                console.log('=== FINAL MINING DATA ===');
-                console.log('Balance:', userBalance);
-                console.log('Tasks:', totalTasksCompleted);
-                console.log('Mining rate:', miningRate);
-                
-                // Update UI with loaded data
-                updateBalanceDisplay();
-                if (document.getElementById('tasksCompleted')) {
-                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-                }
-                
-            } catch (error) {
-                console.error('Error loading mining data:', error);
-                userBalance = 0.0000;
-                totalTasksCompleted = 0;
-            }
-        }
-        
+        // Storage Functions - Enhanced for Firestore integration
         function getUserData() {
             try {
                 const data = localStorage.getItem('kabiruUser');
@@ -3265,31 +3407,69 @@
                     return JSON.parse(data);
                 }
             } catch (error) {
-                console.log('Error reading user data');
+                console.log('❌ Error reading user data from localStorage');
             }
             return null;
         }
 
         function clearUserData() {
             try {
-                // Don't clear mining data, only auth data
-                const userData = getUserData();
-                if (userData && userData.uid) {
-                    // Save mining data before clearing using the real Firebase UID
-                    const miningKey = `kabiruMining_${userData.uid}`;
-                    localStorage.setItem(miningKey, JSON.stringify({
-                        balance: userBalance,
-                        tasksCompleted: totalTasksCompleted,
-                        lastSaved: new Date().toISOString(),
-                        totalEarnings: userBalance
-                    }));
-                    console.log('Mining data preserved for UID:', userData.uid);
+                localStorage.removeItem('kabiruUser');
+                console.log('🗑️ Auth data cleared');
+            } catch (error) {
+                console.log('❌ Error clearing user data');
+            }
+        }
+
+        // Load user mining data with Firestore integration
+        async function loadUserMiningData() {
+            console.log('⛏️ === LOADING MINING DATA ===');
+            
+            try {
+                if (!currentUser || !currentUser.uid) {
+                    console.log('❌ No valid user UID found, starting fresh');
+                    userBalance = 0.0000;
+                    totalTasksCompleted = 0;
+                    return;
                 }
                 
-                localStorage.removeItem('kabiruUser');
-                console.log('Auth data cleared, mining data preserved');
+                console.log('🔍 Loading mining data for UID:', currentUser.uid);
+                
+                // Load from Firestore
+                const userData = await loadUserDataFromFirestore(currentUser.uid);
+                
+                if (userData) {
+                    userBalance = userData.balance || 0.0000;
+                    totalTasksCompleted = userData.tasksCompleted || 0;
+                    miningRate = userData.miningRate || 0.001;
+                    
+                    console.log('✅ Mining data loaded:', {
+                        balance: userBalance,
+                        tasks: totalTasksCompleted,
+                        rate: miningRate
+                    });
+                } else {
+                    // Initialize new user
+                    userBalance = 0.0000;
+                    totalTasksCompleted = 0;
+                    miningRate = 0.001;
+                    
+                    console.log('🆕 New user initialized with default values');
+                }
+                
+                // Update UI with loaded data
+                updateBalanceDisplay();
+                updateUserAccountDisplay(currentUser);
+                
+                if (document.getElementById('tasksCompleted')) {
+                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
+                }
+                
             } catch (error) {
-                console.log('Error clearing user data');
+                console.error('❌ Error loading mining data:', error);
+                userBalance = 0.0000;
+                totalTasksCompleted = 0;
+                miningRate = 0.001;
             }
         }
 
@@ -3315,7 +3495,7 @@
 
         // Mining App Functions
         function updateBalanceDisplay() {
-            const balanceElements = document.querySelectorAll('#balance, #totalBalance, #walletBalance');
+            const balanceElements = document.querySelectorAll('#balance, #totalBalance, #walletBalance, #userAccountBalance');
             balanceElements.forEach(el => {
                 if (el) el.textContent = userBalance.toFixed(4) + ' iKb';
             });
@@ -3338,42 +3518,48 @@
                     updateBalanceDisplay();
                     showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
                     
-                    // Save mining progress
-                    if (currentUser) {
-                        saveUserData(currentUser);
+                    // Save mining progress to Firestore
+                    if (currentUser && currentUser.uid) {
+                        updateBalanceInFirestore(currentUser.uid, userBalance, totalTasksCompleted);
                     }
                 }
             }, 1000);
         }
 
-        function mineTokens(type, reward) {
-            console.log('=== MINING TOKENS ===');
-            console.log('Mining type:', type, 'Reward:', reward);
-            console.log('Current user:', currentUser);
+        async function mineTokens(type, reward) {
+            console.log('⛏️ === MINING TOKENS ===');
+            console.log('🔨 Mining type:', type, 'Reward:', reward);
+            console.log('👤 Current user:', currentUser);
             
             isMining = true;
             document.getElementById('miningStatus').textContent = 'Active';
             
             showNotification('Mining started! Please wait...');
             
-            setTimeout(() => {
+            setTimeout(async () => {
                 const oldBalance = userBalance;
                 userBalance += reward;
                 totalTasksCompleted++;
                 
-                console.log('Balance updated:', oldBalance, '->', userBalance);
-                console.log('Tasks updated to:', totalTasksCompleted);
+                console.log('💰 Balance updated:', oldBalance, '->', userBalance);
+                console.log('🎯 Tasks updated to:', totalTasksCompleted);
                 
                 updateBalanceDisplay();
+                updateUserAccountDisplay(currentUser);
                 document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
                 showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} mining complete! +${reward.toFixed(4)} iKb earned`);
                 
-                // Save updated mining data permanently
+                // Save updated mining data to Firestore
                 if (currentUser && currentUser.uid) {
-                    console.log('Saving mining data for UID:', currentUser.uid);
-                    saveUserData(currentUser);
+                    console.log('💾 Saving mining data to Firestore for UID:', currentUser.uid);
+                    const saved = await updateBalanceInFirestore(currentUser.uid, userBalance, totalTasksCompleted);
+                    if (saved) {
+                        console.log('✅ Mining data saved to Firestore successfully');
+                    } else {
+                        console.log('❌ Failed to save to Firestore, data saved locally');
+                    }
                 } else {
-                    console.error('Cannot save mining data - no valid current user with UID');
+                    console.error('❌ Cannot save mining data - no valid current user with UID');
                 }
             }, 3000);
         }
@@ -3733,7 +3919,7 @@
         };
 
         // App initialization complete
-        console.log('KABIRU Mining App initialized successfully');
+        console.log('🚀 KABIRU Mining App with Firestore integration initialized successfully');
     </script>
 </body>
     </html>
