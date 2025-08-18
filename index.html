@@ -2328,12 +2328,12 @@
 
         // Exchange rates (these would normally come from an API)
         const exchangeRates = {
-            KSH: 100000.00,    // 1 iKb = 100000.00 KSH
-            TSH: 100000.00  // 1 iKb = 100000.00 TSH
-            USH: 100000.00,    // 1 iKb = 100000.00 USH
-            USD: 100000.00, // 1 iKb = 100000.00 $
-            PND: 100000.00   // 1 iKb = 100000.00 £
-        };
+    KSH: 100000.00,    // 1 iKb = 100000.00 KSH
+    TSH: 100000.00,    // 1 iKb = 100000.00 TSH
+    USH: 100000.00,    // 1 iKb = 100000.00 USH
+    USD: 100000.00,    // 1 iKb = 100000.00 $
+    PND: 100000.00     // 1 iKb = 100000.00 £
+};
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -3261,30 +3261,6 @@
         totalTasksCompleted = 0;
     }
 }
-function startMiningTimer() {
-    const timerElement = document.getElementById('miningTimer');
-    if (!timerElement) return;
-
-    let seconds = 0;
-    setInterval(async () => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-        timerElement.textContent = `Next reward in: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        seconds++;
-        
-        if (seconds % 30 === 0 && isMining) {
-            userBalance += miningRate;
-            updateBalanceDisplay();
-            showNotification(`+${miningRate.toFixed(4)} iKb mined!`);
-            
-            // Save mining progress to Firebase
-            if (currentUser && currentUser.uid) {
-                await saveUserData(currentUser);
-            }
-        }
-    }, 1000);
-        }
 // Helper function for localStorage fallback
 function loadFromLocalStorage(userData) {
     // First check the main user data for balance
@@ -3409,8 +3385,9 @@ function loadFromLocalStorage(userData) {
             }
         }
     }, 1000);
+        }
 }
-
+        
         function mineTokens(type, reward) {
     console.log('=== MINING TOKENS ===');
     console.log('Mining type:', type, 'Reward:', reward);
