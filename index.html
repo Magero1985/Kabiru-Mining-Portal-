@@ -1341,6 +1341,7 @@
         .user-account-section:hover {
             background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
+            border-color: #FFD700;
         }
 
         .user-account-content {
@@ -1384,6 +1385,213 @@
             font-size: 14px;
             color: #00ff87;
             font-weight: bold;
+        }
+
+        .account-arrow {
+            font-size: 20px;
+            color: #FFD700;
+            opacity: 0.7;
+        }
+
+        /* User Account Modal */
+        .user-account-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .user-account-modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.3s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .account-modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .account-modal-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            border: 3px solid #FFD700;
+            margin: 0 auto 15px;
+        }
+
+        .account-modal-title {
+            color: #FFD700;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .account-modal-subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .account-details {
+            margin-bottom: 25px;
+        }
+
+        .account-detail-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .edit-mode .detail-value {
+            display: none;
+        }
+
+        .detail-input {
+            display: none;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .edit-mode .detail-input {
+            display: block;
+        }
+
+        .detail-input:focus {
+            border-color: #FFD700;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .account-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-button {
+            background: linear-gradient(45deg, #00ff87, #60efff);
+            color: #333;
+        }
+
+        .edit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 135, 0.4);
+        }
+
+        .save-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            display: none;
+        }
+
+        .edit-mode .save-button {
+            display: block;
+        }
+
+        .edit-mode .edit-button {
+            display: none;
+        }
+
+        .cancel-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: none;
+        }
+
+        .edit-mode .cancel-button {
+            display: block;
+        }
+
+        .cancel-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .account-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .account-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .stat-text {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .notification {
@@ -1699,7 +1907,7 @@
             </div>
 
             <!-- User Account Section -->
-            <div class="user-account-section" onclick="showUserAccount()">
+            <div class="user-account-section" onclick="openUserAccountModal()">
                 <div class="user-account-content">
                     <div class="user-avatar" id="userAvatar">👤</div>
                     <div class="user-info">
@@ -1707,6 +1915,7 @@
                         <div class="user-email" id="userEmail">user@example.com</div>
                         <div class="user-balance" id="userAccountBalance">0.0000 iKb</div>
                     </div>
+                    <div class="account-arrow">›</div>
                 </div>
             </div>
 
@@ -2365,6 +2574,73 @@
         </div>
     </div>
 
+    <!-- User Account Modal -->
+    <div id="userAccountModal" class="user-account-modal">
+        <div class="user-account-modal-content">
+            <div class="account-modal-header">
+                <div class="account-modal-avatar" id="modalUserAvatar">👤</div>
+                <div class="account-modal-title" id="modalUserName">User Name</div>
+                <div class="account-modal-subtitle">Account Details</div>
+            </div>
+
+            <!-- Account Stats -->
+            <div class="account-stats">
+                <div class="account-stat">
+                    <div class="stat-number" id="modalUserBalance">0.0000</div>
+                    <div class="stat-text">iKb Balance</div>
+                </div>
+                <div class="account-stat">
+                    <div class="stat-number" id="modalUserTasks">0</div>
+                    <div class="stat-text">Tasks Completed</div>
+                </div>
+            </div>
+
+            <!-- Account Details -->
+            <div class="account-details" id="accountDetailsContainer">
+                <div class="account-detail-item">
+                    <div class="detail-label">Full Name</div>
+                    <div class="detail-value" id="displayName">Loading...</div>
+                    <input type="text" class="detail-input" id="editDisplayName" placeholder="Enter your full name">
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Email Address</div>
+                    <div class="detail-value" id="displayEmail">Loading...</div>
+                    <input type="email" class="detail-input" id="editEmail" placeholder="Enter your email address">
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Phone Number</div>
+                    <div class="detail-value" id="displayPhone">Not provided</div>
+                    <input type="tel" class="detail-input" id="editPhone" placeholder="Enter your phone number" readonly>
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">User ID</div>
+                    <div class="detail-value" id="displayUID">Loading...</div>
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Account Created</div>
+                    <div class="detail-value" id="displayCreated">Loading...</div>
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Last Active</div>
+                    <div class="detail-value" id="displayLastActive">Just now</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="account-actions">
+                <button class="account-button edit-button" onclick="toggleEditMode()">✏️ Edit Profile</button>
+                <button class="account-button save-button" onclick="saveUserProfile()">💾 Save Changes</button>
+                <button class="account-button cancel-button" onclick="cancelEdit()">❌ Cancel</button>
+                <button class="account-button secondary-button" onclick="closeUserAccountModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
@@ -2790,16 +3066,148 @@
         }
 
         // Show user account details
-        function showUserAccount() {
-            if (currentUser) {
-                const accountInfo = `
-                    👤 Name: ${currentUser.displayName || currentUser.name || 'Anonymous User'}
-                    📧 Contact: ${currentUser.email || currentUser.phone || 'N/A'}
-                    💰 Balance: ${userBalance.toFixed(4)} iKb
-                    🎯 Tasks: ${totalTasksCompleted}
-                    🆔 UID: ${currentUser.uid}
-                `;
-                showNotification(accountInfo);
+        function openUserAccountModal() {
+            if (!currentUser) {
+                showNotification('Please log in to view account details');
+                return;
+            }
+
+            // Update modal with current user data
+            updateUserAccountModal();
+            
+            // Show the modal
+            document.getElementById('userAccountModal').style.display = 'block';
+        }
+
+        function closeUserAccountModal() {
+            document.getElementById('userAccountModal').style.display = 'none';
+            // Reset edit mode
+            const container = document.getElementById('accountDetailsContainer');
+            container.classList.remove('edit-mode');
+        }
+
+        function updateUserAccountModal() {
+            try {
+                // Update avatar
+                const modalAvatar = document.getElementById('modalUserAvatar');
+                const modalName = document.getElementById('modalUserName');
+                const modalBalance = document.getElementById('modalUserBalance');
+                const modalTasks = document.getElementById('modalUserTasks');
+                
+                const displayName = currentUser.displayName || currentUser.name || 'Anonymous User';
+                
+                if (modalAvatar) {
+                    modalAvatar.textContent = displayName.charAt(0).toUpperCase();
+                }
+                
+                if (modalName) {
+                    modalName.textContent = displayName;
+                }
+                
+                if (modalBalance) {
+                    modalBalance.textContent = userBalance.toFixed(4);
+                }
+                
+                if (modalTasks) {
+                    modalTasks.textContent = totalTasksCompleted;
+                }
+                
+                // Update detail fields
+                document.getElementById('displayName').textContent = displayName;
+                document.getElementById('editDisplayName').value = displayName;
+                
+                document.getElementById('displayEmail').textContent = currentUser.email || 'Not provided';
+                document.getElementById('editEmail').value = currentUser.email || '';
+                
+                document.getElementById('displayPhone').textContent = currentUser.phone || 'Not provided';
+                document.getElementById('editPhone').value = currentUser.phone || '';
+                
+                document.getElementById('displayUID').textContent = currentUser.uid || 'Unknown';
+                
+                // Format dates
+                const createdDate = currentUser.createdAt ? new Date(currentUser.createdAt).toLocaleDateString() : 'Unknown';
+                document.getElementById('displayCreated').textContent = createdDate;
+                
+                document.getElementById('displayLastActive').textContent = 'Just now';
+                
+            } catch (error) {
+                console.error('❌ Error updating user account modal:', error);
+            }
+        }
+
+        function toggleEditMode() {
+            const container = document.getElementById('accountDetailsContainer');
+            container.classList.add('edit-mode');
+        }
+
+        function cancelEdit() {
+            const container = document.getElementById('accountDetailsContainer');
+            container.classList.remove('edit-mode');
+            
+            // Reset input values to original
+            updateUserAccountModal();
+        }
+
+        async function saveUserProfile() {
+            try {
+                const newDisplayName = document.getElementById('editDisplayName').value.trim();
+                const newEmail = document.getElementById('editEmail').value.trim();
+                
+                if (!newDisplayName) {
+                    showError('Please enter a valid name');
+                    return;
+                }
+                
+                if (newEmail && !isValidEmail(newEmail)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+                
+                // Update Firebase Auth profile
+                const user = firebase.auth().currentUser;
+                if (user) {
+                    await user.updateProfile({
+                        displayName: newDisplayName
+                    });
+                    
+                    // If email changed, update it (requires re-authentication)
+                    if (newEmail && newEmail !== currentUser.email) {
+                        try {
+                            await user.updateEmail(newEmail);
+                            showNotification('Email updated! Please verify your new email address.');
+                        } catch (emailError) {
+                            if (emailError.code === 'auth/requires-recent-login') {
+                                showNotification('Please log out and log back in to change your email address.');
+                            } else {
+                                showError('Failed to update email: ' + emailError.message);
+                            }
+                        }
+                    }
+                }
+                
+                // Update currentUser object
+                currentUser.displayName = newDisplayName;
+                currentUser.name = newDisplayName;
+                if (newEmail && newEmail !== currentUser.email) {
+                    currentUser.email = newEmail;
+                }
+                
+                // Save to Firestore
+                await saveUserDataToFirestore(currentUser);
+                
+                // Update UI displays
+                updateUserAccountDisplay(currentUser);
+                updateUserAccountModal();
+                
+                // Exit edit mode
+                const container = document.getElementById('accountDetailsContainer');
+                container.classList.remove('edit-mode');
+                
+                showNotification('✅ Profile updated successfully!');
+                
+            } catch (error) {
+                console.error('❌ Error saving user profile:', error);
+                showError('Failed to update profile. Please try again.');
             }
         }
 
@@ -3909,11 +4317,15 @@
 
         // Close modals when clicking outside
         window.onclick = function(event) {
-            const modals = ['sovereignModal', 'valueModal', 'languageModal', 'corporateModal', 'subcategoryModal'];
+            const modals = ['sovereignModal', 'valueModal', 'languageModal', 'corporateModal', 'subcategoryModal', 'userAccountModal'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (event.target === modal) {
-                    modal.style.display = 'none';
+                    if (modalId === 'userAccountModal') {
+                        closeUserAccountModal();
+                    } else {
+                        modal.style.display = 'none';
+                    }
                 }
             });
         };
