@@ -4503,7 +4503,316 @@
             }
         }
 
-        // Wallet Functions (continued)
+        // Wallet Functions
+    function swapCurrencies() {
+            const fromSelect = document.getElementById('swapFrom');
+            const toSelect = document.getElementById('swapTo');
+            
+            const temp = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = temp;
+            
+            updateSwapRates();
+        }
+
+        async function processSwap() {
+            const fromAmount = parseFloat(document.getElementById('swapFromAmount').value);
+            const fromCurrency = document.getElementById('swapFrom').value;
+            const toCurrency = document.getElementById('swapTo').value;
+            const toAmount = parseFloat(document.getElementById('swapToAmount').value);
+            
+            if (!fromAmount || fromAmount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (fromCurrency === 'ikb') {
+                const availableBalance = minedBalance + receivedBalance;
+                if (fromAmount > availableBalance) {
+                    showError('Insufficient KABIRU balance');
+                    return;
+                }
+            }
+            
+            try {
+                if (fromCurrency === 'ikb') {
+                    // Swapping FROM iKb TO other currency
+                    const amountFromMined = Math.min(fromAmount, minedBalance);
+                    const amountFromReceived = fromAmount - amountFromMined;
+                    
+                    minedBalance -= amountFromMined;
+                    receivedBalance -= amountFromReceived;
+                    userBalance = minedBalance + receivedBalance;
+                    
+                    showNotification(`✅ Swapped ${fromAmount.toFixed(4)} iKb for ${toAmount.toFixed(6)} ${toCurrency.toUpperCase()}`);
+                } else if (toCurrency === 'ikb') {
+                    // Swapping FROM other currency TO iKb
+                    receivedBalance += toAmount;
+                    userBalance = minedBalance + receivedBalance;
+                    
+                    showNotification(`✅ Swapped ${fromAmount.toFixed(6)} ${fromCurrency.toUpperCase()} for ${toAmount.toFixed(4)} iKb`);
+                } else {
+                    // Swapping between non-iKb currencies
+                    showNotification(`✅ Swapped ${fromAmount.toFixed(6)} ${fromCurrency.toUpperCase()} for ${toAmount.toFixed(6)} ${toCurrency.toUpperCase()}`);
+                }
+                
+                // Add transaction to history
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'swap',
+                    fromCurrency: fromCurrency,
+                    toCurrency: toCurrency,
+                    fromAmount: fromAmount,
+                    toAmount: toAmount,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                transactionHistory.unshift(transaction);
+                
+                // Update displays
+                updateBalanceDisplay();
+                updateWalletDisplay();
+                updateUserAccountDisplay(currentUser);
+                
+                // Save to Firestore
+                if (currentUser) {
+                    await saveUserDataToFirestore(currentUser);
+                }
+                
+                closeWalletModal('swapModal');
+                
+            } catch (error) {
+                console.error('❌ Error processing swap:', error);
+                showError('Swap failed. Please try again.');
+            }
+        }
+
+        // LOCKUP/STAKING FUNCTIONALITY
+        function selectLockupPeriod(days, apy) {
+            selectedLockupPeriod = days;
+            selectedLockupAPY = apy;
+            
+            // Update UI
+            document.querySelectorAll('.lockup-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector(`[data-period="${days}"]`).classList.add('selected');
+            
+            // Enable lockup button
+            document.getElementById('lockupButton').disabled = false;
+            
+            // Update info display
+            document.getElementById('selectedLockupPeriod').textContent = `${days} days`;
+            document.getElementById('selectedLockupAPY').textContent = `${apy}%`;
+            document.getElementById('lockupRewardsInfo').style.display = 'block';
+            
+            calculateLockupRewards();
+        }
+
+        function calculateLockupRewards() {
+            const amount = parseFloat(document.getElementById('lockupAmount').value) || 0;
+            
+            if (amount > 0 && selectedLockupAPY) {
+                const dailyRate = selectedLockupAPY / 100 / 365;
+                const rewards = amount * dailyRate * selectedLockupPeriod;
+                const unlockDate = new Date();
+                unlockDate.setDate(unlockDate.getDate() + selectedLockupPeriod);
+                
+                document.getElementById('estimatedRewards').textContent = `${rewards.toFixed(4)} iKb`;
+                document.getElementById('unlockDate').textContent = unlockDate.toLocaleDateString();
+            }
+        }
+
+        function setMaxLockupAmount() {
+            const maxAmount = minedBalance + receivedBalance;
+            document.getElementById('lockupAmount').value = maxAmount.toFixed(4);
+            calculateLockupRewards();
+        }
+
+        async function processLockup() {
+            const amount = parseFloat(document.getElementById('lockupAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (!selectedLockupPeriod || !selectedLockupAPY) {
+                showError('Please select a lockup period');
+                return;
+            }
+            
+            const availableBalance = minedBalance + receivedBalance;
+            if (amount > availableBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            try {
+                // Move funds from available to locked
+                const amountFromMined = Math.min(amount, minedBalance);
+                const amountFromReceived = amount - amountFromMined;
+                
+                minedBalance -= amountFromMined;
+                receivedBalance -= amountFromReceived;
+                lockedBalance += amount;
+                userBalance = minedBalance + receivedBalance;
+                
+                // Add transaction to history
+                const unlockDate = new Date();
+                unlockDate.setDate(unlockDate.getDate() + selectedLockupPeriod);
+                
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'lockup',
+                    amount: amount,
+                    period: selectedLockupPeriod,
+                    apy: selectedLockupAPY,
+                    unlockDate: unlockDate.toISOString(),
+                    timestamp: new Date().toISOString(),
+                    status: 'locked'
+                };
+                transactionHistory.unshift(transaction);
+                
+                // Update displays
+                updateBalanceDisplay();
+                updateWalletDisplay();
+                updateUserAccountDisplay(currentUser);
+                
+                // Save to Firestore
+                if (currentUser) {
+                    await saveUserDataToFirestore(currentUser);
+                }
+                
+                closeWalletModal('lockupModal');
+                showNotification(`✅ Successfully staked ${amount.toFixed(4)} iKb for ${selectedLockupPeriod} days at ${selectedLockupAPY}% APY`);
+                
+            } catch (error) {
+                console.error('❌ Error processing lockup:', error);
+                showError('Staking failed. Please try again.');
+            }
+        }
+
+        // RESERVE FUNCTIONALITY
+        function toggleReserveMode() {
+            const action = document.getElementById('reserveAction').value;
+            const amountLabel = document.getElementById('reserveAmountLabel');
+            const availableText = document.getElementById('reserveAvailableText');
+            const reserveButton = document.getElementById('reserveButton');
+            const warning = document.getElementById('reserveWarning');
+            
+            if (action === 'deposit') {
+                amountLabel.textContent = 'Amount to Reserve (iKb)';
+                availableText.innerHTML = `Available: <span id="reserveAvailableBalance">${(minedBalance + receivedBalance).toFixed(4)} iKb</span>`;
+                reserveButton.textContent = 'Add to Reserve';
+                warning.textContent = '⚠️ Emergency reserves should only be used in critical situations';
+            } else {
+                amountLabel.textContent = 'Amount to Withdraw (iKb)';
+                availableText.innerHTML = `Reserved: <span id="reserveAvailableBalance">${reserveBalance.toFixed(4)} iKb</span>`;
+                reserveButton.textContent = 'Withdraw from Reserve';
+                warning.textContent = '⚠️ Withdrawal requires 24-hour delay for security';
+            }
+        }
+
+        async function processReserve() {
+            const action = document.getElementById('reserveAction').value;
+            const amount = parseFloat(document.getElementById('reserveAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            try {
+                if (action === 'deposit') {
+                    const availableBalance = minedBalance + receivedBalance;
+                    if (amount > availableBalance) {
+                        showError('Insufficient balance');
+                        return;
+                    }
+                    
+                    // Move funds to reserve
+                    const amountFromMined = Math.min(amount, minedBalance);
+                    const amountFromReceived = amount - amountFromMined;
+                    
+                    minedBalance -= amountFromMined;
+                    receivedBalance -= amountFromReceived;
+                    reserveBalance += amount;
+                    userBalance = minedBalance + receivedBalance;
+                    
+                    showNotification(`✅ Successfully added ${amount.toFixed(4)} iKb to emergency reserve`);
+                    
+                } else {
+                    if (amount > reserveBalance) {
+                        showError('Insufficient reserve balance');
+                        return;
+                    }
+                    
+                    // Move funds from reserve back to received balance
+                    reserveBalance -= amount;
+                    receivedBalance += amount;
+                    userBalance = minedBalance + receivedBalance;
+                    
+                    showNotification(`✅ Successfully withdrew ${amount.toFixed(4)} iKb from emergency reserve`);
+                }
+                
+                // Add transaction to history
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'reserve',
+                    subtype: action,
+                    amount: action === 'deposit' ? amount : -amount,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                transactionHistory.unshift(transaction);
+                
+                // Update displays
+                updateBalanceDisplay();
+                updateWalletDisplay();
+                updateUserAccountDisplay(currentUser);
+                
+                // Save to Firestore
+                if (currentUser) {
+                    await saveUserDataToFirestore(currentUser);
+                }
+                
+                closeWalletModal('reserveModal');
+                
+            } catch (error) {
+                console.error('❌ Error processing reserve:', error);
+                showError('Reserve operation failed. Please try again.');
+            }
+        }
+
+        // Show wallet page with updated data
+        function showWallet() {
+            hideAllPages();
+            document.getElementById('miningApp').style.display = 'none';
+            document.getElementById('walletPage').style.display = 'block';
+            
+            // Update wallet display
+            updateWalletDisplay();
+            updateWalletModalBalances();
+        }
+                    // Global variables
+        let appVerifier;
+        let confirmationResult;
+        let currentUser = null;
+        let otpTimer = null;
+        let resendCountdown = 60;
+        let userBalance = 0.0000;
+        let miningRate = 0.001;
+        let isMining = false;
+        let totalTasksCompleted = 0;
+        let selectedSovereignType = null;
+        let selectedValueType = null;
+        let selectedValueAmount = 0;
+
+        // Global wallet variables
+        let minedBalance = 0.0000;  // Balance from mining
+        let receivedBalance = 0.0000;  // Balance from receiving tokens
+        let reserveBalance = 0.0000;  // Emergency reserve balance    
         function copyAddress() {
             copyWalletAddress();
         }
