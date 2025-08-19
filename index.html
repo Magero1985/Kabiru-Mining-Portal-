@@ -1048,7 +1048,7 @@
             line-height: 1.2;
         }
 
-        /* Wallet Feature Modals - FULLY FUNCTIONAL */
+        /* Wallet Feature Modals */
         .wallet-modal {
             display: none;
             position: fixed;
@@ -1072,118 +1072,6 @@
             animation: fadeInUp 0.3s ease-out;
             max-height: 80vh;
             overflow-y: auto;
-        }
-
-        .wallet-breakdown {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .balance-breakdown {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .balance-type {
-            text-align: center;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .balance-type-value {
-            font-size: 16px;
-            font-weight: bold;
-            color: #FFD700;
-            margin-bottom: 3px;
-        }
-
-        .balance-type-label {
-            font-size: 11px;
-            opacity: 0.7;
-        }
-
-        .mined-balance {
-            border: 1px solid rgba(0, 255, 135, 0.3);
-        }
-
-        .received-balance {
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .transaction-fee-info {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .qr-code-display {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin: 20px 0;
-            color: #333;
-        }
-
-        .address-display {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 12px;
-            word-break: break-all;
-            margin: 10px 0;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .swap-rate-display {
-            background: rgba(255, 215, 0, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-align: center;
-        }
-
-        .lockup-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .lockup-option {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .lockup-option:hover, .lockup-option.selected {
-            border-color: #FFD700;
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        .lockup-period {
-            font-size: 14px;
-            font-weight: bold;
-            color: #FFD700;
-            margin-bottom: 5px;
-        }
-
-        .lockup-apy {
-            font-size: 12px;
-            color: #00ff87;
         }
 
         .input-group {
@@ -1453,6 +1341,7 @@
         .user-account-section:hover {
             background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
+            border-color: #FFD700;
         }
 
         .user-account-content {
@@ -1498,6 +1387,12 @@
             font-weight: bold;
         }
 
+        .account-arrow {
+            font-size: 20px;
+            color: #FFD700;
+            opacity: 0.7;
+        }
+
         /* User Account Modal */
         .user-account-modal {
             display: none;
@@ -1517,19 +1412,19 @@
             padding: 30px;
             border-radius: 20px;
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: fadeInUp 0.3s ease-out;
             max-height: 80vh;
             overflow-y: auto;
         }
 
-        .user-profile-section {
+        .account-modal-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        .user-profile-avatar {
+        .account-modal-avatar {
             width: 80px;
             height: 80px;
             background: linear-gradient(45deg, #FFD700, #FFA500);
@@ -1544,38 +1439,159 @@
             margin: 0 auto 15px;
         }
 
-        .user-id-text {
-            font-size: 10px;
-            opacity: 0.6;
-            margin-top: 10px;
-            word-break: break-all;
+        .account-modal-title {
+            color: #FFD700;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
-        .profile-stats {
+        .account-modal-subtitle {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .account-details {
+            margin-bottom: 25px;
+        }
+
+        .account-detail-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .edit-mode .detail-value {
+            display: none;
+        }
+
+        .detail-input {
+            display: none;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .edit-mode .detail-input {
+            display: block;
+        }
+
+        .detail-input:focus {
+            border-color: #FFD700;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .account-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-button {
+            background: linear-gradient(45deg, #00ff87, #60efff);
+            color: #333;
+        }
+
+        .edit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 135, 0.4);
+        }
+
+        .save-button {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            display: none;
+        }
+
+        .edit-mode .save-button {
+            display: block;
+        }
+
+        .edit-mode .edit-button {
+            display: none;
+        }
+
+        .cancel-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: none;
+        }
+
+        .edit-mode .cancel-button {
+            display: block;
+        }
+
+        .cancel-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .account-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin: 20px 0;
+            margin-bottom: 20px;
         }
 
-        .profile-stat {
+        .account-stat {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .profile-stat-value {
+        .stat-number {
             font-size: 18px;
             font-weight: bold;
             color: #FFD700;
             margin-bottom: 5px;
         }
 
-        .profile-stat-label {
+        .stat-text {
             font-size: 11px;
             opacity: 0.7;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .notification {
@@ -1899,6 +1915,7 @@
                         <div class="user-email" id="userEmail">user@example.com</div>
                         <div class="user-balance" id="userAccountBalance">0.0000 iKb</div>
                     </div>
+                    <div class="account-arrow">›</div>
                 </div>
             </div>
 
@@ -2015,22 +2032,7 @@
             <!-- Wallet Balance Header -->
             <div class="wallet-header">
                 <div class="wallet-balance" id="walletBalance">0.0000 iKb</div>
-                <div class="wallet-address" id="userWalletAddress">0x742d35...4B76A2</div>
-                
-                <!-- Balance Breakdown -->
-                <div class="wallet-breakdown">
-                    <div class="balance-breakdown">
-                        <div class="balance-type mined-balance">
-                            <div class="balance-type-value" id="minedBalance">0.0000 iKb</div>
-                            <div class="balance-type-label">Mined</div>
-                        </div>
-                        <div class="balance-type received-balance">
-                            <div class="balance-type-value" id="receivedBalance">0.0000 iKb</div>
-                            <div class="balance-type-label">Received</div>
-                        </div>
-                    </div>
-                </div>
-                
+                <div class="wallet-address">0x742d35...4B76A2</div>
                 <div class="wallet-quick-actions">
                     <button class="quick-action-btn" onclick="openWalletModal('send')">
                         📤<br>Send
@@ -2041,7 +2043,7 @@
                     <button class="quick-action-btn" onclick="openWalletModal('swap')">
                         🔄<br>Swap
                     </button>
-                    <button class="quick-action-btn" onclick="copyWalletAddress()">
+                    <button class="quick-action-btn" onclick="copyAddress()">
                         📋<br>Copy
                     </button>
                 </div>
@@ -2481,149 +2483,90 @@
 
     <!-- Wallet modals -->
     
-    <!-- Send Modal - FULLY FUNCTIONAL -->
+    <!-- Send Modal -->
     <div id="sendModal" class="wallet-modal">
         <div class="wallet-modal-content">
             <div class="subcategory-header">
                 <h2 class="subcategory-title">Send KABIRU</h2>
                 <span class="close" onclick="closeWalletModal('sendModal')">&times;</span>
             </div>
-            
-            <!-- Balance Info -->
-            <div class="wallet-breakdown">
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;">Available: <span id="sendAvailableBalance">0.0000 iKb</span></div>
-                </div>
-            </div>
-            
             <div class="input-group">
-                <label for="sendAddress">Recipient Wallet Address</label>
-                <input type="text" id="sendAddress" placeholder="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2">
+                <label for="sendAddress">Recipient Address</label>
+                <input type="text" id="sendAddress" placeholder="0x742d35...4B76A2">
             </div>
-            
             <div class="input-group">
                 <label for="sendAmount">Amount (iKb)</label>
-                <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001" max="" oninput="calculateSendFee()">
-                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
-                    Max: <span style="color: #FFD700; cursor: pointer;" onclick="setMaxSendAmount()">Use All Available</span>
-                </div>
+                <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001">
             </div>
-            
-            <div class="transaction-fee-info">
-                <div>Transaction Fee: <span id="sendFee">0.0001 iKb</span></div>
-                <div>You will send: <span id="totalSendAmount">0.0000 iKb</span></div>
-                <div>Recipient receives: <span id="recipientReceives">0.0000 iKb</span></div>
-            </div>
-            
             <div class="input-group">
                 <label for="sendNote">Note (Optional)</label>
-                <input type="text" id="sendNote" placeholder="Payment for..." maxlength="50">
+                <input type="text" id="sendNote" placeholder="Payment for...">
             </div>
-            
             <div class="action-buttons">
                 <button class="secondary-button" onclick="closeWalletModal('sendModal')">Cancel</button>
-                <button class="primary-button" onclick="processSend()" id="sendButton">Send iKb</button>
+                <button class="primary-button" onclick="processSend()">Send iKb</button>
             </div>
         </div>
     </div>
 
-    <!-- Receive Modal - FULLY FUNCTIONAL -->
+    <!-- Receive Modal -->
     <div id="receiveModal" class="wallet-modal">
         <div class="wallet-modal-content">
             <div class="subcategory-header">
                 <h2 class="subcategory-title">Receive KABIRU</h2>
                 <span class="close" onclick="closeWalletModal('receiveModal')">&times;</span>
             </div>
-            
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 16px; font-weight: bold; color: #FFD700; margin-bottom: 10px;">Your Wallet Address</div>
-                <div style="font-size: 12px; opacity: 0.8;">Share this address to receive KABIRU tokens</div>
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="background: white; padding: 20px; border-radius: 10px; display: inline-block;">
+                    <div style="color: #333; font-size: 16px; font-weight: bold;">QR Code</div>
+                    <div style="color: #666; font-size: 12px; margin-top: 5px;">Scan to send iKb</div>
+                </div>
             </div>
-            
-            <div class="qr-code-display">
-                <div style="font-size: 48px; margin-bottom: 10px;">📱</div>
-                <div style="font-size: 14px; font-weight: bold;">QR Code</div>
-                <div style="font-size: 12px; margin-top: 5px;">Scan to send iKb to this wallet</div>
-            </div>
-            
             <div class="input-group">
                 <label>Your Wallet Address</label>
-                <div class="address-display" id="receiveAddress">0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2</div>
+                <input type="text" value="0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2" readonly>
             </div>
-            
-            <div class="input-group">
-                <label for="requestAmount">Request Specific Amount (Optional)</label>
-                <input type="number" id="requestAmount" placeholder="0.0000" step="0.0001">
-            </div>
-            
             <div class="action-buttons">
-                <button class="primary-button" onclick="copyWalletAddress()">📋 Copy Address</button>
-                <button class="secondary-button" onclick="shareWalletAddress()">📤 Share</button>
+                <button class="primary-button" onclick="copyWalletAddress()">Copy Address</button>
+                <button class="secondary-button" onclick="shareAddress()">Share</button>
             </div>
         </div>
     </div>
 
-    <!-- Swap Modal - FULLY FUNCTIONAL -->
+    <!-- Swap Modal -->
     <div id="swapModal" class="wallet-modal">
         <div class="wallet-modal-content">
             <div class="subcategory-header">
                 <h2 class="subcategory-title">Swap Tokens</h2>
                 <span class="close" onclick="closeWalletModal('swapModal')">&times;</span>
             </div>
-            
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 14px; opacity: 0.8;">Exchange your tokens at current market rates</div>
-            </div>
-            
             <div class="input-group">
                 <label for="swapFrom">From</label>
-                <select id="swapFrom" onchange="updateSwapRates()">
+                <select id="swapFrom">
                     <option value="ikb">KABIRU (iKb)</option>
-                    <option value="ksh">Kenyan Shilling (KSH)</option>
-                    <option value="usd">US Dollar (USD)</option>
                     <option value="eth">Ethereum (ETH)</option>
                     <option value="btc">Bitcoin (BTC)</option>
                 </select>
             </div>
-            
             <div class="input-group">
                 <label for="swapFromAmount">Amount</label>
-                <input type="number" id="swapFromAmount" placeholder="0.0000" step="0.0001" oninput="calculateSwapAmount()">
-                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
-                    Available: <span id="swapAvailableBalance">0.0000 iKb</span>
-                </div>
+                <input type="number" id="swapFromAmount" placeholder="0.0000" step="0.0001">
             </div>
-            
             <div style="text-align: center; margin: 15px 0;">
-                <button style="background: none; border: none; font-size: 20px; cursor: pointer;" onclick="swapCurrencies()">🔄</button>
+                <span style="font-size: 20px;">🔄</span>
             </div>
-            
             <div class="input-group">
                 <label for="swapTo">To</label>
-                <select id="swapTo" onchange="updateSwapRates()">
-                    <option value="ksh">Kenyan Shilling (KSH)</option>
-                    <option value="usd">US Dollar (USD)</option>
+                <select id="swapTo">
                     <option value="eth">Ethereum (ETH)</option>
                     <option value="btc">Bitcoin (BTC)</option>
                     <option value="ikb">KABIRU (iKb)</option>
                 </select>
             </div>
-            
             <div class="input-group">
                 <label>You'll receive approximately</label>
                 <input type="text" id="swapToAmount" placeholder="0.0000" readonly>
             </div>
-            
-            <div class="swap-rate-display">
-                <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">Exchange Rate</div>
-                <div id="swapRate">1 iKb = 0.75 KSH</div>
-                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">Rate updates every 30 seconds</div>
-            </div>
-            
-            <div class="transaction-fee-info">
-                <div>Swap Fee (0.5%): <span id="swapFee">0.0000</span></div>
-            </div>
-            
             <div class="action-buttons">
                 <button class="secondary-button" onclick="closeWalletModal('swapModal')">Cancel</button>
                 <button class="primary-button" onclick="processSwap()">Swap Tokens</button>
@@ -2631,169 +2574,69 @@
         </div>
     </div>
 
-    <!-- Lockup Modal - FULLY FUNCTIONAL -->
-    <div id="lockupModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Lockup Staking</h2>
-                <span class="close" onclick="closeWalletModal('lockupModal')">&times;</span>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 14px; opacity: 0.8;">Stake your KABIRU tokens to earn rewards</div>
-            </div>
-            
-            <div class="lockup-options">
-                <div class="lockup-option" onclick="selectLockupPeriod(30, 5)" data-period="30">
-                    <div class="lockup-period">30 Days</div>
-                    <div class="lockup-apy">5% APY</div>
-                </div>
-                <div class="lockup-option" onclick="selectLockupPeriod(90, 12)" data-period="90">
-                    <div class="lockup-period">90 Days</div>
-                    <div class="lockup-apy">12% APY</div>
-                </div>
-                <div class="lockup-option" onclick="selectLockupPeriod(180, 20)" data-period="180">
-                    <div class="lockup-period">6 Months</div>
-                    <div class="lockup-apy">20% APY</div>
-                </div>
-                <div class="lockup-option" onclick="selectLockupPeriod(365, 35)" data-period="365">
-                    <div class="lockup-period">1 Year</div>
-                    <div class="lockup-apy">35% APY</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="lockupAmount">Amount to Stake (iKb)</label>
-                <input type="number" id="lockupAmount" placeholder="0.0000" step="0.0001" oninput="calculateLockupRewards()">
-                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
-                    Available: <span id="lockupAvailableBalance">0.0000 iKb</span> |
-                    <span style="color: #FFD700; cursor: pointer;" onclick="setMaxLockupAmount()">Use All</span>
-                </div>
-            </div>
-            
-            <div class="transaction-fee-info" id="lockupRewardsInfo" style="display: none;">
-                <div><strong>Staking Summary:</strong></div>
-                <div>Period: <span id="selectedLockupPeriod">-</span></div>
-                <div>APY: <span id="selectedLockupAPY">-</span></div>
-                <div>Estimated Rewards: <span id="estimatedRewards">0.0000 iKb</span></div>
-                <div>Unlock Date: <span id="unlockDate">-</span></div>
-            </div>
-            
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('lockupModal')">Cancel</button>
-                <button class="primary-button" onclick="processLockup()" id="lockupButton" disabled>Stake Tokens</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reserve Modal - FULLY FUNCTIONAL -->
-    <div id="reserveModal" class="wallet-modal">
-        <div class="wallet-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Emergency Reserve</h2>
-                <span class="close" onclick="closeWalletModal('reserveModal')">&times;</span>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 14px; opacity: 0.8;">Secure tokens for emergency situations</div>
-            </div>
-            
-            <div class="wallet-breakdown">
-                <div style="text-align: center;">
-                    <div style="font-size: 18px; font-weight: bold; color: #FFD700; margin-bottom: 10px;">
-                        Current Reserve: <span id="currentReserve">0.0000 iKb</span>
-                    </div>
-                    <div style="font-size: 12px; opacity: 0.7;">
-                        Reserved tokens are locked and earn 2% APY
-                    </div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label>Reserve Action</label>
-                <select id="reserveAction" onchange="toggleReserveMode()">
-                    <option value="deposit">Deposit to Reserve</option>
-                    <option value="withdraw">Withdraw from Reserve</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="reserveAmount" id="reserveAmountLabel">Amount to Reserve (iKb)</label>
-                <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001">
-                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;" id="reserveAvailableText">
-                    Available: <span id="reserveAvailableBalance">0.0000 iKb</span>
-                </div>
-            </div>
-            
-            <div class="transaction-fee-info">
-                <div id="reserveWarning">⚠️ Emergency reserves should only be used in critical situations</div>
-                <div>Reserve APY: 2% per year</div>
-                <div>Withdrawal requires 24-hour delay</div>
-            </div>
-            
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeWalletModal('reserveModal')">Cancel</button>
-                <button class="primary-button" onclick="processReserve()" id="reserveButton">Add to Reserve</button>
-            </div>
-        </div>
-    </div>
-
     <!-- User Account Modal -->
     <div id="userAccountModal" class="user-account-modal">
         <div class="user-account-modal-content">
-            <div class="subcategory-header">
-                <h2 class="subcategory-title">Account Details</h2>
-                <span class="close" onclick="closeUserAccountModal()">&times;</span>
-            </div>
-            
-            <!-- User Profile Section -->
-            <div class="user-profile-section">
-                <div class="user-profile-avatar" id="modalUserAvatar">👤</div>
-                <div style="font-size: 18px; font-weight: bold; color: #FFD700; margin-bottom: 5px;" id="modalUserName">User Name</div>
-                <div style="font-size: 12px; opacity: 0.7;" id="modalUserEmail">user@example.com</div>
-                <div class="user-id-text">ID: <span id="modalUserId">Not available</span></div>
+            <div class="account-modal-header">
+                <div class="account-modal-avatar" id="modalUserAvatar">👤</div>
+                <div class="account-modal-title" id="modalUserName">User Name</div>
+                <div class="account-modal-subtitle">Account Details</div>
             </div>
 
-            <!-- Profile Stats -->
-            <div class="profile-stats">
-                <div class="profile-stat">
-                    <div class="profile-stat-value" id="modalUserBalance">0.0000 iKb</div>
-                    <div class="profile-stat-label">Balance</div>
+            <!-- Account Stats -->
+            <div class="account-stats">
+                <div class="account-stat">
+                    <div class="stat-number" id="modalUserBalance">0.0000</div>
+                    <div class="stat-text">iKb Balance</div>
                 </div>
-                <div class="profile-stat">
-                    <div class="profile-stat-value" id="modalUserTasks">0</div>
-                    <div class="profile-stat-label">Tasks</div>
+                <div class="account-stat">
+                    <div class="stat-number" id="modalUserTasks">0</div>
+                    <div class="stat-text">Tasks Completed</div>
                 </div>
             </div>
 
-            <!-- Editable User Information -->
-            <div class="input-group">
-                <label for="editUserName">Display Name</label>
-                <input type="text" id="editUserName" placeholder="Enter your display name">
-            </div>
-            
-            <div class="input-group">
-                <label for="editUserEmail">Email Address</label>
-                <input type="email" id="editUserEmail" placeholder="Enter your email">
-            </div>
-
-            <!-- Account Actions -->
-            <div class="action-buttons">
-                <button class="secondary-button" onclick="closeUserAccountModal()">Cancel</button>
-                <button class="primary-button" onclick="updateUserProfile()">Save Changes</button>
-            </div>
-
-            <!-- Account Management -->
-            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2);">
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <div style="font-size: 14px; font-weight: bold; color: #FFD700; margin-bottom: 10px;">Account Management</div>
-                    <button class="secondary-button" onclick="exportUserData()" style="margin: 5px; font-size: 12px; padding: 8px 15px;">
-                        📥 Export Data
-                    </button>
-                    <button class="secondary-button" onclick="resetAccountData()" style="margin: 5px; font-size: 12px; padding: 8px 15px;">
-                        🔄 Reset Mining Data
-                    </button>
+            <!-- Account Details -->
+            <div class="account-details" id="accountDetailsContainer">
+                <div class="account-detail-item">
+                    <div class="detail-label">Full Name</div>
+                    <div class="detail-value" id="displayName">Loading...</div>
+                    <input type="text" class="detail-input" id="editDisplayName" placeholder="Enter your full name">
                 </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Email Address</div>
+                    <div class="detail-value" id="displayEmail">Loading...</div>
+                    <input type="email" class="detail-input" id="editEmail" placeholder="Enter your email address">
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Phone Number</div>
+                    <div class="detail-value" id="displayPhone">Not provided</div>
+                    <input type="tel" class="detail-input" id="editPhone" placeholder="Enter your phone number" readonly>
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">User ID</div>
+                    <div class="detail-value" id="displayUID">Loading...</div>
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Account Created</div>
+                    <div class="detail-value" id="displayCreated">Loading...</div>
+                </div>
+
+                <div class="account-detail-item">
+                    <div class="detail-label">Last Active</div>
+                    <div class="detail-value" id="displayLastActive">Just now</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="account-actions">
+                <button class="account-button edit-button" onclick="toggleEditMode()">✏️ Edit Profile</button>
+                <button class="account-button save-button" onclick="saveUserProfile()">💾 Save Changes</button>
+                <button class="account-button cancel-button" onclick="cancelEdit()">❌ Cancel</button>
+                <button class="account-button secondary-button" onclick="closeUserAccountModal()">Close</button>
             </div>
         </div>
     </div>
@@ -2817,26 +2660,19 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Global wallet variables
-        let minedBalance = 0.0000;  // Balance from mining
-        let receivedBalance = 0.0000;  // Balance from receiving tokens
-        let reserveBalance = 0.0000;  // Emergency reserve balance
-        let lockedBalance = 0.0000;  // Locked/staked balance
-        let selectedLockupPeriod = null;
-        let selectedLockupAPY = null;
-        let userWalletAddress = '';
-
-        // Exchange rates for swap functionality
-        const exchangeRates = {
-            ikb: { ksh: 0.75, usd: 0.0057, btc: 0.00000015, eth: 0.0000023 },
-            ksh: { ikb: 1.33, usd: 0.0076, btc: 0.0000002, eth: 0.000003 },
-            usd: { ikb: 175.44, ksh: 131.25, btc: 0.000026, eth: 0.4 },
-            btc: { ikb: 6666666, ksh: 5000000, usd: 38000, eth: 15200 },
-            eth: { ikb: 434782, ksh: 326086, usd: 2500, btc: 0.066 }
-        };
-
-        // Wallet transaction history
-        let transactionHistory = [];
+        // Global variables
+        let appVerifier;
+        let confirmationResult;
+        let currentUser = null;
+        let otpTimer = null;
+        let resendCountdown = 60;
+        let userBalance = 0.0000;
+        let miningRate = 0.001;
+        let isMining = false;
+        let totalTasksCompleted = 0;
+        let selectedSovereignType = null;
+        let selectedValueType = null;
+        let selectedValueAmount = 0;
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -2989,7 +2825,7 @@
 
         // FIRESTORE FUNCTIONS - NEW IMPLEMENTATION
         
-        // Save user data to Firestore - UPDATED FOR WALLET
+        // Save user data to Firestore
         async function saveUserDataToFirestore(userData) {
             try {
                 if (!userData.uid) {
@@ -3003,14 +2839,8 @@
                     phone: userData.phoneNumber || userData.phone || null,
                     displayName: userData.displayName || userData.name || 'Anonymous User',
                     balance: userBalance,
-                    minedBalance: minedBalance,
-                    receivedBalance: receivedBalance,
-                    reserveBalance: reserveBalance,
-                    lockedBalance: lockedBalance,
                     tasksCompleted: totalTasksCompleted,
                     miningRate: miningRate,
-                    walletAddress: userWalletAddress,
-                    transactionHistory: transactionHistory,
                     lastActive: firebase.firestore.FieldValue.serverTimestamp(),
                     createdAt: userData.createdAt ? new Date(userData.createdAt) : firebase.firestore.FieldValue.serverTimestamp(),
                     emailVerified: userData.emailVerified || false,
@@ -3038,7 +2868,7 @@
             }
         }
 
-        // Load user data from Firestore - UPDATED FOR WALLET
+        // Load user data from Firestore
         async function loadUserDataFromFirestore(uid) {
             try {
                 console.log('🔍 Loading user data from Firestore for UID:', uid);
@@ -3051,44 +2881,25 @@
                     
                     // Update global variables with Firestore data
                     userBalance = userData.balance || 0.0000;
-                    minedBalance = userData.minedBalance || 0.0000;
-                    receivedBalance = userData.receivedBalance || 0.0000;
-                    reserveBalance = userData.reserveBalance || 0.0000;
-                    lockedBalance = userData.lockedBalance || 0.0000;
                     totalTasksCompleted = userData.tasksCompleted || 0;
                     miningRate = userData.miningRate || 0.001;
-                    userWalletAddress = userData.walletAddress || generateWalletAddress();
-                    transactionHistory = userData.transactionHistory || [];
                     
-                    console.log('📊 Loaded wallet data:', {
-                        total: userBalance,
-                        mined: minedBalance,
-                        received: receivedBalance,
-                        reserve: reserveBalance,
-                        locked: lockedBalance
-                    });
+                    console.log('📊 Loaded balance:', userBalance, 'tasks:', totalTasksCompleted);
                     
                     return userData;
                 } else {
                     console.log('📄 No user document found in Firestore, creating new one');
                     
-                    // Create new user document with wallet data
+                    // Create new user document
                     const newUserData = {
                         uid: uid,
                         balance: 0.0000,
-                        minedBalance: 0.0000,
-                        receivedBalance: 0.0000,
-                        reserveBalance: 0.0000,
-                        lockedBalance: 0.0000,
                         tasksCompleted: 0,
                         miningRate: 0.001,
-                        walletAddress: generateWalletAddress(),
-                        transactionHistory: [],
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     };
                     
                     await db.collection('users').doc(uid).set(newUserData);
-                    userWalletAddress = newUserData.walletAddress;
                     return newUserData;
                 }
             } catch (error) {
@@ -3108,37 +2919,6 @@
                 
                 return null;
             }
-        }
-
-        // Generate wallet address
-        function generateWalletAddress() {
-            const chars = '0123456789abcdef';
-            let address = '0x';
-            for (let i = 0; i < 40; i++) {
-                address += chars[Math.floor(Math.random() * chars.length)];
-            }
-            return address;
-        }
-
-        // Update wallet display
-        function updateWalletDisplay() {
-            // Update total balance
-            const totalBalance = minedBalance + receivedBalance;
-            userBalance = totalBalance;
-            
-            // Update all balance displays
-            updateBalanceDisplay();
-            
-            // Update wallet-specific displays
-            const walletBalanceEl = document.getElementById('walletBalance');
-            const minedBalanceEl = document.getElementById('minedBalance');
-            const receivedBalanceEl = document.getElementById('receivedBalance');
-            const walletAddressEl = document.getElementById('userWalletAddress');
-            
-            if (walletBalanceEl) walletBalanceEl.textContent = `${totalBalance.toFixed(4)} iKb`;
-            if (minedBalanceEl) minedBalanceEl.textContent = `${minedBalance.toFixed(4)} iKb`;
-            if (receivedBalanceEl) receivedBalanceEl.textContent = `${receivedBalance.toFixed(4)} iKb`;
-            if (walletAddressEl) walletAddressEl.textContent = userWalletAddress ? `${userWalletAddress.slice(0, 8)}...${userWalletAddress.slice(-6)}` : '0x742d35...4B76A2';
         }
 
         // Update balance in Firestore
@@ -3287,169 +3067,147 @@
 
         // Show user account details
         function openUserAccountModal() {
-            if (currentUser) {
-                // Populate modal with current user data
-                document.getElementById('modalUserAvatar').textContent = 
-                    (currentUser.displayName || currentUser.name || 'User').charAt(0).toUpperCase();
-                document.getElementById('modalUserName').textContent = 
-                    currentUser.displayName || currentUser.name || 'Anonymous User';
-                document.getElementById('modalUserEmail').textContent = 
-                    currentUser.email || currentUser.phone || 'No contact info';
-                document.getElementById('modalUserId').textContent = 
-                    currentUser.uid || 'Not available';
-                document.getElementById('modalUserBalance').textContent = 
-                    `${userBalance.toFixed(4)} iKb`;
-                document.getElementById('modalUserTasks').textContent = 
-                    totalTasksCompleted;
-                
-                // Populate editable fields
-                document.getElementById('editUserName').value = 
-                    currentUser.displayName || currentUser.name || '';
-                document.getElementById('editUserEmail').value = 
-                    currentUser.email || '';
-                
-                // Show modal
-                document.getElementById('userAccountModal').style.display = 'block';
-            } else {
-                showNotification('No user account found');
+            if (!currentUser) {
+                showNotification('Please log in to view account details');
+                return;
             }
+
+            // Update modal with current user data
+            updateUserAccountModal();
+            
+            // Show the modal
+            document.getElementById('userAccountModal').style.display = 'block';
         }
 
         function closeUserAccountModal() {
             document.getElementById('userAccountModal').style.display = 'none';
+            // Reset edit mode
+            const container = document.getElementById('accountDetailsContainer');
+            container.classList.remove('edit-mode');
         }
 
-        async function updateUserProfile() {
-            const newName = document.getElementById('editUserName').value.trim();
-            const newEmail = document.getElementById('editUserEmail').value.trim();
-            
-            if (!newName) {
-                showError('Please enter a display name');
-                return;
-            }
-            
-            if (newEmail && !isValidEmail(newEmail)) {
-                showError('Please enter a valid email address');
-                return;
-            }
-            
+        function updateUserAccountModal() {
             try {
+                // Update avatar
+                const modalAvatar = document.getElementById('modalUserAvatar');
+                const modalName = document.getElementById('modalUserName');
+                const modalBalance = document.getElementById('modalUserBalance');
+                const modalTasks = document.getElementById('modalUserTasks');
+                
+                const displayName = currentUser.displayName || currentUser.name || 'Anonymous User';
+                
+                if (modalAvatar) {
+                    modalAvatar.textContent = displayName.charAt(0).toUpperCase();
+                }
+                
+                if (modalName) {
+                    modalName.textContent = displayName;
+                }
+                
+                if (modalBalance) {
+                    modalBalance.textContent = userBalance.toFixed(4);
+                }
+                
+                if (modalTasks) {
+                    modalTasks.textContent = totalTasksCompleted;
+                }
+                
+                // Update detail fields
+                document.getElementById('displayName').textContent = displayName;
+                document.getElementById('editDisplayName').value = displayName;
+                
+                document.getElementById('displayEmail').textContent = currentUser.email || 'Not provided';
+                document.getElementById('editEmail').value = currentUser.email || '';
+                
+                document.getElementById('displayPhone').textContent = currentUser.phone || 'Not provided';
+                document.getElementById('editPhone').value = currentUser.phone || '';
+                
+                document.getElementById('displayUID').textContent = currentUser.uid || 'Unknown';
+                
+                // Format dates
+                const createdDate = currentUser.createdAt ? new Date(currentUser.createdAt).toLocaleDateString() : 'Unknown';
+                document.getElementById('displayCreated').textContent = createdDate;
+                
+                document.getElementById('displayLastActive').textContent = 'Just now';
+                
+            } catch (error) {
+                console.error('❌ Error updating user account modal:', error);
+            }
+        }
+
+        function toggleEditMode() {
+            const container = document.getElementById('accountDetailsContainer');
+            container.classList.add('edit-mode');
+        }
+
+        function cancelEdit() {
+            const container = document.getElementById('accountDetailsContainer');
+            container.classList.remove('edit-mode');
+            
+            // Reset input values to original
+            updateUserAccountModal();
+        }
+
+        async function saveUserProfile() {
+            try {
+                const newDisplayName = document.getElementById('editDisplayName').value.trim();
+                const newEmail = document.getElementById('editEmail').value.trim();
+                
+                if (!newDisplayName) {
+                    showError('Please enter a valid name');
+                    return;
+                }
+                
+                if (newEmail && !isValidEmail(newEmail)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+                
                 // Update Firebase Auth profile
                 const user = firebase.auth().currentUser;
                 if (user) {
                     await user.updateProfile({
-                        displayName: newName
+                        displayName: newDisplayName
                     });
                     
-                    // Update email if changed and not empty
-                    if (newEmail && newEmail !== user.email) {
-                        await user.updateEmail(newEmail);
-                        showNotification('Email updated! Please verify your new email address.');
+                    // If email changed, update it (requires re-authentication)
+                    if (newEmail && newEmail !== currentUser.email) {
+                        try {
+                            await user.updateEmail(newEmail);
+                            showNotification('Email updated! Please verify your new email address.');
+                        } catch (emailError) {
+                            if (emailError.code === 'auth/requires-recent-login') {
+                                showNotification('Please log out and log back in to change your email address.');
+                            } else {
+                                showError('Failed to update email: ' + emailError.message);
+                            }
+                        }
                     }
                 }
                 
-                // Update current user object
-                currentUser.displayName = newName;
-                currentUser.name = newName;
-                if (newEmail) {
+                // Update currentUser object
+                currentUser.displayName = newDisplayName;
+                currentUser.name = newDisplayName;
+                if (newEmail && newEmail !== currentUser.email) {
                     currentUser.email = newEmail;
                 }
                 
                 // Save to Firestore
                 await saveUserDataToFirestore(currentUser);
                 
-                // Update UI
+                // Update UI displays
                 updateUserAccountDisplay(currentUser);
-                closeUserAccountModal();
+                updateUserAccountModal();
+                
+                // Exit edit mode
+                const container = document.getElementById('accountDetailsContainer');
+                container.classList.remove('edit-mode');
                 
                 showNotification('✅ Profile updated successfully!');
                 
             } catch (error) {
-                console.error('❌ Error updating profile:', error);
-                let errorMessage = 'Failed to update profile. ';
-                switch (error.code) {
-                    case 'auth/requires-recent-login':
-                        errorMessage = 'Please log out and log back in to update your email.';
-                        break;
-                    case 'auth/email-already-in-use':
-                        errorMessage = 'This email is already in use by another account.';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = 'Please enter a valid email address.';
-                        break;
-                    default:
-                        errorMessage += error.message;
-                }
-                showError(errorMessage);
-            }
-        }
-
-        function exportUserData() {
-            if (!currentUser) {
-                showNotification('No user data to export');
-                return;
-            }
-            
-            const exportData = {
-                user: {
-                    uid: currentUser.uid,
-                    name: currentUser.displayName || currentUser.name,
-                    email: currentUser.email,
-                    phone: currentUser.phone
-                },
-                mining: {
-                    balance: userBalance,
-                    tasksCompleted: totalTasksCompleted,
-                    miningRate: miningRate
-                },
-                exportDate: new Date().toISOString()
-            };
-            
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(dataBlob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `kabiru_account_${currentUser.uid}_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            
-            URL.revokeObjectURL(url);
-            showNotification('📥 Account data exported successfully!');
-        }
-
-        async function resetAccountData() {
-            if (!currentUser) {
-                showNotification('No account found');
-                return;
-            }
-            
-            const confirmed = confirm('⚠️ Are you sure you want to reset your mining data? This will set your balance and tasks to zero. This action cannot be undone.');
-            
-            if (confirmed) {
-                try {
-                    // Reset local variables
-                    userBalance = 0.0000;
-                    totalTasksCompleted = 0;
-                    
-                    // Update Firestore
-                    await updateBalanceInFirestore(currentUser.uid, userBalance, totalTasksCompleted);
-                    
-                    // Update UI
-                    updateBalanceDisplay();
-                    updateUserAccountDisplay(currentUser);
-                    document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
-                    
-                    // Update modal
-                    document.getElementById('modalUserBalance').textContent = `${userBalance.toFixed(4)} iKb`;
-                    document.getElementById('modalUserTasks').textContent = totalTasksCompleted;
-                    
-                    showNotification('🔄 Mining data reset successfully!');
-                    
-                } catch (error) {
-                    console.error('❌ Error resetting account data:', error);
-                    showError('Failed to reset account data. Please try again.');
-                }
+                console.error('❌ Error saving user profile:', error);
+                showError('Failed to update profile. Please try again.');
             }
         }
 
@@ -4071,7 +3829,7 @@
             }
         }
 
-        // Load user mining data with wallet integration
+        // Load user mining data with Firestore integration
         async function loadUserMiningData() {
             console.log('⛏️ === LOADING MINING DATA ===');
             
@@ -4079,12 +3837,7 @@
                 if (!currentUser || !currentUser.uid) {
                     console.log('❌ No valid user UID found, starting fresh');
                     userBalance = 0.0000;
-                    minedBalance = 0.0000;
-                    receivedBalance = 0.0000;
-                    reserveBalance = 0.0000;
-                    lockedBalance = 0.0000;
                     totalTasksCompleted = 0;
-                    userWalletAddress = generateWalletAddress();
                     return;
                 }
                 
@@ -4095,40 +3848,25 @@
                 
                 if (userData) {
                     userBalance = userData.balance || 0.0000;
-                    minedBalance = userData.minedBalance || 0.0000;
-                    receivedBalance = userData.receivedBalance || 0.0000;
-                    reserveBalance = userData.reserveBalance || 0.0000;
-                    lockedBalance = userData.lockedBalance || 0.0000;
                     totalTasksCompleted = userData.tasksCompleted || 0;
                     miningRate = userData.miningRate || 0.001;
-                    userWalletAddress = userData.walletAddress || generateWalletAddress();
-                    transactionHistory = userData.transactionHistory || [];
                     
-                    console.log('✅ Wallet data loaded:', {
-                        total: userBalance,
-                        mined: minedBalance,
-                        received: receivedBalance,
-                        reserve: reserveBalance,
-                        locked: lockedBalance
+                    console.log('✅ Mining data loaded:', {
+                        balance: userBalance,
+                        tasks: totalTasksCompleted,
+                        rate: miningRate
                     });
                 } else {
                     // Initialize new user
                     userBalance = 0.0000;
-                    minedBalance = 0.0000;
-                    receivedBalance = 0.0000;
-                    reserveBalance = 0.0000;
-                    lockedBalance = 0.0000;
                     totalTasksCompleted = 0;
                     miningRate = 0.001;
-                    userWalletAddress = generateWalletAddress();
-                    transactionHistory = [];
                     
-                    console.log('🆕 New user initialized with wallet');
+                    console.log('🆕 New user initialized with default values');
                 }
                 
                 // Update UI with loaded data
                 updateBalanceDisplay();
-                updateWalletDisplay();
                 updateUserAccountDisplay(currentUser);
                 
                 if (document.getElementById('tasksCompleted')) {
@@ -4138,14 +3876,8 @@
             } catch (error) {
                 console.error('❌ Error loading mining data:', error);
                 userBalance = 0.0000;
-                minedBalance = 0.0000;
-                receivedBalance = 0.0000;
-                reserveBalance = 0.0000;
-                lockedBalance = 0.0000;
                 totalTasksCompleted = 0;
                 miningRate = 0.001;
-                userWalletAddress = generateWalletAddress();
-                transactionHistory = [];
             }
         }
 
@@ -4485,8 +4217,7 @@
                             KABIRU is not liable for any indirect, incidental, or consequential damages arising from use of the platform.
                         </div>
                     `
-                }
-            };
+        }
 
             if (documents[docType]) {
                 document.getElementById('documentTitle').textContent = documents[docType].title;
@@ -4501,337 +4232,43 @@
             } else {
                 showNotification(`${docType} documentation coming soon!`);
             }
-        }
+        
 
         // Wallet Functions
-    function swapCurrencies() {
-            const fromSelect = document.getElementById('swapFrom');
-            const toSelect = document.getElementById('swapTo');
-            
-            const temp = fromSelect.value;
-            fromSelect.value = toSelect.value;
-            toSelect.value = temp;
-            
-            updateSwapRates();
+        function openWalletModal(modalType) {
+            // For now, just show notification - full modals would be implemented here
+            showNotification(`${modalType.charAt(0).toUpperCase() + modalType.slice(1)} feature coming soon!`);
         }
 
-        async function processSwap() {
-            const fromAmount = parseFloat(document.getElementById('swapFromAmount').value);
-            const fromCurrency = document.getElementById('swapFrom').value;
-            const toCurrency = document.getElementById('swapTo').value;
-            const toAmount = parseFloat(document.getElementById('swapToAmount').value);
-            
-            if (!fromAmount || fromAmount <= 0) {
-                showError('Please enter a valid amount');
-                return;
-            }
-            
-            if (fromCurrency === 'ikb') {
-                const availableBalance = minedBalance + receivedBalance;
-                if (fromAmount > availableBalance) {
-                    showError('Insufficient KABIRU balance');
-                    return;
-                }
-            }
-            
-            try {
-                if (fromCurrency === 'ikb') {
-                    // Swapping FROM iKb TO other currency
-                    const amountFromMined = Math.min(fromAmount, minedBalance);
-                    const amountFromReceived = fromAmount - amountFromMined;
-                    
-                    minedBalance -= amountFromMined;
-                    receivedBalance -= amountFromReceived;
-                    userBalance = minedBalance + receivedBalance;
-                    
-                    showNotification(`✅ Swapped ${fromAmount.toFixed(4)} iKb for ${toAmount.toFixed(6)} ${toCurrency.toUpperCase()}`);
-                } else if (toCurrency === 'ikb') {
-                    // Swapping FROM other currency TO iKb
-                    receivedBalance += toAmount;
-                    userBalance = minedBalance + receivedBalance;
-                    
-                    showNotification(`✅ Swapped ${fromAmount.toFixed(6)} ${fromCurrency.toUpperCase()} for ${toAmount.toFixed(4)} iKb`);
-                } else {
-                    // Swapping between non-iKb currencies
-                    showNotification(`✅ Swapped ${fromAmount.toFixed(6)} ${fromCurrency.toUpperCase()} for ${toAmount.toFixed(6)} ${toCurrency.toUpperCase()}`);
-                }
-                
-                // Add transaction to history
-                const transaction = {
-                    id: generateTransactionId(),
-                    type: 'swap',
-                    fromCurrency: fromCurrency,
-                    toCurrency: toCurrency,
-                    fromAmount: fromAmount,
-                    toAmount: toAmount,
-                    timestamp: new Date().toISOString(),
-                    status: 'completed'
-                };
-                transactionHistory.unshift(transaction);
-                
-                // Update displays
-                updateBalanceDisplay();
-                updateWalletDisplay();
-                updateUserAccountDisplay(currentUser);
-                
-                // Save to Firestore
-                if (currentUser) {
-                    await saveUserDataToFirestore(currentUser);
-                }
-                
-                closeWalletModal('swapModal');
-                
-            } catch (error) {
-                console.error('❌ Error processing swap:', error);
-                showError('Swap failed. Please try again.');
-            }
+        function closeWalletModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
-        // LOCKUP/STAKING FUNCTIONALITY
-        function selectLockupPeriod(days, apy) {
-            selectedLockupPeriod = days;
-            selectedLockupAPY = apy;
-            
-            // Update UI
-            document.querySelectorAll('.lockup-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector(`[data-period="${days}"]`).classList.add('selected');
-            
-            // Enable lockup button
-            document.getElementById('lockupButton').disabled = false;
-            
-            // Update info display
-            document.getElementById('selectedLockupPeriod').textContent = `${days} days`;
-            document.getElementById('selectedLockupAPY').textContent = `${apy}%`;
-            document.getElementById('lockupRewardsInfo').style.display = 'block';
-            
-            calculateLockupRewards();
-        }
-
-        function calculateLockupRewards() {
-            const amount = parseFloat(document.getElementById('lockupAmount').value) || 0;
-            
-            if (amount > 0 && selectedLockupAPY) {
-                const dailyRate = selectedLockupAPY / 100 / 365;
-                const rewards = amount * dailyRate * selectedLockupPeriod;
-                const unlockDate = new Date();
-                unlockDate.setDate(unlockDate.getDate() + selectedLockupPeriod);
-                
-                document.getElementById('estimatedRewards').textContent = `${rewards.toFixed(4)} iKb`;
-                document.getElementById('unlockDate').textContent = unlockDate.toLocaleDateString();
-            }
-        }
-
-        function setMaxLockupAmount() {
-            const maxAmount = minedBalance + receivedBalance;
-            document.getElementById('lockupAmount').value = maxAmount.toFixed(4);
-            calculateLockupRewards();
-        }
-
-        async function processLockup() {
-            const amount = parseFloat(document.getElementById('lockupAmount').value);
-            
-            if (!amount || amount <= 0) {
-                showError('Please enter a valid amount');
-                return;
-            }
-            
-            if (!selectedLockupPeriod || !selectedLockupAPY) {
-                showError('Please select a lockup period');
-                return;
-            }
-            
-            const availableBalance = minedBalance + receivedBalance;
-            if (amount > availableBalance) {
-                showError('Insufficient balance');
-                return;
-            }
-            
-            try {
-                // Move funds from available to locked
-                const amountFromMined = Math.min(amount, minedBalance);
-                const amountFromReceived = amount - amountFromMined;
-                
-                minedBalance -= amountFromMined;
-                receivedBalance -= amountFromReceived;
-                lockedBalance += amount;
-                userBalance = minedBalance + receivedBalance;
-                
-                // Add transaction to history
-                const unlockDate = new Date();
-                unlockDate.setDate(unlockDate.getDate() + selectedLockupPeriod);
-                
-                const transaction = {
-                    id: generateTransactionId(),
-                    type: 'lockup',
-                    amount: amount,
-                    period: selectedLockupPeriod,
-                    apy: selectedLockupAPY,
-                    unlockDate: unlockDate.toISOString(),
-                    timestamp: new Date().toISOString(),
-                    status: 'locked'
-                };
-                transactionHistory.unshift(transaction);
-                
-                // Update displays
-                updateBalanceDisplay();
-                updateWalletDisplay();
-                updateUserAccountDisplay(currentUser);
-                
-                // Save to Firestore
-                if (currentUser) {
-                    await saveUserDataToFirestore(currentUser);
-                }
-                
-                closeWalletModal('lockupModal');
-                showNotification(`✅ Successfully staked ${amount.toFixed(4)} iKb for ${selectedLockupPeriod} days at ${selectedLockupAPY}% APY`);
-                
-            } catch (error) {
-                console.error('❌ Error processing lockup:', error);
-                showError('Staking failed. Please try again.');
-            }
-        }
-
-        // RESERVE FUNCTIONALITY
-        function toggleReserveMode() {
-            const action = document.getElementById('reserveAction').value;
-            const amountLabel = document.getElementById('reserveAmountLabel');
-            const availableText = document.getElementById('reserveAvailableText');
-            const reserveButton = document.getElementById('reserveButton');
-            const warning = document.getElementById('reserveWarning');
-            
-            if (action === 'deposit') {
-                amountLabel.textContent = 'Amount to Reserve (iKb)';
-                availableText.innerHTML = `Available: <span id="reserveAvailableBalance">${(minedBalance + receivedBalance).toFixed(4)} iKb</span>`;
-                reserveButton.textContent = 'Add to Reserve';
-                warning.textContent = '⚠️ Emergency reserves should only be used in critical situations';
+        function copyWalletAddress() {
+            const address = '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2';
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address);
+                showNotification('Wallet address copied to clipboard!');
             } else {
-                amountLabel.textContent = 'Amount to Withdraw (iKb)';
-                availableText.innerHTML = `Reserved: <span id="reserveAvailableBalance">${reserveBalance.toFixed(4)} iKb</span>`;
-                reserveButton.textContent = 'Withdraw from Reserve';
-                warning.textContent = '⚠️ Withdrawal requires 24-hour delay for security';
+                showNotification('Unable to copy address');
             }
-        }
+        
 
-        async function processReserve() {
-            const action = document.getElementById('reserveAction').value;
-            const amount = parseFloat(document.getElementById('reserveAmount').value);
-            
-            if (!amount || amount <= 0) {
-                showError('Please enter a valid amount');
-                return;
-            }
-            
-            try {
-                if (action === 'deposit') {
-                    const availableBalance = minedBalance + receivedBalance;
-                    if (amount > availableBalance) {
-                        showError('Insufficient balance');
-                        return;
-                    }
-                    
-                    // Move funds to reserve
-                    const amountFromMined = Math.min(amount, minedBalance);
-                    const amountFromReceived = amount - amountFromMined;
-                    
-                    minedBalance -= amountFromMined;
-                    receivedBalance -= amountFromReceived;
-                    reserveBalance += amount;
-                    userBalance = minedBalance + receivedBalance;
-                    
-                    showNotification(`✅ Successfully added ${amount.toFixed(4)} iKb to emergency reserve`);
-                    
-                } else {
-                    if (amount > reserveBalance) {
-                        showError('Insufficient reserve balance');
-                        return;
-                    }
-                    
-                    // Move funds from reserve back to received balance
-                    reserveBalance -= amount;
-                    receivedBalance += amount;
-                    userBalance = minedBalance + receivedBalance;
-                    
-                    showNotification(`✅ Successfully withdrew ${amount.toFixed(4)} iKb from emergency reserve`);
-                }
-                
-                // Add transaction to history
-                const transaction = {
-                    id: generateTransactionId(),
-                    type: 'reserve',
-                    subtype: action,
-                    amount: action === 'deposit' ? amount : -amount,
-                    timestamp: new Date().toISOString(),
-                    status: 'completed'
-                };
-                transactionHistory.unshift(transaction);
-                
-                // Update displays
-                updateBalanceDisplay();
-                updateWalletDisplay();
-                updateUserAccountDisplay(currentUser);
-                
-                // Save to Firestore
-                if (currentUser) {
-                    await saveUserDataToFirestore(currentUser);
-                }
-                
-                closeWalletModal('reserveModal');
-                
-            } catch (error) {
-                console.error('❌ Error processing reserve:', error);
-                showError('Reserve operation failed. Please try again.');
-            }
-        }
-
-        // Show wallet page with updated data
-        function showWallet() {
-            hideAllPages();
-            document.getElementById('miningApp').style.display = 'none';
-            document.getElementById('walletPage').style.display = 'block';
-            
-            // Update wallet display
-            updateWalletDisplay();
-            updateWalletModalBalances();
-        }
-                    // Global variables
-        let appVerifier;
-        let confirmationResult;
-        let currentUser = null;
-        let otpTimer = null;
-        let resendCountdown = 60;
-        let userBalance = 0.0000;
-        let miningRate = 0.001;
-        let isMining = false;
-        let totalTasksCompleted = 0;
-        let selectedSovereignType = null;
-        let selectedValueType = null;
-        let selectedValueAmount = 0;
-
-        // Global wallet variables
-        let minedBalance = 0.0000;  // Balance from mining
-        let receivedBalance = 0.0000;  // Balance from receiving tokens
-        let reserveBalance = 0.0000;  // Emergency reserve balance    
         function copyAddress() {
             copyWalletAddress();
         }
 
         function shareAddress() {
-            shareWalletAddress();
-        }
-
-        // Update the wallet feature click handlers to actually open modals
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update wallet feature cards to open actual modals
-            const walletFeatures = document.querySelectorAll('.wallet-feature');
-            walletFeatures.forEach(feature => {
-                feature.addEventListener('click', function() {
-                    const featureName = this.querySelector('.feature-name').textContent.toLowerCase();
-                    openWalletModal(featureName);
+            const address = '0x742d35Cc6Ff2c45E1Db3a8a9E3b4F8c7d6e5f4B76A2';
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My KABIRU Wallet Address',
+                    text: `Send KABIRU tokens to: ${address}`
                 });
-            });
-        });
+            } else {
+                copyWalletAddress();
+            }
+        
 
         // Navigation between pages
         function showMiningApp() {
@@ -4864,9 +4301,7 @@
                 
                 if (e.key === 'Enter') {
                     verifyOTP();
-                }
-            }
-        });
+        }
 
         // OTP Input restrictions
         document.addEventListener('DOMContentLoaded', function() {
@@ -4879,17 +4314,18 @@
 
         // Close modals when clicking outside
         window.onclick = function(event) {
-            const modals = ['sovereignModal', 'valueModal', 'languageModal', 'corporateModal', 'subcategoryModal', 'userAccountModal', 'sendModal', 'receiveModal', 'swapModal', 'lockupModal', 'reserveModal'];
+            const modals = ['sovereignModal', 'valueModal', 'languageModal', 'corporateModal', 'subcategoryModal', 'userAccountModal'];
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        };
+                    if (modalId === 'userAccountModal') {
+                        closeUserAccountModal();
+                    } else {
+                        modal.style.display = 'none';
+                    }
 
         // App initialization complete
         console.log('🚀 KABIRU Mining App with Firestore integration initialized successfully');
     </script>
 </body>
-    </html>
+                        </html>
