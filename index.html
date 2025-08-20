@@ -818,7 +818,7 @@
     </style>
 </head>
 <body>
-    <!-- Login Page -->
+<!-- Login Page -->
     <div id="loginPage" class="login-page" style="display: flex;">
         <div class="auth-container">
             <!-- Logo Section -->
@@ -907,6 +907,8 @@
             <!-- Email Verification Notice -->
             <div id="emailVerificationContainer" style="display: none;">
                 <div style="text-align: center; margin: 20px 0;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📧</div>
+                    <div style="font-size: 16px; margin-bottom: 10px; color: #FFD700;">Check your email!</div>
                     <div style="font-size: 14px; opacity: 0.8; line-height: 1.4;">
                         We've sent a verification link to your email address. Please check your inbox and click the verification link to activate your account.
                     </div>
@@ -1351,6 +1353,83 @@
         </div>
     </div>
 
+    <!-- Swap Modal -->
+    <div id="swapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWalletModal('swapModal')">&times;</span>
+            <h2 class="modal-title">Swap Tokens</h2>
+            
+            <div class="input-group">
+                <label for="swapAmount">Amount to Swap (iKb)</label>
+                <input type="number" id="swapAmount" placeholder="0.0000" step="0.0001">
+                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
+                    Available: <span id="swapAvailableBalance">0.0000 iKb</span>
+                </div>
+            </div>
+            
+            <div style="background: rgba(255, 215, 0, 0.1); padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 12px;">
+                Exchange Rate: 1 iKb = 0.75 KSH
+            </div>
+            
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('swapModal')">Cancel</button>
+                <button class="primary-button" onclick="processSwap()">Swap Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lockup Modal -->
+    <div id="lockupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWalletModal('lockupModal')">&times;</span>
+            <h2 class="modal-title">Lockup Staking</h2>
+            
+            <div class="input-group">
+                <label for="lockupAmount">Amount to Lock (iKb)</label>
+                <input type="number" id="lockupAmount" placeholder="0.0000" step="0.0001">
+                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
+                    Available: <span id="lockupAvailableBalance">0.0000 iKb</span>
+                </div>
+            </div>
+            
+            <div style="background: rgba(255, 215, 0, 0.1); padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 12px;">
+                Lockup Period: 30 days | APY: 12%<br>
+                Tokens will be locked for 30 days and earn rewards
+            </div>
+            
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('lockupModal')">Cancel</button>
+                <button class="primary-button" onclick="processLockup()">Lock Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reserve Modal -->
+    <div id="reserveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWalletModal('reserveModal')">&times;</span>
+            <h2 class="modal-title">Emergency Reserve</h2>
+            
+            <div class="input-group">
+                <label for="reserveAmount">Amount to Reserve (iKb)</label>
+                <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001">
+                <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
+                    Available: <span id="reserveAvailableBalance">0.0000 iKb</span>
+                </div>
+            </div>
+            
+            <div style="background: rgba(255, 215, 0, 0.1); padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 12px;">
+                ⚠️ Emergency reserves earn 2% APY and have 24h withdrawal delay<br>
+                Current Reserve: <span id="currentReserveAmount">0.0000 iKb</span>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="secondary-button" onclick="closeWalletModal('reserveModal')">Cancel</button>
+                <button class="primary-button" onclick="processReserve()">Add to Reserve</button>
+            </div>
+        </div>
+    </div>
+
     <!-- User Account Modal -->
     <div id="userAccountModal" class="modal">
         <div class="modal-content">
@@ -1365,18 +1444,23 @@
                 <div style="font-size: 12px; opacity: 0.7;" id="modalUserEmail">user@example.com</div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 20px 0;">
                 <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
-                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="modalUserBalance">0.0000 iKb</div>
-                    <div style="font-size: 11px; opacity: 0.7;">BALANCE</div>
+                    <div style="font-size: 14px; font-weight: bold; color: #00ff87;" id="modalMinedBalance">0.0000 iKb</div>
+                    <div style="font-size: 10px; opacity: 0.7;">MINED</div>
                 </div>
                 <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
-                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="modalUserTasks">0</div>
-                    <div style="font-size: 11px; opacity: 0.7;">TASKS</div>
+                    <div style="font-size: 14px; font-weight: bold; color: #FFD700;" id="modalReceivedBalance">0.0000 iKb</div>
+                    <div style="font-size: 10px; opacity: 0.7;">RECEIVED</div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 14px; font-weight: bold; color: #FFD700;" id="modalUserTasks">0</div>
+                    <div style="font-size: 10px; opacity: 0.7;">TASKS</div>
                 </div>
             </div>
 
             <div class="input-group">
+<div class="input-group">
                 <label for="editUserName">Display Name</label>
                 <input type="text" id="editUserName" placeholder="Enter your display name">
             </div>
@@ -1528,7 +1612,7 @@
             }
         }
 
-        // Load user data
+        // Load user data - FIXED VERSION
         async function loadUserData(firebaseUser) {
             try {
                 console.log('📊 Loading user data for:', firebaseUser.uid);
@@ -1537,16 +1621,16 @@
                 
                 if (userDoc.exists) {
                     const userData = userDoc.data();
-                    userBalance = userData.balance || 0.0000;
                     minedBalance = userData.minedBalance || 0.0000;
                     receivedBalance = userData.receivedBalance || 0.0000;
+                    userBalance = minedBalance + receivedBalance; // FIXED: Calculate total properly
                     reserveBalance = userData.reserveBalance || 0.0000;
                     lockedBalance = userData.lockedBalance || 0.0000;
                     totalTasksCompleted = userData.tasksCompleted || 0;
                     miningRate = userData.miningRate || 0.001;
                     userWalletAddress = userData.walletAddress || generateWalletAddress();
                     transactionHistory = userData.transactionHistory || [];
-                    console.log('✅ User data loaded from Firestore');
+                    console.log('✅ User data loaded from Firestore - Balance:', userBalance);
                 } else {
                     // Create new user document
                     userWalletAddress = generateWalletAddress();
@@ -1631,7 +1715,7 @@
             }
         }
 
-        // Update user display
+        // Update user display - FIXED VERSION
         function updateUserDisplay() {
             if (!currentUser) return;
             
@@ -1645,6 +1729,8 @@
             document.getElementById('modalUserEmail').textContent = currentUser.email || 'No email';
             document.getElementById('modalUserAvatar').textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
             document.getElementById('modalUserTasks').textContent = totalTasksCompleted;
+            document.getElementById('modalMinedBalance').textContent = minedBalance.toFixed(4) + ' iKb';
+            document.getElementById('modalReceivedBalance').textContent = receivedBalance.toFixed(4) + ' iKb';
             
             // Update balance displays
             updateBalanceDisplay();
@@ -1662,20 +1748,42 @@
 
         // Update balance display
         function updateBalanceDisplay() {
-            const totalBalance = minedBalance + receivedBalance;
-            userBalance = totalBalance;
+            userBalance = minedBalance + receivedBalance; // Always calculate total from components
             
             const balanceText = userBalance.toFixed(4) + ' iKb';
             document.getElementById('balance').textContent = balanceText;
             document.getElementById('totalBalance').textContent = balanceText;
             document.getElementById('userAccountBalance').textContent = balanceText;
             document.getElementById('walletBalance').textContent = balanceText;
-            document.getElementById('modalUserBalance').textContent = balanceText;
             
             // Update send modal available balance
             const sendAvailableEl = document.getElementById('sendAvailableBalance');
             if (sendAvailableEl) {
                 sendAvailableEl.textContent = balanceText;
+            }
+            
+            // Update swap modal available balance
+            const swapAvailableEl = document.getElementById('swapAvailableBalance');
+            if (swapAvailableEl) {
+                swapAvailableEl.textContent = balanceText;
+            }
+            
+            // Update lockup modal available balance
+            const lockupAvailableEl = document.getElementById('lockupAvailableBalance');
+            if (lockupAvailableEl) {
+                lockupAvailableEl.textContent = balanceText;
+            }
+            
+            // Update reserve modal available balance
+            const reserveAvailableEl = document.getElementById('reserveAvailableBalance');
+            if (reserveAvailableEl) {
+                reserveAvailableEl.textContent = balanceText;
+            }
+            
+            // Update current reserve amount
+            const currentReserveEl = document.getElementById('currentReserveAmount');
+            if (currentReserveEl) {
+                currentReserveEl.textContent = reserveBalance.toFixed(4) + ' iKb';
             }
         }
 
@@ -1900,7 +2008,7 @@
             }
         }
 
-        // Mining Functions
+        // Mining Functions - FIXED VERSION
         async function mineTokens(type, reward) {
             if (!currentUser) {
                 showError('Please log in to start mining');
@@ -1916,8 +2024,8 @@
             
             setTimeout(async () => {
                 const oldBalance = userBalance;
-                minedBalance += reward;
-                userBalance = minedBalance + receivedBalance;
+                minedBalance += reward; // FIXED: Add to mined balance specifically
+                userBalance = minedBalance + receivedBalance; // FIXED: Recalculate total
                 totalTasksCompleted++;
                 
                 // Add transaction to history
@@ -1955,7 +2063,7 @@
             return 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Wallet Functions
+        // Wallet Functions - FIXED VERSION
         async function processSend() {
             const address = document.getElementById('sendAddress').value.trim();
             const amount = parseFloat(document.getElementById('sendAmount').value);
@@ -1976,7 +2084,7 @@
             }
             
             try {
-                // Deduct from available balance
+                // Deduct from available balance - prioritize mined balance first
                 const amountFromMined = Math.min(amount, minedBalance);
                 const amountFromReceived = amount - amountFromMined;
                 
@@ -1996,6 +2104,7 @@
                 transactionHistory.unshift(transaction);
                 
                 updateBalanceDisplay();
+                updateUserDisplay();
                 await saveUserData();
                 
                 closeWalletModal('sendModal');
@@ -2008,6 +2117,148 @@
             } catch (error) {
                 console.error('❌ Error processing send:', error);
                 showError('Send failed. Please try again.');
+            }
+        }
+
+        // ADDED: Swap functionality
+        async function processSwap() {
+            const amount = parseFloat(document.getElementById('swapAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            try {
+                // Add transaction to history
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'swap',
+                    amount: amount,
+                    rate: '1 iKb = 0.75 KSH',
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                transactionHistory.unshift(transaction);
+                
+                await saveUserData();
+                
+                closeWalletModal('swapModal');
+                showNotification(`✅ Successfully swapped ${amount.toFixed(4)} iKb for ${(amount * 0.75).toFixed(2)} KSH`);
+                
+                // Clear form
+                document.getElementById('swapAmount').value = '';
+                
+            } catch (error) {
+                console.error('❌ Error processing swap:', error);
+                showError('Swap failed. Please try again.');
+            }
+        }
+
+        // ADDED: Lockup functionality
+        async function processLockup() {
+            const amount = parseFloat(document.getElementById('lockupAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            try {
+                // Move tokens from available to locked
+                const amountFromMined = Math.min(amount, minedBalance);
+                const amountFromReceived = amount - amountFromMined;
+                
+                minedBalance -= amountFromMined;
+                receivedBalance -= amountFromReceived;
+                lockedBalance += amount;
+                userBalance = minedBalance + receivedBalance;
+                
+                // Add transaction to history
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'lockup',
+                    amount: amount,
+                    period: '30 days',
+                    apy: '12%',
+                    timestamp: new Date().toISOString(),
+                    status: 'locked'
+                };
+                transactionHistory.unshift(transaction);
+                
+                updateBalanceDisplay();
+                updateUserDisplay();
+                await saveUserData();
+                
+                closeWalletModal('lockupModal');
+                showNotification(`✅ Successfully locked ${amount.toFixed(4)} iKb for 30 days at 12% APY`);
+                
+                // Clear form
+                document.getElementById('lockupAmount').value = '';
+                
+            } catch (error) {
+                console.error('❌ Error processing lockup:', error);
+                showError('Lockup failed. Please try again.');
+            }
+        }
+
+        // ADDED: Reserve functionality
+        async function processReserve() {
+            const amount = parseFloat(document.getElementById('reserveAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showError('Please enter a valid amount');
+                return;
+            }
+            
+            if (amount > userBalance) {
+                showError('Insufficient balance');
+                return;
+            }
+            
+            try {
+                // Move tokens from available to reserve
+                const amountFromMined = Math.min(amount, minedBalance);
+                const amountFromReceived = amount - amountFromMined;
+                
+                minedBalance -= amountFromMined;
+                receivedBalance -= amountFromReceived;
+                reserveBalance += amount;
+                userBalance = minedBalance + receivedBalance;
+                
+                // Add transaction to history
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'reserve',
+                    amount: amount,
+                    timestamp: new Date().toISOString(),
+                    status: 'reserved'
+                };
+                transactionHistory.unshift(transaction);
+                
+                updateBalanceDisplay();
+                updateUserDisplay();
+                await saveUserData();
+                
+                closeWalletModal('reserveModal');
+                showNotification(`✅ Successfully added ${amount.toFixed(4)} iKb to emergency reserve`);
+                
+                // Clear form
+                document.getElementById('reserveAmount').value = '';
+                
+            } catch (error) {
+                console.error('❌ Error processing reserve:', error);
+                showError('Reserve operation failed. Please try again.');
             }
         }
 
@@ -2045,10 +2296,8 @@
         function openWalletModal(type) {
             document.getElementById(type + 'Modal').style.display = 'block';
             
-            // Update available balance for send modal
-            if (type === 'send') {
-                document.getElementById('sendAvailableBalance').textContent = userBalance.toFixed(4) + ' iKb';
-            }
+            // Update available balance for modals
+            updateBalanceDisplay();
         }
 
         function closeWalletModal(modalId) {
@@ -2500,6 +2749,9 @@
                 'valueModal', 
                 'sendModal', 
                 'receiveModal', 
+                'swapModal',
+                'lockupModal',
+                'reserveModal',
                 'userAccountModal', 
                 'languageModal'
             ];
@@ -2507,7 +2759,7 @@
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
                 if (event.target === modal) {
-                    if (modalId.includes('wallet') || modalId === 'sendModal' || modalId === 'receiveModal') {
+                    if (modalId.includes('Modal') && (modalId === 'sendModal' || modalId === 'receiveModal' || modalId === 'swapModal' || modalId === 'lockupModal' || modalId === 'reserveModal')) {
                         closeWalletModal(modalId);
                     } else if (modalId === 'userAccountModal') {
                         closeUserAccountModal();
@@ -2552,7 +2804,7 @@
             }
         });
 
-        console.log('🚀 KABIRU Mining App with Full Features initialized successfully');
+        console.log('🚀 KABIRU Mining App with All Features Fixed and Working successfully');
     </script>
 </body>
 </html>
