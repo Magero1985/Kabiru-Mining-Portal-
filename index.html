@@ -423,7 +423,34 @@
             background: linear-gradient(45deg, #ff6b6b, #ffa726);
             color: white;
         }
+.personal-ledger {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .ledger-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .ledger-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+            color: #FFD700;
+        }
         .stats-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1080,6 +1107,56 @@
                         <div class="stat-label">TASKS</div>
                     </div>
                 </div>
+           <!-- Tasks & Rewards Section -->
+            <div class="tasks-section">
+                <div class="tasks-header">
+                    <div class="tasks-title">Tasks</div>
+                    <div class="reward-info">Reward</div>
+                </div>
+                
+                <div class="task-categories">
+                    <div class="task-category" onclick="selectTask('mining')">
+                        <div class="category-title">iKb(M)</div>
+                        <div class="category-subtitle">Gen ledger</div>
+                    </div>
+                    <div class="task-category" onclick="selectTask('partnership')">
+                        <div class="category-title">iKb(P)</div>
+                        <div class="category-subtitle">Partnership</div>
+                    </div>
+                    <div class="task-category" onclick="selectTask('genledger')">
+                        <div class="category-title">iKb(GL)</div>
+                        <div class="category-subtitle">Gen ledger</div>
+                    </div>
+                </div>
+
+                <div class="value-categories">
+                    <div class="value-item" onclick="performTask('service')">Service<br><small>value</small></div>
+                    <div class="value-item" onclick="performTask('skill')">Skill<br><small>value</small></div>
+                    <div class="value-item" onclick="performTask('knowledge')">Knowledge<br><small>value</small></div>
+                </div>
+            </div>
+
+            <!-- Personal Ledger Section -->
+            <div class="personal-ledger">
+                <div class="ledger-grid">
+                    <div class="ledger-item">
+                        <div class="ledger-title">personal</div>
+                        <div>Ledger</div>
+                    </div>
+                    <div class="ledger-item">
+                        <div class="ledger-title">Generation</div>
+                        <div>Asset</div>
+                    </div>
+                    <div class="ledger-item">
+                        <div class="ledger-title">Information</div>
+                        <div>Asset</div>
+                    </div>
+                    <div class="ledger-item">
+                        <div class="ledger-title">iKb</div>
+                        <div>intelligent</div>
+                    </div>
+                </div>
+            </div>
 
                 <!-- Footer with Logout -->
                 <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
@@ -1602,37 +1679,91 @@
         </div>
     </div>
 
-    <!-- Language Modal -->
-    <div id="languageModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLanguageModal()">&times;</span>
-            <h2 class="modal-title">Select Language</h2>
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease;" onclick="selectLanguage('english')">
-                    <div style="font-size: 24px; margin-bottom: 8px;">🇺🇸</div>
-                    <div style="font-size: 12px; font-weight: bold; color: #FFD700;">English</div>
+    <!-- Language Selection Modal -->
+    <div id="languageModal" class="subcategory-modal">
+        <div class="subcategory-content">
+            <div class="subcategory-header">
+                <h2 class="subcategory-title">Select Language</h2>
+                <span class="close" onclick="closeLanguageModal()">&times;</span>
+            </div>
+            <div class="subcategory-grid">
+                <div class="subcategory-item" onclick="selectLanguage('english', 'English')">
+                    <span class="subcategory-item-icon">🇺🇸</span>
+                    <div class="subcategory-item-name">English</div>
+                    <div class="subcategory-item-desc">Default language</div>
                 </div>
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease;" onclick="selectLanguage('swahili')">
-                    <div style="font-size: 24px; margin-bottom: 8px;">🇰🇪</div>
-                    <div style="font-size: 12px; font-weight: bold; color: #FFD700;">Kiswahili</div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('swahili', 'Kiswahili')">
+                    <span class="subcategory-item-icon">🇰🇪</span>
+                    <div class="subcategory-item-name">Kiswahili</div>
+                    <div class="subcategory-item-desc">East Africa</div>
                 </div>
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease;" onclick="selectLanguage('french')">
-                    <div style="font-size: 24px; margin-bottom: 8px;">🇫🇷</div>
-                    <div style="font-size: 12px; font-weight: bold; color: #FFD700;">Français</div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('hausa', 'Hausa')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Hausa</div>
+                    <div class="subcategory-item-desc">West Africa</div>
                 </div>
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease;" onclick="selectLanguage('arabic')">
-                    <div style="font-size: 24px; margin-bottom: 8px;">🇪🇬</div>
-                    <div style="font-size: 12px; font-weight: bold; color: #FFD700;">العربية</div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('yoruba', 'Yorùbá')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Yorùbá</div>
+                    <div class="subcategory-item-desc">Nigeria, Benin</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('igbo', 'Igbo')">
+                    <span class="subcategory-item-icon">🇳🇬</span>
+                    <div class="subcategory-item-name">Igbo</div>
+                    <div class="subcategory-item-desc">Southeast Nigeria</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('amharic', 'አማርኛ')">
+                    <span class="subcategory-item-icon">🇪🇹</span>
+                    <div class="subcategory-item-name">Amharic</div>
+                    <div class="subcategory-item-desc">Ethiopia</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('arabic', 'العربية')">
+                    <span class="subcategory-item-icon">🇪🇬</span>
+                    <div class="subcategory-item-name">Arabic</div>
+                    <div class="subcategory-item-desc">North Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('french', 'Français')">
+                    <span class="subcategory-item-icon">🇫🇷</span>
+                    <div class="subcategory-item-name">Français</div>
+                    <div class="subcategory-item-desc">West/Central Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('zulu', 'isiZulu')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiZulu</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('xhosa', 'isiXhosa')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">isiXhosa</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('afrikaans', 'Afrikaans')">
+                    <span class="subcategory-item-icon">🇿🇦</span>
+                    <div class="subcategory-item-name">Afrikaans</div>
+                    <div class="subcategory-item-desc">South Africa</div>
+                </div>
+                
+                <div class="subcategory-item" onclick="selectLanguage('luganda', 'Luganda')">
+                    <span class="subcategory-item-icon">🇺🇬</span>
+                    <div class="subcategory-item-name">Luganda</div>
+                    <div class="subcategory-item-desc">Uganda</div>
                 </div>
             </div>
             <div style="text-align: center; margin-top: 20px; font-size: 12px; opacity: 0.7;">
-                More languages coming soon...
+                More European languages coming soon...
             </div>
         </div>
     </div>
-
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
 
     <script>
         // Global Variables
@@ -2528,6 +2659,26 @@
             document.getElementById(type + 'Modal').style.display = 'block';
             updateBalanceDisplay();
             
+        function selectTask(taskType) {
+            // Remove active class from all categories
+            document.querySelectorAll('.task-category').forEach(cat => {
+                cat.classList.remove('active');
+            });
+            // Add active class to selected
+            event.target.classList.add('active');
+            showNotification(`Selected ${taskType} task category`);
+        }
+
+        function performTask(valueType) {
+            const rewards = {
+                service: 0.0015,
+                skill: 0.0025,
+                knowledge: 0.0035
+            };
+            
+            mineTokens(`task-${valueType}`, rewards[valueType] || 0.0015);
+        }
+            
             // FIXED: Initialize swap modal properly
             if (type === 'swap') {
                 updateSwapPreview();
@@ -2839,35 +2990,168 @@
             }
         }
 
-        // Utility Functions
+       // Utility Functions
         function openUtilityModal(category) {
-            const utilityInfo = {
-                education: 'Educational platforms and courses for skill development',
-                transport: 'Transportation services including air, land, and water travel',
-                agriculture: 'Agricultural tools, seeds, and farming resources',
-                marketplace: 'Buy and sell goods and services in the community',
-                media: 'Entertainment, news, and media content',
-                realestate: 'Property buying, selling, and rental services',
-                climate: 'Weather monitoring and environmental data',
-                energy: 'Renewable energy solutions and resources',
-                workshops: 'Skills training and professional workshops',
-                resources: 'Digital tools, materials, and educational resources'
+            const subcategories = {
+                education: [
+                    { icon: '🎓', name: 'Universities', desc: 'Higher education institutions' },
+                    { icon: '📚', name: 'Online Courses', desc: 'Digital learning platforms' },
+                    { icon: '👶', name: 'Kindergarten', desc: 'Early childhood education' },
+                    { icon: '🏫', name: 'Schools', desc: 'Primary and secondary education' }
+                ],
+                transport: [
+                    { icon: '✈️', name: 'Airlines', desc: 'Air travel booking' },
+                    { icon: '🚗', name: 'Car Rental', desc: 'Vehicle rental services' },
+                    { icon: '🚌', name: 'Bus Travel', desc: 'Public transportation' },
+                    { icon: '🚢', name: 'Ships', desc: 'Maritime transport' }
+                ],
+                agriculture: [
+                    { icon: '🌱', name: 'Seeds', desc: 'Quality farming seeds' },
+                    { icon: '🚜', name: 'Equipment', desc: 'Agricultural machinery' },
+                    { icon: '🌾', name: 'Crops', desc: 'Crop management' },
+                    { icon: '💧', name: 'Irrigation', desc: 'Water management systems' }
+                ],
+                marketplace: [
+                    { icon: '🛍️', name: 'Shopping', desc: 'Buy and sell goods' },
+                    { icon: '🏪', name: 'Local Stores', desc: 'Community businesses' },
+                    { icon: '📱', name: 'Digital', desc: 'Online marketplace' },
+                    { icon: '🤝', name: 'Services', desc: 'Professional services' }
+                ]
             };
-            
-            showNotification(`${category.charAt(0).toUpperCase() + category.slice(1)}: ${utilityInfo[category] || 'Coming soon!'}`);
+
+            if (subcategories[category]) {
+                document.getElementById('subcategoryTitle').textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                const grid = document.getElementById('subcategoryGrid');
+                grid.innerHTML = '';
+                
+                subcategories[category].forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'subcategory-item';
+                    div.innerHTML = `
+                        <span class="subcategory-item-icon">${item.icon}</span>
+                        <div class="subcategory-item-name">${item.name}</div>
+                        <div class="subcategory-item-desc">${item.desc}</div>
+                    `;
+                    div.onclick = () => {
+                        showNotification(`Opening ${item.name}...`);
+                        closeSubcategoryModal();
+                    };
+                    grid.appendChild(div);
+                });
+                
+                document.getElementById('subcategoryModal').style.display = 'block';
+            } else {
+                showNotification(`${category} utilities coming soon!`);
+            }
         }
 
+        function closeSubcategoryModal() {
+            document.getElementById('subcategoryModal').style.display = 'none';
+        }
+
+        // Document Functions
         function showDocument(docType) {
             const documents = {
-                whitepaper: 'KABIRU Whitepaper: Technical documentation and project overview',
-                rules: 'Platform Rules: Community guidelines and usage policies',
-                terms: 'Terms of Service: Legal terms and conditions',
-                privacy: 'Privacy Policy: Data protection and privacy information',
-                roadmap: 'Project Roadmap: Timeline and future developments',
-                faq: 'FAQ: Frequently asked questions and answers'
+                whitepaper: {
+                    title: 'KABIRU Whitepaper',
+                    content: `
+                        <div class="version-info">Version 1.0 - Published January 2024</div>
+                        
+                        <div class="document-section-title">Executive Summary</div>
+                        <div class="document-text">
+                            KABIRU is a revolutionary value-based token mining ecosystem that enables individuals to mine cryptocurrency through meaningful contributions to their communities and society. Unlike traditional energy-intensive mining, KABIRU rewards users for creating real-world value through services, skills, knowledge sharing, and leadership.
+                        </div>
+                        
+                        <div class="document-section-title">Technology</div>
+                        <div class="document-text">
+                            Built on a sustainable blockchain architecture, KABIRU utilizes a Proof-of-Value consensus mechanism that validates contributions rather than computational power. The platform integrates Firebase authentication, real-time data synchronization, and cross-platform compatibility.
+                        </div>
+                        
+                        <div class="document-section-title">Tokenomics</div>
+                        <div class="document-text">
+                            Total Supply: 1,000,000,000 iKb tokens<br>
+                            Mining Distribution: 60% (600M tokens)<br>
+                            Core Team & Trust Fund: 20% (200M tokens)<br>
+                            Community Rewards(Ecosystem build): 15% (150M tokens)<br>
+                            Team & Advisors: 5% (50M tokens)
+                        </div>
+                        
+                        <div class="document-section-title">Roadmap</div>
+                        <div class="document-text">
+                            Q1 2025: Platform Launch & Beta Testing<br>
+                            Q2 2026: Mobile App Release<br>
+                            Q3 2027: Utility Integration<br>
+                            Q4 2030: Global Expansion
+                        </div>
+                    `
+                },
+                rules: {
+                    title: 'Platform Rules',
+                    content: `
+                        <div class="document-section-title">General Guidelines</div>
+                        <div class="document-text">
+                            1. Users must verify their identity through email or phone authentication<br>
+                            2. All mining activities must contribute genuine value to the community<br>
+                            3. Fraudulent or spam activities will result in account suspension<br>
+                            4. One account per person - multiple accounts are prohibited
+                        </div>
+                        
+                        <div class="document-section-title">Mining Rules</div>
+                        <div class="document-text">
+                            1. Mining rewards are distributed based on value contribution<br>
+                            2. Daily mining limits apply to prevent abuse<br>
+                            3. Mining sessions must be completed within specified timeframes<br>
+                            4. Quality of contribution affects reward multipliers
+                        </div>
+                        
+                        <div class="document-section-title">Community Standards</div>
+                        <div class="document-text">
+                            1. Respect all community members<br>
+                            2. No harassment, discrimination, or hate speech<br>
+                            3. Maintain professional conduct in all interactions<br>
+                            4. Report violations to the moderation team
+                        </div>
+                    `
+                },
+                terms: {
+                    title: 'Terms of Service',
+                    content: `
+                        <div class="document-section-title">Acceptance of Terms</div>
+                        <div class="document-text">
+                            By using KABIRU, you agree to these terms and conditions. If you disagree with any part of these terms, you may not use the service.
+                        </div>
+                        
+                        <div class="document-section-title">User Responsibilities</div>
+                        <div class="document-text">
+                            Users are responsible for maintaining the security of their accounts, providing accurate information, and complying with all applicable laws and regulations.
+                        </div>
+                        
+                        <div class="document-section-title">Service Availability</div>
+                        <div class="document-text">
+                            We strive to maintain 99.9% uptime but cannot guarantee uninterrupted service. Scheduled maintenance will be announced in advance.
+                        </div>
+                        
+                        <div class="document-section-title">Limitation of Liability</div>
+                        <div class="document-text">
+                            KABIRU is not liable for any indirect, incidental, or consequential damages arising from use of the platform.
+                        </div>
+                    `
+                }
             };
-            
-            showNotification(`${documents[docType] || 'Document coming soon!'}`);
+
+            if (documents[docType]) {
+                document.getElementById('documentTitle').textContent = documents[docType].title;
+                document.getElementById('documentContent').innerHTML = `
+                    <div class="document-title">${documents[docType].title}</div>
+                    ${documents[docType].content}
+                `;
+                
+                hideAllPages();
+                document.getElementById('miningApp').style.display = 'none';
+                document.getElementById('documentPage').style.display = 'block';
+            } else {
+                showNotification(`${docType} documentation coming soon!`);
+            }
         }
 
         // Language Functions
@@ -3030,4 +3314,4 @@
         console.log('🚀 KABIRU Mining App - All Issues Fixed and Ready!');
     </script>
 </body>
-    </html>
+                    </html>
