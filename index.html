@@ -1062,24 +1062,67 @@
                 </div>
 
                 <!-- Stats Section -->
-                <div class="stats-section">
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalBalance">0.0000 iKb</div>
-                        <div class="stat-label">TOTAL</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="miningStatus">Ready</div>
-                        <div class="stat-label">STATUS</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="networkSize">144,000</div>
-                        <div class="stat-label">NETWORK</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="tasksCompleted">0</div>
-                        <div class="stat-label">TASKS</div>
+            <div class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalBalance">0.0000 iKb</div>
+                    <div class="stat-label">TOTAL</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="miningStatus">Inactive</div>
+                    <div class="stat-label">My Status</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="networkSize">144,000</div>
+                    <div class="stat-label">Network size</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="tasksCompleted">0</div>
+                    <div class="stat-label">Tasks</div>
+                </div>
+            </div>
+
+            <!-- Tasks & Rewards Section -->
+            <div class="tasks-section">
+                <div class="tasks-header">
+                    <div class="tasks-title">Tasks</div>
+                    <div class="reward-info">Reward</div>
+                </div>
+                
+                <div class="task-categories">
+                    <div class="task-category" onclick="selectTask('mining')">
+                        <div class="category-title">iKb(M)</div>
+                        <div class="category-subtitle">Gen ledger</div>
                     </div>
                 </div>
+
+                <div class="value-categories">
+                    <div class="value-item" onclick="performTask('service')">Service<br><small>value</small></div>
+                    <div class="value-item" onclick="performTask('skill')">Skill<br><small>value</small></div>
+                    <div class="value-item" onclick="performTask('knowledge')">Knowledge<br><small>value</small></div>
+                </div>
+            </div>
+
+            <!-- Personal Ledger Section -->
+            <div class="personal-ledger">
+                <div class="ledger-grid">
+                    <div class="ledger-item">
+                        <div class="ledger-title">complete tasks</div>
+                        <div>to earn more kabiru</div>
+                    </div>
+                    <div class="ledger-item">
+                        <div class="ledger-title">investor wing</div>
+                        <div>click to buy kabiru</div>
+                    </div>
+                    <div class="ledger-item">
+                        <div class="ledger-title">Tau Africa Intl</div>
+                        <div>TALK & TASK</div>
+                    </div>
+                    <div class="ledger-item">
+                        <div class="ledger-title">AUFFI</div>
+                        <div>RESERVE BANK</div>
+                    </div>
+                </div>
+            </div>
 
                 <!-- Footer with Logout -->
                 <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
@@ -2838,37 +2881,154 @@
                 }
             }
         }
-
-        // Utility Functions
-        function openUtilityModal(category) {
-            const utilityInfo = {
-                education: 'Educational platforms and courses for skill development',
-                transport: 'Transportation services including air, land, and water travel',
-                agriculture: 'Agricultural tools, seeds, and farming resources',
-                marketplace: 'Buy and sell goods and services in the community',
-                media: 'Entertainment, news, and media content',
-                realestate: 'Property buying, selling, and rental services',
-                climate: 'Weather monitoring and environmental data',
-                energy: 'Renewable energy solutions and resources',
-                workshops: 'Skills training and professional workshops',
-                resources: 'Digital tools, materials, and educational resources'
-            };
+// Task functions
+        function selectTask(taskType) {
+            // Remove active class from all categories
+            document.querySelectorAll('.task-category').forEach(el => {
+                el.classList.remove('active');
+            });
             
-            showNotification(`${category.charAt(0).toUpperCase() + category.slice(1)}: ${utilityInfo[category] || 'Coming soon!'}`);
+            // Add active class to selected category
+            event.target.closest('.task-category').classList.add('active');
+            
+            showNotification(`Selected ${taskType} task category`);
         }
 
-        function showDocument(docType) {
-            const documents = {
-                whitepaper: 'KABIRU Whitepaper: Technical documentation and project overview',
-                rules: 'Platform Rules: Community guidelines and usage policies',
-                terms: 'Terms of Service: Legal terms and conditions',
-                privacy: 'Privacy Policy: Data protection and privacy information',
-                roadmap: 'Project Roadmap: Timeline and future developments',
-                faq: 'FAQ: Frequently asked questions and answers'
-            };
+        function performTask(taskType) {
+            isMinig = true;
+            showMiningIndicator();
             
-            showNotification(`${documents[docType] || 'Document coming soon!'}`);
+            setTimeout(() => {
+                const reward = Math.random() * 0.003 + 0.001; // Random reward between 0.001-0.004
+                userBalance += reward;
+                updateBalanceDisplay();
+                hideMiningIndicator();
+                showNotification(`${taskType} task completed! +${reward.toFixed(4)} iKb earned`);
+                incrementTasksCompleted();
+            }, 2000);
         }
+        // Utility functions
+        function openUtilityModal(utilityType) {
+            const modal = document.getElementById('subcategoryModal');
+            const title = document.getElementById('subcategoryTitle');
+            const grid = document.getElementById('subcategoryGrid');
+            
+            // Clear previous content
+            grid.innerHTML = '';
+            
+            // Set title and generate subcategories based on utility type
+            const utilities = {
+                education: {
+                    title: 'Education Services',
+                    items: [
+                        {icon: '📚', name: 'Online Courses', desc: 'Access premium courses'},
+                        {icon: '🎓', name: 'Universities', desc: 'Higher education'},
+                        {icon: '👨‍🏫', name: 'Tutoring', desc: 'Personal tutoring'},
+                        {icon: '📝', name: 'Certifications', desc: 'Professional certs'},
+                        {icon: '🔬', name: 'Research', desc: 'Academic research'},
+                        {icon: '📖', name: 'Libraries', desc: 'Resource libraries'}
+                    ]
+                },
+                transport: {
+                    title: 'Transportation Services',
+                    items: [
+                        {icon: '✈️', name: 'Airlines', desc: 'Flight bookings'},
+                        {icon: '🚗', name: 'Car Rental', desc: 'Vehicle rentals'},
+                        {icon: '🚌', name: 'Public Transit', desc: 'Bus & train tickets'},
+                        {icon: '🚲', name: 'Bike Sharing', desc: 'Bicycle rentals'},
+                        {icon: '🛵', name: 'Ride Sharing', desc: 'Taxi services'},
+                        {icon: '🚢', name: 'Marine', desc: 'Boat & ferry services'}
+                    ]
+                },
+                agriculture: {
+                    title: 'Agriculture Services',
+                    items: [
+                        {icon: '🌱', name: 'Seeds', desc: 'Premium seed varieties'},
+                        {icon: '🚜', name: 'Equipment', desc: 'Farm machinery'},
+                        {icon: '🌾', name: 'Crops', desc: 'Crop management'},
+                        {icon: '🐄', name: 'Livestock', desc: 'Animal farming'},
+                        {icon: '💧', name: 'Irrigation', desc: 'Water systems'},
+                        {icon: '🧪', name: 'Fertilizers', desc: 'Soil nutrients'}
+                    ]
+                },
+                marketplace: {
+                    title: 'Marketplace',
+                    items: [
+                        {icon: '🛍️', name: 'Shopping', desc: 'Online marketplace'},
+                        {icon: '🏪', name: 'Local Stores', desc: 'Neighborhood shops'},
+                        {icon: '🍔', name: 'Food Delivery', desc: 'Restaurant delivery'},
+                        {icon: '👕', name: 'Fashion', desc: 'Clothing & accessories'},
+                        {icon: '📱', name: 'Electronics', desc: 'Tech products'},
+                        {icon: '🏠', name: 'Home & Garden', desc: 'Home improvement'}
+                    ]
+                },
+                media: {
+                    title: 'TV & Media',
+                    items: [
+                        {icon: '📺', name: 'Live TV', desc: 'Television channels'},
+                        {icon: '🎬', name: 'Movies', desc: 'Film production},
+                        {icon: '🎵', name: 'Music', desc: 'Audio production},
+                        {icon: '📰', name: 'News', desc: 'Latest updates'},
+                        {icon: '🎮', name: 'Gaming', desc: 'Sports games'},
+                        {icon: '📻', name: 'Podcasts', desc: 'Audiovisual shows'}
+                    ]
+                },
+                realestate: {
+                    title: 'Real Estate',
+                    items: [
+                        {icon: '🏠', name: 'Buy', desc: 'Purchase property'},
+                        {icon: '🏘️', name: 'Rent', desc: 'Property rental'},
+                        {icon: '🏢', name: 'Commercial', desc: 'Business properties'},
+                        {icon: '🏡', name: 'Residential', desc: 'Home properties'},
+                        {icon: '🏗️', name: 'Construction', desc: 'Building services'},
+                        {icon: '💰', name: 'Investment', desc: 'Property investment'}
+                    ]
+                },
+                climate: {
+                    title: 'Climate Services',
+                    items: [
+                        {icon: '🌡️', name: 'Weather', desc: 'Weather forecasts'},
+                        {icon: '🌍', name: 'Environment', desc: 'Environmental data'},
+                        {icon: '🌊', name: 'Ocean', desc: 'Marine conditions'},
+                        {icon: '🌪️', name: 'Disasters', desc: 'Natural disasters'},
+                        {icon: '📊', name: 'Analytics', desc: 'Climate analysis'},
+                        {icon: '🛰️', name: 'Research, desc: 'Research climate}
+                    ]
+                },
+                energy: {
+                    title: 'Free Energy',
+                    items: [
+                        {icon: '☀️', name: 'Solar', desc: 'Solar power systems'},
+                        {icon: '💨', name: 'Wind', desc: 'Wind energy'},
+                        {icon: '💧', name: 'Hydro', desc: 'Water power'},
+                        {icon: '🔋', name: 'Battery', desc: 'Energy storage'},
+                        {icon: '⚡', name: 'Grid', desc: 'Smart grid services'},
+                        {icon: '🌱', name: 'Biomass', desc: 'Organic energy'}
+                    ]
+                },
+                workshops: {
+                    title: 'Workshops',
+                    items: [
+                        {icon: '🔨', name: 'Carpentry', desc: 'Woodworking skills'},
+                        {icon: '⚡', name: 'Electronics', desc: 'repair, Circuit building'},
+                        {icon: '🎨', name: 'Arts & Crafts', desc: 'Creative fine Arts'},
+                        {icon: '💻', name: 'Programming', desc: 'Coding, bootcamps'},
+                        {icon: '🍳', name: 'Cooking', desc: 'Culinary classes'},
+                        {icon: '🧵', name: 'Sewing', desc: 'Textile skills'}
+                    ]
+                },
+                resources: {
+                    title: 'Resources',
+                    items: [
+                        {icon: '📚', name: 'Documents', desc: 'Document templates'},
+                        {icon: '🔧', name: 'Tools', desc: 'physical-Digital tools'},
+                        {icon: '💾', name: 'Software', desc: 'software Applications'},
+                        {icon: '🎨', name: 'Graphics', desc: 'Design resources'},
+                        {icon: '📊', name: 'Data', desc: 'Datasets'},
+                        {icon: '🔍', name: 'Research', desc: 'Research tools'}
+                    ]
+                }
+            };
 
         // Language Functions
         function showLanguageModal() {
