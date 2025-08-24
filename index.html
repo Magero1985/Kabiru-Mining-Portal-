@@ -481,6 +481,90 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+          .tasks-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .tasks-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .reward-info {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .task-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-category {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 8px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .task-category:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+        }
+
+        .task-category.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+        }
+
+        .category-title {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .category-subtitle {
+            font-size: 9px;
+            opacity: 0.7;
+        }
+
+        .value-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .value-item {
+            background: rgba(0, 255, 135, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .value-item:hover {
+            background: rgba(0, 255, 135, 0.2);
+        }
 
         /* User Account Section */
         .user-account-section {
