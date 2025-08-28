@@ -3401,24 +3401,84 @@ function openTransport() {
             }
         });
         console.log('🚀 KABIRU Mining App - All Issues Fixed and Ready!');
-        document.addEventListener('DOMContentLoaded', function() {
-    // Auto-detect and bind education buttons
-    const buttons = document.querySelectorAll('button, a, div[onclick]');
-    buttons.forEach(button => {
-        if (button.textContent.toLowerCase().includes('education')) {
-            button.addEventListener('click', function(e) {
+    <script>
+console.log('Integration script starting...');
+
+// Simple test functions
+window.openEducationService = function() {
+    alert('Education service clicked! Creating overlay...');
+    
+    const overlay = document.createElement('div');
+    overlay.innerHTML = `
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; display: flex; flex-direction: column;">
+            <div style="background: linear-gradient(135deg, #FF4500, #87CEEB); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center;">
+                <h2>TACEP Education Services</h2>
+                <button onclick="this.closest('div').remove(); document.body.style.overflow='auto';" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer;">× Close</button>
+            </div>
+            <iframe src="tacep-education.html" style="flex: 1; border: none; background: white;"></iframe>
+        </div>
+    `;
+    document.body.appendChild(overlay.firstElementChild);
+    document.body.style.overflow = 'hidden';
+};
+
+window.openTransportService = function() {
+    alert('Transport service clicked! Creating overlay...');
+    
+    const overlay = document.createElement('div');
+    overlay.innerHTML = `
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; display: flex; flex-direction: column;">
+            <div style="background: linear-gradient(135deg, #7dd3fc, #8b5cf6); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center;">
+                <h2>VALENTOR Transport Services</h2>
+                <button onclick="this.closest('div').remove(); document.body.style.overflow='auto';" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer;">× Close</button>
+            </div>
+            <iframe src="valentor-transport.html" style="flex: 1; border: none; background: white;"></iframe>
+        </div>
+    `;
+    document.body.appendChild(overlay.firstElementChild);
+    document.body.style.overflow = 'hidden';
+};
+
+// Wait for page to load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, searching for buttons...');
+    
+    // Find all clickable elements
+    const elements = document.querySelectorAll('*');
+    let found = 0;
+    
+    elements.forEach(function(el) {
+        const text = (el.textContent || '').toLowerCase();
+        
+        if (text.includes('education')) {
+            console.log('Found education element:', el);
+            el.style.cursor = 'pointer';
+            el.onclick = function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 openEducationService();
-            });
+            };
+            found++;
         }
-        if (button.textContent.toLowerCase().includes('transport')) {
-            button.addEventListener('click', function(e) {
+        
+        if (text.includes('transport')) {
+            console.log('Found transport element:', el);
+            el.style.cursor = 'pointer';
+            el.onclick = function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 openTransportService();
-            });
+            };
+            found++;
         }
     });
+    
+    console.log('Total buttons found and modified:', found);
+    
+    if (found === 0) {
+        console.error('No education or transport buttons found! Check if your buttons contain these words.');
+    }
 });
-    </script>
+</script>
 </body>
                     </html>
