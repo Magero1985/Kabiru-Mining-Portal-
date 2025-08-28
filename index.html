@@ -3400,6 +3400,24 @@ function openTransport() {
                 }
             }
         });
+        document.addEventListener('DOMContentLoaded', function() {
+    // Auto-detect and bind education buttons
+    const buttons = document.querySelectorAll('button, a, div[onclick]');
+    buttons.forEach(button => {
+        if (button.textContent.toLowerCase().includes('education')) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                openEducationService();
+            });
+        }
+        if (button.textContent.toLowerCase().includes('transport')) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                openTransportService();
+            });
+        }
+    });
+});
 
         console.log('🚀 KABIRU Mining App - All Issues Fixed and Ready!');
     </script>
