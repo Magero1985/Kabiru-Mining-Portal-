@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TACEP EDUCATION SERVICES - VALENTOR HOLDINGS</title>
+    <style>
+        :root {
+            --orange: #FF4500;
+            --strong-orange: #FF6B00;
+            --sky-blue: #87CEEB;
+            --strong-sky-blue: #00BFFF;
+            --deep-blue: #4682B4;
+            --black: #1a1a1a;
+            --white: #FFFFFF;
+            --green: #28a745;
+            --gradient-main: linear-gradient(180deg, var(--strong-orange) 0%, var(--orange) 25%, var(--sky-blue) 75%, var(--strong-sky-blue) 100%);
+            --gradient-card: linear-gradient(135deg, var(--orange) 0%, var(--sky-blue) 50%, var(--strong-sky-blue) 100%);
+            --gradient-investor: linear-gradient(135deg, var(--green) 0%, var(--deep-blue) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--black);
+            background: var(--gradient-main);
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 0; }
+            51%, 100% { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--gradient-card);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border: 3px solid var(--strong-orange);
+        }
+
+        .content-card {
+            background: rgba(255,255,255,0.95);
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 3px solid var(--sky-blue);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--black);
+            font-size: 1.1em;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 3px solid var(--sky-blue);
+            border-radius: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--strong-orange);
+            transform: scale(1.02);
+        }
+
+        .btn {
+            background: var(--gradient-card);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn-investor {
+            background: var(--gradient-investor);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 15px 25px;
+            background: var(--gradient-card);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            padding: 20px;
+            background: var(--gradient-card);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.investor-btn {
+            background: var(--gradient-investor);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-card);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: none;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .course-card {
+            background: var(--gradient-card);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: var(--gradient-card);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .kabiru-info-box {
+            background: linear-gradient(135deg, var(--strong-sky-blue), var(--strong-orange));
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .messaging-container {
+            display: flex;
+            height: 70vh;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .chat-sidebar {
+            width: 300px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 2px solid var(--sky-blue);
+        }
+
+        .chat-main {
+            flex: 1;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid var(--sky-blue);
+        }
+
+        .chat-header {
+            background: var(--gradient-card);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            min-height: 300px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            background: var(--gradient-card);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .message.received {
+            background: white;
+            border: 2px solid var(--sky-blue);
+        }
+
+        .message-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--sky-blue);
+            border-radius: 25px;
+            outline: none;
+        }
+
+        .message-input button {
+            padding: 12px 20px;
+            background: var(--gradient-card);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .room-list {
+            list-style: none;
+        }
+
+        .room-list li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .room-list li:hover, .room-list li.active {
+            background: var(--gradient-card);
+            color: white;
+        }
+
+        .partner-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .partner-card {
+            background: rgba(255,255,255,0.9);
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid var(--sky-blue);
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--strong-orange);
+        }
+
+        .partner-card.selected {
+            border-color: var(--green);
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .investor-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: var(--gradient-investor);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .messaging-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .chat-sidebar {
+                width: 100%;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="page active">
+        <div class="container">
+            <div class="login-container">
+                <div class="header" style="margin-bottom: 30px;">
+                    <h1 style="font-size: 2.5em;">TACEP EDUCATION SERVICES</h1>
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">VALENTOR HOLDINGS</p>
+                    <p style="font-size: 1em;">Secure Login Portal</p>
+                </div>
+
+                <form id="loginForm">
+                    <h2 style="text-align: center; margin-bottom: 30px; color: var(--black);">Welcome Back!</h2>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="loginEmail" name="email" required placeholder="Enter your registered email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" name="password" required placeholder="Enter your password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Account Type</label>
+                        <select name="accountType" required>
+                            <option value="">Select Account Type</option>
+                            <option value="student">Student Account</option>
+                            <option value="teacher">Teacher Account</option>
+                            <option value="investor">TACEP Investor</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn">Login to Dashboard</button>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p>New to TACEP? <a href="#" onclick="showPage('main-page')" style="color: var(--strong-orange); text-decoration: none; font-weight: bold;">Register Here</a></p>
+                    </div>
+                    
+                    <div style="background: rgba(0,0,0,0.1); padding: 15px; border-radius: 10px; margin-top: 20px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--black);">Demo Accounts:</p>
+                        <p style="font-size: 0.8em; color: var(--black);">Student: demo@student.com | Password: demo123</p>
+                        <p style="font-size: 0.8em; color: var(--black);">Teacher: demo@teacher.com | Password: demo123</p>
+                        <p style="font-size: 0.8em; color: var(--black);">Investor: demo@investor.com | Password: demo123</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Page -->
+    <div id="main-page" class="page">
+        <button class="back-btn" onclick="showPage('login-page')" style="display: none;">Back to Login</button>
+        
+        <div class="container">
+            <header class="header">
+                <h1>TACEP EDUCATION SERVICES</h1>
+                <p style="font-size: 1.3em; margin-bottom: 10px;">VALENTOR HOLDINGS - Excellence in Technical Education</p>
+                <p style="font-size: 1.1em;">Spine Road, KC Market, Eastland Nairobi | NiTA Registered Training Center</p>
+            </header>
+
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="showPage('student-registration-page')">
+                    Student Registration<br>
+                    <small>Register & Start Earning Kabiru Points</small>
+                </button>
+                <button class="nav-btn" onclick="showPage('teacher-registration-page')">
+                    Teacher Registration<br>
+                    <small>Apply to Teach & Build Network</small>
+                </button>
+                <button class="nav-btn investor-btn" onclick="showPage('investor-registration-page')">
+                    Investor Registration<br>
+                    <small>Support Education & Monitor Growth</small>
+                </button>
+                <button class="nav-btn" onclick="showPage('courses-page')">
+                    Available Courses<br>
+                    <small>Explore All Training Programs</small>
+                </button>
+                <button class="nav-btn" onclick="showPage('student-dashboard-page')">
+                    Student Dashboard<br>
+                    <small>Access Your Learning Portal</small>
+                </button>
+                <button class="nav-btn" onclick="showPage('teacher-dashboard-page')">
+                    Teacher Dashboard<br>
+                    <small>Manage Students & Materials</small>
+                </button>
+                <button class="nav-btn investor-btn" onclick="showPage('investor-dashboard-page')">
+                    Investor Dashboard<br>
+                    <small>Monitor Metrics & ROI</small>
+                </button>
+                <button class="nav-btn" onclick="showPage('messaging-page')">
+                    Messaging Center<br>
+                    <small>Connect with Community</small>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Registration Page -->
+    <div id="student-registration-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+            <div class="content-card">
+                <h2>Student Registration & Learning Path Selection</h2>
+                
+                <form id="studentForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Learning Platform</label>
+                        <select name="learningPlatform" required onchange="togglePartnerOptions(this.value)">
+                            <option value="">Select Learning Platform</option>
+                            <option value="tacep">Continue with TACEP Center</option>
+                            <option value="external">Join External Partner Schools</option>
+                        </select>
+                    </div>
+
+                    <div id="tacep-options" style="display: none;">
+                        <div class="form-group">
+                            <label>Learning Mode</label>
+                            <select name="learningMode">
+                                <option value="">Select Mode</option>
+                                <option value="online">Online Courses</option>
+                                <option value="physical">Physical Classes</option>
+                                <option value="hybrid">Hybrid (Online + Physical)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="partner-options" style="display: none;">
+                        <h3 style="margin: 20px 0; color: var(--deep-blue);">Select External Partner School</h3>
+                        <div class="partner-selection">
+                            <div class="partner-card" onclick="selectPartner('kenyatta-university')">
+                                <h4>Kenyatta University</h4>
+                                <p>Bachelor's & Master's Programs</p>
+                                <p><strong>Location:</strong> Nairobi, Kenya</p>
+                                <input type="radio" name="partnerSchool" value="kenyatta-university" style="display: none;">
+                            </div>
+                            <div class="partner-card" onclick="selectPartner('strathmore-university')">
+                                <h4>Strathmore University</h4>
+                                <p>Technology & Business Programs</p>
+                                <p><strong>Location:</strong> Nairobi, Kenya</p>
+                                <input type="radio" name="partnerSchool" value="strathmore-university" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select name="country" required>
+                            <option value="">Select Country</option>
+                            <option value="kenya">Kenya</option>
+                            <option value="uganda">Uganda</option>
+                            <option value="tanzania">Tanzania</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Register & Get 50 Kabiru Points</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Registration Page -->
+    <div id="teacher-registration-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+            <div class="content-card">
+                <h2>Teacher Registration & Application</h2>
+                
+                <form id="teacherForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Teaching Experience (Years)</label>
+                        <input type="number" name="experience" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Specialization Areas</label>
+                        <select name="specialization" required>
+                            <option value="">Select Specialization</option>
+                            <option value="programming">Computer Programming</option>
+                            <option value="electronics">Electronics & Electrical</option>
+                            <option value="textile">Textile & Tailoring</option>
+                            <option value="carpentry">Carpentry & Woodwork</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Apply as Teacher</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investor Registration Page -->
+    <div id="investor-registration-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+            <div class="content-card">
+                <h2>TACEP Investor Registration</h2>
+                
+                <form id="investorForm">
+                    <div class="form-group">
+                        <label>Full Name / Company Name</label>
+                        <input type="text" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Investment Amount (KSH)</label>
+                        <select name="investmentAmount" required>
+                            <option value="">Select Investment Range</option>
+                            <option value="50000-200000">KSH 50,000 - 200,000</option>
+                            <option value="200000-500000">KSH 200,000 - 500,000</option>
+                            <option value="500000+">KSH 500,000+</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-investor">Register as TACEP Investor</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses Page -->
+    <div id="courses-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+            <div class="content-card">
+                <h2>Available Courses</h2>
+                
+                <div class="course-grid">
+                    <div class="course-card">
+                        <h4>Computer Programming</h4>
+                        <div style="background: var(--strong-orange); padding: 8px; border-radius: 10px; margin: 15px 0;">3 Months Course</div>
+                        <p>Website & App Development, Software Engineering</p>
+                        <p><strong>Earn:</strong> 200 Kabiru Points</p>
+                        <button class="btn" style="margin-top: 15px;">Enroll Now</button>
+                    </div>
+                    <div class="course-card">
+                        <h4>Electronics & Electrical</h4>
+                        <div style="background: var(--strong-orange); padding: 8px; border-radius: 10px; margin: 15px 0;">6 Months Course</div>
+                        <p>Installation, Repair & Maintenance</p>
+                        <p><strong>Earn:</strong> 300 Kabiru Points</p>
+                        <button class="btn" style="margin-top: 15px;">Enroll Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard Page -->
+    <div id="student-dashboard-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+            <div class="content-card">
+                <h2>Student Dashboard</h2>
+                
+                <div id="student-login-required" style="text-align: center; padding: 40px;">
+                    <h3>Authentication Required</h3>
+                    <p>Please login through the main portal to access your student dashboard.</p>
+                    <button class="btn" onclick="showPage('login-page')">Go to Login</button>
+                </div>
+
+                <div id="student-dashboard-content" style="display: none;">
+                    <div class="kabiru-info-box">
+                        <h3>Your Kabiru Points: <span id="studentKabiruPoints">150</span></h3>
+                        <p>Earn more points through course completion and referrals!</p>
+                    </div>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>3</h3>
+                            <p>Enrolled Courses</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>85%</h3>
+                            <p>Average Progress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Dashboard Page -->
+    <div id="teacher-dashboard-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+            <div class="content-card">
+                <h2>Teacher Dashboard</h2>
+                
+                <div id="teacher-login-required" style="text-align: center; padding: 40px;">
+                    <h3>Authentication Required</h3>
+                    <p>Please login through the main portal to access your teacher dashboard.</p>
+                    <button class="btn" onclick="showPage('login-page')">Go to Login</button>
+                </div>
+
+                <div id="teacher-dashboard-content" style="display: none;">
+                    <div class="kabiru-info-box">
+                        <h3>Your Kabiru Points: <span id="teacherKabiruPoints">750</span></h3>
+                        <p>Earned through teaching and networking!</p>
+                    </div>
+
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>24</h3>
+                            <p>Active Students</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>5</h3>
+                            <p>Courses Teaching</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investor Dashboard Page -->
+    <div id="investor-dashboard-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+            <div class="content-card">
+                <h2>Investor Dashboard</h2>
+                
+                <div id="investor-login-required" style="text-align: center; padding: 40px;">
+                    <h3>Authentication Required</h3>
+                    <p>Please login through the main portal to access your investor dashboard.</p>
+                    <button class="btn" onclick="showPage('login-page')">Go to Login</button>
+                </div>
+
+                <div id="investor-dashboard-content" style="display: none;">
+                    <div class="kabiru-info-box">
+                        <h3>Investment Portfolio Overview</h3>
+                        <p>Total Portfolio Value: <strong>KSH 2,850,000</strong> | Active ROI: <strong>18.5%</strong></p>
+                    </div>
+
+                    <div class="investor-metrics">
+                        <div class="metric-card">
+                            <h3>KSH 500,000</h3>
+                            <p>Active Investments</p>
+                            <small>Across 3 programs</small>
+                        </div>
+                        <div class="metric-card">
+                            <h3>KSH 150,000</h3>
+                            <p>Pending Investments</p>
+                            <small>Awaiting approval</small>
+                        </div>
+                        <div class="metric-card">
+                            <h3>KSH 85,000</h3>
+                            <p>Monthly Returns</p>
+                            <small>+12% vs last month</small>
+                        </div>
+                        <div class="metric-card">
+                            <h3>247</h3>
+                            <p>Students Impacted</p>
+                            <small>Direct beneficiaries</small>
+                        </div>
+                    </div>
+
+                    <div class="content-card" style="margin-top: 20px;">
+                        <h3>Investment Breakdown</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 20px; border-radius: 15px;">
+                                <h4>Computer Programming Track</h4>
+                                <p><strong>Investment:</strong> KSH 200,000</p>
+                                <p><strong>Students:</strong> 85 enrolled</p>
+                                <p><strong>ROI:</strong> 22.3%</p>
+                                <p><strong>Status:</strong> Active</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 20px; border-radius: 15px;">
+                                <h4>Electronics & Electrical</h4>
+                                <p><strong>Investment:</strong> KSH 180,000</p>
+                                <p><strong>Students:</strong> 67 enrolled</p>
+                                <p><strong>ROI:</strong> 19.8%</p>
+                                <p><strong>Status:</strong> Active</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #ffc107, #e0a800); color: white; padding: 20px; border-radius: 15px;">
+                                <h4>Textile & Tailoring</h4>
+                                <p><strong>Investment:</strong> KSH 120,000</p>
+                                <p><strong>Students:</strong> 42 enrolled</p>
+                                <p><strong>ROI:</strong> 15.2%</p>
+                                <p><strong>Status:</strong> Active</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #dc3545, #c82333); color: white; padding: 20px; border-radius: 15px;">
+                                <h4>Carpentry Program</h4>
+                                <p><strong>Investment:</strong> KSH 150,000</p>
+                                <p><strong>Students:</strong> 28 enrolled</p>
+                                <p><strong>ROI:</strong> Pending</p>
+                                <p><strong>Status:</strong> Under Review</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card" style="margin-top: 20px;">
+                        <h3>Investment Commitment Documents</h3>
+                        <div style="background: rgba(0,0,0,0.05); padding: 20px; border-radius: 10px;">
+                            <div style="display: grid; gap: 15px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <div>
+                                        <h4>Programming Track Investment Agreement</h4>
+                                        <p>Signed: March 15, 2024 | Amount: KSH 200,000</p>
+                                    </div>
+                                    <button class="btn" style="width: auto; padding: 8px 15px; font-size: 14px;">View PDF</button>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <div>
+                                        <h4>Electronics Program Partnership</h4>
+                                        <p>Signed: April 2, 2024 | Amount: KSH 180,000</p>
+                                    </div>
+                                    <button class="btn" style="width: auto; padding: 8px 15px; font-size: 14px;">View PDF</button>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <div>
+                                        <h4>Textile Department Expansion</h4>
+                                        <p>Signed: May 10, 2024 | Amount: KSH 120,000</p>
+                                    </div>
+                                    <button class="btn" style="width: auto; padding: 8px 15px; font-size: 14px;">View PDF</button>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(220, 53, 69, 0.1); border-radius: 8px; border: 2px dashed #dc3545;">
+                                    <div>
+                                        <h4>Carpentry Workshop Setup</h4>
+                                        <p>Pending Signature | Amount: KSH 150,000</p>
+                                    </div>
+                                    <button class="btn" style="width: auto; padding: 8px 15px; font-size: 14px; background: #dc3545;">Sign Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card" style="margin-top: 20px;">
+                        <h3>Performance Analytics</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                            <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #28a745, #20c997); color: white; border-radius: 10px;">
+                                <h4>92%</h4>
+                                <p>Student Completion Rate</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #007bff, #0056b3); color: white; border-radius: 10px;">
+                                <h4>87%</h4>
+                                <p>Job Placement Rate</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #ffc107, #e0a800); color: white; border-radius: 10px;">
+                                <h4>4.8/5</h4>
+                                <p>Student Satisfaction</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #17a2b8, #138496); color: white; border-radius: 10px;">
+                                <h4>KSH 45K</h4>
+                                <p>Avg. Graduate Salary</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Messaging Page -->
+    <div id="messaging-page" class="page">
+        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
+        
+        <div class="container">
+                <div class="content-card">
+                <h2>TACEP EDUCATION SERVICES Messaging Center</h2>
+                
+                <div id="messaging-login-required" style="text-align: center; padding: 40px;">
+                    <h3>Authentication Required</h3>
+                    <p>Please login to access the messaging system.</p>
+                    <button class="btn" onclick="showPage('login-page')">Go to Login</button>
+                </div>
+
+                <div id="messaging-content" style="display: none;">
+                    <div class="messaging-container">
+                        <div class="chat-sidebar">
+                            <h3>Available Rooms</h3>
+                            <ul class="room-list" id="roomList">
+                                <li onclick="switchRoom('general')" data-room="general">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <strong>General Discussion</strong>
+                                            <div style="font-size: 0.8em; color: #666;">All members welcome</div>
+                                        </div>
+                                        <span style="background: var(--green); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7em;">6 online</span>
+                                    </div>
+                                </li>
+                                <li onclick="switchRoom('student-lounge')" data-room="student-lounge">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <strong>Student Lounge</strong>
+                                            <div style="font-size: 0.8em; color: #666;">Study groups & peer help</div>
+                                        </div>
+                                        <span style="background: var(--strong-orange); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7em;">12 online</span>
+                                    </div>
+                                </li>
+                                <li onclick="switchRoom('teacher-staff-room')" data-room="teacher-staff-room">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <strong>Teacher Staff Room</strong>
+                                            <div style="font-size: 0.8em; color: #666;">Faculty collaboration</div>
+                                        </div>
+                                        <span style="background: var(--deep-blue); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7em;">5 online</span>
+                                    </div>
+                                </li>
+                                <li onclick="switchRoom('investor-boardroom')" data-room="investor-boardroom">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <strong>Investor Boardroom</strong>
+                                            <div style="font-size: 0.8em; color: #666;">Strategic discussions</div>
+                                        </div>
+                                        <span style="background: var(--green); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7em;">3 online</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="chat-main">
+                            <div class="chat-header">
+                                <h3 id="currentRoomName">Select a room to start chatting</h3>
+                                <p id="currentRoomDescription">Choose from available rooms</p>
+                            </div>
+                            
+                            <div class="chat-messages" id="chatMessages">
+                                <div style="text-align: center; color: #666; margin-top: 100px;">
+                                    Select a room to view messages
+                                </div>
+                            </div>
+                            
+                            <div class="message-input">
+                                <input type="text" id="messageInput" placeholder="Type your message..." disabled>
+                                <button onclick="sendMessage()" id="sendButton" disabled>Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Application State
+        let appState = {
+            currentUser: null,
+            currentPage: 'login-page',
+            currentRoom: null,
+            users: {
+                students: [],
+                teachers: [],
+                investors: []
+            },
+            demoAccounts: {
+                'demo@student.com': { 
+                    type: 'student', 
+                    name: 'Demo Student', 
+                    kabiruPoints: 150,
+                    password: 'demo123'
+                },
+                'demo@teacher.com': { 
+                    type: 'teacher', 
+                    name: 'Demo Teacher', 
+                    kabiruPoints: 750,
+                    password: 'demo123'
+                },
+                'demo@investor.com': { 
+                    type: 'investor', 
+                    name: 'Demo Investor', 
+                    kabiruPoints: 500,
+                    password: 'demo123'
+                }
+            },
+            messages: {
+                'general': [
+                    { user: 'System', message: 'Welcome to TACEP General Discussion!', timestamp: new Date(Date.now() - 3600000), type: 'system' },
+                    { user: 'John Kamau', message: 'Hello everyone! Just enrolled in the programming course. Excited to start learning!', timestamp: new Date(Date.now() - 3500000), type: 'received' },
+                    { user: 'Mary Wanjiku', message: 'Welcome John! The programming track is amazing. Feel free to ask any questions.', timestamp: new Date(Date.now() - 3300000), type: 'received' },
+                    { user: 'Samuel Otieno', message: 'Has anyone completed the electronics course? Looking for feedback.', timestamp: new Date(Date.now() - 3000000), type: 'received' },
+                    { user: 'Grace Achieng', message: 'Yes Sam! Completed it last month. The practical sessions are very hands-on.', timestamp: new Date(Date.now() - 2800000), type: 'received' },
+                    { user: 'Admin', message: 'New batch of textile courses starting next week. Registration is now open!', timestamp: new Date(Date.now() - 1800000), type: 'system' }
+                ],
+                'student-lounge': [
+                    { user: 'System', message: 'Student Lounge - Connect with fellow learners!', timestamp: new Date(Date.now() - 3600000), type: 'system' },
+                    { user: 'Peter Mwangi', message: 'Study group for programming module 3 anyone? Meeting at TACEP library tomorrow 2PM', timestamp: new Date(Date.now() - 3400000), type: 'received' },
+                    { user: 'Faith Njeri', message: 'Count me in! I need help with JavaScript functions.', timestamp: new Date(Date.now() - 3200000), type: 'received' },
+                    { user: 'David Ochieng', message: 'Great idea Peter! I will bring my laptop and notes.', timestamp: new Date(Date.now() - 3000000), type: 'received' },
+                    { user: 'Ann Muthoni', message: 'Quick question: Has anyone finished the HTML/CSS assignment? Struggling with responsive design.', timestamp: new Date(Date.now() - 2500000), type: 'received' },
+                    { user: 'James Kiprotich', message: '@Ann Use flexbox or CSS Grid. I can share some resources if needed.', timestamp: new Date(Date.now() - 2300000), type: 'received' },
+                    { user: 'Ruth Wangari', message: 'Electronics lab session was amazing today! We built working circuits.', timestamp: new Date(Date.now() - 1500000), type: 'received' }
+                ],
+                'teacher-staff-room': [
+                    { user: 'System', message: 'Teacher Staff Room - Collaborate with colleagues.', timestamp: new Date(Date.now() - 3600000), type: 'system' },
+                    { user: 'Prof. Jane Mutua', message: 'Staff meeting reminder: Curriculum review session this Friday 10AM', timestamp: new Date(Date.now() - 3400000), type: 'received' },
+                    { user: 'Eng. Michael Omondi', message: 'Programming students are showing excellent progress. 85% completion rate so far.', timestamp: new Date(Date.now() - 3100000), type: 'received' },
+                    { user: 'Ms. Catherine Waweru', message: 'Need more practical equipment for electronics lab. Current demand is high.', timestamp: new Date(Date.now() - 2900000), type: 'received' },
+                    { user: 'Mr. Joseph Kariuki', message: 'Textile department received new industrial machines. Training scheduled for next week.', timestamp: new Date(Date.now() - 2600000), type: 'received' },
+                    { user: 'Dr. Susan Mwende', message: '@Catherine I will discuss equipment budget in next board meeting.', timestamp: new Date(Date.now() - 2400000), type: 'received' },
+                    { user: 'Prof. Jane Mutua', message: 'Excellent collaboration everyone. Student feedback scores are improving.', timestamp: new Date(Date.now() - 1200000), type: 'received' }
+                ],
+                'investor-boardroom': [
+                    { user: 'System', message: 'Investor Boardroom - Strategic discussions.', timestamp: new Date(Date.now() - 3600000), type: 'system' },
+                    { user: 'Robert Kinyua (CEO)', message: 'Q3 enrollment exceeded targets by 23%. Programming track leading growth.', timestamp: new Date(Date.now() - 3300000), type: 'received' },
+                    { user: 'Margaret Aoko (Investor)', message: 'Impressive numbers Robert. What is the job placement rate for recent graduates?', timestamp: new Date(Date.now() - 3000000), type: 'received' },
+                    { user: 'Dr. Simon Macharia (Academic)', message: 'Current placement rate is 87%. Tech companies are actively recruiting our graduates.', timestamp: new Date(Date.now() - 2800000), type: 'received' },
+                    { user: 'George Mbugua (Finance)', message: 'ROI projections for electronics expansion looking positive. 18% expected return.', timestamp: new Date(Date.now() - 2500000), type: 'received' },
+                    { user: 'Patricia Nyong (Investor)', message: 'Proposing partnership with local industries for apprenticeship programs.', timestamp: new Date(Date.now() - 2200000), type: 'received' },
+                    { user: 'Robert Kinyua (CEO)', message: 'Excellent suggestion Patricia. Let us schedule detailed discussion next week.', timestamp: new Date(Date.now() - 1800000), type: 'received' },
+                    { user: 'Admin', message: 'Investment committee meeting scheduled for Monday 3PM. Agenda attached.', timestamp: new Date(Date.now() - 900000), type: 'system' }
+                ]
+            }
+        };
+
+        // Room configurations
+        const roomConfig = {
+            'general': { name: 'General Discussion', description: 'Open discussion for all members', access: ['student', 'teacher', 'investor', 'admin'] },
+            'student-lounge': { name: 'Student Lounge', description: 'Students connect and study together', access: ['student', 'teacher', 'admin'] },
+            'teacher-staff-room': { name: 'Teacher Staff Room', description: 'Teachers-only collaboration space', access: ['teacher', 'admin'] },
+            'investor-boardroom': { name: 'Investor Boardroom', description: 'Investor meetings and discussions', access: ['investor', 'admin'] }
+        };
+
+        // Page Navigation
+        function showPage(pageId) {
+            console.log('Showing page:', pageId);
+            
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                appState.currentPage = pageId;
+                updateBackButton(pageId);
+                window.scrollTo(0, 0);
+            } else {
+                console.error('Page not found:', pageId);
+                showNotification('Page not found: ' + pageId, 'error');
+            }
+        }
+
+        function updateBackButton(pageId) {
+            const backBtns = document.querySelectorAll('.back-btn');
+            backBtns.forEach(btn => {
+                btn.style.display = pageId === 'login-page' ? 'none' : 'block';
+            });
+        }
+
+        // Notification System
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #ff4444, var(--strong-orange))';
+            } else {
+                notification.style.background = 'var(--gradient-card)';
+            }
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 4000);
+        }
+
+        // Authentication
+        function authenticateUser(email, password, accountType) {
+            if (appState.demoAccounts[email] && appState.demoAccounts[email].password === password) {
+                const account = appState.demoAccounts[email];
+                if (account.type === accountType) {
+                    return {
+                        success: true,
+                        user: {
+                            email: email,
+                            name: account.name,
+                            type: account.type,
+                            kabiruPoints: account.kabiruPoints
+                        }
+                    };
+                }
+            }
+            return { success: false, message: 'Invalid credentials' };
+        }
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const accountType = this.accountType.value;
+            
+            if (!email || !password || !accountType) {
+                showNotification('Please fill in all fields', 'error');
+                return;
+            }
+            
+            const authResult = authenticateUser(email, password, accountType);
+            
+            if (authResult.success) {
+                appState.currentUser = authResult.user;
+                showNotification(`Welcome back, ${authResult.user.name}!`);
+                
+                enableUserFeatures(accountType, authResult.user);
+                showPage('main-page');
+            } else {
+                showNotification('Login failed. Please check your credentials.', 'error');
+            }
+        });
+
+        // Enable User Features
+        function enableUserFeatures(accountType, user) {
+            // Enable messaging
+            const messagingRequired = document.getElementById('messaging-login-required');
+            const messagingContent = document.getElementById('messaging-content');
+            if (messagingRequired) messagingRequired.style.display = 'none';
+            if (messagingContent) messagingContent.style.display = 'block';
+            
+            // Enable specific dashboards
+            if (accountType === 'student') {
+                const loginRequired = document.getElementById('student-login-required');
+                const dashboardContent = document.getElementById('student-dashboard-content');
+                const kabiruPoints = document.getElementById('studentKabiruPoints');
+                
+                if (loginRequired) loginRequired.style.display = 'none';
+                if (dashboardContent) dashboardContent.style.display = 'block';
+                if (kabiruPoints) kabiruPoints.textContent = user.kabiruPoints;
+                
+            } else if (accountType === 'teacher') {
+                const loginRequired = document.getElementById('teacher-login-required');
+                const dashboardContent = document.getElementById('teacher-dashboard-content');
+                const kabiruPoints = document.getElementById('teacherKabiruPoints');
+                
+                if (loginRequired) loginRequired.style.display = 'none';
+                if (dashboardContent) dashboardContent.style.display = 'block';
+                if (kabiruPoints) kabiruPoints.textContent = user.kabiruPoints;
+                
+            } else if (accountType === 'investor') {
+                const loginRequired = document.getElementById('investor-login-required');
+                const dashboardContent = document.getElementById('investor-dashboard-content');
+                
+                if (loginRequired) loginRequired.style.display = 'none';
+                if (dashboardContent) dashboardContent.style.display = 'block';
+            }
+            
+            initializeMessaging();
+        }
+
+        // Partner Selection Functions
+        function togglePartnerOptions(value) {
+            const tacepOptions = document.getElementById('tacep-options');
+            const partnerOptions = document.getElementById('partner-options');
+            
+            if (value === 'tacep') {
+                if (tacepOptions) tacepOptions.style.display = 'block';
+                if (partnerOptions) partnerOptions.style.display = 'none';
+            } else if (value === 'external') {
+                if (tacepOptions) tacepOptions.style.display = 'none';
+                if (partnerOptions) partnerOptions.style.display = 'block';
+            } else {
+                if (tacepOptions) tacepOptions.style.display = 'none';
+                if (partnerOptions) partnerOptions.style.display = 'none';
+            }
+        }
+
+        function selectPartner(partnerId) {
+            document.querySelectorAll('.partner-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            event.target.closest('.partner-card').classList.add('selected');
+            const radioInput = event.target.closest('.partner-card').querySelector('input[type="radio"]');
+            if (radioInput) {
+                radioInput.checked = true;
+            }
+            
+            showNotification(`Selected ${event.target.closest('.partner-card').querySelector('h4').textContent}`);
+        }
+
+        // Form Handlers
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const studentData = Object.fromEntries(formData);
+            
+            studentData.id = 'STU' + Date.now();
+            studentData.kabiruPoints = 50;
+            
+            appState.users.students.push(studentData);
+            
+            showNotification('Registration successful! You earned 50 Kabiru points!');
+            this.reset();
+            
+            setTimeout(() => {
+                showPage('login-page');
+            }, 2000);
+        });
+
+        document.getElementById('teacherForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const teacherData = Object.fromEntries(formData);
+            
+            teacherData.id = 'TCH' + Date.now();
+            teacherData.kabiruPoints = 100;
+            
+            appState.users.teachers.push(teacherData);
+            showNotification('Teacher application submitted!');
+            this.reset();
+            
+            setTimeout(() => {
+                showPage('login-page');
+            }, 2000);
+        });
+
+        document.getElementById('investorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const investorData = Object.fromEntries(formData);
+            
+            investorData.id = 'INV' + Date.now();
+            investorData.kabiruPoints = 500;
+            
+            appState.users.investors.push(investorData);
+            showNotification('Investor application submitted!');
+            this.reset();
+            
+            setTimeout(() => {
+                showPage('login-page');
+            }, 2000);
+        });
+
+        // Messaging Functions
+        function initializeMessaging() {
+            if (!appState.currentUser) return;
+            
+            updateRoomAccess();
+            switchRoom('general');
+        }
+
+        function updateRoomAccess() {
+            const roomItems = document.querySelectorAll('.room-list li');
+            roomItems.forEach(item => {
+                const roomId = item.dataset.room;
+                const roomAccess = roomConfig[roomId]?.access || [];
+                
+                if (roomAccess.includes(appState.currentUser.type)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function switchRoom(roomId) {
+            if (!appState.currentUser || !roomConfig[roomId]) return;
+            
+            if (!roomConfig[roomId].access.includes(appState.currentUser.type)) {
+                showNotification('Access denied to this room', 'error');
+                return;
+            }
+            
+            appState.currentRoom = roomId;
+            
+            document.querySelectorAll('.room-list li').forEach(li => li.classList.remove('active'));
+            const roomElement = document.querySelector(`[data-room="${roomId}"]`);
+            if (roomElement) {
+                roomElement.classList.add('active');
+            }
+            
+            const roomNameElement = document.getElementById('currentRoomName');
+            const roomDescElement = document.getElementById('currentRoomDescription');
+            if (roomNameElement) roomNameElement.textContent = roomConfig[roomId].name;
+            if (roomDescElement) roomDescElement.textContent = roomConfig[roomId].description;
+            
+            loadMessages(roomId);
+            
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            if (messageInput) messageInput.disabled = false;
+            if (sendButton) sendButton.disabled = false;
+        }
+
+        function loadMessages(roomId) {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages) return;
+            
+            const messages = appState.messages[roomId] || [];
+            
+            chatMessages.innerHTML = '';
+            
+            messages.forEach((msg, index) => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.type || 'received'}`;
+                
+                // Add animation delay for messages
+                setTimeout(() => {
+                    messageDiv.style.opacity = '0';
+                    messageDiv.style.transform = 'translateY(10px)';
+                    messageDiv.style.transition = 'all 0.3s ease';
+                    
+                    setTimeout(() => {
+                        messageDiv.style.opacity = '1';
+                        messageDiv.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+                
+                if (msg.type === 'system') {
+                    messageDiv.style.background = 'var(--gradient-card)';
+                    messageDiv.style.color = 'white';
+                    messageDiv.style.textAlign = 'center';
+                    messageDiv.style.maxWidth = '100%';
+                    messageDiv.style.margin = '10px auto';
+                }
+                
+                // Check if message is from current user
+                const isCurrentUser = appState.currentUser && msg.user === appState.currentUser.name;
+                if (isCurrentUser && msg.type !== 'system') {
+                    messageDiv.className = 'message sent';
+                }
+                
+                const timeString = msg.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const dateString = msg.timestamp.toLocaleDateString();
+                
+                messageDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px;">
+                        <strong style="color: ${msg.type === 'system' ? 'white' : 'var(--deep-blue)'};">${msg.user}</strong>
+                        <span style="font-size: 0.75em; opacity: 0.7;">${timeString}</span>
+                    </div>
+                    <div style="line-height: 1.4;">${msg.message}</div>
+                    ${msg.type !== 'system' ? `<div style="font-size: 0.7em; opacity: 0.6; margin-top: 5px; text-align: right;">${dateString}</div>` : ''}
+                `;
+                
+                chatMessages.appendChild(messageDiv);
+            });
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Add typing indicator for active rooms
+            if (messages.length > 1 && Math.random() > 0.7) {
+                setTimeout(() => {
+                    addTypingIndicator(roomId);
+                }, 2000 + Math.random() * 3000);
+            }
+        }
+
+        function addTypingIndicator(roomId) {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages || appState.currentRoom !== roomId) return;
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message received typing-indicator';
+            typingDiv.style.opacity = '0.7';
+            typingDiv.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <strong style="color: var(--deep-blue);">Someone</strong>
+                    <span style="margin-left: 10px;">is typing</span>
+                    <div style="margin-left: 10px;">
+                        <span style="animation: blink 1s infinite;">.</span>
+                        <span style="animation: blink 1s infinite 0.2s;">.</span>
+                        <span style="animation: blink 1s infinite 0.4s;">.</span>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Remove typing indicator after a few seconds
+            setTimeout(() => {
+                if (typingDiv.parentNode) {
+                    typingDiv.remove();
+                }
+            }, 2000 + Math.random() * 2000);
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            if (!messageInput) return;
+            
+            const message = messageInput.value.trim();
+            
+            if (!message || !appState.currentRoom || !appState.currentUser) return;
+            
+            const newMessage = {
+                user: appState.currentUser.name,
+                message: message,
+                timestamp: new Date(),
+                type: 'sent'
+            };
+            
+            if (!appState.messages[appState.currentRoom]) {
+                appState.messages[appState.currentRoom] = [];
+            }
+            
+            appState.messages[appState.currentRoom].push(newMessage);
+            
+            loadMessages(appState.currentRoom);
+            messageInput.value = '';
+            
+            // Simulate responses in active forums
+            if (Math.random() > 0.6) {
+                simulateResponse(appState.currentRoom, message);
+            }
+        }
+
+        function simulateResponse(roomId, originalMessage) {
+            const responses = {
+                'general': [
+                    'That\'s a great point!',
+                    'I agree with that perspective.',
+                    'Has anyone else experienced something similar?',
+                    'Thanks for sharing that information.',
+                    'Very helpful, thanks!'
+                ],
+                'student-lounge': [
+                    'I can help you with that topic.',
+                    'Let\'s form a study group for this.',
+                    'I had the same question yesterday!',
+                    'Check out the resources in the library.',
+                    'The teacher explained this well in class.'
+                ],
+                'teacher-staff-room': [
+                    'Let me review this with the curriculum team.',
+                    'We should discuss this in our next meeting.',
+                    'I have some resources that might help.',
+                    'This aligns with our teaching objectives.',
+                    'Good suggestion for improvement.'
+                ],
+                'investor-boardroom': [
+                    'This could impact our quarterly projections.',
+                    'We need to analyze the ROI implications.',
+                    'Interesting market perspective.',
+                    'Let\'s schedule a follow-up discussion.',
+                    'This aligns with our strategic goals.'
+                ]
+            };
+
+            const names = {
+                'general': ['Alice Njoroge', 'Tom Mwangi', 'Sarah Ochieng', 'Paul Kiprotich'],
+                'student-lounge': ['Kevin Mutua', 'Lucy Akinyi', 'Brian Wekesa', 'Diana Chebet'],
+                'teacher-staff-room': ['Dr. Rose Kamau', 'Prof. John Otieno', 'Ms. Grace Wanjiru'],
+                'investor-boardroom': ['CEO Robert Kinyua', 'CFO Margaret Aoko', 'Investor George Mbugua']
+            };
+
+            setTimeout(() => {
+                if (appState.currentRoom === roomId && responses[roomId] && names[roomId]) {
+                    const responseMessages = responses[roomId];
+                    const roomNames = names[roomId];
+                    
+                    const randomResponse = responseMessages[Math.floor(Math.random() * responseMessages.length)];
+                    const randomName = roomNames[Math.floor(Math.random() * roomNames.length)];
+                    
+                    const responseMessage = {
+                        user: randomName,
+                        message: randomResponse,
+                        timestamp: new Date(),
+                        type: 'received'
+                    };
+                    
+                    appState.messages[roomId].push(responseMessage);
+                    
+                    if (appState.currentRoom === roomId) {
+                        loadMessages(roomId);
+                    }
+                }
+            }, 2000 + Math.random() * 3000);
+        }
+
+        // Simulate periodic activity in forums
+        function simulateForumActivity() {
+            const rooms = ['general', 'student-lounge', 'teacher-staff-room', 'investor-boardroom'];
+            const activities = {
+                'general': [
+                    { user: 'Mark Oduya', message: 'Just completed my first week of classes. The instructors are very knowledgeable!' },
+                    { user: 'Jane Wambui', message: 'Looking forward to the upcoming job fair. Great opportunities ahead.' },
+                    { user: 'Steve Kiprotich', message: 'The new workshop equipment is impressive. Thanks to all investors!' }
+                ],
+                'student-lounge': [
+                    { user: 'Carol Achieng', message: 'Can someone explain the difference between Java and JavaScript?' },
+                    { user: 'Dennis Mwenda', message: 'Study materials for electronics module are now available in the library.' },
+                    { user: 'Grace Njeri', message: 'Group project presentations next Friday. Let me know if you need help with preparation.' }
+                ],
+                'teacher-staff-room': [
+                    { user: 'Mr. Francis Ouma', message: 'Student attendance has improved significantly this semester.' },
+                    { user: 'Ms. Betty Wanjiku', message: 'New assessment rubrics have been uploaded to the faculty portal.' },
+                    { user: 'Dr. Patrick Mutiso', message: 'Industry partnership meeting scheduled for next Tuesday.' }
+                ],
+                'investor-boardroom': [
+                    { user: 'Investment Manager', message: 'Monthly ROI report shows positive growth across all programs.' },
+                    { user: 'Strategic Advisor', message: 'Proposal for expansion into mobile app development approved.' },
+                    { user: 'Board Secretary', message: 'Next board meeting agenda includes sustainability initiatives discussion.' }
+                ]
+            };
+
+            setInterval(() => {
+                const activeRoom = rooms[Math.floor(Math.random() * rooms.length)];
+                const roomActivities = activities[activeRoom];
+                
+                if (roomActivities && Math.random() > 0.7) {
+                    const activity = roomActivities[Math.floor(Math.random() * roomActivities.length)];
+                    
+                    const newActivity = {
+                        user: activity.user,
+                        message: activity.message,
+                        timestamp: new Date(),
+                        type: 'received'
+                    };
+                    
+                    if (!appState.messages[activeRoom]) {
+                        appState.messages[activeRoom] = [];
+                    }
+                    
+                    appState.messages[activeRoom].push(newActivity);
+                    
+                    // Update display if user is in this room
+                    if (appState.currentRoom === activeRoom) {
+                        loadMessages(activeRoom);
+                    }
+                    
+                    // Update room notification
+                    updateRoomNotifications(activeRoom);
+                }
+            }, 15000 + Math.random() * 30000); // Random activity every 15-45 seconds
+        }
+
+        function updateRoomNotifications(roomId) {
+            const roomElement = document.querySelector(`[data-room="${roomId}"]`);
+            if (roomElement && appState.currentRoom !== roomId) {
+                const badge = roomElement.querySelector('span');
+                if (badge) {
+                    let currentCount = parseInt(badge.textContent.split(' ')[0]) || 0;
+                    currentCount += 1;
+                    badge.textContent = `${currentCount} online`;
+                    badge.style.background = '#ff4500';
+                    badge.style.animation = 'pulse 0.5s ease-in-out';
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Application initialized');
+            
+            const messageInput = document.getElementById('messageInput');
+            if (messageInput) {
+                messageInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
+            
+            // Start forum activity simulation
+            simulateForumActivity();
+            
+            showNotification('Welcome to TACEP Center! Please login to access your dashboard.');
+            showPage('login-page');
+        });
+
+        // Course enrollment handler
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent === 'Enroll Now') {
+                e.preventDefault();
+                if (!appState.currentUser) {
+                    showNotification('Please login first to enroll in courses.', 'error');
+                    showPage('login-page');
+                } else {
+                    showNotification('Course enrollment will be available soon!');
+                }
+            }
+        });
+    </script>
+</body>
+      </html>
