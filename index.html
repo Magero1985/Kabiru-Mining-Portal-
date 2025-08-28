@@ -3102,7 +3102,13 @@
                     { icon: '🤝', name: 'Services', desc: 'Professional services' }
                 ]
             };
+function openEducation() {
+    window.location.href = 'utility-services.html#education';
+}
 
+function openTransport() {
+    window.location.href = 'utility-services.html#transport';
+}
             if (subcategories[category]) {
                 document.getElementById('subcategoryTitle').textContent = category.charAt(0).toUpperCase() + category.slice(1);
                 const grid = document.getElementById('subcategoryGrid');
