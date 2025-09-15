@@ -696,6 +696,42 @@
             color: #FFD700;
         }
 
+        /* Utility Service Button Styles */
+        .service-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .service-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .service-button.education {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .service-button.transport {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+        }
+
+        .service-button.health {
+            background: linear-gradient(45deg, #FF5722, #E64A19);
+        }
+
         /* Animations */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
@@ -841,10 +877,10 @@
             <div class="container">
                 <!-- Top Navigation Bar -->
                 <div class="top-bar">
-                    <div onclick="showUtilities()" id="utilitiesTab">UTILITIES</div>
-                    <div onclick="showWallet()" id="walletTab">WALLET</div>
-                    <div onclick="showRead()" id="readTab">READ</div>
-                    <div onclick="showLanguageModal()">LANGUAGE</div>
+                    <div onclick="openUtilitiesModal()" id="utilitiesTab">UTILITIES</div>
+                    <div onclick="openWalletModal()" id="walletTab">WALLET</div>
+                    <div onclick="openReadModal()" id="readTab">READ</div>
+                    <div onclick="openLanguageModal()">LANGUAGE</div>
                     <div onclick="openUserAccountModal()">PROFILE</div>
                 </div>
 
@@ -973,6 +1009,153 @@
         </div>
     </div>
 
+    <!-- Utilities Modal -->
+    <div id="utilitiesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('utilitiesModal')">&times;</span>
+            <h2 class="modal-title">KABIRU Utility Services</h2>
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.8; text-align: center;">
+                    Access integrated services within the KABIRU ecosystem
+                </p>
+                
+                <a href="Education-Services.html" class="service-button education" target="_blank">
+                    📚 Education Services
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Learning & Development Platform</div>
+                </a>
+                
+                <a href="Transport-Services.html" class="service-button transport" target="_blank">
+                    🚗 Transport Services
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Mobility & Transportation Solutions</div>
+                </a>
+                
+                <a href="Health-Services.html" class="service-button health" target="_blank">
+                    🏥 Health Services
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Healthcare & Wellness Platform</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('walletModal')">&times;</span>
+            <h2 class="modal-title">KABIRU Wallet</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin: 15px 0;">
+                    <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">Wallet Address:</div>
+                    <div style="font-size: 12px; word-break: break-all; color: #FFD700;" id="walletAddress">Loading...</div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="walletBalance">0.0000 iKb</div>
+                        <div style="font-size: 12px; opacity: 0.7;">Total Balance</div>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: bold; color: #00ff87;" id="walletTransactions">0</div>
+                        <div style="font-size: 12px; opacity: 0.7;">Transactions</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="auth-button" onclick="showNotification('Send/Receive features coming soon!')">
+                        💸 Send / Receive
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Read Modal -->
+    <div id="readModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('readModal')">&times;</span>
+            <h2 class="modal-title">Documentation & Resources</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('Whitepaper coming soon!')">
+                    <strong>📄 KABIRU Whitepaper</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Technical documentation and roadmap</p>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('User guide coming soon!')">
+                    <strong>📖 User Guide</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">How to mine and use KABIRU tokens</p>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('FAQ coming soon!')">
+                    <strong>❓ FAQ</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Frequently asked questions</p>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('Community links coming soon!')">
+                    <strong>🌐 Community</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Join our community channels</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('languageModal')">&times;</span>
+            <h2 class="modal-title">Select Language</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('en')">
+                    <strong>🇺🇸 English</strong>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('sw')">
+                    <strong>🇰🇪 Kiswahili</strong>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('fr')">
+                    <strong>🇫🇷 Français</strong>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('ar')">
+                    <strong>🇸🇦 العربية</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Account Modal -->
+    <div id="userAccountModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('userAccountModal')">&times;</span>
+            <h2 class="modal-title">User Profile</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div class="user-avatar" style="width: 80px; height: 80px; font-size: 32px; margin: 0 auto 15px;" id="modalUserAvatar">👤</div>
+                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="modalUserName">User Name</div>
+                    <div style="font-size: 14px; opacity: 0.7;" id="modalUserEmail">user@example.com</div>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin: 15px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="modalUserBalance">0.0000 iKb</div>
+                            <div style="font-size: 12px; opacity: 0.7;">Balance</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 18px; font-weight: bold; color: #00ff87;" id="modalUserTasks">0</div>
+                            <div style="font-size: 12px; opacity: 0.7;">Tasks Completed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="auth-button" onclick="showNotification('Profile settings coming soon!')">
+                        ⚙️ Edit Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Sovereign Values Modal -->
     <div id="sovereignModal" class="modal">
         <div class="modal-content">
@@ -1078,7 +1261,7 @@
 
         // Initialize offline mode if Firebase fails
         function initOfflineMode() {
-            console.log('🔄 Initializing offline mode...');
+            console.log('📴 Initializing offline mode...');
             const savedData = localStorage.getItem('kabiruMiningData');
             if (savedData) {
                 const data = JSON.parse(savedData);
@@ -1227,6 +1410,38 @@
         }
 
         // Modal functions - FIXED
+        function openUtilitiesModal() {
+            document.getElementById('utilitiesModal').style.display = 'block';
+        }
+
+        function openWalletModal() {
+            document.getElementById('walletModal').style.display = 'block';
+            // Update wallet display
+            document.getElementById('walletAddress').textContent = userWalletAddress || 'Not available';
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
+            document.getElementById('walletTransactions').textContent = transactionHistory.length;
+        }
+
+        function openReadModal() {
+            document.getElementById('readModal').style.display = 'block';
+        }
+
+        function openLanguageModal() {
+            document.getElementById('languageModal').style.display = 'block';
+        }
+
+        function openUserAccountModal() {
+            document.getElementById('userAccountModal').style.display = 'block';
+            // Update modal with current user data
+            if (currentUser) {
+                document.getElementById('modalUserAvatar').textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
+                document.getElementById('modalUserName').textContent = currentUser.displayName || 'Anonymous User';
+                document.getElementById('modalUserEmail').textContent = currentUser.email || 'No email';
+                document.getElementById('modalUserBalance').textContent = userBalance.toFixed(4) + ' iKb';
+                document.getElementById('modalUserTasks').textContent = totalTasksCompleted;
+            }
+        }
+
         function openSovereignModal() {
             document.getElementById('sovereignModal').style.display = 'block';
             selectedSovereignType = null;
@@ -1242,6 +1457,11 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+        }
+
+        function selectLanguage(langCode) {
+            showNotification(`Language changed to ${langCode === 'en' ? 'English' : langCode === 'sw' ? 'Kiswahili' : langCode === 'fr' ? 'Français' : 'العربية'}`);
+            closeModal('languageModal');
         }
 
         function selectSovereignValue(type, element) {
@@ -1317,7 +1537,7 @@
 
         // Show offline login option
         function showOfflineLogin() {
-            showNotification('🔄 Running in offline mode - you can still mine tokens!');
+            showNotification('📴 Running in offline mode - you can still mine tokens!');
             initOfflineMode();
         }
 
@@ -1606,18 +1826,6 @@
             document.getElementById('mainPage').classList.add('active');
         }
 
-        function showUtilities() {
-            showNotification('Utilities coming soon!');
-        }
-
-        function showWallet() {
-            showNotification('Wallet coming soon!');
-        }
-
-        function showRead() {
-            showNotification('Documentation coming soon!');
-        }
-
         function showLogin() {
             hideAllContainers();
             document.getElementById('loginContainer').style.display = 'block';
@@ -1655,15 +1863,7 @@
             });
         }
 
-        // Modal and Utility Functions
-        function openUserAccountModal() {
-            showNotification('User account modal coming soon!');
-        }
-
-        function showLanguageModal() {
-            showNotification('Language selection coming soon!');
-        }
-
+        // Task Selection Function
         function selectTask(taskType) {
             document.querySelectorAll('.task-category').forEach(cat => {
                 cat.classList.remove('active');
@@ -1831,7 +2031,7 @@
             });
         }
 
-        console.log('🚀 KABIRU Mining App - Fixed and Ready!');
+        console.log('🚀 KABIRU Mining App - Fixed with Utilities Ready!');
     </script>
 </body>
     </html>
