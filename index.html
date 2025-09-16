@@ -776,12 +776,12 @@
 
             <!-- Error/Success Messages -->
             <div id="errorMessage" class="error-message">
-                <div><strong>⚠️ Error</strong></div>
+                <div><strong>Warning Error</strong></div>
                 <div id="errorText">Something went wrong. Please try again.</div>
             </div>
 
             <div id="successMessage" class="success-message">
-                <div><strong>✅ Success</strong></div>
+                <div><strong>Success</strong></div>
                 <div id="successText">Operation completed successfully!</div>
             </div>
 
@@ -1048,20 +1048,38 @@
                     <div style="font-size: 12px; word-break: break-all; color: #FFD700;" id="walletAddress">Loading...</div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
-                    <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="walletBalance">0.0000 iKb</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Total Balance</div>
+                <!-- Wallet Balance Breakdown -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0;">
+                    <div style="background: rgba(0, 255, 135, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #00ff87;" id="walletMinedBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Mined iKb</div>
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold; color: #00ff87;" id="walletTransactions">0</div>
-                        <div style="font-size: 12px; opacity: 0.7;">Transactions</div>
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #667eea;" id="walletReceivedBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Received iKb</div>
+                    </div>
+                    <div style="background: rgba(255, 107, 107, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #ff6b6b;" id="walletLockedBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Locked iKb</div>
+                    </div>
+                    <div style="background: rgba(255, 165, 0, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #FFA500;" id="walletReserveBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Reserve iKb</div>
                     </div>
                 </div>
                 
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="auth-button" onclick="showNotification('Send/Receive features coming soon!')">
+                <!-- Total Balance -->
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; text-align: center; margin: 15px 0; border: 1px solid rgba(255, 215, 0, 0.3);">
+                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="walletTotalBalance">0.0000 iKb</div>
+                    <div style="font-size: 12px; opacity: 0.7;">Total KABIRU</div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                    <button class="auth-button" onclick="showNotification('Send/Receive features coming soon!')" style="font-size: 12px; padding: 10px;">
                         💸 Send / Receive
+                    </button>
+                    <button class="auth-button" onclick="showNotification('Transaction history: ' + transactionHistory.length + ' transactions')" style="font-size: 12px; padding: 10px;">
+                        📊 History
                     </button>
                 </div>
             </div>
@@ -1112,11 +1130,11 @@
                 </div>
                 
                 <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('fr')">
-                    <strong>🇫🇷 Français</strong>
+                    <strong> Dho Luo</strong>
                 </div>
                 
                 <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('ar')">
-                    <strong>🇸🇦 العربية</strong>
+                    <strong>Kikuyu</strong>
                 </div>
             </div>
         </div>
@@ -1147,9 +1165,48 @@
                     </div>
                 </div>
                 
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="auth-button" onclick="showNotification('Profile settings coming soon!')">
+                <!-- Referral Section -->
+                <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(102, 126, 234, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #667eea; margin-bottom: 10px;">🔗 Referral Link</div>
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; font-size: 12px; word-break: break-all; margin-bottom: 10px;" id="referralLink">
+                        Loading referral link...
+                    </div>
+                    <button class="auth-button" onclick="copyReferralLink()" style="font-size: 12px; padding: 8px 15px; margin: 5px 0;">
+                        📋 Copy Link
+                    </button>
+                    <button class="auth-button" onclick="shareReferralLink()" style="font-size: 12px; padding: 8px 15px; margin: 5px 0;">
+                        📱 Share Link
+                    </button>
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 5px; text-align: center;">
+                        Refer friends and earn 10% of their mining rewards!
+                    </div>
+                </div>
+                
+                <!-- Lockup Options -->
+                <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 107, 107, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #ff6b6b; margin-bottom: 15px;">🔒 Lockup Options</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                        <button class="service-button" onclick="lockupTokens(3)" style="font-size: 11px; padding: 10px 5px; margin: 0; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                            🔒 3 Months<br><small>+5% Bonus</small>
+                        </button>
+                        <button class="service-button" onclick="lockupTokens(6)" style="font-size: 11px; padding: 10px 5px; margin: 0; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                            🔒 6 Months<br><small>+12% Bonus</small>
+                        </button>
+                        <button class="service-button" onclick="lockupTokens(12)" style="font-size: 11px; padding: 10px 5px; margin: 0; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                            🔒 12 Months<br><small>+25% Bonus</small>
+                        </button>
+                    </div>
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 10px; text-align: center;">
+                        Current Locked: <span id="currentLockedAmount">0.0000 iKb</span>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                    <button class="auth-button" onclick="showNotification('Profile settings coming soon!')" style="font-size: 12px; padding: 10px;">
                         ⚙️ Edit Profile
+                    </button>
+                    <button class="auth-button" onclick="showReserveModal()" style="font-size: 12px; padding: 10px;">
+                        💎 Reserve Tokens
                     </button>
                 </div>
             </div>
@@ -1214,6 +1271,39 @@
         </div>
     </div>
 
+    <!-- Reserve Tokens Modal -->
+    <div id="reserveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('reserveModal')">&times;</span>
+            <h2 class="modal-title">Reserve Tokens</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 165, 0, 0.3);">
+                    <div style="font-size: 14px; margin-bottom: 10px;">Available Balance: <span style="color: #FFD700; font-weight: bold;" id="availableForReserve">0.0000 iKb</span></div>
+                    <div style="font-size: 14px; margin-bottom: 15px;">Current Reserve: <span style="color: #FFA500; font-weight: bold;" id="currentReserveAmount">0.0000 iKb</span></div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Amount to Reserve:</label>
+                        <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin: 10px 0; text-align: center;">
+                        Reserved tokens earn 2% annual interest and can be withdrawn anytime
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="auth-button" onclick="addToReserve()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #FFA500, #FF8C00);">
+                            💎 Add to Reserve
+                        </button>
+                        <button class="auth-button" onclick="withdrawFromReserve()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #667eea, #764ba2);">
+                            💰 Withdraw
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
@@ -1233,8 +1323,9 @@
         let selectedValueAmount = null;
         let userWalletAddress = '';
         let transactionHistory = [];
-
-        // Firebase Configuration
+        let referralCode = '';
+        let lockupPeriods = []; // Array to store lockup information
+// Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
@@ -1261,7 +1352,7 @@
 
         // Initialize offline mode if Firebase fails
         function initOfflineMode() {
-            console.log('📴 Initializing offline mode...');
+            console.log('🔴 Initializing offline mode...');
             const savedData = localStorage.getItem('kabiruMiningData');
             if (savedData) {
                 const data = JSON.parse(savedData);
@@ -1272,6 +1363,12 @@
                 lockedBalance = data.lockedBalance || 0.0000;
                 totalTasksCompleted = data.totalTasksCompleted || 0;
                 transactionHistory = data.transactionHistory || [];
+                referralCode = data.referralCode || '';
+                lockupPeriods = data.lockupPeriods || [];
+            }
+            
+            if (!referralCode) {
+                referralCode = 'KABIRU_' + Math.random().toString(36).substr(2, 6).toUpperCase();
             }
             
             currentUser = {
@@ -1300,6 +1397,8 @@
                 miningRate: miningRate,
                 walletAddress: userWalletAddress,
                 transactionHistory: transactionHistory,
+                referralCode: referralCode,
+                lockupPeriods: lockupPeriods,
                 lastActive: new Date().toISOString()
             };
 
@@ -1318,12 +1417,12 @@
             }
         }
 
-        // Main mining function - FIXED
+        // Main mining function
         async function mineTokens(type, reward) {
             console.log('⛏️ Mining started:', type, 'Reward:', reward);
             
             if (isMining) {
-                showNotification('⚠️ Already mining! Please wait for current session to complete.');
+                showNotification('Already mining! Please wait for current session to complete.');
                 return;
             }
 
@@ -1409,17 +1508,20 @@
             });
         }
 
-        // Modal functions - FIXED
+        // Modal functions
         function openUtilitiesModal() {
             document.getElementById('utilitiesModal').style.display = 'block';
         }
 
         function openWalletModal() {
             document.getElementById('walletModal').style.display = 'block';
-            // Update wallet display
+            // Update wallet display with all balance types
             document.getElementById('walletAddress').textContent = userWalletAddress || 'Not available';
-            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
-            document.getElementById('walletTransactions').textContent = transactionHistory.length;
+            document.getElementById('walletMinedBalance').textContent = minedBalance.toFixed(4) + ' iKb';
+            document.getElementById('walletReceivedBalance').textContent = receivedBalance.toFixed(4) + ' iKb';
+            document.getElementById('walletLockedBalance').textContent = lockedBalance.toFixed(4) + ' iKb';
+            document.getElementById('walletReserveBalance').textContent = reserveBalance.toFixed(4) + ' iKb';
+            document.getElementById('walletTotalBalance').textContent = (minedBalance + receivedBalance + lockedBalance + reserveBalance).toFixed(4) + ' iKb';
         }
 
         function openReadModal() {
@@ -1439,6 +1541,11 @@
                 document.getElementById('modalUserEmail').textContent = currentUser.email || 'No email';
                 document.getElementById('modalUserBalance').textContent = userBalance.toFixed(4) + ' iKb';
                 document.getElementById('modalUserTasks').textContent = totalTasksCompleted;
+                document.getElementById('currentLockedAmount').textContent = lockedBalance.toFixed(4) + ' iKb';
+                
+                // Generate and display referral link
+                const referralLink = generateReferralLink();
+                document.getElementById('referralLink').textContent = referralLink;
             }
         }
 
@@ -1453,6 +1560,13 @@
             selectedValueType = null;
             selectedValueAmount = null;
             document.getElementById('valueStartBtn').disabled = true;
+        }
+
+        function showReserveModal() {
+            document.getElementById('reserveModal').style.display = 'block';
+            document.getElementById('availableForReserve').textContent = (minedBalance + receivedBalance).toFixed(4) + ' iKb';
+            document.getElementById('currentReserveAmount').textContent = reserveBalance.toFixed(4) + ' iKb';
+            closeModal('userAccountModal');
         }
 
         function closeModal(modalId) {
@@ -1503,6 +1617,230 @@
             }
         }
 
+        // Generate referral link
+        function generateReferralLink() {
+            if (!referralCode) {
+                referralCode = 'KABIRU_' + (currentUser?.uid?.substr(-6) || Math.random().toString(36).substr(2, 6)).toUpperCase();
+            }
+            const baseUrl = window.location.origin + window.location.pathname;
+            return `${baseUrl}?ref=${referralCode}`;
+        }
+
+        // Copy referral link to clipboard
+        function copyReferralLink() {
+            const referralLink = generateReferralLink();
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(referralLink).then(() => {
+                    showNotification('📋 Referral link copied to clipboard!');
+                }).catch(err => {
+                    fallbackCopyToClipboard(referralLink);
+                });
+            } else {
+                fallbackCopyToClipboard(referralLink);
+            }
+        }
+
+        // Fallback copy function
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showNotification('📋 Referral link copied to clipboard!');
+            } catch (err) {
+                showNotification('❌ Could not copy link. Please copy manually.');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Share referral link
+        function shareReferralLink() {
+            const referralLink = generateReferralLink();
+            const shareText = `Join me on KABIRU and start mining iKb tokens! Use my referral link: ${referralLink}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join KABIRU Mining App',
+                    text: shareText,
+                    url: referralLink
+                }).then(() => {
+                    showNotification('📱 Referral link shared successfully!');
+                }).catch(() => {
+                    fallbackShare(shareText);
+                });
+            } else {
+                fallbackShare(shareText);
+            }
+        }
+
+        // Fallback share function
+        function fallbackShare(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('📋 Referral message copied! You can paste it anywhere to share.');
+                }).catch(() => {
+                    showNotification('📱 Share: Copy the referral link manually to share with friends.');
+                });
+            } else {
+                showNotification('📱 Share your referral link manually with friends!');
+            }
+        }
+
+        // Lockup tokens function
+        async function lockupTokens(months) {
+            const availableBalance = minedBalance + receivedBalance;
+            
+            if (availableBalance < 0.01) {
+                showNotification('Insufficient balance for lockup. Minimum 0.01 iKb required.');
+                return;
+            }
+
+            const lockupAmount = prompt(`Enter amount to lock for ${months} months (Available: ${availableBalance.toFixed(4)} iKb):`);
+            
+            if (!lockupAmount || isNaN(lockupAmount) || parseFloat(lockupAmount) <= 0) {
+                showNotification('Invalid amount entered.');
+                return;
+            }
+
+            const amount = parseFloat(lockupAmount);
+            
+            if (amount > availableBalance) {
+                showNotification('Insufficient balance for this lockup amount.');
+                return;
+            }
+
+            // Calculate bonus based on lockup period
+            const bonusPercentage = months === 3 ? 0.05 : months === 6 ? 0.12 : 0.25;
+            const bonus = amount * bonusPercentage;
+            const unlockDate = new Date();
+            unlockDate.setMonth(unlockDate.getMonth() + months);
+
+            // Move tokens to locked balance
+            if (minedBalance >= amount) {
+                minedBalance -= amount;
+            } else {
+                const remainingAmount = amount - minedBalance;
+                minedBalance = 0;
+                receivedBalance -= remainingAmount;
+            }
+            
+            lockedBalance += amount + bonus;
+            
+            // Store lockup information
+            const lockupInfo = {
+                amount: amount,
+                bonus: bonus,
+                months: months,
+                lockDate: new Date().toISOString(),
+                unlockDate: unlockDate.toISOString(),
+                status: 'locked'
+            };
+            
+            lockupPeriods.push(lockupInfo);
+            
+            // Create transaction record
+            const transaction = {
+                id: generateTransactionId(),
+                type: 'lockup',
+                amount: amount,
+                bonus: bonus,
+                months: months,
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            };
+            transactionHistory.unshift(transaction);
+            
+            await saveUserData();
+            updateBalanceDisplay();
+            updateUserDisplay();
+            
+            showNotification(`Successfully locked ${amount.toFixed(4)} iKb for ${months} months with ${bonus.toFixed(4)} iKb bonus!`);
+            closeModal('userAccountModal');
+        }
+
+        // Add tokens to reserve
+        async function addToReserve() {
+            const amount = parseFloat(document.getElementById('reserveAmount').value);
+            const availableBalance = minedBalance + receivedBalance;
+            
+            if (!amount || amount <= 0) {
+                showNotification('Please enter a valid amount.');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showNotification('Insufficient balance for this reserve amount.');
+                return;
+            }
+            
+            // Move tokens to reserve balance
+            if (minedBalance >= amount) {
+                minedBalance -= amount;
+            } else {
+                const remainingAmount = amount - minedBalance;
+                minedBalance = 0;
+                receivedBalance -= remainingAmount;
+            }
+            
+            reserveBalance += amount;
+            
+            // Create transaction record
+            const transaction = {
+                id: generateTransactionId(),
+                type: 'reserve_add',
+                amount: amount,
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            };
+            transactionHistory.unshift(transaction);
+            
+            await saveUserData();
+            updateBalanceDisplay();
+            
+            showNotification(`Successfully added ${amount.toFixed(4)} iKb to reserves!`);
+            document.getElementById('reserveAmount').value = '';
+            showReserveModal(); // Refresh the modal
+        }
+
+        // Withdraw tokens from reserve
+        async function withdrawFromReserve() {
+            const amount = parseFloat(document.getElementById('reserveAmount').value);
+            
+            if (!amount || amount <= 0) {
+                showNotification('Please enter a valid amount.');
+                return;
+            }
+            
+            if (amount > reserveBalance) {
+                showNotification('Insufficient reserve balance for this withdrawal.');
+                return;
+            }
+            
+            // Move tokens from reserve to received balance
+            reserveBalance -= amount;
+            receivedBalance += amount;
+            
+            // Create transaction record
+            const transaction = {
+                id: generateTransactionId(),
+                type: 'reserve_withdraw',
+                amount: amount,
+                timestamp: new Date().toISOString(),
+                status: 'completed'
+            };
+            transactionHistory.unshift(transaction);
+            
+            await saveUserData();
+            updateBalanceDisplay();
+            
+            showNotification(`Successfully withdrew ${amount.toFixed(4)} iKb from reserves!`);
+            document.getElementById('reserveAmount').value = '';
+            showReserveModal(); // Refresh the modal
+        }
+
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 KABIRU Mining App starting...');
@@ -1537,7 +1875,7 @@
 
         // Show offline login option
         function showOfflineLogin() {
-            showNotification('📴 Running in offline mode - you can still mine tokens!');
+            showNotification('🔴 Running in offline mode - you can still mine tokens!');
             initOfflineMode();
         }
 
@@ -1559,9 +1897,13 @@
                     miningRate = userData.miningRate || 0.001;
                     userWalletAddress = userData.walletAddress || generateWalletAddress();
                     transactionHistory = userData.transactionHistory || [];
+                    referralCode = userData.referralCode || '';
+                    lockupPeriods = userData.lockupPeriods || [];
                     console.log('✅ User data loaded from Firestore - Balance:', userBalance);
                 } else {
                     userWalletAddress = generateWalletAddress();
+                    referralCode = 'KABIRU_' + firebaseUser.uid.substr(-6).toUpperCase();
+                    
                     const newUserData = {
                         uid: firebaseUser.uid,
                         email: firebaseUser.email,
@@ -1575,6 +1917,8 @@
                         miningRate: 0.001,
                         walletAddress: userWalletAddress,
                         transactionHistory: [],
+                        referralCode: referralCode,
+                        lockupPeriods: [],
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         lastActive: firebase.firestore.FieldValue.serverTimestamp()
                     };
@@ -1582,6 +1926,9 @@
                     await db.collection('users').doc(firebaseUser.uid).set(newUserData);
                     console.log('🆕 New user document created');
                 }
+                
+                // Check for referral bonus on signup
+                await checkReferralBonus();
                 
                 currentUser = {
                     uid: firebaseUser.uid,
@@ -1606,6 +1953,55 @@
                 miningRate = 0.001;
                 userWalletAddress = generateWalletAddress();
                 transactionHistory = [];
+                referralCode = '';
+                lockupPeriods = [];
+            }
+        }
+
+        // Check for referral bonus
+        async function checkReferralBonus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const referralCodeParam = urlParams.get('ref');
+            
+            if (referralCodeParam && referralCodeParam !== referralCode) {
+                // This is a new user with a referral code
+                try {
+                    // Find the referrer
+                    const referrerQuery = await db.collection('users').where('referralCode', '==', referralCodeParam).limit(1).get();
+                    
+                    if (!referrerQuery.empty) {
+                        const referrerDoc = referrerQuery.docs[0];
+                        const referrerId = referrerDoc.id;
+                        
+                        // Award bonus to new user (welcome bonus)
+                        receivedBalance += 0.01; // 0.01 iKb welcome bonus
+                        userBalance = minedBalance + receivedBalance;
+                        
+                        // Award bonus to referrer (10% of future mining)
+                        await db.collection('users').doc(referrerId).update({
+                            receivedBalance: firebase.firestore.FieldValue.increment(0.005) // Immediate referral bonus
+                        });
+                        
+                        // Record referral transaction
+                        const transaction = {
+                            id: generateTransactionId(),
+                            type: 'referral_bonus',
+                            amount: 0.01,
+                            referrer: referralCodeParam,
+                            timestamp: new Date().toISOString(),
+                            status: 'completed'
+                        };
+                        transactionHistory.unshift(transaction);
+                        
+                        showNotification('Welcome bonus: +0.01 iKb for joining through referral!');
+                        console.log('🎉 Referral bonus awarded');
+                        
+                        // Clean up URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                } catch (error) {
+                    console.error('Error processing referral:', error);
+                }
             }
         }
 
@@ -1944,6 +2340,8 @@
                 isMining = false;
                 userWalletAddress = '';
                 transactionHistory = [];
+                referralCode = '';
+                lockupPeriods = [];
                 
                 localStorage.removeItem('kabiruMiningData');
                 
@@ -2031,7 +2429,7 @@
             });
         }
 
-        console.log('🚀 KABIRU Mining App - Fixed with Utilities Ready!');
+        console.log('🚀 KABIRU Mining App - Complete with Enhanced Features Ready!');
     </script>
 </body>
     </html>
