@@ -732,6 +732,80 @@
             background: linear-gradient(45deg, #FF5722, #E64A19);
         }
 
+        /* Conversion styles */
+        .conversion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .conversion-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .conversion-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+        }
+
+        .conversion-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .conversion-rate {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 11px;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
         /* Animations */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
@@ -860,7 +934,7 @@
                     </div>
                 </div>
                 
-                <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
+              <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
                 
                 <div style="text-align: center; font-size: 12px; opacity: 0.8;">
                     Didn't receive the email? 
@@ -1075,12 +1149,84 @@
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
-                    <button class="auth-button" onclick="showNotification('Send/Receive features coming soon!')" style="font-size: 12px; padding: 10px;">
+                    <button class="auth-button" onclick="openSendReceiveModal()" style="font-size: 12px; padding: 10px;">
                         💸 Send / Receive
                     </button>
-                    <button class="auth-button" onclick="showNotification('Transaction history: ' + transactionHistory.length + ' transactions')" style="font-size: 12px; padding: 10px;">
+                    <button class="auth-button" onclick="openTransactionHistoryModal()" style="font-size: 12px; padding: 10px;">
                         📊 History
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send/Receive Modal -->
+    <div id="sendReceiveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sendReceiveModal')">&times;</span>
+            <h2 class="modal-title">Send / Receive KABIRU</h2>
+            <div style="margin-bottom: 20px;">
+                
+                <!-- Send Section -->
+                <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 107, 107, 0.3);">
+                    <div style="font-size: 16px; font-weight: bold; color: #ff6b6b; margin-bottom: 15px;">📤 Send KABIRU</div>
+                    
+                    <div style="margin: 10px 0;">
+                        <label style="font-size: 12px; color: #ff6b6b; margin-bottom: 5px; display: block;">Recipient Email/Address:</label>
+                        <input type="text" id="sendRecipient" placeholder="Enter email or wallet address" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 107, 107, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="margin: 10px 0;">
+                        <label style="font-size: 12px; color: #ff6b6b; margin-bottom: 5px; display: block;">Amount (iKb):</label>
+                        <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 107, 107, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin: 10px 0; text-align: center;">
+                        Available: <span id="availableToSend">0.0000 iKb</span> | Fee: 0.0001 iKb
+                    </div>
+                    
+                    <button class="auth-button" onclick="sendKabiru()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                        💸 Send KABIRU
+                    </button>
+                </div>
+
+                <!-- Receive Section -->
+                <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(0, 255, 135, 0.3);">
+                    <div style="font-size: 16px; font-weight: bold; color: #00ff87; margin-bottom: 15px;">📥 Receive KABIRU</div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                        <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">Your Wallet Address:</div>
+                        <div style="font-size: 11px; word-break: break-all; color: #00ff87;" id="receiveAddress">Loading...</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="auth-button" onclick="copyReceiveAddress()" style="font-size: 12px; padding: 8px; background: linear-gradient(45deg, #00ff87, #60efff);">
+                            📋 Copy Address
+                        </button>
+                        <button class="auth-button" onclick="shareReceiveAddress()" style="font-size: 12px; padding: 8px; background: linear-gradient(45deg, #00ff87, #60efff);">
+                            📱 Share Address
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction History Modal -->
+    <div id="transactionHistoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('transactionHistoryModal')">&times;</span>
+            <h2 class="modal-title">Transaction History</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                    <div style="font-size: 14px; font-weight: bold; color: #FFD700; margin-bottom: 10px;">Recent Transactions</div>
+                    <div id="transactionList" style="max-height: 300px; overflow-y: auto;">
+                        <div style="text-align: center; opacity: 0.7; font-size: 14px; padding: 20px;">
+                            No transactions yet
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1164,6 +1310,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- KABIRU Conversion Section -->
+                <div class="tooltip" style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(102, 126, 234, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #667eea; margin-bottom: 10px;">🔄 KABIRU Conversion</div>
+                    <div class="tooltiptext">The KABIRU Points are acquired through tasks in the ecosystem while KABIRU digital currency is mined from genuine values</div>
+                    
+                    <div class="conversion-grid">
+                        <div class="conversion-item" onclick="convertCurrency('ikb_to_ikbp')">
+                            <div class="conversion-title">iKb → iKbp</div>
+                            <div class="conversion-rate">1 iKb = 100,000 iKbp</div>
+                            <div style="font-size: 10px; color: #667eea; margin-top: 5px;">Convert to Points</div>
+                        </div>
+                        <div class="conversion-item" onclick="convertCurrency('ikb_to_ksh')">
+                            <div class="conversion-title">iKb → KSH</div>
+                            <div class="conversion-rate">1 iKb = 100,000 KSH</div>
+                            <div style="font-size: 10px; color: #667eea; margin-top: 5px;">Convert to Shillings</div>
+                        </div>
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 10px; text-align: center;">
+                        Current Exchange: 1 iKbp = 1 KSH
+                    </div>
+                </div>
                 
                 <!-- Referral Section -->
                 <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(102, 126, 234, 0.3);">
@@ -1207,6 +1376,35 @@
                     </button>
                     <button class="auth-button" onclick="showReserveModal()" style="font-size: 12px; padding: 10px;">
                         💎 Reserve Tokens
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Currency Conversion Modal -->
+    <div id="conversionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('conversionModal')">&times;</span>
+            <h2 class="modal-title" id="conversionTitle">Convert KABIRU</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(102, 126, 234, 0.3);">
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #667eea; margin-bottom: 5px; display: block;" id="conversionFromLabel">Amount to Convert:</label>
+                        <input type="number" id="conversionAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; margin: 10px 0;">
+                        <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">You will receive:</div>
+                        <div style="font-size: 16px; font-weight: bold; color: #FFD700;" id="conversionResult">0.0000</div>
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin: 10px 0; text-align: center;" id="conversionRate"></div>
+                    
+                    <button class="auth-button" onclick="executeConversion()" id="conversionButton" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #667eea, #764ba2);">
+                        🔄 Convert
                     </button>
                 </div>
             </div>
@@ -1315,6 +1513,7 @@
         let receivedBalance = 0.0000;
         let reserveBalance = 0.0000;
         let lockedBalance = 0.0000;
+        let kabiruPoints = 0.0000; // New: KABIRU Points (iKbp)
         let totalTasksCompleted = 0;
         let miningRate = 0.001;
         let isMining = false;
@@ -1325,7 +1524,9 @@
         let transactionHistory = [];
         let referralCode = '';
         let lockupPeriods = []; // Array to store lockup information
-// Firebase Configuration
+        let currentConversionType = null;
+
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
@@ -1361,6 +1562,7 @@
                 receivedBalance = data.receivedBalance || 0.0000;
                 reserveBalance = data.reserveBalance || 0.0000;
                 lockedBalance = data.lockedBalance || 0.0000;
+                kabiruPoints = data.kabiruPoints || 0.0000;
                 totalTasksCompleted = data.totalTasksCompleted || 0;
                 transactionHistory = data.transactionHistory || [];
                 referralCode = data.referralCode || '';
@@ -1393,6 +1595,7 @@
                 receivedBalance: receivedBalance,
                 reserveBalance: reserveBalance,
                 lockedBalance: lockedBalance,
+                kabiruPoints: kabiruPoints,
                 tasksCompleted: totalTasksCompleted,
                 miningRate: miningRate,
                 walletAddress: userWalletAddress,
@@ -1472,6 +1675,293 @@
             }, Math.random() * 2000 + 3000);
         }
 
+        // Send KABIRU function
+        async function sendKabiru() {
+            const recipient = document.getElementById('sendRecipient').value.trim();
+            const amount = parseFloat(document.getElementById('sendAmount').value);
+            const fee = 0.0001; // Transaction fee
+            const totalAmount = amount + fee;
+            const availableBalance = minedBalance + receivedBalance;
+            
+            if (!recipient) {
+                showNotification('Please enter recipient email or address.');
+                return;
+            }
+            
+            if (!amount || amount <= 0) {
+                showNotification('Please enter a valid amount.');
+                return;
+            }
+            
+            if (totalAmount > availableBalance) {
+                showNotification('Insufficient balance. Available: ' + availableBalance.toFixed(4) + ' iKb');
+                return;
+            }
+            
+            try {
+                // Deduct from sender's balance
+                if (minedBalance >= totalAmount) {
+                    minedBalance -= totalAmount;
+                } else {
+                    const remainingAmount = totalAmount - minedBalance;
+                    minedBalance = 0;
+                    receivedBalance -= remainingAmount;
+                }
+                
+                // Find recipient and add to their received balance
+                if (db && currentUser.uid !== 'offline-user') {
+                    try {
+                        // Find recipient by email
+                        const recipientQuery = await db.collection('users').where('email', '==', recipient).limit(1).get();
+                        
+                        if (!recipientQuery.empty) {
+                            const recipientDoc = recipientQuery.docs[0];
+                            const recipientId = recipientDoc.id;
+                            
+                            // Add to recipient's received balance
+                            await db.collection('users').doc(recipientId).update({
+                                receivedBalance: firebase.firestore.FieldValue.increment(amount)
+                            });
+                        } else {
+                            showNotification('Recipient not found. Transaction recorded as pending.');
+                        }
+                    } catch (error) {
+                        console.error('Error finding recipient:', error);
+                    }
+                }
+                
+                // Create transaction record
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'send',
+                    recipient: recipient,
+                    amount: amount,
+                    fee: fee,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                transactionHistory.unshift(transaction);
+                
+                await saveUserData();
+                updateBalanceDisplay();
+                
+                showNotification(`✅ Successfully sent ${amount.toFixed(4)} iKb to ${recipient}!`);
+                document.getElementById('sendRecipient').value = '';
+                document.getElementById('sendAmount').value = '';
+                closeModal('sendReceiveModal');
+                
+            } catch (error) {
+                console.error('Send error:', error);
+                showNotification('❌ Failed to send KABIRU. Please try again.');
+            }
+        }
+
+        // Currency conversion functions
+        function convertCurrency(type) {
+            currentConversionType = type;
+            document.getElementById('conversionModal').style.display = 'block';
+            
+            if (type === 'ikb_to_ikbp') {
+                document.getElementById('conversionTitle').textContent = 'Convert iKb to iKbp';
+                document.getElementById('conversionFromLabel').textContent = 'Amount in iKb:';
+                document.getElementById('conversionRate').textContent = 'Exchange Rate: 1 iKb = 100,000 iKbp';
+            } else if (type === 'ikb_to_ksh') {
+                document.getElementById('conversionTitle').textContent = 'Convert iKb to KSH';
+                document.getElementById('conversionFromLabel').textContent = 'Amount in iKb:';
+                document.getElementById('conversionRate').textContent = 'Exchange Rate: 1 iKb = 100,000 KSH';
+            }
+            
+            // Update conversion result on input change
+            document.getElementById('conversionAmount').oninput = updateConversionResult;
+        }
+
+        function updateConversionResult() {
+            const amount = parseFloat(document.getElementById('conversionAmount').value) || 0;
+            let result = 0;
+            
+            if (currentConversionType === 'ikb_to_ikbp') {
+                result = amount * 100000; // 1 iKb = 100,000 iKbp
+                document.getElementById('conversionResult').textContent = result.toLocaleString() + ' iKbp';
+            } else if (currentConversionType === 'ikb_to_ksh') {
+                result = amount * 100000; // 1 iKb = 100,000 KSH
+                document.getElementById('conversionResult').textContent = result.toLocaleString() + ' KSH';
+            }
+        }
+
+        async function executeConversion() {
+            const amount = parseFloat(document.getElementById('conversionAmount').value);
+            const availableBalance = minedBalance + receivedBalance;
+            
+            if (!amount || amount <= 0) {
+                showNotification('Please enter a valid amount.');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showNotification('Insufficient iKb balance for conversion.');
+                return;
+            }
+            
+            try {
+                // Deduct from iKb balance
+                if (minedBalance >= amount) {
+                    minedBalance -= amount;
+                } else {
+                    const remainingAmount = amount - minedBalance;
+                    minedBalance = 0;
+                    receivedBalance -= remainingAmount;
+                }
+                
+                let convertedAmount = 0;
+                let transactionType = '';
+                
+                if (currentConversionType === 'ikb_to_ikbp') {
+                    convertedAmount = amount * 100000;
+                    kabiruPoints += convertedAmount;
+                    transactionType = 'conversion_to_ikbp';
+                    showNotification(`✅ Converted ${amount.toFixed(4)} iKb to ${convertedAmount.toLocaleString()} iKbp!`);
+                } else if (currentConversionType === 'ikb_to_ksh') {
+                    convertedAmount = amount * 100000;
+                    transactionType = 'conversion_to_ksh';
+                    showNotification(`✅ Converted ${amount.toFixed(4)} iKb to ${convertedAmount.toLocaleString()} KSH!`);
+                }
+                
+                // Create transaction record
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: transactionType,
+                    amount: amount,
+                    convertedAmount: convertedAmount,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                transactionHistory.unshift(transaction);
+                
+                await saveUserData();
+                updateBalanceDisplay();
+                
+                document.getElementById('conversionAmount').value = '';
+                closeModal('conversionModal');
+                
+            } catch (error) {
+                console.error('Conversion error:', error);
+                showNotification('❌ Conversion failed. Please try again.');
+            }
+        }
+
+        // Copy and share functions for receive address
+        function copyReceiveAddress() {
+            const address = userWalletAddress;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address).then(() => {
+                    showNotification('📋 Wallet address copied to clipboard!');
+                }).catch(err => {
+                    fallbackCopyToClipboard(address);
+                });
+            } else {
+                fallbackCopyToClipboard(address);
+            }
+        }
+
+        function shareReceiveAddress() {
+            const address = userWalletAddress;
+            const shareText = `Send KABIRU tokens to my wallet address: ${address}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My KABIRU Wallet Address',
+                    text: shareText
+                }).then(() => {
+                    showNotification('📱 Wallet address shared successfully!');
+                }).catch(() => {
+                    fallbackShare(shareText);
+                });
+            } else {
+                fallbackShare(shareText);
+            }
+        }
+
+        // Open send/receive modal
+        function openSendReceiveModal() {
+            document.getElementById('sendReceiveModal').style.display = 'block';
+            document.getElementById('availableToSend').textContent = (minedBalance + receivedBalance).toFixed(4) + ' iKb';
+            document.getElementById('receiveAddress').textContent = userWalletAddress || 'Loading...';
+            closeModal('walletModal');
+        }
+
+        // Open transaction history modal
+        function openTransactionHistoryModal() {
+            document.getElementById('transactionHistoryModal').style.display = 'block';
+            displayTransactionHistory();
+            closeModal('walletModal');
+        }
+
+        function displayTransactionHistory() {
+            const transactionList = document.getElementById('transactionList');
+            
+            if (transactionHistory.length === 0) {
+                transactionList.innerHTML = '<div style="text-align: center; opacity: 0.7; font-size: 14px; padding: 20px;">No transactions yet</div>';
+                return;
+            }
+            
+            let html = '';
+            transactionHistory.slice(0, 20).forEach(tx => {
+                const date = new Date(tx.timestamp).toLocaleDateString();
+                const time = new Date(tx.timestamp).toLocaleTimeString();
+                let icon = '⚡';
+                let amountText = `+${tx.amount.toFixed(4)} iKb`;
+                let description = '';
+                
+                switch (tx.type) {
+                    case 'mining':
+                        icon = '⛏️';
+                        description = `${tx.subtype} mining`;
+                        break;
+                    case 'send':
+                        icon = '📤';
+                        amountText = `-${tx.amount.toFixed(4)} iKb`;
+                        description = `Sent to ${tx.recipient}`;
+                        break;
+                    case 'receive':
+                        icon = '📥';
+                        description = `Received from ${tx.sender || 'Unknown'}`;
+                        break;
+                    case 'referral_bonus':
+                        icon = '🎁';
+                        description = 'Referral bonus';
+                        break;
+                    case 'lockup':
+                        icon = '🔒';
+                        amountText = `-${tx.amount.toFixed(4)} iKb`;
+                        description = `Locked for ${tx.months} months`;
+                        break;
+                    case 'conversion_to_ikbp':
+                        icon = '🔄';
+                        amountText = `-${tx.amount.toFixed(4)} iKb`;
+                        description = `Converted to ${tx.convertedAmount.toLocaleString()} iKbp`;
+                        break;
+                    case 'conversion_to_ksh':
+                        icon = '💱';
+                        amountText = `-${tx.amount.toFixed(4)} iKb`;
+                        description = `Converted to ${tx.convertedAmount.toLocaleString()} KSH`;
+                        break;
+                }
+                
+                html += `
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; margin: 5px 0; display: flex; align-items: center; gap: 10px;">
+                        <div style="font-size: 16px;">${icon}</div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 12px; font-weight: bold;">${description}</div>
+                            <div style="font-size: 10px; opacity: 0.7;">${date} ${time}</div>
+                        </div>
+                        <div style="font-size: 12px; font-weight: bold; color: ${tx.type === 'send' || tx.type === 'lockup' || tx.type.includes('conversion') ? '#ff6b6b' : '#00ff87'};">${amountText}</div>
+                    </div>
+                `;
+            });
+            
+            transactionList.innerHTML = html;
+        }
+
         // Mining countdown timer
         function startMiningCountdown() {
             const timerElement = document.getElementById('miningTimer');
@@ -1537,7 +2027,7 @@
             // Update modal with current user data
             if (currentUser) {
                 document.getElementById('modalUserAvatar').textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
-                document.getElementById('modalUserName').textContent = currentUser.displayName || 'Anonymous User';
+document.getElementById('modalUserName').textContent = currentUser.displayName || 'Anonymous User';
                 document.getElementById('modalUserEmail').textContent = currentUser.email || 'No email';
                 document.getElementById('modalUserBalance').textContent = userBalance.toFixed(4) + ' iKb';
                 document.getElementById('modalUserTasks').textContent = totalTasksCompleted;
@@ -1574,7 +2064,7 @@
         }
 
         function selectLanguage(langCode) {
-            showNotification(`Language changed to ${langCode === 'en' ? 'English' : langCode === 'sw' ? 'Kiswahili' : langCode === 'fr' ? 'Français' : 'العربية'}`);
+            showNotification(`Language changed to ${langCode === 'en' ? 'English' : langCode === 'sw' ? 'Kiswahili' : langCode === 'fr' ? 'Dho Luo' : 'Kikuyu'}`);
             closeModal('languageModal');
         }
 
@@ -1631,7 +2121,7 @@
             const referralLink = generateReferralLink();
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(referralLink).then(() => {
-                    showNotification('📋 Referral link copied to clipboard!');
+                    showNotification('Referral link copied to clipboard!');
                 }).catch(err => {
                     fallbackCopyToClipboard(referralLink);
                 });
@@ -1649,9 +2139,9 @@
             textArea.select();
             try {
                 document.execCommand('copy');
-                showNotification('📋 Referral link copied to clipboard!');
+                showNotification('Link copied to clipboard!');
             } catch (err) {
-                showNotification('❌ Could not copy link. Please copy manually.');
+                showNotification('Could not copy link. Please copy manually.');
             }
             document.body.removeChild(textArea);
         }
@@ -1667,7 +2157,7 @@
                     text: shareText,
                     url: referralLink
                 }).then(() => {
-                    showNotification('📱 Referral link shared successfully!');
+                    showNotification('Referral link shared successfully!');
                 }).catch(() => {
                     fallbackShare(shareText);
                 });
@@ -1680,12 +2170,12 @@
         function fallbackShare(text) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
-                    showNotification('📋 Referral message copied! You can paste it anywhere to share.');
+                    showNotification('Referral message copied! You can paste it anywhere to share.');
                 }).catch(() => {
-                    showNotification('📱 Share: Copy the referral link manually to share with friends.');
+                    showNotification('Share: Copy the referral link manually to share with friends.');
                 });
             } else {
-                showNotification('📱 Share your referral link manually with friends!');
+                showNotification('Share your referral link manually with friends!');
             }
         }
 
@@ -1843,7 +2333,7 @@
 
         // Initialize app on page load
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 KABIRU Mining App starting...');
+            console.log('KABIRU Mining App starting...');
             setupAuthStateListener();
         });
 
@@ -1855,19 +2345,19 @@
             }
 
             auth.onAuthStateChanged(async (user) => {
-                console.log('🔍 Auth state changed:', user ? user.uid : 'No user');
+                console.log('Auth state changed:', user ? user.uid : 'No user');
                 
                 if (user) {
                     if (user.emailVerified) {
-                        console.log('✅ User authenticated and verified');
+                        console.log('User authenticated and verified');
                         await loadUserData(user);
                         showMiningApp();
                     } else {
-                        console.log('⚠️ User not verified, showing verification screen');
+                        console.log('User not verified, showing verification screen');
                         showEmailVerification();
                     }
                 } else {
-                    console.log('👤 No authenticated user, showing login');
+                    console.log('No authenticated user, showing login');
                     showLoginPage();
                 }
             });
@@ -1875,14 +2365,14 @@
 
         // Show offline login option
         function showOfflineLogin() {
-            showNotification('🔴 Running in offline mode - you can still mine tokens!');
+            showNotification('Running in offline mode - you can still mine tokens!');
             initOfflineMode();
         }
 
         // Load user data
         async function loadUserData(firebaseUser) {
             try {
-                console.log('📊 Loading user data for:', firebaseUser.uid);
+                console.log('Loading user data for:', firebaseUser.uid);
                 
                 const userDoc = await db.collection('users').doc(firebaseUser.uid).get();
                 
@@ -1893,13 +2383,14 @@
                     userBalance = minedBalance + receivedBalance;
                     reserveBalance = userData.reserveBalance || 0.0000;
                     lockedBalance = userData.lockedBalance || 0.0000;
+                    kabiruPoints = userData.kabiruPoints || 0.0000;
                     totalTasksCompleted = userData.tasksCompleted || 0;
                     miningRate = userData.miningRate || 0.001;
                     userWalletAddress = userData.walletAddress || generateWalletAddress();
                     transactionHistory = userData.transactionHistory || [];
                     referralCode = userData.referralCode || '';
                     lockupPeriods = userData.lockupPeriods || [];
-                    console.log('✅ User data loaded from Firestore - Balance:', userBalance);
+                    console.log('User data loaded from Firestore - Balance:', userBalance);
                 } else {
                     userWalletAddress = generateWalletAddress();
                     referralCode = 'KABIRU_' + firebaseUser.uid.substr(-6).toUpperCase();
@@ -1913,6 +2404,7 @@
                         receivedBalance: 0.0000,
                         reserveBalance: 0.0000,
                         lockedBalance: 0.0000,
+                        kabiruPoints: 0.0000,
                         tasksCompleted: 0,
                         miningRate: 0.001,
                         walletAddress: userWalletAddress,
@@ -1924,7 +2416,7 @@
                     };
                     
                     await db.collection('users').doc(firebaseUser.uid).set(newUserData);
-                    console.log('🆕 New user document created');
+                    console.log('New user document created');
                 }
                 
                 // Check for referral bonus on signup
@@ -1943,12 +2435,13 @@
                 updateUserDisplay();
                 
             } catch (error) {
-                console.error('❌ Error loading user data:', error);
+                console.error('Error loading user data:', error);
                 userBalance = 0.0000;
                 minedBalance = 0.0000;
                 receivedBalance = 0.0000;
                 reserveBalance = 0.0000;
                 lockedBalance = 0.0000;
+                kabiruPoints = 0.0000;
                 totalTasksCompleted = 0;
                 miningRate = 0.001;
                 userWalletAddress = generateWalletAddress();
@@ -1994,7 +2487,7 @@
                         transactionHistory.unshift(transaction);
                         
                         showNotification('Welcome bonus: +0.01 iKb for joining through referral!');
-                        console.log('🎉 Referral bonus awarded');
+                        console.log('Referral bonus awarded');
                         
                         // Clean up URL
                         window.history.replaceState({}, document.title, window.location.pathname);
@@ -2090,11 +2583,11 @@
                     return;
                 }
                 
-                console.log('✅ Login successful');
+                console.log('Login successful');
                 showSuccess('Login successful! Loading your mining dashboard...');
                 
             } catch (error) {
-                console.error('❌ Login error:', error);
+                console.error('Login error:', error);
                 document.querySelector('#loginContainer .auth-button').textContent = 'Sign In';
                 document.querySelector('#loginContainer .auth-button').disabled = false;
                 
@@ -2177,12 +2670,12 @@
                     handleCodeInApp: false
                 });
                 
-                console.log('✅ Account created, verification email sent');
+                console.log('Account created, verification email sent');
                 showSuccess('Account created! Please check your email for verification instructions.');
                 showEmailVerification();
                 
             } catch (error) {
-                console.error('❌ Signup error:', error);
+                console.error('Signup error:', error);
                 document.querySelector('#signupContainer .auth-button').textContent = 'Create Account';
                 document.querySelector('#signupContainer .auth-button').disabled = false;
                 
@@ -2335,6 +2828,7 @@
                 receivedBalance = 0.0000;
                 reserveBalance = 0.0000;
                 lockedBalance = 0.0000;
+                kabiruPoints = 0.0000;
                 totalTasksCompleted = 0;
                 miningRate = 0.001;
                 isMining = false;
@@ -2346,11 +2840,11 @@
                 localStorage.removeItem('kabiruMiningData');
                 
                 showNotification('Logged out successfully');
-                console.log('👋 User logged out');
+                console.log('User logged out');
                 showLoginPage();
                 
             } catch (error) {
-                console.error('❌ Logout error:', error);
+                console.error('Logout error:', error);
                 showNotification('Logout completed');
                 showLoginPage();
             }
@@ -2429,7 +2923,7 @@
             });
         }
 
-        console.log('🚀 KABIRU Mining App - Complete with Enhanced Features Ready!');
+        console.log('KABIRU Mining App - Enhanced with Send/Receive & Currency Conversion Ready!');
     </script>
 </body>
     </html>
