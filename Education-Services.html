@@ -14,21 +14,6 @@
             --black: #1a1a1a;
             --white: #FFFFFF;
             --light-gray: #F8F9FA;
-            
-            /* Page-specific color themes */
-            --login-gradient: linear-gradient(180deg, var(--strong-orange) 0%, var(--orange) 25%, var(--sky-blue) 75%, var(--strong-sky-blue) 100%);
-            --main-gradient: linear-gradient(180deg, #8B5A2B 0%, #DAA520 25%, #32CD32 75%, #228B22 100%);
-            --student-gradient: linear-gradient(180deg, #4B0082 0%, #8A2BE2 25%, #FF69B4 75%, #FF1493 100%);
-            --teacher-gradient: linear-gradient(180deg, #8B0000 0%, #DC143C 25%, #FFD700 75%, #FFA500 100%);
-            --courses-gradient: linear-gradient(180deg, #2F4F4F 0%, #008B8B 25%, #40E0D0 75%, #00CED1 100%);
-            --dashboard-gradient: linear-gradient(180deg, #483D8B 0%, #6A5ACD 25%, #9370DB 75%, #8A2BE2 100%);
-            --library-gradient: linear-gradient(180deg, #556B2F 0%, #808000 25%, #ADFF2F 75%, #7CFC00 100%);
-            --referral-gradient: linear-gradient(180deg, #B22222 0%, #CD5C5C 25%, #F0E68C 75%, #FFD700 100%);
-            --investor-gradient: linear-gradient(180deg, #2E8B57 0%, #3CB371 25%, #98FB98 75%, #90EE90 100%);
-            
-            /* Default gradient */
-            --gradient-main: var(--login-gradient);
-            --gradient-card: linear-gradient(135deg, var(--orange) 0%, var(--sky-blue) 50%, var(--strong-sky-blue) 100%);
         }
 
         * {
@@ -299,6 +284,17 @@
             background: linear-gradient(135deg, var(--sky-blue), var(--orange));
         }
 
+        .toggle-btn {
+            background: var(--white);
+            color: var(--black);
+            border: 2px solid var(--orange);
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(135deg, var(--orange), var(--sky-blue));
+            color: white;
+        }
+
         .notification {
             position: fixed;
             top: 50px;
@@ -371,6 +367,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border: 2px solid var(--sky-blue);
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .stat-card::before {
@@ -465,6 +462,13 @@
                     </div>
                 </div>
 
+                <!-- Login/Registration Toggle -->
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <button type="button" id="showLoginBtn" class="btn toggle-btn active" style="width: 48%; margin-right: 2%;">Login</button>
+                    <button type="button" id="showRegisterBtn" class="btn toggle-btn" style="width: 48%;">Create Account</button>
+                </div>
+
+                <!-- Login Form -->
                 <form id="loginForm">
                     <h2 style="text-align: center; margin-bottom: 30px; color: var(--black);">Welcome Back!</h2>
                     
@@ -492,8 +496,129 @@
                     <button type="submit" class="btn">🚀 Login to Dashboard</button>
                     
                     <div style="text-align: center; margin-top: 20px;">
-                        <p>New to TACEP? <a href="#" onclick="showPage('main-page')" style="color: var(--orange); text-decoration: none; font-weight: bold;">Register Here</a></p>
                         <p style="margin-top: 10px;"><a href="#" onclick="forgotPassword()" style="color: var(--sky-blue); text-decoration: none;">Forgot Password?</a></p>
+                    </div>
+                </form>
+
+                <!-- Registration Form -->
+                <form id="registerForm" style="display: none;">
+                    <h2 style="text-align: center; margin-bottom: 30px; color: var(--black);">Create Your Account</h2>
+                    
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="registerFullName" name="fullName" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="registerEmail" name="email" required placeholder="Enter your email address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="registerPhone" name="phone" required placeholder="Enter your phone number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Create Password</label>
+                        <input type="password" id="registerPassword" name="password" required placeholder="Create a strong password" minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Account Type</label>
+                        <select id="registerAccountType" name="accountType" required>
+                            <option value="">Select Account Type</option>
+                            <option value="student">Student Account - Learn & Earn Kabiru Points</option>
+                            <option value="teacher">Teacher Account - Teach & Build Network</option>
+                            <option value="investor">Investor Account - Sponsor & Track Impact</option>
+                        </select>
+                    </div>
+
+                    <!-- Additional fields based on account type -->
+                    <div id="studentFields" style="display: none;">
+                        <div class="form-group">
+                            <label>Learning Mode</label>
+                            <select name="learningMode">
+                                <option value="">Select Mode</option>
+                                <option value="online">Online Courses</option>
+                                <option value="physical">Physical Classes</option>
+                                <option value="hybrid">Hybrid (Online + Physical)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Country</label>
+                            <select name="country">
+                                <option value="">Select Country</option>
+                                <option value="kenya">Kenya</option>
+                                <option value="uganda">Uganda</option>
+                                <option value="tanzania">Tanzania</option>
+                                <option value="ethiopia">Ethiopia</option>
+                                <option value="rwanda">Rwanda</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="teacherFields" style="display: none;">
+                        <div class="form-group">
+                            <label>Teaching Experience (Years)</label>
+                            <input type="number" name="experience" min="0" placeholder="Years of teaching experience">
+                        </div>
+                        <div class="form-group">
+                            <label>Specialization Area</label>
+                            <select name="specialization">
+                                <option value="">Select Specialization</option>
+                                <option value="programming">Computer Programming</option>
+                                <option value="electronics">Electronics & Electrical</option>
+                                <option value="textile">Textile & Tailoring</option>
+                                <option value="music">Music Instruments</option>
+                                <option value="carpentry">Carpentry & Woodwork</option>
+                                <option value="finance">Finance, Law & Banking</option>
+                                <option value="pastry">Pastry & Baking</option>
+                                <option value="health">Natural Health</option>
+                                <option value="mechanical">Mechanical & Welding</option>
+                                <option value="beauty">Beauty & Therapy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="investorFields" style="display: none;">
+                        <div class="form-group">
+                            <label>Investor Type</label>
+                            <select name="investorType">
+                                <option value="">Select Investor Type</option>
+                                <option value="individual">Individual Investor</option>
+                                <option value="corporate">Corporate Sponsor</option>
+                                <option value="foundation">Foundation/NGO</option>
+                                <option value="government">Government Agency</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Investment Interest Level</label>
+                            <select name="investmentAmount">
+                                <option value="">Select Investment Range</option>
+                                <option value="bronze">Bronze Sponsor: $500 - $2,499</option>
+                                <option value="silver">Silver Partner: $2,500 - $9,999</option>
+                                <option value="gold">Gold Benefactor: $10,000 - $24,999</option>
+                                <option value="platinum">Platinum Patron: $25,000 - $99,999</option>
+                                <option value="diamond">Diamond Visionary: $100,000+</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Referral Code (Optional)</label>
+                        <input type="text" name="referralCode" placeholder="Enter referral code to earn bonus Kabiru points">
+                    </div>
+                    
+                    <button type="submit" class="btn">🎉 Create Account & Get Kabiru Points</button>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p style="font-size: 0.9em; color: var(--black);">By creating an account, you agree to our Terms of Service and Privacy Policy</p>
                     </div>
                 </form>
             </div>
@@ -530,18 +655,6 @@
             </div>
 
             <div class="nav-buttons">
-                <button class="nav-btn" onclick="showPage('student-registration-page')">
-                    🎓 Student Registration<br>
-                    <small>Register & Start Earning Kabiru Points</small>
-                </button>
-                <button class="nav-btn" onclick="showPage('teacher-registration-page')">
-                    👨‍🏫 Teacher Registration<br>
-                    <small>Apply to Teach & Build Network</small>
-                </button>
-                <button class="nav-btn" onclick="showPage('investor-registration-page')">
-                    💼 Investor Registration<br>
-                    <small>Sponsor Education & Track Progress</small>
-                </button>
                 <button class="nav-btn" onclick="showPage('courses-page')">
                     📚 Available Courses<br>
                     <small>Explore All Training Programs</small>
@@ -570,246 +683,6 @@
         </div>
     </div>
 
-    <!-- Student Registration Page -->
-    <div id="student-registration-page" class="page">
-        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
-        
-        <div class="container">
-            <div class="content-card">
-                <h2>🎓 Student Registration & Onboarding</h2>
-                <p style="margin-bottom: 30px; color: var(--deep-blue); font-size: 1.1em;">Join TACEP Center and start your journey to technical excellence while earning Kabiru points!</p>
-                
-                <form id="studentForm">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" name="fullName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label>National ID / Passport</label>
-                        <input type="text" name="idNumber" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Learning Mode</label>
-                        <select name="learningMode" required>
-                            <option value="">Select Mode</option>
-                            <option value="online">Online Courses</option>
-                            <option value="physical">Physical Classes</option>
-                            <option value="hybrid">Hybrid (Online + Physical)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Country</label>
-                        <select name="country" required>
-                            <option value="">Select Country</option>
-                            <option value="kenya">Kenya</option>
-                            <option value="uganda">Uganda</option>
-                            <option value="tanzania">Tanzania</option>
-                            <option value="ethiopia">Ethiopia</option>
-                            <option value="rwanda">Rwanda</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>County/Region</label>
-                        <select name="county" required>
-                            <option value="">Select County/Region</option>
-                            <option value="nairobi">Nairobi County</option>
-                            <option value="mombasa">Mombasa County</option>
-                            <option value="kisumu">Kisumu County</option>
-                            <option value="nakuru">Nakuru County</option>
-                            <option value="eldoret">Uasin Gishu County</option>
-                            <option value="thika">Kiambu County</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Payment Method (KSH)</label>
-                        <select name="paymentMethod" required>
-                            <option value="">Select Payment Method</option>
-                            <option value="mpesa">M-Pesa</option>
-                            <option value="bank">Bank Transfer</option>
-                            <option value="cash">Cash Payment</option>
-                            <option value="card">Credit/Debit Card</option>
-                            <option value="kabiru">Kabiru Points</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Referral Code (Optional)</label>
-                        <input type="text" name="referralCode" placeholder="Enter referral code to earn bonus Kabiru points">
-                    </div>
-                    <button type="submit" class="btn">Register & Get 50 Kabiru Points</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Teacher Registration Page -->
-    <div id="teacher-registration-page" class="page">
-        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
-        
-        <div class="container">
-            <div class="content-card">
-                <h2>👨‍🏫 Teacher Registration & Application</h2>
-                <p style="margin-bottom: 30px; color: var(--deep-blue); font-size: 1.1em;">Join our teaching team and earn Kabiru points while shaping the future!</p>
-                
-                <form id="teacherForm">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" name="fullName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Teaching Experience (Years)</label>
-                        <input type="number" name="experience" min="0" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Specialization Areas</label>
-                        <select name="specialization" multiple required>
-                            <option value="programming">Computer Programming</option>
-                            <option value="electronics">Electronics & Electrical</option>
-                            <option value="textile">Textile & Tailoring</option>
-                            <option value="music">Music Instruments</option>
-                            <option value="carpentry">Carpentry & Woodwork</option>
-                            <option value="finance">Finance, Law & Banking</option>
-                            <option value="pastry">Pastry & Baking</option>
-                            <option value="health">Natural Health</option>
-                            <option value="mechanical">Mechanical & Welding</option>
-                            <option value="beauty">Beauty & Therapy</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Teaching Statement</label>
-                        <textarea name="teachingStatement" rows="4" placeholder="Describe your teaching philosophy and approach..."></textarea>
-                    </div>
-                    <button type="submit" class="btn">Apply as Teacher & Start Earning</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Investor Registration Page -->
-    <div id="investor-registration-page" class="page">
-        <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
-        
-        <div class="container">
-            <div class="content-card">
-                <h2>💼 Investor Registration & Partnership</h2>
-                <p style="margin-bottom: 30px; color: var(--deep-blue); font-size: 1.1em;">Join TACEP Center as an investor and sponsor education while tracking your impact and earning returns through our Kabiru ecosystem.</p>
-                
-                <div class="referral-levels">
-                    <h3>🎯 Investor Classification System</h3>
-                    <div class="dashboard-stats">
-                        <div class="stat-card">
-                            <h4>Bronze Sponsor</h4>
-                            <p>$500 - $2,499</p>
-                            <small>Student sponsorship & basic tracking</small>
-                        </div>
-                        <div class="stat-card">
-                            <h4>Silver Partner</h4>
-                            <p>$2,500 - $9,999</p>
-                            <small>Course funding & progress reports</small>
-                        </div>
-                        <div class="stat-card">
-                            <h4>Gold Benefactor</h4>
-                            <p>$10,000 - $24,999</p>
-                            <small>Program development & mentorship</small>
-                        </div>
-                        <div class="stat-card">
-                            <h4>Platinum Patron</h4>
-                            <p>$25,000 - $99,999</p>
-                            <small>Center expansion & naming rights</small>
-                        </div>
-                        <div class="stat-card">
-                            <h4>Diamond Visionary</h4>
-                            <p>$100,000+</p>
-                            <small>Strategic partnership & board seat</small>
-                        </div>
-                    </div>
-                </div>
-                
-                <form id="investorForm">
-                    <div class="form-group">
-                        <label>Full Name / Organization Name</label>
-                        <input type="text" name="fullName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Investor Type</label>
-                        <select name="investorType" required>
-                            <option value="">Select Investor Type</option>
-                            <option value="individual">Individual Investor</option>
-                            <option value="corporate">Corporate Sponsor</option>
-                            <option value="foundation">Foundation/NGO</option>
-                            <option value="government">Government Agency</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Investment Amount (USD)</label>
-                        <select name="investmentAmount" required onchange="updateInvestorClass(this.value)">
-                            <option value="">Select Investment Range</option>
-                            <option value="bronze">Bronze Sponsor: $500 - $2,499</option>
-                            <option value="silver">Silver Partner: $2,500 - $9,999</option>
-                            <option value="gold">Gold Benefactor: $10,000 - $24,999</option>
-                            <option value="platinum">Platinum Patron: $25,000 - $99,999</option>
-                            <option value="diamond">Diamond Visionary: $100,000+</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Investment Focus Areas</label>
-                        <select name="focusAreas" multiple required>
-                            <option value="programming">Computer Programming</option>
-                            <option value="electronics">Electronics & Electrical</option>
-                            <option value="textile">Textile & Tailoring</option>
-                            <option value="music">Music Instruments</option>
-                            <option value="carpentry">Carpentry & Woodwork</option>
-                            <option value="finance">Finance & Banking</option>
-                            <option value="scholarships">Student Scholarships</option>
-                            <option value="equipment">Equipment & Infrastructure</option>
-                            <option value="teacher-training">Teacher Training</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Geographic Interest</label>
-                        <select name="geoFocus" required>
-                            <option value="">Select Region</option>
-                            <option value="kenya">Kenya Focus</option>
-                            <option value="uganda">Uganda Focus</option>
-                            <option value="tanzania">Tanzania Focus</option>
-                            <option value="ethiopia">Ethiopia Focus</option>
-                            <option value="rwanda">Rwanda Focus</option>
-                            <option value="east-africa">Entire East Africa</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Investment Goals</label>
-                        <textarea name="investmentGoals" rows="4" placeholder="Describe your investment objectives and expected outcomes..."></textarea>
-                    </div>
-                    <button type="submit" class="btn">Submit Investment Application</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Courses Page -->
     <div id="courses-page" class="page">
         <button class="back-btn" onclick="showPage('main-page')">← Back to Main</button>
@@ -827,6 +700,24 @@
                         <p><strong>Earn:</strong> 200 Kabiru Points</p>
                         <p><strong>Price:</strong> Coming Soon</p>
                         <button class="btn" style="margin-top: 15px;">Enroll Now</button>
+                    </div>
+                    <div class="course-card">
+                        <h4>🪚 Carpentry & Woodwork</h4>
+                        <div style="background: var(--orange); color: white; padding: 8px; border-radius: 10px; margin: 15px 0;">6+ Months Course</div>
+                        <p>Furniture, Interior Fitting, Gypsum Work</p>
+                        <p><strong>Earn:</strong> 280 Kabiru Points</p>
+                        <p><strong>Price:</strong> Coming Soon</p>
+                        <button class="btn" style="margin-top: 15px;">Enroll Now</button>
+                    </div>
+                    <div class="course-card">
+                        <h4>💰 Finance & Banking</h4>
+                        <div style="background: var(--orange); color: white; padding: 8px; border-radius: 10px; margin: 15px 0;">3 Months Course</div>
+                        <p>Accounting, Business Commerce, Law</p>
+                        <p><strong>Earn:</strong> 250 Kabiru Points</p>
+                        <p><strong>Price:</strong> Coming Soon</p>
+                        <button class="btn" style="margin-top: 15px;">Enroll Now
+                        <button class="btn" style="margin-top: 15px;">Enroll Now
+</button>
                     </div>
                     <div class="course-card">
                         <h4>🔌 Electronics & Electrical</h4>
@@ -849,24 +740,8 @@
                         <div style="background: var(--orange); color: white; padding: 8px; border-radius: 10px; margin: 15px 0;">1 Month Course</div>
                         <p>Piano, Guitar, Drums, Music Theory</p>
                         <p><strong>Earn:</strong> 120 Kabiru Points</p>
-                        <p><strong>Price:</strong> Coming Soon</p>
-                        <button class="btn" style="margin-top: 15px;">Enroll Now</button>
-                    </div>
-                    <div class="course-card">
-                        <h4>🪚 Carpentry & Woodwork</h4>
-                        <div style="background: var(--orange); color: white; padding: 8px; border-radius: 10px; margin: 15px 0;">6+ Months Course</div>
-                        <p>Furniture, Interior Fitting, Gypsum Work</p>
-                        <p><strong>Earn:</strong> 280 Kabiru Points</p>
-                        <p><strong>Price:</strong> Coming Soon</p>
-                        <button class="btn" style="margin-top: 15px;">Enroll Now</button>
-                    </div>
-                    <div class="course-card">
-                        <h4>💰 Finance & Banking</h4>
-                        <div style="background: var(--orange); color: white; padding: 8px; border-radius: 10px; margin: 15px 0;">3 Months Course</div>
-                        <p>Accounting, Business Commerce, Law</p>
-                        <p><strong>Earn:</strong> 250 Kabiru Points</p>
-                        <p><strong>Price:</strong> Coming Soon</p>
-                        <button class="btn" style="margin-top: 15px;">Enroll Now</button>
+                        <p><strong>Price:</strong> Coming Soon
+</button>
                     </div>
                 </div>
             </div>
@@ -1185,7 +1060,8 @@
             currentPage: 'login-page',
             users: { students: [], teachers: [], investors: [] },
             kabiruTracking: {},
-            referralNetwork: {}
+            referralNetwork: {},
+            pendingReferralCode: null
         };
 
         // Real User Management System
@@ -1371,7 +1247,7 @@
             var referralBonus = 0;
             if (pendingReferralCode) {
                 referralBonus = processReferral(pendingReferralCode, userId);
-                delete appState.pendingReferralCode;
+                appState.pendingReferralCode = null;
             }
             
             var totalPoints = basePoints + referralBonus;
@@ -1381,7 +1257,7 @@
                 id: userId,
                 email: userData.email,
                 fullName: userData.fullName,
-                password: userData.password || 'temp123',
+                password: userData.password,
                 referralCode: referralCode,
                 kabiruPoints: totalPoints,
                 registrationDate: new Date().toISOString(),
@@ -1392,7 +1268,9 @@
             if (userType === 'investor') {
                 newUser.investorClass = getInvestorClass(userData.investmentAmount);
                 newUser.totalInvestment = userData.totalInvestment || 0;
-                newUser.kabiruPoints = getInvestorKabiruBonus(userData.investmentAmount);
+                if (userData.investmentAmount) {
+                    newUser.kabiruPoints = getInvestorKabiruBonus(userData.investmentAmount);
+                }
             }
             
             // Add to appropriate array
@@ -1464,161 +1342,51 @@
         }
 
         // Login Form Handler
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            var email = document.getElementById('loginEmail').value;
-            var password = document.getElementById('loginPassword').value;
-            var accountType = this.accountType.value;
-            
-            if (!email || !password || !accountType) {
-                showNotification('Please fill in all fields', 'error');
-                return;
-            }
-            
-            var authResult = authenticateUser(email, password, accountType);
-            
-            if (authResult.success) {
-                appState.currentUser = authResult.user;
-                showNotification('Welcome back, ' + authResult.user.name + '! Your dashboard is now active.');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
                 
-                // Show appropriate dashboard content
-                if (accountType === 'student') {
-                    document.getElementById('student-login-required').style.display = 'none';
-                    document.getElementById('student-dashboard-content').style.display = 'block';
-                    document.getElementById('studentKabiruPoints').textContent = authResult.user.kabiruPoints;
-                } else if (accountType === 'teacher') {
-                    document.getElementById('teacher-login-required').style.display = 'none';
-                    document.getElementById('teacher-dashboard-content').style.display = 'block';
-                    document.getElementById('teacherKabiruPoints').textContent = authResult.user.kabiruPoints;
-                } else if (accountType === 'investor') {
-                    document.getElementById('investor-login-required').style.display = 'none';
-                    document.getElementById('investor-dashboard-content').style.display = 'block';
-                    document.getElementById('investorKabiruPoints').textContent = authResult.user.kabiruPoints;
-                    if (authResult.user.investorClass) {
-                        document.getElementById('investorClass').textContent = authResult.user.investorClass;
-                    }
+                var email = document.getElementById('loginEmail').value;
+                var password = document.getElementById('loginPassword').value;
+                var accountType = this.accountType.value;
+                
+                if (!email || !password || !accountType) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
                 }
                 
-                // Update referral display on login
-                updateReferralDisplay();
+                var authResult = authenticateUser(email, password, accountType);
                 
-                showPage('main-page');
-            } else {
-                showNotification(authResult.message || 'Login failed. Please check your credentials.', 'error');
-            }
-        });
-
-        // Registration Handlers
-        document.getElementById('studentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            var formData = new FormData(this);
-            var studentData = {};
-            for (var pair of formData.entries()) {
-                studentData[pair[0]] = pair[1];
-            }
-            
-            // Check if email already exists
-            var existingUser = appState.users.students.find(function(user) {
-                return user.email === studentData.email;
+                if (authResult.success) {
+                    appState.currentUser = authResult.user;
+                    showNotification('Welcome back, ' + authResult.user.name + '! Your dashboard is now active.');
+                    
+                    // Show appropriate dashboard content
+                    if (accountType === 'student') {
+                        document.getElementById('student-login-required').style.display = 'none';
+                        document.getElementById('student-dashboard-content').style.display = 'block';
+                        document.getElementById('studentKabiruPoints').textContent = authResult.user.kabiruPoints;
+                    } else if (accountType === 'teacher') {
+                        document.getElementById('teacher-login-required').style.display = 'none';
+                        document.getElementById('teacher-dashboard-content').style.display = 'block';
+                        document.getElementById('teacherKabiruPoints').textContent = authResult.user.kabiruPoints;
+                    } else if (accountType === 'investor') {
+                        document.getElementById('investor-login-required').style.display = 'none';
+                        document.getElementById('investor-dashboard-content').style.display = 'block';
+                        document.getElementById('investorKabiruPoints').textContent = authResult.user.kabiruPoints;
+                        if (authResult.user.investorClass) {
+                            document.getElementById('investorClass').textContent = authResult.user.investorClass;
+                        }
+                    }
+                    
+                    // Update referral display on login
+                    updateReferralDisplay();
+                    
+                    showPage('main-page');
+                } else {
+                    showNotification(authResult.message || 'Login failed. Please check your credentials.', 'error');
+                }
             });
-            
-            if (existingUser) {
-                showNotification('Email already registered. Please use a different email or login.', 'error');
-                return;
-            }
-            
-            // Generate password (in real implementation, user would set this)
-            studentData.password = 'temp' + Math.random().toString(36).substring(2, 8);
-            
-            var result = registerUser(studentData, 'student');
-            
-            if (result.success) {
-                showNotification(result.message + ' Your temporary password is: ' + studentData.password);
-                this.reset();
-                
-                setTimeout(function() {
-                    showNotification('Please login with your email and temporary password to access your dashboard.');
-                    showPage('login-page');
-                }, 3000);
-            } else {
-                showNotification('Registration failed. Please try again.', 'error');
-            }
-        });
-
-        document.getElementById('teacherForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            var formData = new FormData(this);
-            var teacherData = {};
-            for (var pair of formData.entries()) {
-                teacherData[pair[0]] = pair[1];
-            }
-            
-            // Check if email already exists
-            var existingUser = appState.users.teachers.find(function(user) {
-                return user.email === teacherData.email;
-            });
-            
-            if (existingUser) {
-                showNotification('Email already registered. Please use a different email or login.', 'error');
-                return;
-            }
-            
-            // Generate password
-            teacherData.password = 'temp' + Math.random().toString(36).substring(2, 8);
-            
-            var result = registerUser(teacherData, 'teacher');
-            
-            if (result.success) {
-                showNotification(result.message + ' Your temporary password is: ' + teacherData.password);
-                this.reset();
-                
-                setTimeout(function() {
-                    showNotification('Please login with your email and temporary password to access your teacher dashboard.');
-                    showPage('login-page');
-                }, 3000);
-            } else {
-                showNotification('Registration failed. Please try again.', 'error');
-            }
-        });
-
-        document.getElementById('investorForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            var formData = new FormData(this);
-            var investorData = {};
-            for (var pair of formData.entries()) {
-                investorData[pair[0]] = pair[1];
-            }
-            
-            // Check if email already exists
-            var existingUser = appState.users.investors.find(function(user) {
-                return user.email === investorData.email;
-            });
-            
-            if (existingUser) {
-                showNotification('Email already registered. Please use a different email or login.', 'error');
-                return;
-            }
-            
-            // Generate password
-            investorData.password = 'temp' + Math.random().toString(36).substring(2, 8);
-            
-            var result = registerUser(investorData, 'investor');
-            
-            if (result.success) {
-                showNotification(result.message + ' Your temporary password is: ' + investorData.password);
-                this.reset();
-                
-                setTimeout(function() {
-                    showNotification('Please login with your email and temporary password to access your investor dashboard.');
-                    showPage('login-page');
-                }, 3000);
-            } else {
-                showNotification('Registration failed. Please try again.', 'error');
-            }
         });
 
         // Enhanced Referral Link Functions
@@ -1750,17 +1518,152 @@
             showNotification('Password reset feature coming soon! Contact admin for assistance.');
         }
 
+        // Form toggle functionality
+        function setupFormToggle() {
+            var showLoginBtn = document.getElementById('showLoginBtn');
+            var showRegisterBtn = document.getElementById('showRegisterBtn');
+            var loginForm = document.getElementById('loginForm');
+            var registerForm = document.getElementById('registerForm');
+            
+            showLoginBtn.addEventListener('click', function() {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                showLoginBtn.classList.add('active');
+                showRegisterBtn.classList.remove('active');
+            });
+            
+            showRegisterBtn.addEventListener('click', function() {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                showRegisterBtn.classList.add('active');
+                showLoginBtn.classList.remove('active');
+            });
+        }
+
+        // Dynamic form fields based on account type
+        function setupDynamicFields() {
+            var accountTypeSelect = document.getElementById('registerAccountType');
+            var studentFields = document.getElementById('studentFields');
+            var teacherFields = document.getElementById('teacherFields');
+            var investorFields = document.getElementById('investorFields');
+            
+            accountTypeSelect.addEventListener('change', function() {
+                var selectedType = this.value;
+                
+                // Hide all fields first
+                studentFields.style.display = 'none';
+                teacherFields.style.display = 'none';
+                investorFields.style.display = 'none';
+                
+                // Show relevant fields
+                if (selectedType === 'student') {
+                    studentFields.style.display = 'block';
+                } else if (selectedType === 'teacher') {
+                    teacherFields.style.display = 'block';
+                } else if (selectedType === 'investor') {
+                    investorFields.style.display = 'block';
+                }
+            });
+        }
+
+        // Registration Form Handler
+        function setupRegistrationForm() {
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                var formData = new FormData(this);
+                var userData = {};
+                for (var pair of formData.entries()) {
+                    userData[pair[0]] = pair[1];
+                }
+                
+                // Validate password confirmation
+                if (userData.password !== userData.confirmPassword) {
+                    showNotification('Passwords do not match. Please try again.', 'error');
+                    return;
+                }
+                
+                // Validate password strength
+                if (userData.password.length < 6) {
+                    showNotification('Password must be at least 6 characters long.', 'error');
+                    return;
+                }
+                
+                // Check if email already exists
+                var accountType = userData.accountType;
+                var existingUser = null;
+                
+                if (accountType === 'student') {
+                    existingUser = appState.users.students.find(function(user) {
+                        return user.email === userData.email;
+                    });
+                } else if (accountType === 'teacher') {
+                    existingUser = appState.users.teachers.find(function(user) {
+                        return user.email === userData.email;
+                    });
+                } else if (accountType === 'investor') {
+                    existingUser = appState.users.investors.find(function(user) {
+                        return user.email === userData.email;
+                    });
+                }
+                
+                if (existingUser) {
+                    showNotification('Email already registered. Please use a different email or login.', 'error');
+                    return;
+                }
+                
+                // Remove confirmPassword from userData before saving
+                delete userData.confirmPassword;
+                
+                // Process referral code if provided
+                if (userData.referralCode) {
+                    appState.pendingReferralCode = userData.referralCode;
+                }
+                
+                var result = registerUser(userData, accountType);
+                
+                if (result.success) {
+                    showNotification(result.message + ' You can now login with your credentials!');
+                    this.reset();
+                    
+                    // Switch to login form
+                    document.getElementById('loginForm').style.display = 'block';
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.getElementById('showLoginBtn').classList.add('active');
+                    document.getElementById('showRegisterBtn').classList.remove('active');
+                    
+                    // Pre-fill email in login form
+                    document.getElementById('loginEmail').value = result.user.email;
+                    
+                    setTimeout(function() {
+                        showNotification('Please login with your email and password to access your dashboard.');
+                    }, 2000);
+                } else {
+                    showNotification('Registration failed. Please try again.', 'error');
+                }
+            });
+        }
+
         // Start mining simulation every 60 seconds
         setInterval(simulateMining, 60000);
 
         // Initialize the application with URL referral check
         document.addEventListener('DOMContentLoaded', function() {
             checkUrlReferral();
-            showNotification('Welcome to TACEP Education Services! Please register or login to access your personalized dashboard.');
+            showNotification('Welcome to TACEP Education Services! Please create an account or login to access your dashboard.');
             showPage('login-page');
             
             // Update referral display
             updateReferralDisplay();
+            
+            // Setup form toggle functionality
+            setupFormToggle();
+            
+            // Setup dynamic form fields
+            setupDynamicFields();
+            
+            // Setup registration form
+            setupRegistrationForm();
         });
 
         // Update referral display when switching to referral page
@@ -1791,4 +1694,4 @@
         adjustForMobile();
     </script>
 </body>
-                        </html>
+    </html>
