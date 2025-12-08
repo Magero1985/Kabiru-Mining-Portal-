@@ -934,7 +934,7 @@
                     </div>
                 </div>
                 
-              <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
+                <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
                 
                 <div style="text-align: center; font-size: 12px; opacity: 0.8;">
                     Didn't receive the email? 
@@ -1156,18 +1156,81 @@
                         📊 History
                     </button>
                 </div>
+                
+                <!-- Cash Withdrawal Section -->
+                <div style="margin-top: 15px; padding: 15px; background: rgba(255, 165, 0, 0.1); border-radius: 10px; border: 1px solid rgba(255, 165, 0, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #FFA500; margin-bottom: 10px;">💰 Cash Withdrawal</div>
+                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">
+                        Convert iKb to cash at TAU Africa Centers
+                    </div>
+                    <button class="auth-button" onclick="openCashWithdrawalModal()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #FFA500, #FF8C00); width: 100%;">
+                        💵 Request Cash Withdrawal
+                    </button>
+                </div>
             </div>
         </div>
-        <!-- ⭐ NEW CASH WITHDRAWAL SECTION -->
-<div style="margin-top: 15px; padding: 15px; background: rgba(255, 165, 0, 0.1); border-radius: 10px; border: 1px solid rgba(255, 165, 0, 0.3);">
-    <div style="font-size: 14px; font-weight: bold; color: #FFA500; margin-bottom: 10px;">💰 Cash Withdrawal</div>
-    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">
-        Convert iKb to cash at TAU Africa Centers
     </div>
-    <button class="auth-button" onclick="openCashWithdrawalModal()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #FFA500, #FF8C00); width: 100%;">
-        💵 Request Cash Withdrawal
-    </button>
-</div>
+
+    <!-- Cash Withdrawal Modal -->
+    <div id="cashWithdrawalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cashWithdrawalModal')">&times;</span>
+            <h2 class="modal-title">💰 Cash Withdrawal Request</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 165, 0, 0.3);">
+                    
+                    <div style="font-size: 14px; margin-bottom: 15px; text-align: center;">
+                        Available Balance: <span style="color: #FFD700; font-weight: bold;" id="withdrawableBalance">0.0000 iKb</span>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Amount to Withdraw (iKb):</label>
+                        <input type="number" id="cashWithdrawAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 16px;"
+                               oninput="calculateCashEquivalent()">
+                    </div>
+                    
+                    <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; border: 1px solid rgba(0, 255, 135, 0.3);">
+                        <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">You will receive:</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #00ff87;" id="cashEquivalent">0.00 KSH</div>
+                        <div style="font-size: 10px; opacity: 0.7; margin-top: 5px;">Exchange Rate: 1 iKb = 100,000 KSH</div>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Pickup Location *</label>
+                        <select id="pickupLocation" style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                            <option value="">-- Select TAU Center or Agent --</option>
+                            <option value="Nairobi HQ">Nairobi - TAU Africa HQ</option>
+                            <option value="Mombasa Center">Mombasa Center</option>
+                            <option value="Kisumu Center">Kisumu Center</option>
+                            <option value="Nakuru Center">Nakuru Center</option>
+                            <option value="Local Agent">Local Agent (specify below)</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Phone Number for Contact *</label>
+                        <input type="tel" id="withdrawalPhone" placeholder="254XXXXXXXXX" 
+                               style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Additional Notes (Optional):</label>
+                        <textarea id="withdrawalNotes" placeholder="Preferred time, local agent name, special instructions..." rows="3"
+                                  style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 12px;"></textarea>
+                    </div>
+                    
+                    <button class="auth-button" onclick="submitCashWithdrawal()" style="font-size: 14px; padding: 15px; background: linear-gradient(45deg, #FFA500, #FF8C00); width: 100%;">
+                        💵 Submit Withdrawal Request
+                    </button>
+                </div>
+                
+                <div style="font-size: 11px; opacity: 0.8; text-align: center; color: #FFD700; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                    ⏱ Requests processed within 24-48 hours<br>
+                    📞 You will be contacted to arrange pickup
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Send/Receive Modal -->
@@ -1242,6 +1305,30 @@
         </div>
     </div>
 
+    <!-- Member ID Link Modal -->
+    <div id="memberIDModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('memberIDModal')">&times;</span>
+            <h2 class="modal-title">Link TAU Africa Member ID</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255, 215, 0, 0.3);">
+                    <p style="font-size: 14px; margin-bottom: 10px;">Enter your TAU Africa Member ID to activate mining:</p>
+                    
+                    <input type="text" id="linkMemberID" placeholder="TSK-XXXXXX-XXX or TLK-XXXXXX-XXX" 
+                           style="width: 100%; padding: 12px; border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px; margin-bottom: 10px;">
+                    
+                    <button class="auth-button" onclick="verifyAndLinkMemberID()">
+                        🔗 Verify & Link Member ID
+                    </button>
+                </div>
+                
+                <div style="font-size: 12px; opacity: 0.8; text-align: center;">
+                    Don't have a Member ID? <a href="https://magero1985.github.io/Tau-Africa/" target="_blank" style="color: #FFD700;">Register at TAU Africa</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Read Modal -->
     <div id="readModal" class="modal">
         <div class="modal-content">
@@ -1277,18 +1364,6 @@
             <span class="close" onclick="closeModal('languageModal')">&times;</span>
             <h2 class="modal-title">Select Language</h2>
             <div style="margin-bottom: 20px;">
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('en')">
-                    <strong>🇺🇸 English</strong>
-                </div>
-                
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('sw')">
-                    <strong>🇰🇪 Kiswahili</strong>
-                </div>
-                
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('fr')">
-                    <strong> Dho Luo</strong>
-                </div>
-                
                 <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('ar')">
                     <strong>Kikuyu</strong>
                 </div>
@@ -1507,94 +1582,13 @@
                             💰 Withdraw
                         </button>
                     </div>
-                    <!-- Member ID Link Modal -->
-<div id="memberIDModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('memberIDModal')">&times;</span>
-        <h2 class="modal-title">Link TAU Africa Member ID</h2>
-        <div style="margin-bottom: 20px;">
-            <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255, 215, 0, 0.3);">
-                <p style="font-size: 14px; margin-bottom: 10px;">Enter your TAU Africa Member ID to activate mining:</p>
-                
-                <input type="text" id="linkMemberID" placeholder="TSK-XXXXXX-XXX or TLK-XXXXXX-XXX" 
-                       style="width: 100%; padding: 12px; border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px; margin-bottom: 10px;">
-                
-                <button class="auth-button" onclick="verifyAndLinkMemberID()">
-                    🔗 Verify & Link Member ID
-                </button>
-            </div>
-            
-            <div style="font-size: 12px; opacity: 0.8; text-align: center;">
-                Don't have a Member ID? <a href="https://magero1985.github.io/Tau-Africa/" target="_blank" style="color: #FFD700;">Register at TAU Africa</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-            
 
     <!-- Notification -->
     <div id="notification" class="notification"></div>
-                    <!-- Cash Withdrawal Modal -->
-<div id="cashWithdrawalModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('cashWithdrawalModal')">&times;</span>
-        <h2 class="modal-title">💰 Cash Withdrawal Request</h2>
-        <div style="margin-bottom: 20px;">
-            <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 165, 0, 0.3);">
-                
-                <div style="font-size: 14px; margin-bottom: 15px; text-align: center;">
-                    Available Balance: <span style="color: #FFD700; font-weight: bold;" id="withdrawableBalance">0.0000 iKb</span>
-                </div>
-                
-                <div style="margin: 15px 0;">
-                    <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Amount to Withdraw (iKb):</label>
-                    <input type="number" id="cashWithdrawAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
-                           style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 16px;"
-                           oninput="calculateCashEquivalent()">
-                </div>
-                
-                <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; border: 1px solid rgba(0, 255, 135, 0.3);">
-                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">You will receive:</div>
-                    <div style="font-size: 24px; font-weight: bold; color: #00ff87;" id="cashEquivalent">0.00 KSH</div>
-                    <div style="font-size: 10px; opacity: 0.7; margin-top: 5px;">Exchange Rate: 1 iKb = 100,000 KSH</div>
-                </div>
-                
-                <div style="margin: 15px 0;">
-                    <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Pickup Location *</label>
-                    <select id="pickupLocation" style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
-                        <option value="">-- Select TAU Center or Agent --</option>
-                        <option value="Nairobi HQ">Nairobi - TAU Africa HQ</option>
-                        <option value="Mombasa Center">Mombasa Center</option>
-                        <option value="Kisumu Center">Kisumu Center</option>
-                        <option value="Nakuru Center">Nakuru Center</option>
-                        <option value="Local Agent">Local Agent (specify below)</option>
-                    </select>
-                </div>
-                
-                <div style="margin: 15px 0;">
-                    <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Phone Number for Contact *</label>
-                    <input type="tel" id="withdrawalPhone" placeholder="254XXXXXXXXX" 
-                           style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
-                </div>
-                
-                <div style="margin: 15px 0;">
-                    <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Additional Notes (Optional):</label>
-                    <textarea id="withdrawalNotes" placeholder="Preferred time, local agent name, special instructions..." rows="3"
-                              style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 12px;"></textarea>
-                </div>
-                
-                <button class="auth-button" onclick="submitCashWithdrawal()" style="font-size: 14px; padding: 15px; background: linear-gradient(45deg, #FFA500, #FF8C00); width: 100%;">
-                    💵 Submit Withdrawal Request
-                </button>
-            </div>
-            
-            <div style="font-size: 11px; opacity: 0.8; text-align: center; color: #FFD700; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
-                ⏱ Requests processed within 24-48 hours<br>
-                📞 You will be contacted to arrange pickup
-            </div>
-        </div>
-    </div>
-</div>
 
     <script>
         // Global Variables
@@ -1604,7 +1598,7 @@
         let receivedBalance = 0.0000;
         let reserveBalance = 0.0000;
         let lockedBalance = 0.0000;
-        let kabiruPoints = 0.0000; // New: KABIRU Points (iKbp)
+        let kabiruPoints = 0.0000;
         let totalTasksCompleted = 0;
         let miningRate = 0.001;
         let isMining = false;
@@ -1614,8 +1608,9 @@
         let userWalletAddress = '';
         let transactionHistory = [];
         let referralCode = '';
-        let lockupPeriods = []; // Array to store lockup information
+        let lockupPeriods = [];
         let currentConversionType = null;
+        let transferListener = null;
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -1678,7 +1673,7 @@
             showMiningApp();
         }
 
-        // Save user data function that works offline and online
+        // Save user data function
         async function saveUserData() {
             const userData = {
                 balance: userBalance,
@@ -1713,23 +1708,13 @@
 
         // Main mining function
         async function mineTokens(type, reward) {
-    // ⭐ NEW CODE - ADD THIS FIRST
-    if (!currentUser || !currentUser.tauMemberId) {
-        showNotification('⚠️ Please link your TAU Africa Member ID to start mining!');
-        openMemberIDLinkModal();
-        return;
-    }
-    // ⭐ END NEW CODE
-    
-    // Existing code continues below...
-    console.log('⛏️ Mining started:', type, 'Reward:', reward);
-    
-    if (isMining) {
-        showNotification('Already mining! Please wait for current session to complete.');
-        return;
-    }
-   
-        async function mineTokens(type, reward) {
+            // Check if TAU Member ID is linked
+            if (!currentUser || !currentUser.tauMemberId) {
+                showNotification('⚠️ Please link your TAU Africa Member ID to start mining!');
+                openMemberIDLinkModal();
+                return;
+            }
+            
             console.log('⛏️ Mining started:', type, 'Reward:', reward);
             
             if (isMining) {
@@ -1782,192 +1767,192 @@
                 
             }, Math.random() * 2000 + 3000);
         }
-async function verifyAndLinkMemberID() {
-    const memberId = document.getElementById('linkMemberID').value.trim();
-    
-    if (!memberId || !memberId.match(/^(TSK|TLK)-\d{6}-\d{3}$/)) {
-        showNotification('❌ Invalid Member ID format. Use: TSK-XXXXXX-XXX or TLK-XXXXXX-XXX');
-        return;
-    }
-    
-    try {
-        showNotification('🔍 Verifying Member ID...');
-        
-        // Check if Member ID exists in Firestore
-        const memberQuery = await db.collection('members')
-            .where('id', '==', memberId)
-            .where('email', '==', currentUser.email)
-            .limit(1)
-            .get();
-        
-        if (memberQuery.empty) {
-            showNotification('❌ Member ID not found or email mismatch. Please check your ID and email.');
-            return;
-        }
-        
-        const memberData = memberQuery.docs[0].data();
-        
-        // Link Member ID to Kabiru user account
-        await db.collection('users').doc(currentUser.uid).update({
-            tauMemberId: memberId,
-            tauMemberName: memberData.fullName,
-            tauMemberTeam: memberData.team,
-            tauMemberLevel: memberData.level || 1,
-            memberVerified: true,
-            linkedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        
-        currentUser.tauMemberId = memberId;
-        currentUser.tauMemberLevel = memberData.level || 1;
-        
-        // Update mining rate based on level
-        const levelRates = {
-            1: 0.001,
-            2: 0.0015,
-            3: 0.002,
-            4: 0.0025
-        };
-        miningRate = levelRates[memberData.level || 1];
-        
-        await saveUserData();
-        updateBalanceDisplay();
-        
-        showNotification(`✅ Member ID verified!\nLevel ${memberData.level || 1} - Mining rate: ${miningRate} iKb/day\nYou can now start mining!`);
-        closeModal('memberIDModal');
-        
-    } catch (error) {
-        console.error('Verification error:', error);
-        showNotification('❌ Verification failed. Please try again or contact support.');
-    }
-}
-function openCashWithdrawalModal() {
-    document.getElementById('cashWithdrawalModal').style.display = 'block';
-    const availableBalance = minedBalance + receivedBalance;
-    document.getElementById('withdrawableBalance').textContent = availableBalance.toFixed(4) + ' iKb';
-    document.getElementById('cashWithdrawAmount').value = '';
-    document.getElementById('cashEquivalent').textContent = '0.00 KSH';
-    document.getElementById('withdrawalPhone').value = currentUser ? currentUser.email : '';
-    closeModal('walletModal');
-}
 
-function calculateCashEquivalent() {
-    const ikbAmount = parseFloat(document.getElementById('cashWithdrawAmount').value) || 0;
-    const kshAmount = ikbAmount * 100000;
-    document.getElementById('cashEquivalent').textContent = kshAmount.toLocaleString('en-KE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' KSH';
-}
+        // Verify and link Member ID
+        async function verifyAndLinkMemberID() {
+            const memberId = document.getElementById('linkMemberID').value.trim();
+            
+            if (!memberId || !memberId.match(/^(TSK|TLK)-\d{6}-\d{3}$/)) {
+                showNotification('❌ Invalid Member ID format. Use: TSK-XXXXXX-XXX or TLK-XXXXXX-XXX');
+                return;
+            }
+            
+            try {
+                showNotification('🔍 Verifying Member ID...');
+                
+                // Check if Member ID exists in Firestore
+                const memberQuery = await db.collection('members')
+                    .where('id', '==', memberId)
+                    .where('email', '==', currentUser.email)
+                    .limit(1)
+                    .get();
+                
+                if (memberQuery.empty) {
+                    showNotification('❌ Member ID not found or email mismatch. Please check your ID and email.');
+                    return;
+                }
+                
+                const memberData = memberQuery.docs[0].data();
+                
+                // Link Member ID to Kabiru user account
+                await db.collection('users').doc(currentUser.uid).update({
+                    tauMemberId: memberId,
+                    tauMemberName: memberData.fullName,
+                    tauMemberTeam: memberData.team,
+                    tauMemberLevel: memberData.level || 1,
+                    memberVerified: true,
+                    linkedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                currentUser.tauMemberId = memberId;
+                currentUser.tauMemberLevel = memberData.level || 1;
+                
+                // Update mining rate based on level
+                const levelRates = {
+                    1: 0.001,
+                    2: 0.0015,
+                    3: 0.002,
+                    4: 0.0025
+                };
+                miningRate = levelRates[memberData.level || 1];
+                
+                await saveUserData();
+                updateBalanceDisplay();
+                
+                showNotification(`✅ Member ID verified!\nLevel ${memberData.level || 1} - Mining rate: ${miningRate} iKb/day\nYou can now start mining!`);
+                closeModal('memberIDModal');
+                
+            } catch (error) {
+                console.error('Verification error:', error);
+                showNotification('❌ Verification failed. Please try again or contact support.');
+            }
+        }
 
-async function submitCashWithdrawal() {
-    const amount = parseFloat(document.getElementById('cashWithdrawAmount').value);
-    const location = document.getElementById('pickupLocation').value;
-    const phone = document.getElementById('withdrawalPhone').value.trim();
-    const notes = document.getElementById('withdrawalNotes').value.trim();
-    const availableBalance = minedBalance + receivedBalance;
-    
-    // Validation
-    if (!amount || amount <= 0) {
-        showNotification('❌ Please enter a valid amount');
-        return;
-    }
-    
-    if (amount > availableBalance) {
-        showNotification(`❌ Insufficient balance. Available: ${availableBalance.toFixed(4)} iKb`);
-        return;
-    }
-    
-    if (!location) {
-        showNotification('❌ Please select a pickup location');
-        return;
-    }
-    
-    if (!phone) {
-        showNotification('❌ Please enter your phone number');
-        return;
-    }
-    
-    if (!phone.match(/^254[0-9]{9}$/)) {
-        showNotification('❌ Invalid phone format. Use: 254XXXXXXXXX');
-        return;
-    }
-    
-    try {
-        showNotification('⏳ Processing withdrawal request...');
-        
-        // Deduct from balance
-        if (minedBalance >= amount) {
-            minedBalance -= amount;
-        } else {
-            const remaining = amount - minedBalance;
-            minedBalance = 0;
-            receivedBalance -= remaining;
+        // Open Member ID Link Modal
+        function openMemberIDLinkModal() {
+            document.getElementById('memberIDModal').style.display = 'block';
         }
-        
-        userBalance = minedBalance + receivedBalance;
-        
-        // Create withdrawal request in Firestore
-        const withdrawalRequest = {
-            userId: currentUser.uid,
-            userEmail: currentUser.email,
-            userName: currentUser.displayName,
-            tauMemberId: currentUser.tauMemberId || 'Not linked',
-            tauMemberLevel: currentUser.tauMemberLevel || 1,
-            ikbAmount: amount,
-            kshAmount: amount * 100000,
-            pickupLocation: location,
-            contactPhone: phone,
-            notes: notes || 'None',
-            status: 'pending',
-            requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            processedAt: null,
-            processedBy: null
-        };
-        
-        const docRef = await db.collection('cashWithdrawals').add(withdrawalRequest);
-        console.log('✅ Withdrawal request created:', docRef.id);
-        
-        // Create transaction record
-        const transaction = {
-            id: generateTransactionId(),
-            type: 'cash_withdrawal',
-            amount: amount,
-            kshAmount: amount * 100000,
-            pickupLocation: location,
-            contactPhone: phone,
-            withdrawalId: docRef.id,
-            timestamp: new Date().toISOString(),
-            status: 'pending'
-        };
-        transactionHistory.unshift(transaction);
-        
-        // Keep only last 50 transactions
-        if (transactionHistory.length > 50) {
-            transactionHistory = transactionHistory.slice(0, 50);
+
+        // Cash withdrawal functions
+        function openCashWithdrawalModal() {
+            document.getElementById('cashWithdrawalModal').style.display = 'block';
+            const availableBalance = minedBalance + receivedBalance;
+            document.getElementById('withdrawableBalance').textContent = availableBalance.toFixed(4) + ' iKb';
+            document.getElementById('cashWithdrawAmount').value = '';
+            document.getElementById('cashEquivalent').textContent = '0.00 KSH';
+            document.getElementById('withdrawalPhone').value = currentUser ? currentUser.email : '';
+            closeModal('walletModal');
         }
-        
-        await saveUserData();
-        updateBalanceDisplay();
-        
-        showNotification(`✅ Withdrawal Request Submitted!\n\n${amount.toFixed(4)} iKb = ${(amount * 100000).toLocaleString()} KSH\n\nPickup: ${location}\nPhone: ${phone}\n\n📞 You will be contacted within 24-48 hours to arrange pickup.`);
-        
-        // Clear form
-        document.getElementById('cashWithdrawAmount').value = '';
-        document.getElementById('withdrawalNotes').value = '';
-        document.getElementById('pickupLocation').value = '';
-        
-        closeModal('cashWithdrawalModal');
-        
-    } catch (error) {
-        console.error('❌ Withdrawal error:', error);
-        showNotification('❌ Withdrawal request failed. Please try again or contact support.');
-    }
+
+        function calculateCashEquivalent() {
+            const ikbAmount = parseFloat(document.getElementById('cashWithdrawAmount').value) || 0;
+            const kshAmount = ikbAmount * 100000;
+            document.getElementById('cashEquivalent').textContent = kshAmount.toLocaleString('en-KE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' KSH';
         }
-function openMemberIDLinkModal() {
-    document.getElementById('memberIDModal').style.display = 'block';
+
+        async function submitCashWithdrawal() {
+            const amount = parseFloat(document.getElementById('cashWithdrawAmount').value);
+            const location = document.getElementById('pickupLocation').value;
+            const phone = document.getElementById('withdrawalPhone').value.trim();
+            const notes = document.getElementById('withdrawalNotes').value.trim();
+            const availableBalance = minedBalance + receivedBalance;
+            
+            if (!amount || amount <= 0) {
+                showNotification('❌ Please enter a valid amount');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showNotification(`❌ Insufficient balance. Available: ${availableBalance.toFixed(4)} iKb`);
+                return;
+            }
+            
+            if (!location) {
+                showNotification('❌ Please select a pickup location');
+                return;
+            }
+            
+            if (!phone) {
+                showNotification('❌ Please enter your phone number');
+                return;
+            }
+            
+            if (!phone.match(/^254[0-9]{9}$/)) {
+                showNotification('❌ Invalid phone format. Use: 254XXXXXXXXX');
+                return;
+            }
+            
+            try {
+                showNotification('⏳ Processing withdrawal request...');
+                
+                if (minedBalance >= amount) {
+                    minedBalance -= amount;
+                } else {
+                    const remaining = amount - minedBalance;
+                    minedBalance = 0;
+                    receivedBalance -= remaining;
+                }
+                
+                userBalance = minedBalance + receivedBalance;
+                
+                const withdrawalRequest = {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName,
+                    tauMemberId: currentUser.tauMemberId || 'Not linked',
+                    tauMemberLevel: currentUser.tauMemberLevel || 1,
+                    ikbAmount: amount,
+                    kshAmount: amount * 100000,
+                    pickupLocation: location,
+                    contactPhone: phone,
+                    notes: notes || 'None',
+                    status: 'pending',
+                    requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    processedAt: null,
+                    processedBy: null
+                };
+                
+                const docRef = await db.collection('cashWithdrawals').add(withdrawalRequest);
+                
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'cash_withdrawal',
+                    amount: amount,
+                    kshAmount: amount * 100000,
+                    pickupLocation: location,
+                    contactPhone: phone,
+                    withdrawalId: docRef.id,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending'
+                };
+                transactionHistory.unshift(transaction);
+                
+                if (transactionHistory.length > 50) {
+                    transactionHistory = transactionHistory.slice(0, 50);
+                }
+                
+                await saveUserData();
+                updateBalanceDisplay();
+                
+                showNotification(`✅ Withdrawal Request Submitted!\n\n${amount.toFixed(4)} iKb = ${(amount * 100000).toLocaleString()} KSH\n\nPickup: ${location}\nPhone: ${phone}\n\n📞 You will be contacted within 24-48 hours.`);
+                
+                document.getElementById('cashWithdrawAmount').value = '';
+                document.getElementById('withdrawalNotes').value = '';
+                document.getElementById('pickupLocation').value = '';
+                
+                closeModal('cashWithdrawalModal');
+                
+            } catch (error) {
+                console.error('❌ Withdrawal error:', error);
+                showNotification('❌ Withdrawal request failed. Please try again.');
+            }
         }
+
         // Send KABIRU function
         async function sendKabiru() {
             const recipient = document.getElementById('sendRecipient').value.trim();
             const amount = parseFloat(document.getElementById('sendAmount').value);
-            const fee = 0.0001; // Transaction fee
+            const fee = 0.0001;
             const totalAmount = amount + fee;
             const availableBalance = minedBalance + receivedBalance;
             
@@ -1987,7 +1972,6 @@ function openMemberIDLinkModal() {
             }
             
             try {
-                // Deduct from sender's balance
                 if (minedBalance >= totalAmount) {
                     minedBalance -= totalAmount;
                 } else {
@@ -1996,17 +1980,14 @@ function openMemberIDLinkModal() {
                     receivedBalance -= remainingAmount;
                 }
                 
-                // Find recipient and add to their received balance
                 if (db && currentUser.uid !== 'offline-user') {
                     try {
-                        // Find recipient by email
                         const recipientQuery = await db.collection('users').where('email', '==', recipient).limit(1).get();
                         
                         if (!recipientQuery.empty) {
                             const recipientDoc = recipientQuery.docs[0];
                             const recipientId = recipientDoc.id;
                             
-                            // Add to recipient's received balance
                             await db.collection('users').doc(recipientId).update({
                                 receivedBalance: firebase.firestore.FieldValue.increment(amount)
                             });
@@ -2018,7 +1999,6 @@ function openMemberIDLinkModal() {
                     }
                 }
                 
-                // Create transaction record
                 const transaction = {
                     id: generateTransactionId(),
                     type: 'send',
@@ -2059,7 +2039,6 @@ function openMemberIDLinkModal() {
                 document.getElementById('conversionRate').textContent = 'Exchange Rate: 1 iKb = 100,000 KSH';
             }
             
-            // Update conversion result on input change
             document.getElementById('conversionAmount').oninput = updateConversionResult;
         }
 
@@ -2068,10 +2047,10 @@ function openMemberIDLinkModal() {
             let result = 0;
             
             if (currentConversionType === 'ikb_to_ikbp') {
-                result = amount * 100000; // 1 iKb = 100,000 iKbp
+                result = amount * 100000;
                 document.getElementById('conversionResult').textContent = result.toLocaleString() + ' iKbp';
             } else if (currentConversionType === 'ikb_to_ksh') {
-                result = amount * 100000; // 1 iKb = 100,000 KSH
+                result = amount * 100000;
                 document.getElementById('conversionResult').textContent = result.toLocaleString() + ' KSH';
             }
         }
@@ -2091,7 +2070,6 @@ function openMemberIDLinkModal() {
             }
             
             try {
-                // Deduct from iKb balance
                 if (minedBalance >= amount) {
                     minedBalance -= amount;
                 } else {
@@ -2114,7 +2092,6 @@ function openMemberIDLinkModal() {
                     showNotification(`✅ Converted ${amount.toFixed(4)} iKb to ${convertedAmount.toLocaleString()} KSH!`);
                 }
                 
-                // Create transaction record
                 const transaction = {
                     id: generateTransactionId(),
                     type: transactionType,
@@ -2137,7 +2114,7 @@ function openMemberIDLinkModal() {
             }
         }
 
-        // Copy and share functions for receive address
+        // Copy and share functions
         function copyReceiveAddress() {
             const address = userWalletAddress;
             if (navigator.clipboard) {
@@ -2169,7 +2146,6 @@ function openMemberIDLinkModal() {
             }
         }
 
-        // Open send/receive modal
         function openSendReceiveModal() {
             document.getElementById('sendReceiveModal').style.display = 'block';
             document.getElementById('availableToSend').textContent = (minedBalance + receivedBalance).toFixed(4) + ' iKb';
@@ -2177,7 +2153,6 @@ function openMemberIDLinkModal() {
             closeModal('walletModal');
         }
 
-        // Open transaction history modal
         function openTransactionHistoryModal() {
             document.getElementById('transactionHistoryModal').style.display = 'block';
             displayTransactionHistory();
@@ -2214,6 +2189,15 @@ function openMemberIDLinkModal() {
                         icon = '📥';
                         description = `Received from ${tx.sender || 'Unknown'}`;
                         break;
+                    case 'tau_transfer':
+                        icon = '💎';
+                        description = `Transfer from TAU Africa`;
+                        break;
+                    case 'cash_withdrawal':
+                        icon = '💵';
+                        amountText = `-${tx.amount.toFixed(4)} iKb`;
+                        description = `Cash withdrawal request`;
+                        break;
                     case 'referral_bonus':
                         icon = '🎁';
                         description = 'Referral bonus';
@@ -2242,7 +2226,7 @@ function openMemberIDLinkModal() {
                             <div style="font-size: 12px; font-weight: bold;">${description}</div>
                             <div style="font-size: 10px; opacity: 0.7;">${date} ${time}</div>
                         </div>
-                        <div style="font-size: 12px; font-weight: bold; color: ${tx.type === 'send' || tx.type === 'lockup' || tx.type.includes('conversion') ? '#ff6b6b' : '#00ff87'};">${amountText}</div>
+                        <div style="font-size: 12px; font-weight: bold; color: ${tx.type === 'send' || tx.type === 'lockup' || tx.type.includes('conversion') || tx.type === 'cash_withdrawal' ? '#ff6b6b' : '#00ff87'};">${amountText}</div>
                     </div>
                 `;
             });
@@ -2250,7 +2234,6 @@ function openMemberIDLinkModal() {
             transactionList.innerHTML = html;
         }
 
-        // Mining countdown timer
         function startMiningCountdown() {
             const timerElement = document.getElementById('miningTimer');
             let seconds = 3;
@@ -2269,7 +2252,6 @@ function openMemberIDLinkModal() {
             }, 1000);
         }
 
-        // Disable/enable mining buttons during mining
         function disableMiningButtons() {
             const buttons = document.querySelectorAll('.main-button, .value-item');
             buttons.forEach(btn => {
@@ -2293,7 +2275,6 @@ function openMemberIDLinkModal() {
 
         function openWalletModal() {
             document.getElementById('walletModal').style.display = 'block';
-            // Update wallet display with all balance types
             document.getElementById('walletAddress').textContent = userWalletAddress || 'Not available';
             document.getElementById('walletMinedBalance').textContent = minedBalance.toFixed(4) + ' iKb';
             document.getElementById('walletReceivedBalance').textContent = receivedBalance.toFixed(4) + ' iKb';
@@ -2312,16 +2293,14 @@ function openMemberIDLinkModal() {
 
         function openUserAccountModal() {
             document.getElementById('userAccountModal').style.display = 'block';
-            // Update modal with current user data
             if (currentUser) {
                 document.getElementById('modalUserAvatar').textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
-document.getElementById('modalUserName').textContent = currentUser.displayName || 'Anonymous User';
+                document.getElementById('modalUserName').textContent = currentUser.displayName || 'Anonymous User';
                 document.getElementById('modalUserEmail').textContent = currentUser.email || 'No email';
                 document.getElementById('modalUserBalance').textContent = userBalance.toFixed(4) + ' iKb';
                 document.getElementById('modalUserTasks').textContent = totalTasksCompleted;
                 document.getElementById('currentLockedAmount').textContent = lockedBalance.toFixed(4) + ' iKb';
                 
-                // Generate and display referral link
                 const referralLink = generateReferralLink();
                 document.getElementById('referralLink').textContent = referralLink;
             }
@@ -2357,24 +2336,20 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
         }
 
         function selectSovereignValue(type, element) {
-            // Remove previous selection
             document.querySelectorAll('#sovereignModal div[onclick]').forEach(div => {
                 div.style.background = 'rgba(255, 255, 255, 0.1)';
             });
             
-            // Highlight selected
             element.style.background = 'rgba(255, 215, 0, 0.2)';
             selectedSovereignType = type;
             document.getElementById('sovereignStartBtn').disabled = false;
         }
 
         function selectValue(type, amount, element) {
-            // Remove previous selection
             document.querySelectorAll('#valueModal div[onclick]').forEach(div => {
                 div.style.background = 'rgba(255, 255, 255, 0.1)';
             });
             
-            // Highlight selected
             element.style.background = 'rgba(255, 215, 0, 0.2)';
             selectedValueType = type;
             selectedValueAmount = amount;
@@ -2395,7 +2370,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             }
         }
 
-        // Generate referral link
         function generateReferralLink() {
             if (!referralCode) {
                 referralCode = 'KABIRU_' + (currentUser?.uid?.substr(-6) || Math.random().toString(36).substr(2, 6)).toUpperCase();
@@ -2404,7 +2378,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             return `${baseUrl}?ref=${referralCode}`;
         }
 
-        // Copy referral link to clipboard
         function copyReferralLink() {
             const referralLink = generateReferralLink();
             if (navigator.clipboard) {
@@ -2418,7 +2391,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             }
         }
 
-        // Fallback copy function
         function fallbackCopyToClipboard(text) {
             const textArea = document.createElement('textarea');
             textArea.value = text;
@@ -2434,7 +2406,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             document.body.removeChild(textArea);
         }
 
-        // Share referral link
         function shareReferralLink() {
             const referralLink = generateReferralLink();
             const shareText = `Join me on KABIRU and start mining iKb tokens! Use my referral link: ${referralLink}`;
@@ -2454,7 +2425,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             }
         }
 
-        // Fallback share function
         function fallbackShare(text) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
@@ -2467,7 +2437,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             }
         }
 
-        // Lockup tokens function
         async function lockupTokens(months) {
             const availableBalance = minedBalance + receivedBalance;
             
@@ -2490,13 +2459,11 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                 return;
             }
 
-            // Calculate bonus based on lockup period
             const bonusPercentage = months === 3 ? 0.05 : months === 6 ? 0.12 : 0.25;
             const bonus = amount * bonusPercentage;
             const unlockDate = new Date();
             unlockDate.setMonth(unlockDate.getMonth() + months);
 
-            // Move tokens to locked balance
             if (minedBalance >= amount) {
                 minedBalance -= amount;
             } else {
@@ -2507,7 +2474,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             
             lockedBalance += amount + bonus;
             
-            // Store lockup information
             const lockupInfo = {
                 amount: amount,
                 bonus: bonus,
@@ -2519,7 +2485,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             
             lockupPeriods.push(lockupInfo);
             
-            // Create transaction record
             const transaction = {
                 id: generateTransactionId(),
                 type: 'lockup',
@@ -2539,7 +2504,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             closeModal('userAccountModal');
         }
 
-        // Add tokens to reserve
         async function addToReserve() {
             const amount = parseFloat(document.getElementById('reserveAmount').value);
             const availableBalance = minedBalance + receivedBalance;
@@ -2554,7 +2518,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                 return;
             }
             
-            // Move tokens to reserve balance
             if (minedBalance >= amount) {
                 minedBalance -= amount;
             } else {
@@ -2565,7 +2528,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             
             reserveBalance += amount;
             
-            // Create transaction record
             const transaction = {
                 id: generateTransactionId(),
                 type: 'reserve_add',
@@ -2580,10 +2542,9 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             
             showNotification(`Successfully added ${amount.toFixed(4)} iKb to reserves!`);
             document.getElementById('reserveAmount').value = '';
-            showReserveModal(); // Refresh the modal
+            showReserveModal();
         }
 
-        // Withdraw tokens from reserve
         async function withdrawFromReserve() {
             const amount = parseFloat(document.getElementById('reserveAmount').value);
             
@@ -2597,11 +2558,9 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                 return;
             }
             
-            // Move tokens from reserve to received balance
             reserveBalance -= amount;
             receivedBalance += amount;
             
-            // Create transaction record
             const transaction = {
                 id: generateTransactionId(),
                 type: 'reserve_withdraw',
@@ -2616,16 +2575,71 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             
             showNotification(`Successfully withdrew ${amount.toFixed(4)} iKb from reserves!`);
             document.getElementById('reserveAmount').value = '';
-            showReserveModal(); // Refresh the modal
+            showReserveModal();
         }
 
-        // Initialize app on page load
+        // TAU-Kabiru Transfer Listener
+        function listenForKabiruTransfers(memberEmail) {
+            if (!memberEmail || !db) {
+                console.log('⚠️ No email or database for transfer listener');
+                return null;
+            }
+            
+            console.log('👂 Listening for iKb transfers to:', memberEmail);
+            
+            return db.collection('members')
+                .where('email', '==', memberEmail)
+                .onSnapshot(snapshot => {
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        
+                        if (data.pendingKabiruTransfer && data.pendingKabiruTransfer.status === 'pending') {
+                            const transfer = data.pendingKabiruTransfer;
+                            
+                            console.log('💎 Transfer detected:', transfer);
+                            
+                            const transferredIkb = transfer.iKb || 0;
+                            const transferredIkbp = transfer.iKbp || 0;
+                            
+                            receivedBalance += transferredIkb;
+                            kabiruPoints += transferredIkbp;
+                            userBalance = minedBalance + receivedBalance;
+                            
+                            const transaction = {
+                                id: generateTransactionId(),
+                                type: 'tau_transfer',
+                                iKb: transferredIkb,
+                                iKbp: transferredIkbp,
+                                timestamp: new Date().toISOString(),
+                                status: 'completed'
+                            };
+                            transactionHistory.unshift(transaction);
+                            
+                            db.collection('members').doc(doc.id).update({
+                                'pendingKabiruTransfer.status': 'completed',
+                                'pendingKabiruTransfer.completedAt': firebase.firestore.FieldValue.serverTimestamp()
+                            }).then(() => {
+                                console.log('✅ Transfer marked as completed');
+                            });
+                            
+                            updateBalanceDisplay();
+                            saveUserData();
+                            
+                            showNotification(`✅ Received from TAU Africa!\n\n${transferredIkb.toFixed(4)} iKb${transferredIkbp > 0 ? '\n' + transferredIkbp.toLocaleString() + ' iKbp' : ''}\n\n⛏️ Start mining to grow your balance!`);
+                            
+                            console.log('✅ Transfer completed - Balances updated');
+                        }
+                    });
+                }, error => {
+                    console.error('⚠️ Transfer listener error:', error);
+                });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             console.log('KABIRU Mining App starting...');
             setupAuthStateListener();
         });
 
-        // Setup Firebase Auth State Listener
         function setupAuthStateListener() {
             if (!auth) {
                 showOfflineLogin();
@@ -2651,13 +2665,11 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             });
         }
 
-        // Show offline login option
         function showOfflineLogin() {
             showNotification('Running in offline mode - you can still mine tokens!');
             initOfflineMode();
         }
 
-        // Load user data
         async function loadUserData(firebaseUser) {
             try {
                 console.log('Loading user data for:', firebaseUser.uid);
@@ -2666,40 +2678,35 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                 
                 if (userDoc.exists) {
                     const userData = userDoc.data();
-                    // Get member level from TAU Africa if Member ID is linked
-    if (userData.tauMemberId) {
-        try {
-            const memberQuery = await db.collection('members')
-                .where('id', '==', userData.tauMemberId)
-                .limit(1)
-                .get();
-            
-            if (!memberQuery.empty) {
-                const memberData = memberQuery.docs[0].data();
-                const memberLevel = memberData.level || 1;
-                
-                // Set mining rate based on member level
-                const levelRates = {
-                    1: 0.001,  // Level 1: Base rate
-                    2: 0.0015, // Level 2: +50%
-                    3: 0.002,  // Level 3: +100%
-                    4: 0.0025  // Level 4: +150%
-                };
-                
-                miningRate = levelRates[memberLevel] || 0.001;
-                currentUser.tauMemberLevel = memberLevel;
-                
-                console.log(`⚡ Mining rate: ${miningRate} iKb/day (Level ${memberLevel})`);
-            }
-        } catch (error) {
-            console.error('Error loading member level:', error);
-        }
-    }
-    // ⭐ END NEW CODE
-    
-    // Existing code continues...
-    minedBalance = userData.minedBalance || 0.0000;
-    receivedBalance = userData.receivedBalance || 0.0000;
+                    
+                    if (userData.tauMemberId) {
+                        try {
+                            const memberQuery = await db.collection('members')
+                                .where('id', '==', userData.tauMemberId)
+                                .limit(1)
+                                .get();
+                            
+                            if (!memberQuery.empty) {
+                                const memberData = memberQuery.docs[0].data();
+                                const memberLevel = memberData.level || 1;
+                                
+                                const levelRates = {
+                                    1: 0.001,
+                                    2: 0.0015,
+                                    3: 0.002,
+                                    4: 0.0025
+                                };
+                                
+                                miningRate = levelRates[memberLevel] || 0.001;
+                                currentUser.tauMemberLevel = memberLevel;
+                                
+                                console.log(`⚡ Mining rate: ${miningRate} iKb/day (Level ${memberLevel})`);
+                            }
+                        } catch (error) {
+                            console.error('Error loading member level:', error);
+                        }
+                    }
+                    
                     minedBalance = userData.minedBalance || 0.0000;
                     receivedBalance = userData.receivedBalance || 0.0000;
                     userBalance = minedBalance + receivedBalance;
@@ -2741,7 +2748,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                     console.log('New user document created');
                 }
                 
-                // Check for referral bonus on signup
                 await checkReferralBonus();
                 
                 currentUser = {
@@ -2751,10 +2757,17 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                     balance: userBalance,
                     tasksCompleted: totalTasksCompleted,
                     miningRate: miningRate,
-                    walletAddress: userWalletAddress
+                    walletAddress: userWalletAddress,
+                    tauMemberId: userDoc.exists ? userDoc.data().tauMemberId : null,
+                    tauMemberLevel: userDoc.exists ? userDoc.data().tauMemberLevel : null
                 };
                 
                 updateUserDisplay();
+                
+                if (firebaseUser && firebaseUser.email) {
+                    console.log('🔗 Starting transfer listener for:', firebaseUser.email);
+                    transferListener = listenForKabiruTransfers(firebaseUser.email);
+                }
                 
             } catch (error) {
                 console.error('Error loading user data:', error);
@@ -2773,31 +2786,25 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
             }
         }
 
-        // Check for referral bonus
         async function checkReferralBonus() {
             const urlParams = new URLSearchParams(window.location.search);
             const referralCodeParam = urlParams.get('ref');
             
             if (referralCodeParam && referralCodeParam !== referralCode) {
-                // This is a new user with a referral code
                 try {
-                    // Find the referrer
                     const referrerQuery = await db.collection('users').where('referralCode', '==', referralCodeParam).limit(1).get();
                     
                     if (!referrerQuery.empty) {
                         const referrerDoc = referrerQuery.docs[0];
                         const referrerId = referrerDoc.id;
                         
-                        // Award bonus to new user (welcome bonus)
-                        receivedBalance += 0.01; // 0.01 iKb welcome bonus
+                        receivedBalance += 0.01;
                         userBalance = minedBalance + receivedBalance;
                         
-                        // Award bonus to referrer (10% of future mining)
                         await db.collection('users').doc(referrerId).update({
-                            receivedBalance: firebase.firestore.FieldValue.increment(0.005) // Immediate referral bonus
+                            receivedBalance: firebase.firestore.FieldValue.increment(0.005)
                         });
                         
-                        // Record referral transaction
                         const transaction = {
                             id: generateTransactionId(),
                             type: 'referral_bonus',
@@ -2811,7 +2818,6 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                         showNotification('Welcome bonus: +0.01 iKb for joining through referral!');
                         console.log('Referral bonus awarded');
                         
-                        // Clean up URL
                         window.history.replaceState({}, document.title, window.location.pathname);
                     }
                 } catch (error) {
@@ -2819,13 +2825,7 @@ document.getElementById('modalUserName').textContent = currentUser.displayName |
                 }
             }
         }
-            // Start listening for transfers from TAU Africa
-if (firebaseUser && firebaseUser.email) {
-    console.log('🔗 Starting transfer listener for:', firebaseUser.email);
-    listenForKabiruTransfers(firebaseUser.email);
-        }
 
-        // Generate wallet address
         function generateWalletAddress() {
             const chars = '0123456789abcdef';
             let address = '0x';
@@ -2835,7 +2835,6 @@ if (firebaseUser && firebaseUser.email) {
             return address;
         }
 
-        // Update user display
         function updateUserDisplay() {
             if (!currentUser) return;
             
@@ -2848,7 +2847,6 @@ if (firebaseUser && firebaseUser.email) {
             document.getElementById('miningRate').textContent = miningRate.toFixed(3);
         }
 
-        // Update balance display
         function updateBalanceDisplay() {
             userBalance = minedBalance + receivedBalance;
             
@@ -2862,7 +2860,6 @@ if (firebaseUser && firebaseUser.email) {
             return 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Authentication Functions
         async function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
@@ -3023,69 +3020,7 @@ if (firebaseUser && firebaseUser.email) {
                 showError(errorMessage);
             }
         }
-// Real-time transfer listener
-function listenForKabiruTransfers(memberEmail) {
-    if (!memberEmail || !db) {
-        console.log('⚠️ No email or database for transfer listener');
-        return null;
-    }
-    
-    console.log('👂 Listening for iKb transfers to:', memberEmail);
-    
-    return db.collection('members')
-        .where('email', '==', memberEmail)
-        .onSnapshot(snapshot => {
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                
-                // Check for pending transfer
-                if (data.pendingKabiruTransfer && data.pendingKabiruTransfer.status === 'pending') {
-                    const transfer = data.pendingKabiruTransfer;
-                    
-                    console.log('💎 Transfer detected:', transfer);
-                    
-                    // Add to received balance
-                    const transferredIkb = transfer.iKb || 0;
-                    const transferredIkbp = transfer.iKbp || 0;
-                    
-                    receivedBalance += transferredIkb;
-                    kabiruPoints += transferredIkbp;
-                    userBalance = minedBalance + receivedBalance;
-                    
-                    // Create transaction record
-                    const transaction = {
-                        id: generateTransactionId(),
-                        type: 'tau_transfer',
-                        iKb: transferredIkb,
-                        iKbp: transferredIkbp,
-                        timestamp: new Date().toISOString(),
-                        status: 'completed'
-                    };
-                    transactionHistory.unshift(transaction);
-                    
-                    // Mark transfer as completed in Firestore
-                    db.collection('members').doc(doc.id).update({
-                        'pendingKabiruTransfer.status': 'completed',
-                        'pendingKabiruTransfer.completedAt': firebase.firestore.FieldValue.serverTimestamp()
-                    }).then(() => {
-                        console.log('✅ Transfer marked as completed');
-                    });
-                    
-                    // Update UI
-                    updateBalanceDisplay();
-                    saveUserData();
-                    
-                    // Show notification
-                    showNotification(`✅ Received from TAU Africa!\n\n${transferredIkb.toFixed(4)} iKb${transferredIkbp > 0 ? '\n' + transferredIkbp.toLocaleString() + ' iKbp' : ''}\n\n⛏️ Start mining to grow your balance!`);
-                    
-                    console.log('✅ Transfer completed - Balances updated');
-                }
-            });
-        }, error => {
-            console.error('⚠️ Transfer listener error:', error);
-        });
-    }
-        // Navigation Functions
+
         function showLoginPage() {
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('miningApp').style.display = 'none';
@@ -3140,7 +3075,6 @@ function listenForKabiruTransfers(memberEmail) {
             });
         }
 
-        // Task Selection Function
         function selectTask(taskType) {
             document.querySelectorAll('.task-category').forEach(cat => {
                 cat.classList.remove('active');
@@ -3149,7 +3083,6 @@ function listenForKabiruTransfers(memberEmail) {
             showNotification(`Selected ${taskType} task category`);
         }
 
-        // Utility Functions
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
@@ -3168,7 +3101,6 @@ function listenForKabiruTransfers(memberEmail) {
             }
         }
 
-        // Message Functions
         function showError(message) {
             hideMessages();
             document.getElementById('errorText').textContent = message;
@@ -3202,10 +3134,15 @@ function listenForKabiruTransfers(memberEmail) {
             }, 3000);
         }
 
-        // Logout Function
         async function logout() {
             try {
                 await saveUserData();
+                
+                if (transferListener) {
+                    transferListener();
+                    transferListener = null;
+                }
+                
                 if (auth) {
                     await auth.signOut();
                 }
@@ -3238,7 +3175,6 @@ function listenForKabiruTransfers(memberEmail) {
             }
         }
 
-        // Placeholder functions for other features
         function checkEmailVerification() {
             if (auth && auth.currentUser) {
                 auth.currentUser.reload().then(() => {
@@ -3285,7 +3221,6 @@ function listenForKabiruTransfers(memberEmail) {
             }
         }
 
-        // Event Listeners
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const activeContainer = document.querySelector('#loginPage [style*="display: block"]');
@@ -3301,7 +3236,6 @@ function listenForKabiruTransfers(memberEmail) {
             }
         });
 
-        // Close modals when clicking outside
         window.onclick = function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -3311,122 +3245,7 @@ function listenForKabiruTransfers(memberEmail) {
             });
         }
 
-        console.log('KABIRU Mining App - Enhanced with Send/Receive & Currency Conversion Ready!');
+        console.log('✅ KABIRU Mining App - Fully Loaded & Ready!');
     </script>
-    // ============================================
-// TAU-KABIRU BRIDGE - Mining App (NON-DESTRUCTIVE)
-
-<script>
-(function() {
-    'use strict';
-    
-    // Use existing Firebase instance from Kabiru app
-    const db = firebase.firestore();
-    
-    console.log('✅ TAU-Kabiru Bridge initializing...');
-    
-    // Listen for transfers from TAU Africa
-    window.listenForKabiruTransfers = function(memberEmail) {
-        if (!memberEmail) {
-            console.log('⚠️ No email provided for transfer listener');
-            return null;
-        }
-        
-        console.log('👂 Listening for transfers to:', memberEmail);
-        
-        return db.collection('members')
-            .where('email', '==', memberEmail)
-            .onSnapshot(snapshot => {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    
-                    if (data.pendingKabiruTransfer && data.pendingKabiruTransfer.status === 'pending') {
-                        const transfer = data.pendingKabiruTransfer;
-                        
-                        console.log('💎 Transfer detected:', transfer);
-                        
-                        // Add to mining app balance
-                        kabiruPoints += transfer.iKbp || 0;
-                        minedBalance += transfer.iKb || 0;
-                        userBalance = minedBalance + receivedBalance;
-                        
-                        // Create transaction record
-                        const transaction = {
-                            id: generateTransactionId(),
-                            type: 'tau_transfer',
-                            iKbp: transfer.iKbp,
-                            iKb: transfer.iKb,
-                            timestamp: new Date().toISOString(),
-                            status: 'completed'
-                        };
-                        transactionHistory.unshift(transaction);
-                        
-                        // Mark transfer as completed
-                        db.collection('members').doc(doc.id).update({
-                            'pendingKabiruTransfer.status': 'completed',
-                            'pendingKabiruTransfer.completedAt': new Date().toISOString()
-                        });
-                        
-                        // Update UI
-                        updateBalanceDisplay();
-                        saveUserData();
-                        
-                        showNotification(`✅ Received from TAU Africa!\n${transfer.iKbp.toLocaleString()} iKbp + ${transfer.iKb} iKb`);
-                        
-                        console.log('✅ Transfer completed and balances updated');
-                    }
-                });
-            }, error => {
-                console.error('⚠️ Transfer listener error:', error);
-            });
-    };
-    
-    // Auto-start listener when user logs in
-    const originalLoadUserData = loadUserData;
-    if (typeof loadUserData !== 'undefined') {
-        window.loadUserData = async function(firebaseUser) {
-            // Call original function
-            await originalLoadUserData(firebaseUser);
-            
-            // Then start transfer listener
-            if (firebaseUser && firebaseUser.email) {
-                console.log('🔗 Starting transfer listener for:', firebaseUser.email);
-                listenForKabiruTransfers(firebaseUser.email);
-            }
-        };
-    }
-    
-    // Add withdrawal button function (in case it's needed in Kabiru app too)
-    window.checkPendingTransfers = async function() {
-        if (!currentUser || !currentUser.email) {
-            showNotification('Please login first');
-            return;
-        }
-        
-        try {
-            const memberQuery = await db.collection('members')
-                .where('email', '==', currentUser.email)
-                .limit(1)
-                .get();
-            
-            if (!memberQuery.empty) {
-                const memberDoc = memberQuery.docs[0];
-                const data = memberDoc.data();
-                
-                if (data.pendingKabiruTransfer && data.pendingKabiruTransfer.status === 'pending') {
-                    showNotification('💎 You have pending transfers! They will arrive automatically.');
-                } else {
-                    showNotification('No pending transfers');
-                }
-            }
-        } catch (error) {
-            console.error('Check transfers error:', error);
-        }
-    };
-    
-    console.log('✅ TAU-Kabiru Bridge - Active and listening');
-    
-})();
-</script>    
 </body>
-    </html>
+</html>
