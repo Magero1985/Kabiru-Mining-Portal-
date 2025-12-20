@@ -3148,30 +3148,7 @@ async function handlePasswordReset() {
     // ============================================
     // FIREBASE CONFIG (Same for both apps)
     // ============================================
-    const FIREBASE_CONFIG = {
-        apiKey: "AIzaSyAW0vk_gg03xXEm6I1TQnU8KRiv1RhcrQ4",
-        authDomain: "tau-africa-ecosystem.firebaseapp.com",
-        projectId: "tau-africa-ecosystem",
-        storageBucket: "tau-africa-ecosystem.firebasestorage.app",
-        messagingSenderId: "1047279398196",
-        appId: "1:1047279398196:web:06d43661650c794268c961"
-    };
     
-    let db, isKabiruApp = false;
-    
-    // Detect which app this is
-    if (window.location.href.includes('Kabiru-Mining-Portal')) {
-        isKabiruApp = true;
-        console.log('📍 Detected: Kabiru Mining App');
-    } else {
-        console.log('📍 Detected: TAU Main App');
-    }
-    
-    // Initialize Firebase
-    try {
-        if (!firebase.apps.length) {
-            firebase.initializeApp(FIREBASE_CONFIG);
-        }
         db = firebase.firestore();
         console.log('✅ Firebase connected');
     } catch (error) {
@@ -3332,84 +3309,34 @@ async function handlePasswordReset() {
                 });
         }
         
-        // Process incoming transfer
-        async function processIncomingTransfer(transfer, docId) {
-            console.log('📥 Incoming transfer detected:', transfer);
-            
-            try {
-                // Get current Kabiru balances (adjust storage keys as needed)
-                const kabiruData = JSON.parse(localStorage.getItem('kabiruMiningData') || 
-                                             localStorage.getItem('tauAfricaDB') || '[]');
-                
-                const memberIndex = kabiruData.findIndex(m => m.id === transfer.memberId);
-                
-                if (memberIndex !== -1) {
-                    // Credit the balances
-                    kabiruData[memberIndex].iKbpBalance = 
-                        (kabiruData[memberIndex].iKbpBalance || 0) + (transfer.iKbp || 0);
-                    kabiruData[memberIndex].iKbBalance = 
-                        (kabiruData[memberIndex].iKbBalance || 0) + (transfer.iKb || 0);
-                    
-                    // Save to localStorage
-                    localStorage.setItem('kabiruMiningData', JSON.stringify(kabiruData));
-                    
-                    console.log('✅ Balances credited:', {
-                        iKbp: transfer.iKbp,
-                        iKb: transfer.iKb
-                    });
-                } else {
-                    // Create new member record in Kabiru
-                    kabiruData.push({
-                        id: transfer.memberId,
-                        fullName: transfer.memberName,
-                        email: transfer.memberEmail,
-                        iKbpBalance: transfer.iKbp || 0,
-                        iKbBalance: transfer.iKb || 0,
-                        importedFromTAU: true,
-                        importDate: new Date().toISOString()
-                    });
-                    
-                    localStorage.setItem('kabiruMiningData', JSON.stringify(kabiruData));
-                    console.log('✅ New member created with balances');
-                }
-                
-                // Mark transfer as completed
-                await db.collection('kabiru_transfers').doc(docId).update({
-                    status: 'completed',
-                    completedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                // Update member document
-                await db.collection('members').doc(transfer.memberId).update({
-                    'pendingKabiruTransfer.status': 'completed',
-                    lastKabiruSync: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                // Show success notification
-                if (typeof showNotification === 'function') {
-                    showNotification(
-                        `✅ Received from TAU!\n${transfer.iKbp} iKbp + ${transfer.iKb} iKb`, 
-                        'success'
-                    );
-                } else {
-                    alert(`✅ Transfer Complete!\n\nReceived:\n${transfer.iKbp} iKbp\n${transfer.iKb} iKb`);
-                }
-                
-                // Trigger UI refresh if functions exist
-                if (typeof updateMiningStats === 'function') updateMiningStats();
-                if (typeof refreshBalance === 'function') refreshBalance();
-                
-            } catch (error) {
-                console.error('❌ Transfer processing error:', error);
-                
-                // Mark transfer as failed
-                await db.collection('kabiru_transfers').doc(docId).update({
-                    status: 'failed',
-                    error: error.message,
-                    failedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-        }
+        // Process incoming transfers 
+async function processTransfer(docId, transfer) {
+    try {
+        // 1. Update global app variables so the UI updates instantly
+        receivedBalance += (transfer.iKb || 0);
+        kabiruPoints += (transfer.iKbp || 0);
+        userBalance = minedBalance + receivedBalance;
+
+        // 2. Save these to Firestore 'users' collection immediately
+        await saveUserData(); 
+
+        // 3. Mark the transfer as completed in the 'kabiru_transfers' collection
+        await db.collection('kabiru_transfers').doc(docId).update({
+            status: 'completed',
+            completedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // 4. Update the 'members' document for TAU app visibility
+        await db.collection('members').doc(transfer.memberId).update({
+            'pendingKabiruTransfer.status': 'completed'
+        });
+
+        updateBalanceDisplay();
+        showNotification(`✅ Received: ${transfer.iKb} iKb & ${transfer.iKbp} iKbp`);
+    } catch (error) {
+        console.error('Transfer processing failed:', error);
+    }
+}
         
         // Start listening after 2 seconds
         setTimeout(startTransferListener, 2000);
