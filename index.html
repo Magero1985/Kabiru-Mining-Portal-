@@ -924,26 +924,51 @@
                 </div>
             </div>
 
+            <!-- Signup Form -->
+            <div id="signupContainer" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="signupName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" placeholder="Create password (min 6 chars)">
+                </div>
+                <button type="button" class="auth-button" onclick="handleSignup()">Create Account</button>
+                <div style="text-align: center; margin-top: 15px;">
+                    Already have an account? <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="showLogin()">Sign In</span>
+                </div>
+            </div>
+
             <!-- Email Verification Notice -->
             <div id="emailVerificationContainer" style="display: none;">
-                <div style="text-align: center; margin: 20px 0;">
+                <div style="text-align: center; margin: 30px 0;">
                     <div style="font-size: 48px; margin-bottom: 15px;">📧</div>
-                    <div style="font-size: 16px; margin-bottom: 10px; color: #FFD700;">Check your email!</div>
-                    <div style="font-size: 14px; opacity: 0.8; line-height: 1.4;">
-                        We've sent a verification link to your email address. Please check your inbox and click the verification link to activate your account.
+                    <div style="font-size: 18px; color: #FFD700; margin-bottom: 10px;">Check your email!</div>
+                    <div style="font-size: 14px; opacity: 0.8; line-height: 1.6; margin-bottom: 15px;">
+                        We've sent a verification link to your email. Click the link to verify your account.
+                    </div>
+                    <div style="font-size: 12px; padding: 12px; background: rgba(255, 215, 0, 0.1); border-radius: 8px; margin: 15px 0;">
+                        💡 Tip: After clicking the email link, return here and click "I've Verified" or just sign in.
                     </div>
                 </div>
                 
                 <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
+                <button class="auth-button" onclick="showLogin()" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                    Back to Sign In
+                </button>
                 
-                <div style="text-align: center; font-size: 12px; opacity: 0.8;">
-                    Didn't receive the email? 
-                    <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">Resend verification email</span>
+                <div style="text-align: center; font-size: 12px; margin-top: 15px;">
+                    Didn't receive email? 
+                    <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">Resend</span>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Mining App -->
     <div id="miningApp" class="mining-app">
         <!-- Main Mining Page -->
