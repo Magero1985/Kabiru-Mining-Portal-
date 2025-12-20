@@ -2645,25 +2645,20 @@
                 showOfflineLogin();
                 return;
             }
-
-            auth.onAuthStateChanged(async (user) => {
-                console.log('Auth state changed:', user ? user.uid : 'No user');
-                
-                if (user) {
-                    if (user.emailVerified) {
-                        console.log('User authenticated and verified');
-                        await loadUserData(user);
-                        showMiningApp();
-                    } else {
-                        console.log('User not verified, showing verification screen');
-                        showEmailVerification();
-                    }
-                } else {
-                    console.log('No authenticated user, showing login');
-                    showLoginPage();
-                }
-            });
+auth.onAuthStateChanged(async (user) => {
+    if (user) {
+        await user.reload(); // Always reload on start to check status
+        if (user.emailVerified) {
+            currentUser = user;
+            loadUserData(user); // Your existing function to load data
+            showMiningApp();
+        } else {
+            showEmailVerification();
         }
+    } else {
+        showLoginPage();
+    }
+});
 
         function showOfflineLogin() {
             showNotification('Running in offline mode - you can still mine tokens!');
@@ -3174,21 +3169,33 @@
                 showLoginPage();
             }
         }
+// Replacement for your current checkEmailVerification function
+async function checkEmailVerification() {
+    if (!auth || !auth.currentUser) {
+        showError("No user found. Please try logging in again.");
+        showLogin();
+        return;
+    }
 
-        function checkEmailVerification() {
-            if (auth && auth.currentUser) {
-                auth.currentUser.reload().then(() => {
-                    if (auth.currentUser.emailVerified) {
-                        showSuccess('Email verified successfully!');
-                        setTimeout(() => {
-                            showMiningApp();
-                        }, 1500);
-                    } else {
-                        showError('Email not yet verified. Please check your inbox.');
-                    }
-                });
-            }
+    try {
+        // IMPORTANT: You must reload the user to get the latest verification status
+        await auth.currentUser.reload();
+        const user = auth.currentUser;
+
+        if (user.emailVerified) {
+            showSuccess("✅ Email verified successfully!");
+            // Short delay to let the user see the success message
+            setTimeout(() => {
+                showMiningApp(); // This takes them to the dashboard
+            }, 1500);
+        } else {
+            showError("❌ Email not verified yet. Please check your inbox and click the link.");
         }
+    } catch (error) {
+        console.error("Verification check error:", error);
+        showError("Failed to check verification: " + error.message);
+    }
+}
 
         function resendEmailVerification() {
             if (auth && auth.currentUser) {
@@ -3199,6 +3206,23 @@
                 });
             }
         }
+        // Update the successful login part of your handleLogin function
+const userCredential = await auth.signInWithEmailAndPassword(email, password);
+const user = userCredential.user;
+
+if (!user.emailVerified) {
+    // If not verified, show the specific verification notice container
+    showEmailVerification(); 
+    showError('Please verify your email address. We sent a link to ' + email);
+    return;
+}
+
+// If already verified, go straight to the app
+console.log('Login successful');
+showSuccess('Login successful! Loading dashboard...');
+setTimeout(() => {
+    showMiningApp();
+}, 1000);
 
         async function handlePasswordReset() {
             const email = document.getElementById('resetEmail').value.trim();
