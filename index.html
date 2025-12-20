@@ -2641,29 +2641,29 @@
         });
 
         function setupAuthStateListener() {
-            if (!auth) {
-                showOfflineLogin();
-                return;
+    if (!auth) {
+        showOfflineLogin();
+        return;
+    }
+    auth.onAuthStateChanged(async (user) => {
+        console.log('Auth state changed:', user ? user.uid : 'No user');
+        if (user) {
+            // RELOAD HERE: This prevents the "Sign In" loop when coming back to the app
+            await user.reload();
+            if (user.emailVerified) {
+                console.log('User authenticated and verified');
+                await loadUserData(user);
+                showMiningApp();
+            } else {
+                console.log('User not verified, showing verification screen');
+                showEmailVerification();
             }
-
-            auth.onAuthStateChanged(async (user) => {
-                console.log('Auth state changed:', user ? user.uid : 'No user');
-                
-                if (user) {
-                    if (user.emailVerified) {
-                        console.log('User authenticated and verified');
-                        await loadUserData(user);
-                        showMiningApp();
-                    } else {
-                        console.log('User not verified, showing verification screen');
-                        showEmailVerification();
-                    }
-                } else {
-                    console.log('No authenticated user, showing login');
-                    showLoginPage();
-                }
-            });
+        } else {
+            console.log('No authenticated user, showing login');
+            showLoginPage();
         }
+    });
+}
 
         function showOfflineLogin() {
             showNotification('Running in offline mode - you can still mine tokens!');
@@ -2935,7 +2935,16 @@
                 showError(errorMessage);
             }
         }
+// Add this reload to check the most recent status
+await user.reload();
 
+if (!user.emailVerified) {
+    showEmailVerification(); // Ensure the user sees the "Check your email" screen
+    showError('Please verify your email address first. Check your inbox.');
+    document.querySelector('#loginContainer .auth-button').textContent = 'Sign In';
+    document.querySelector('#loginContainer .auth-button').disabled = false;
+    return;
+}
         async function handleSignup() {
             const name = document.getElementById('signupName').value.trim();
             const email = document.getElementById('signupEmail').value.trim();
@@ -3174,21 +3183,27 @@
                 showLoginPage();
             }
         }
+async function checkEmailVerification() {
+    if (auth && auth.currentUser) {
+        try {
+            // Force Firebase to refresh the user's token and verification status
+            await auth.currentUser.reload();
+            const user = auth.currentUser;
 
-        function checkEmailVerification() {
-            if (auth && auth.currentUser) {
-                auth.currentUser.reload().then(() => {
-                    if (auth.currentUser.emailVerified) {
-                        showSuccess('Email verified successfully!');
-                        setTimeout(() => {
-                            showMiningApp();
-                        }, 1500);
-                    } else {
-                        showError('Email not yet verified. Please check your inbox.');
-                    }
-                });
+            if (user.emailVerified) {
+                showSuccess('✅ Your email is verified! Loading your dashboard...');
+                setTimeout(() => {
+                    showMiningApp(); // Move to the app
+                }, 2000);
+            } else {
+                showError('❌ Still not verified. Please click the link in your email first.');
             }
+        } catch (error) {
+            console.error('Verification error:', error);
+            showError('Failed to refresh status: ' + error.message);
         }
+    }
+}
 
         function resendEmailVerification() {
             if (auth && auth.currentUser) {
