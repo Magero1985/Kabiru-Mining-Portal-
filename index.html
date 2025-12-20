@@ -839,37 +839,44 @@
 </head>
 <body>
     <!-- Login Page -->
-    <div id="loginPage" class="login-page">
+    <div id="loginPage" class="login-page" style="display: flex;">
         <div class="auth-container">
+            <!-- Logo Section -->
             <div class="auth-logo">
                 <div class="auth-logo-img">iKb</div>
                 <div class="auth-title">KABIRU</div>
-                <div style="font-size: 14px; opacity: 0.8;">Secure Login Portal</div>
+                <div class="auth-subtitle">Secure Login Portal</div>
             </div>
 
+            <!-- Error/Success Messages -->
             <div id="errorMessage" class="error-message">
-                <div><strong>Error</strong></div>
-                <div id="errorText">Something went wrong</div>
+                <div><strong>Warning Error</strong></div>
+                <div id="errorText">Something went wrong. Please try again.</div>
             </div>
 
             <div id="successMessage" class="success-message">
                 <div><strong>Success</strong></div>
-                <div id="successText">Operation successful</div>
+                <div id="successText">Operation completed successfully!</div>
             </div>
 
             <!-- Login Form -->
             <div id="loginContainer">
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email">
+                    <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password">
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁</button>
+                    </div>
+                    <span class="forgot-password-link" onclick="showPasswordReset()">Forgot Password?</span>
                 </div>
                 <button type="button" class="auth-button" onclick="handleLogin()">Sign In</button>
-                <div style="text-align: center; margin-top: 15px;">
-                    Don't have an account? <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="showSignup()">Sign Up</span>
+                
+                <div class="auth-toggle">
+                    Don't have an account? <span class="auth-toggle-link" onclick="showSignup()">Sign Up</span>
                 </div>
             </div>
 
@@ -877,19 +884,43 @@
             <div id="signupContainer" style="display: none;">
                 <div class="form-group">
                     <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="signupName" placeholder="Enter your name">
+                    <input type="text" class="form-input" id="signupName" placeholder="Enter your full name" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email">
+                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signupPassword" placeholder="Create password (min 6 chars)">
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="signupPassword" placeholder="Create a password (min 6 chars)" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">👁</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁</button>
+                    </div>
                 </div>
                 <button type="button" class="auth-button" onclick="handleSignup()">Create Account</button>
-                <div style="text-align: center; margin-top: 15px;">
-                    Already have an account? <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="showLogin()">Sign In</span>
+                
+                <div class="auth-toggle">
+                    Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
+                </div>
+            </div>
+            
+            <!-- Password Reset Form -->
+            <div id="passwordResetContainer" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="resetEmail" placeholder="Enter your email address" required>
+                </div>
+                <button type="button" class="auth-button" onclick="handlePasswordReset()">Send Reset Link</button>
+                
+                <div class="auth-toggle">
+                    Remember your password? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
                 </div>
             </div>
 
@@ -921,24 +952,645 @@
 
     <!-- Mining App -->
     <div id="miningApp" class="mining-app">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <div class="auth-logo-img" style="margin: 0 auto 15px;">iKb</div>
-                <h1 style="color: #FFD700; font-size: 28px;">KABIRU Mining Dashboard</h1>
-                <p style="opacity: 0.8; margin-top: 10px;" id="userEmail">Loading...</p>
-            </div>
+        <!-- Main Mining Page -->
+        <div id="mainPage" class="page active">
+            <div class="container">
+                <!-- Top Navigation Bar -->
+                <div class="top-bar">
+                    <div onclick="openUtilitiesModal()" id="utilitiesTab">UTILITIES</div>
+                    <div onclick="openWalletModal()" id="walletTab">WALLET</div>
+                    <div onclick="openReadModal()" id="readTab">READ</div>
+                    <div onclick="openLanguageModal()">LANGUAGE</div>
+                    <div onclick="openUserAccountModal()">PROFILE</div>
+                </div>
 
-            <div class="balance-section">
-                <div style="font-size: 14px; opacity: 0.8; text-transform: uppercase;">Your Balance</div>
-                <div class="balance-amount" id="balance">0.0000 iKb</div>
-                <div style="font-size: 12px; opacity: 0.7; color: #00ff87;">Ready to mine!</div>
-            </div>
+                <!-- Header -->
+                <div class="header">
+                    <div class="logo-section">
+                        <div class="logo-img">iKb</div>
+                        <div>
+                            <div class="app-title">KABIRU[iKb]</div>
+                            <div class="subtitle">Mine Kabiru Token</div>
+                        </div>
+                    </div>
+                </div>
 
-            <button class="auth-button" onclick="logout()" style="background: linear-gradient(45deg, #ff6b6b, #ffa726); max-width: 200px; display: block; margin: 20px auto;">
-                Logout
+                <!-- User Account Section -->
+                <div class="user-account-section" onclick="openUserAccountModal()">
+                    <div class="user-account-content">
+                        <div class="user-avatar" id="userAvatar">👤</div>
+                        <div class="user-info">
+                            <div class="user-name" id="userName">User Name</div>
+                            <div class="user-email" id="userEmail">user@example.com</div>
+                            <div class="user-balance" id="userAccountBalance">0.0000 iKb</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Section -->
+                <div class="balance-section">
+                    <div class="balance-title">Your KABIRU BALANCE</div>
+                    <div class="balance-amount" id="balance">0.0000 iKb</div>
+                    <div class="mining-rate">mining rate <span id="miningRate">0.001</span>iKb/day</div>
+                    <div style="font-size: 12px; margin-top: 5px; color: #00ff87;" id="miningTimer">Ready to mine!</div>
+                </div>
+
+                <!-- Main Action Buttons -->
+                <div class="main-buttons">
+                    <button class="main-button sovereign-btn" onclick="openSovereignModal()">
+                        SOVEREIGN
+                    </button>
+                    <button class="main-button value-btn" onclick="openValueModal()">
+                        VALUE
+                    </button>
+                    <button class="main-button reserve-btn" onclick="mineTokens('reserve', 0.002)">
+                        RESERVE
+                    </button>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalBalance">0.0000 iKb</div>
+                        <div class="stat-label">TOTAL</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="miningStatus">Ready</div>
+                        <div class="stat-label">STATUS</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="networkSize">144,000</div>
+                        <div class="stat-label">NETWORK</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="tasksCompleted">0</div>
+                        <div class="stat-label">TASKS</div>
+                    </div>
+                </div>
+
+                <!-- Tasks & Rewards Section -->
+                <div class="tasks-section">
+                    <div class="tasks-header">
+                        <div class="tasks-title">Tasks</div>
+                        <div class="reward-info">Reward</div>
+                    </div>
+                    
+                    <div class="task-categories">
+                        <div class="task-category" onclick="selectTask('mining')">
+                            <div class="category-title">iKb(M)</div>
+                            <div class="category-subtitle">Gen ledger</div>
+                        </div>
+                        <div class="task-category" onclick="selectTask('partnership')">
+                            <div class="category-title">iKb(P)</div>
+                            <div class="category-subtitle">Partnership</div>
+                        </div>
+                        <div class="task-category" onclick="selectTask('genledger')">
+                            <div class="category-title">iKb(GL)</div>
+                            <div class="category-subtitle">Gen ledger</div>
+                        </div>
+                    </div>
+
+                    <div class="value-categories">
+                        <div class="value-item" onclick="mineTokens('service', 0.0015)">Service<br><small>value</small></div>
+                        <div class="value-item" onclick="mineTokens('skill', 0.0025)">Skill<br><small>value</small></div>
+                        <div class="value-item" onclick="mineTokens('knowledge', 0.0035)">Knowledge<br><small>value</small></div>
+                    </div>
+                </div>
+
+                <!-- Personal Ledger Section -->
+                <div class="personal-ledger">
+                    <div class="ledger-grid">
+                        <div class="ledger-item">
+                            <div class="ledger-title">personal</div>
+                            <div>Ledger</div>
+                        </div>
+                        <div class="ledger-item">
+                            <div class="ledger-title">Generation</div>
+                            <div>Asset</div>
+                        </div>
+                        <div class="ledger-item">
+                            <div class="ledger-title">Information</div>
+                            <div>Asset</div>
+                        </div>
+                        <div class="ledger-item">
+                            <div class="ledger-title">iKb</div>
+                            <div>intelligent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer with Logout -->
+                <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
+                    <button onclick="logout()" style="background: none; border: none; color: #FFD700; font-size: 12px; cursor: pointer; text-decoration: underline; opacity: 0.8; transition: opacity 0.3s ease;">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Utilities Modal -->
+    <div id="utilitiesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('utilitiesModal')">&times;</span>
+            <h2 class="modal-title">KABIRU Utility Services</h2>
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.8; text-align: center;">
+                    Access integrated services within the KABIRU ecosystem
+                </p>
+                
+                <a href="Education-Services.html" class="service-button education" target="_blank">
+                    📚 Education Services
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Learning & Development Platform</div>
+                </a>
+                
+                <a href="Transport-Services.html" class="service-button transport" target="_blank">
+                    🚗 Transport Services
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Mobility & Transportation Solutions</div>
+                </a>
+                
+                <a href="Health-Services.html" class="service-button health" target="_blank">
+                    🏥 Health Services
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Healthcare & Wellness Platform</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('walletModal')">&times;</span>
+            <h2 class="modal-title">KABIRU Wallet</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin: 15px 0;">
+                    <div style="font-size: 14px; opacity: 0.8; margin-bottom: 10px;">Wallet Address:</div>
+                    <div style="font-size: 12px; word-break: break-all; color: #FFD700;" id="walletAddress">Loading...</div>
+                </div>
+                
+                <!-- Wallet Balance Breakdown -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0;">
+                    <div style="background: rgba(0, 255, 135, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #00ff87;" id="walletMinedBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Mined iKb</div>
+                    </div>
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #667eea;" id="walletReceivedBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Received iKb</div>
+                    </div>
+                    <div style="background: rgba(255, 107, 107, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #ff6b6b;" id="walletLockedBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Locked iKb</div>
+                    </div>
+                    <div style="background: rgba(255, 165, 0, 0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 14px; font-weight: bold; color: #FFA500;" id="walletReserveBalance">0.0000 iKb</div>
+                        <div style="font-size: 10px; opacity: 0.8;">Reserve iKb</div>
+                    </div>
+                </div>
+                
+                <!-- Total Balance -->
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; text-align: center; margin: 15px 0; border: 1px solid rgba(255, 215, 0, 0.3);">
+                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="walletTotalBalance">0.0000 iKb</div>
+                    <div style="font-size: 12px; opacity: 0.7;">Total KABIRU</div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                    <button class="auth-button" onclick="openSendReceiveModal()" style="font-size: 12px; padding: 10px;">
+                        💸 Send / Receive
+                    </button>
+                    <button class="auth-button" onclick="openTransactionHistoryModal()" style="font-size: 12px; padding: 10px;">
+                        📊 History
+                    </button>
+                </div>
+                
+                <!-- Cash Withdrawal Section -->
+                <div style="margin-top: 15px; padding: 15px; background: rgba(255, 165, 0, 0.1); border-radius: 10px; border: 1px solid rgba(255, 165, 0, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #FFA500; margin-bottom: 10px;">💰 Cash Withdrawal</div>
+                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">
+                        Convert iKb to cash at TAU Africa Centers
+                    </div>
+                    <button class="auth-button" onclick="openCashWithdrawalModal()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #FFA500, #FF8C00); width: 100%;">
+                        💵 Request Cash Withdrawal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cash Withdrawal Modal -->
+    <div id="cashWithdrawalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cashWithdrawalModal')">&times;</span>
+            <h2 class="modal-title">💰 Cash Withdrawal Request</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 165, 0, 0.3);">
+                    
+                    <div style="font-size: 14px; margin-bottom: 15px; text-align: center;">
+                        Available Balance: <span style="color: #FFD700; font-weight: bold;" id="withdrawableBalance">0.0000 iKb</span>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Amount to Withdraw (iKb):</label>
+                        <input type="number" id="cashWithdrawAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 16px;"
+                               oninput="calculateCashEquivalent()">
+                    </div>
+                    
+                    <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; border: 1px solid rgba(0, 255, 135, 0.3);">
+                        <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">You will receive:</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #00ff87;" id="cashEquivalent">0.00 KSH</div>
+                        <div style="font-size: 10px; opacity: 0.7; margin-top: 5px;">Exchange Rate: 1 iKb = 100,000 KSH</div>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Pickup Location *</label>
+                        <select id="pickupLocation" style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                            <option value="">-- Select TAU Center or Agent --</option>
+                            <option value="Nairobi HQ">Nairobi - TAU Africa HQ</option>
+                            <option value="Mombasa Center">Mombasa Center</option>
+                            <option value="Kisumu Center">Kisumu Center</option>
+                            <option value="Nakuru Center">Nakuru Center</option>
+                            <option value="Local Agent">Local Agent (specify below)</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Phone Number for Contact *</label>
+                        <input type="tel" id="withdrawalPhone" placeholder="254XXXXXXXXX" 
+                               style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Additional Notes (Optional):</label>
+                        <textarea id="withdrawalNotes" placeholder="Preferred time, local agent name, special instructions..." rows="3"
+                                  style="width: 100%; padding: 12px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 12px;"></textarea>
+                    </div>
+                    
+                    <button class="auth-button" onclick="submitCashWithdrawal()" style="font-size: 14px; padding: 15px; background: linear-gradient(45deg, #FFA500, #FF8C00); width: 100%;">
+                        💵 Submit Withdrawal Request
+                    </button>
+                </div>
+                
+                <div style="font-size: 11px; opacity: 0.8; text-align: center; color: #FFD700; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                    ⏱ Requests processed within 24-48 hours<br>
+                    📞 You will be contacted to arrange pickup
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Send/Receive Modal -->
+    <div id="sendReceiveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sendReceiveModal')">&times;</span>
+            <h2 class="modal-title">Send / Receive KABIRU</h2>
+            <div style="margin-bottom: 20px;">
+                
+                <!-- Send Section -->
+                <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 107, 107, 0.3);">
+                    <div style="font-size: 16px; font-weight: bold; color: #ff6b6b; margin-bottom: 15px;">📤 Send KABIRU</div>
+                    
+                    <div style="margin: 10px 0;">
+                        <label style="font-size: 12px; color: #ff6b6b; margin-bottom: 5px; display: block;">Recipient Email/Address:</label>
+                        <input type="text" id="sendRecipient" placeholder="Enter email or wallet address" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 107, 107, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="margin: 10px 0;">
+                        <label style="font-size: 12px; color: #ff6b6b; margin-bottom: 5px; display: block;">Amount (iKb):</label>
+                        <input type="number" id="sendAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 107, 107, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin: 10px 0; text-align: center;">
+                        Available: <span id="availableToSend">0.0000 iKb</span> | Fee: 0.0001 iKb
+                    </div>
+                    
+                    <button class="auth-button" onclick="sendKabiru()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                        💸 Send KABIRU
+                    </button>
+                </div>
+
+                <!-- Receive Section -->
+                <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(0, 255, 135, 0.3);">
+                    <div style="font-size: 16px; font-weight: bold; color: #00ff87; margin-bottom: 15px;">📥 Receive KABIRU</div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                        <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">Your Wallet Address:</div>
+                        <div style="font-size: 11px; word-break: break-all; color: #00ff87;" id="receiveAddress">Loading...</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="auth-button" onclick="copyReceiveAddress()" style="font-size: 12px; padding: 8px; background: linear-gradient(45deg, #00ff87, #60efff);">
+                            📋 Copy Address
+                        </button>
+                        <button class="auth-button" onclick="shareReceiveAddress()" style="font-size: 12px; padding: 8px; background: linear-gradient(45deg, #00ff87, #60efff);">
+                            📱 Share Address
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction History Modal -->
+    <div id="transactionHistoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('transactionHistoryModal')">&times;</span>
+            <h2 class="modal-title">Transaction History</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                    <div style="font-size: 14px; font-weight: bold; color: #FFD700; margin-bottom: 10px;">Recent Transactions</div>
+                    <div id="transactionList" style="max-height: 300px; overflow-y: auto;">
+                        <div style="text-align: center; opacity: 0.7; font-size: 14px; padding: 20px;">
+                            No transactions yet
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member ID Link Modal -->
+    <div id="memberIDModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('memberIDModal')">&times;</span>
+            <h2 class="modal-title">Link TAU Africa Member ID</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid rgba(255, 215, 0, 0.3);">
+                    <p style="font-size: 14px; margin-bottom: 10px;">Enter your TAU Africa Member ID to activate mining:</p>
+                    
+                    <input type="text" id="linkMemberID" placeholder="TSK-XXXXXX-XXX or TLK-XXXXXX-XXX" 
+                           style="width: 100%; padding: 12px; border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px; margin-bottom: 10px;">
+                    
+                    <button class="auth-button" onclick="verifyAndLinkMemberID()">
+                        🔗 Verify & Link Member ID
+                    </button>
+                </div>
+                
+                <div style="font-size: 12px; opacity: 0.8; text-align: center;">
+                    Don't have a Member ID? <a href="https://magero1985.github.io/Tau-Africa/" target="_blank" style="color: #FFD700;">Register at TAU Africa</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Read Modal -->
+    <div id="readModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('readModal')">&times;</span>
+            <h2 class="modal-title">Documentation & Resources</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('Whitepaper coming soon!')">
+                    <strong>📄 KABIRU Whitepaper</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Technical documentation and roadmap</p>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('User guide coming soon!')">
+                    <strong>📖 User Guide</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">How to mine and use KABIRU tokens</p>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('FAQ coming soon!')">
+                    <strong>❓ FAQ</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Frequently asked questions</p>
+                </div>
+                
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('Community links coming soon!')">
+                    <strong>🌐 Community</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Join our community channels</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="languageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('languageModal')">&times;</span>
+            <h2 class="modal-title">Select Language</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="selectLanguage('ar')">
+                    <strong>Kikuyu</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- User Account Modal -->
+    <div id="userAccountModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('userAccountModal')">&times;</span>
+            <h2 class="modal-title">User Profile</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div class="user-avatar" style="width: 80px; height: 80px; font-size: 32px; margin: 0 auto 15px;" id="modalUserAvatar">👤</div>
+                    <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="modalUserName">User Name</div>
+                    <div style="font-size: 14px; opacity: 0.7;" id="modalUserEmail">user@example.com</div>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin: 15px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="modalUserBalance">0.0000 iKb</div>
+                            <div style="font-size: 12px; opacity: 0.7;">Balance</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 18px; font-weight: bold; color: #00ff87;" id="modalUserTasks">0</div>
+                            <div style="font-size: 12px; opacity: 0.7;">Tasks Completed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KABIRU Conversion Section -->
+                <div class="tooltip" style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(102, 126, 234, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #667eea; margin-bottom: 10px;">🔄 KABIRU Conversion</div>
+                    <div class="tooltiptext">The KABIRU Points are acquired through tasks in the ecosystem while KABIRU digital currency is mined from genuine values</div>
+                    
+                    <div class="conversion-grid">
+                        <div class="conversion-item" onclick="convertCurrency('ikb_to_ikbp')">
+                            <div class="conversion-title">iKb → iKbp</div>
+                            <div class="conversion-rate">1 iKb = 100,000 iKbp</div>
+                            <div style="font-size: 10px; color: #667eea; margin-top: 5px;">Convert to Points</div>
+                        </div>
+                        <div class="conversion-item" onclick="convertCurrency('ikb_to_ksh')">
+                            <div class="conversion-title">iKb → KSH</div>
+                            <div class="conversion-rate">1 iKb = 100,000 KSH</div>
+                            <div style="font-size: 10px; color: #667eea; margin-top: 5px;">Convert to Shillings</div>
+                        </div>
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 10px; text-align: center;">
+                        Current Exchange: 1 iKbp = 1 KSH
+                    </div>
+                </div>
+                
+                <!-- Referral Section -->
+                <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(102, 126, 234, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #667eea; margin-bottom: 10px;">🔗 Referral Link</div>
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; font-size: 12px; word-break: break-all; margin-bottom: 10px;" id="referralLink">
+                        Loading referral link...
+                    </div>
+                    <button class="auth-button" onclick="copyReferralLink()" style="font-size: 12px; padding: 8px 15px; margin: 5px 0;">
+                        📋 Copy Link
+                    </button>
+                    <button class="auth-button" onclick="shareReferralLink()" style="font-size: 12px; padding: 8px 15px; margin: 5px 0;">
+                        📱 Share Link
+                    </button>
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 5px; text-align: center;">
+                        Refer friends and earn 10% of their mining rewards!
+                    </div>
+                </div>
+                
+                <!-- Lockup Options -->
+                <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 107, 107, 0.3);">
+                    <div style="font-size: 14px; font-weight: bold; color: #ff6b6b; margin-bottom: 15px;">🔒 Lockup Options</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                        <button class="service-button" onclick="lockupTokens(3)" style="font-size: 11px; padding: 10px 5px; margin: 0; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                            🔒 3 Months<br><small>+5% Bonus</small>
+                        </button>
+                        <button class="service-button" onclick="lockupTokens(6)" style="font-size: 11px; padding: 10px 5px; margin: 0; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                            🔒 6 Months<br><small>+12% Bonus</small>
+                        </button>
+                        <button class="service-button" onclick="lockupTokens(12)" style="font-size: 11px; padding: 10px 5px; margin: 0; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
+                            🔒 12 Months<br><small>+25% Bonus</small>
+                        </button>
+                    </div>
+                    <div style="font-size: 11px; opacity: 0.8; margin-top: 10px; text-align: center;">
+                        Current Locked: <span id="currentLockedAmount">0.0000 iKb</span>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                    <button class="auth-button" onclick="showNotification('Profile settings coming soon!')" style="font-size: 12px; padding: 10px;">
+                        ⚙️ Edit Profile
+                    </button>
+                    <button class="auth-button" onclick="showReserveModal()" style="font-size: 12px; padding: 10px;">
+                        💎 Reserve Tokens
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Currency Conversion Modal -->
+    <div id="conversionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('conversionModal')">&times;</span>
+            <h2 class="modal-title" id="conversionTitle">Convert KABIRU</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(102, 126, 234, 0.3);">
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #667eea; margin-bottom: 5px; display: block;" id="conversionFromLabel">Amount to Convert:</label>
+                        <input type="number" id="conversionAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; margin: 10px 0;">
+                        <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">You will receive:</div>
+                        <div style="font-size: 16px; font-weight: bold; color: #FFD700;" id="conversionResult">0.0000</div>
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin: 10px 0; text-align: center;" id="conversionRate"></div>
+                    
+                    <button class="auth-button" onclick="executeConversion()" id="conversionButton" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #667eea, #764ba2);">
+                        🔄 Convert
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sovereign Values Modal -->
+    <div id="sovereignModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sovereignModal')">&times;</span>
+            <h2 class="modal-title">Select Your Sovereignty Value</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectSovereignValue('personal', this)">
+                    <strong>Personal Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Individual autonomy and self-governance - 0.003 iKb</p>
+                </div>
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectSovereignValue('economic', this)">
+                    <strong>Economic Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Financial independence and control - 0.003 iKb</p>
+                </div>
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectSovereignValue('digital', this)">
+                    <strong>Digital Sovereignty</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Control over digital identity and data - 0.003 iKb</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startSovereignMining()" disabled id="sovereignStartBtn">
+                Start Mining
             </button>
         </div>
     </div>
+
+    <!-- Value Selection Modal -->
+    <div id="valueModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('valueModal')">&times;</span>
+            <h2 class="modal-title">Select Your Value Type</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectValue('service', 0.0015, this)">
+                    <strong>Service Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Community service and assistance - 0.0015 iKb</p>
+                </div>
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectValue('skill', 0.0025, this)">
+                    <strong>Skill Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Professional skills and expertise - 0.0025 iKb</p>
+                </div>
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectValue('knowledge', 0.0035, this)">
+                    <strong>Knowledge Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Information and wisdom sharing - 0.0035 iKb</p>
+                </div>
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectValue('innovation', 0.0045, this)">
+                    <strong>Innovation Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Creative solutions and inventions - 0.0045 iKb</p>
+                </div>
+                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" onclick="selectValue('leadership', 0.0055, this)">
+                    <strong>Leadership Value</strong>
+                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Guidance and mentorship - 0.0055 iKb</p>
+                </div>
+            </div>
+            <button class="auth-button" onclick="startValueMining()" disabled id="valueStartBtn">
+                Start Mining
+            </button>
+        </div>
+    </div>
+     <!-- Reserve Tokens Modal -->
+    <div id="reserveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('reserveModal')">&times;</span>
+            <h2 class="modal-title">Reserve Tokens</h2>
+            <div style="margin-bottom: 20px;">
+                <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 165, 0, 0.3);">
+                    <div style="font-size: 14px; margin-bottom: 10px;">Available Balance: <span style="color: #FFD700; font-weight: bold;" id="availableForReserve">0.0000 iKb</span></div>
+                    <div style="font-size: 14px; margin-bottom: 15px;">Current Reserve: <span style="color: #FFA500; font-weight: bold;" id="currentReserveAmount">0.0000 iKb</span></div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label style="font-size: 12px; color: #FFA500; margin-bottom: 5px; display: block;">Amount to Reserve:</label>
+                        <input type="number" id="reserveAmount" placeholder="0.0000" step="0.0001" min="0.0001" 
+                               style="width: 100%; padding: 10px; border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 14px;">
+                    </div>
+                    
+                    <div style="font-size: 11px; opacity: 0.8; margin: 10px 0; text-align: center;">
+                        Reserved tokens earn 2% annual interest and can be withdrawn anytime
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="auth-button" onclick="addToReserve()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #FFA500, #FF8C00);">
+                            💎 Add to Reserve
+                        </button>
+                        <button class="auth-button" onclick="withdrawFromReserve()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #667eea, #764ba2);">
+                            💰 Withdraw
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
 
     <script>
         // Firebase Configuration
