@@ -879,37 +879,6 @@
                     Don't have an account? <span class="auth-toggle-link" onclick="showSignup()">Sign Up</span>
                 </div>
             </div>
-
-            <!-- Signup Form -->
-            <div id="signupContainer" style="display: none;">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="signupName" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="password-input-container">
-                        <input type="password" class="form-input" id="signupPassword" placeholder="Create a password (min 6 chars)" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">👁</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <div class="password-input-container">
-                        <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
-                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁</button>
-                    </div>
-                </div>
-                <button type="button" class="auth-button" onclick="handleSignup()">Create Account</button>
-                
-                <div class="auth-toggle">
-                    Already have an account? <span class="auth-toggle-link" onclick="showLogin()">Sign In</span>
-                </div>
-            </div>
             
             <!-- Password Reset Form -->
             <div id="passwordResetContainer" style="display: none;">
@@ -1616,28 +1585,6 @@
     <div id="notification" class="notification"></div>
 
     <script>
-        // Global Variables
-        let currentUser = null;
-        let userBalance = 0.0000;
-        let minedBalance = 0.0000;
-        let receivedBalance = 0.0000;
-        let reserveBalance = 0.0000;
-        let lockedBalance = 0.0000;
-        let kabiruPoints = 0.0000;
-        let totalTasksCompleted = 0;
-        let miningRate = 0.001;
-        let isMining = false;
-        let selectedSovereignType = null;
-        let selectedValueType = null;
-        let selectedValueAmount = null;
-        let userWalletAddress = '';
-        let transactionHistory = [];
-        let referralCode = '';
-        let lockupPeriods = [];
-        let currentConversionType = null;
-        let transferListener = null;
-
-    
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
@@ -1660,6 +1607,26 @@
         } catch (error) {
             console.error('❌ Firebase error:', error);
         }
+        // Global Variables
+        let currentUser = null;
+        let userBalance = 0.0000;
+        let minedBalance = 0.0000;
+        let receivedBalance = 0.0000;
+        let reserveBalance = 0.0000;
+        let lockedBalance = 0.0000;
+        let kabiruPoints = 0.0000;
+        let totalTasksCompleted = 0;
+        let miningRate = 0.001;
+        let isMining = false;
+        let selectedSovereignType = null;
+        let selectedValueType = null;
+        let selectedValueAmount = null;
+        let userWalletAddress = '';
+        let transactionHistory = [];
+        let referralCode = '';
+        let lockupPeriods = [];
+        let currentConversionType = null;
+        let transferListener = null;
 
         // Handle email verification from link
         async function handleEmailVerificationLink(oobCode) {
@@ -1755,78 +1722,71 @@
                 showError(msg);
             }
         }
+// Signup handler with Email Verification
+async function handleSignup() {
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
 
-        // Signup handler
-        async function handleSignup() {
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            
-            if (!name || !email || !password) {
-                showError('Please fill in all fields');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
-                return;
-            }
-            
-            try {
-                hideMessages();
-                const btn = document.querySelector('#signupContainer .auth-button');
-                btn.textContent = 'Creating Account...';
-                btn.disabled = true;
-                
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-                
-                await user.updateProfile({ displayName: name });
-                
-                await user.sendEmailVerification({
-                    url: window.location.origin + window.location.pathname,
-                    handleCodeInApp: false
-                });
-                
-                showSuccess('Account created! Check your email.');
-                showEmailVerification();
-                
-            } catch (error) {
-                console.error('Signup error:', error);
-                const btn = document.querySelector('#signupContainer .auth-button');
-                btn.textContent = 'Create Account';
-                btn.disabled = false;
-                
-                let msg = 'Signup failed. ';
-                if (error.code === 'auth/email-already-in-use') msg = 'Email already registered.';
-                else if (error.code === 'auth/weak-password') msg = 'Password too weak.';
-                
-                showError(msg);
-            }
+    if (!name || !email || !password) {
+        showError('Please fill in all fields');
+        return;
+    }
+
+    try {
+        const btn = document.querySelector('#signupContainer .auth-button');
+        btn.textContent = 'Creating Account...';
+        btn.disabled = true;
+
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // Set name and send verification
+        await user.updateProfile({ displayName: name });
+        await user.sendEmailVerification();
+        
+        showEmailVerification(); // Show the "Check your email" screen
+    } catch (error) {
+        showError(error.message);
+    } finally {
+        const btn = document.querySelector('#signupContainer .auth-button');
+        btn.textContent = 'Create Account';
+        btn.disabled = false;
+    }
+}
+
+// Login handler with Verification Check
+async function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+            showError('Please verify your email before logging in.');
+            await auth.signOut();
+            showEmailVerification();
+            return;
         }
+        // If verified, setupAuthStateListener will automatically show the app
+    } catch (error) {
+        showError('Login failed: ' + error.message);
+    }
+}
 
-        // Check email verification
-        async function checkEmailVerification() {
-            if (auth && auth.currentUser) {
-                try {
-                    showNotification('Checking...');
-                    
-                    await auth.currentUser.reload();
-                    
-                    if (auth.currentUser.emailVerified) {
-                        showSuccess('Verified! Loading dashboard...');
-                        setTimeout(() => {
-                            currentUser = auth.currentUser;
-                            showMiningApp();
-                        }, 1500);
-                    } else {
-                        showError('Not verified yet. Please check your email.');
-                    }
-                } catch (error) {
-                    console.error('Check error:', error);
-                    showError('Could not check status. Try again.');
-                }
-            }
+// Verify button on the "Check your email" screen
+async function checkEmailVerification() {
+    if (auth.currentUser) {
+        await auth.currentUser.reload();
+        if (auth.currentUser.emailVerified) {
+            showSuccess('Email verified! Loading app...');
+            showMiningApp();
+        } else {
+            showError('Email not verified yet. Please check your inbox.');
+        }
+    }
         }
 
         // Resend verification
@@ -3160,29 +3120,24 @@
         }
 
         function generateTransactionId() {
-            return 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 
+    return 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
 
- async function handlePasswordReset() {
-            const email = document.getElementById('resetEmail').value.trim();
-            if (!email) {
-                showError('Please enter your email address');
-                return;
-            }
-            
-            if (!auth) {
-                showError('Password reset requires internet connection.');
-                return;
-            }
-
-            try {
-                await auth.sendPasswordResetEmail(email);
-                showSuccess('Password reset email sent! Check your inbox.');
-                setTimeout(() => showLogin(), 2000);
-            } catch (error) {
-                showError('Failed to send reset email: ' + error.message);
-            }
-        }
-
+async function handlePasswordReset() {
+    const email = document.getElementById('resetEmail').value.trim();
+    if (!email) {
+        showError('Please enter your email address');
+        return;
+    }
+    try {
+        await auth.sendPasswordResetEmail(email);
+        showSuccess('Password reset email sent! Check your inbox.');
+        setTimeout(() => showLogin(), 2000);
+    } catch (error) {
+        showError('Failed to send reset email: ' + error.message);
+    }
+}
+ 
     </script>
     <script>
     (function() {
