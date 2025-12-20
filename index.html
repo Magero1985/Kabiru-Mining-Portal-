@@ -924,25 +924,30 @@
                 </div>
             </div>
 
-            <!-- Email Verification Notice -->
-            <div id="emailVerificationContainer" style="display: none;">
-                <div style="text-align: center; margin: 20px 0;">
-                    <div style="font-size: 48px; margin-bottom: 15px;">📧</div>
-                    <div style="font-size: 16px; margin-bottom: 10px; color: #FFD700;">Check your email!</div>
-                    <div style="font-size: 14px; opacity: 0.8; line-height: 1.4;">
-                        We've sent a verification link to your email address. Please check your inbox and click the verification link to activate your account.
-                    </div>
-                </div>
-                
-                <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
-                
-                <div style="text-align: center; font-size: 12px; opacity: 0.8;">
-                    Didn't receive the email? 
-                    <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">Resend verification email</span>
-                </div>
-            </div>
+           <!-- Email Verification Notice -->
+<div id="emailVerificationContainer" style="display: none;">
+    <div style="text-align: center; margin: 20px 0;">
+        <div style="font-size: 48px; margin-bottom: 15px;">📧</div>
+        <div style="font-size: 16px; margin-bottom: 10px; color: #FFD700;">Check your email!</div>
+        <div style="font-size: 14px; opacity: 0.8; line-height: 1.4;">
+            We've sent a verification link to your email address. Please check your inbox and click the verification link to activate your account.
+        </div>
+        <div style="font-size: 12px; opacity: 0.7; margin-top: 10px; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+            💡 Tip: After clicking the link in your email, return here and click "I've Verified My Email" or simply sign in.
         </div>
     </div>
+    
+    <button class="auth-button" onclick="checkEmailVerification()">I've Verified My Email</button>
+    
+    <button class="auth-button" onclick="showLogin()" style="background: linear-gradient(45deg, #667eea, #764ba2); margin-top: 10px;">
+        Back to Sign In
+    </button>
+    
+    <div style="text-align: center; font-size: 12px; opacity: 0.8; margin-top: 15px;">
+        Didn't receive the email? 
+        <span style="color: #FFD700; cursor: pointer; text-decoration: underline;" onclick="resendEmailVerification()">Resend verification email</span>
+    </div>
+</div>
 
     <!-- Mining App -->
     <div id="miningApp" class="mining-app">
@@ -3215,32 +3220,48 @@
                 showLoginPage();
             }
         }
+async function checkEmailVerification() {
+    if (auth && auth.currentUser) {
+        try {
+            showNotification('Checking verification status...');
+            
+            // Force reload the user object to get latest verification status
+            await auth.currentUser.reload();
+            
+            if (auth.currentUser.emailVerified) {
+                showSuccess('Email verified successfully! Loading your dashboard...');
+                setTimeout(async () => {
+                    await loadUserData(auth.currentUser);
+                    showMiningApp();
+                }, 1500);
+            } else {
+                showError('Email not yet verified. Please check your inbox and click the verification link.');
+            }
+        } catch (error) {
+            console.error('Verification check error:', error);
+            showError('Could not check verification status. Please try again.');
+        }
+    }
+}
 
-        function checkEmailVerification() {
-            if (auth && auth.currentUser) {
-                auth.currentUser.reload().then(() => {
-                    if (auth.currentUser.emailVerified) {
-                        showSuccess('Email verified successfully!');
-                        setTimeout(() => {
-                            showMiningApp();
-                        }, 1500);
-                    } else {
-                        showError('Email not yet verified. Please check your inbox.');
-                    }
-                });
+async function resendEmailVerification() {
+    if (auth && auth.currentUser) {
+        try {
+            await auth.currentUser.sendEmailVerification({
+                url: window.location.origin + window.location.pathname,
+                handleCodeInApp: false
+            });
+            showNotification('✅ Verification email resent! Please check your inbox.');
+        } catch (error) {
+            console.error('Resend verification error:', error);
+            if (error.code === 'auth/too-many-requests') {
+                showError('Too many requests. Please wait a few minutes before trying again.');
+            } else {
+                showError('Failed to resend verification email. Please try again later.');
             }
         }
-
-        function resendEmailVerification() {
-            if (auth && auth.currentUser) {
-                auth.currentUser.sendEmailVerification().then(() => {
-                    showNotification('Verification email resent!');
-                }).catch(error => {
-                    showError('Failed to resend verification email: ' + error.message);
-                });
-            }
-        }
-
+    }
+                }
         async function handlePasswordReset() {
             const email = document.getElementById('resetEmail').value.trim();
             if (!email) {
