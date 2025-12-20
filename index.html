@@ -837,10 +837,9 @@
         }
     </style>
 </head>
-<body>
-    <!-- Debug Console -->
+<body><!-- Debug Console -->
     <div class="debug-console" id="debugConsole">
-        <div class="debug-line debug-info">🔍 Debug Console Active</div>
+        <div class="debug-line debug-success">🔍 Debug Console Active - Logs will appear here</div>
     </div>
     <!-- Login Page -->
     <div id="loginPage" class="login-page" style="display: flex;">
@@ -3725,28 +3724,48 @@ export const realtimeService = {
     </script>
 
     <script>
-        // Debug logging
+        // Comprehensive error catching
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            debugLog('❌ CRITICAL ERROR: ' + msg, 'error');
+            debugLog('   Line: ' + lineNo + ', Column: ' + columnNo, 'error');
+            if (error && error.stack) {
+                debugLog('   Stack: ' + error.stack, 'error');
+            }
+            return false;
+        };
+
+        // Debug logging function
         function debugLog(message, type = 'info') {
-            const console = document.getElementById('debugConsole');
-            const line = document.createElement('div');
-            line.className = `debug-line debug-${type}`;
-            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-            console.appendChild(line);
-            console.scrollTop = console.scrollHeight;
-            
-            // Also log to browser console
-            if (type === 'error') {
-                console.error(message);
-            } else {
-                console.log(message);
+            try {
+                const console = document.getElementById('debugConsole');
+                if (!console) return;
+                
+                const line = document.createElement('div');
+                line.className = `debug-line debug-${type}`;
+                line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                console.appendChild(line);
+                console.scrollTop = console.scrollHeight;
+                
+                // Browser console
+                if (type === 'error') {
+                    window.console.error(message);
+                } else if (type === 'warning') {
+                    window.console.warn(message);
+                } else {
+                    window.console.log(message);
+                }
+            } catch (e) {
+                window.console.error('Debug log error:', e);
             }
         }
+
+        debugLog('🚀 Script starting execution...', 'info');
 
         // Global variables
         let app, db, auth;
         let currentUser = null;
 
-        // Firebase Configuration
+        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
@@ -3756,168 +3775,139 @@ export const realtimeService = {
             appId: "1:217095254990:web:9eb44eff825666995fb19f"
         };
 
-        debugLog('🚀 Initializing KABIRU App...', 'info');
+        debugLog('📋 Firebase config loaded', 'info');
 
         // Initialize Firebase
         try {
+            debugLog('🔧 Initializing Firebase...', 'info');
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
             debugLog('✅ Firebase initialized successfully', 'success');
         } catch (error) {
-            debugLog('❌ Firebase init error: ' + error.message, 'error');
+            debugLog('❌ Firebase initialization failed: ' + error.message, 'error');
+            debugLog('   Error code: ' + error.code, 'error');
         }
 
-        // Handle email verification from link
-        async function handleEmailVerificationLink(oobCode) {
-            debugLog('📧 Processing email verification link...', 'info');
+        // Show screen function
+        function showScreen(screenId) {
+            debugLog('🖥️ Showing screen: ' + screenId, 'info');
             
-            try {
-                await auth.applyActionCode(oobCode);
-                debugLog('✅ Email verified successfully!', 'success');
-                
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
-                showSuccess('Email verified! Please sign in.');
-                setTimeout(() => showLogin(), 2000);
-                
-            } catch (error) {
-                debugLog('❌ Verification error: ' + error.message, 'error');
-                showError('Verification failed. Link may be expired.');
-                setTimeout(() => showLogin(), 3000);
-            }
-        }
-
-        // Setup auth listener
-        function setupAuthStateListener() {
-            debugLog('👂 Setting up auth state listener...', 'info');
+            const screens = ['loadingScreen', 'logoutScreen', 'loginScreen', 'signupScreen', 'verificationScreen', 'dashboardScreen'];
             
-            if (!auth) {
-                debugLog('❌ Auth not available!', 'error');
-                showError('Authentication system not available');
-                return;
-            }
-
-            auth.onAuthStateChanged(async (user) => {
-                debugLog('🔄 Auth state changed', 'info');
-                
-                if (user) {
-                    debugLog('👤 User found: ' + user.email, 'info');
-                    debugLog('📧 Email verified: ' + user.emailVerified, 'info');
-                    
-                    try {
-                        await user.reload();
-                        debugLog('🔄 User reloaded', 'info');
-                        
-                        if (user.emailVerified) {
-                            debugLog('✅ User is verified - showing mining app', 'success');
-                            currentUser = user;
-                            showMiningApp();
-                        } else {
-                            debugLog('⚠️ User not verified - showing verification screen', 'info');
-                            showEmailVerification();
-                        }
-                    } catch (error) {
-                        debugLog('❌ Error reloading user: ' + error.message, 'error');
-                    }
-                } else {
-                    debugLog('👤 No user logged in - showing login page', 'info');
-                    showLoginPage();
+            screens.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('hidden');
                 }
             });
+            
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.remove('hidden');
+            } else {
+                debugLog('❌ Screen not found: ' + screenId, 'error');
+            }
+        }
+
+        // Force logout
+        async function forceLogout() {
+            debugLog('🚪 Force logout initiated', 'info');
+            try {
+                await auth.signOut();
+                debugLog('✅ Logout successful', 'success');
+                showScreen('loginScreen');
+            } catch (error) {
+                debugLog('❌ Logout error: ' + error.message, 'error');
+            }
+        }
+
+        // Regular logout
+        async function logout() {
+            debugLog('🚪 Logout initiated', 'info');
+            try {
+                await auth.signOut();
+                debugLog('✅ Logout successful', 'success');
+                currentUser = null;
+                showScreen('loginScreen');
+            } catch (error) {
+                debugLog('❌ Logout error: ' + error.message, 'error');
+            }
+        }
+
+        // Show login
+        function showLogin() {
+            showScreen('loginScreen');
+        }
+
+        // Show signup
+        function showSignup() {
+            showScreen('signupScreen');
         }
 
         // Login handler
         async function handleLogin() {
-            debugLog('🔐 Login attempt started', 'info');
+            debugLog('🔐 Login attempt', 'info');
             
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             
-            debugLog('📧 Email: ' + email, 'info');
-            
             if (!email || !password) {
                 debugLog('❌ Missing email or password', 'error');
-                showError('Please fill in all fields');
+                alert('Please fill in all fields');
                 return;
             }
             
             try {
-                hideMessages();
-                const btn = document.querySelector('#loginContainer .auth-button');
-                btn.textContent = 'Signing in...';
-                btn.disabled = true;
-                
-                debugLog('🔄 Attempting Firebase sign in...', 'info');
+                debugLog('🔄 Attempting sign in...', 'info');
                 const userCredential = await auth.signInWithEmailAndPassword(email, password);
-                const user = userCredential.user;
+                debugLog('✅ Sign in successful', 'success');
                 
-                debugLog('✅ Firebase sign in successful', 'success');
+                const user = userCredential.user;
                 debugLog('📧 Email verified: ' + user.emailVerified, 'info');
                 
                 if (!user.emailVerified) {
-                    debugLog('⚠️ Email not verified - signing out', 'info');
-                    showError('Please verify your email first');
-                    btn.textContent = 'Sign In';
-                    btn.disabled = false;
+                    debugLog('⚠️ Email not verified', 'warning');
+                    alert('Please verify your email first');
                     await auth.signOut();
                     return;
                 }
                 
-                debugLog('🎉 Login successful!', 'success');
-                showSuccess('Login successful!');
+                debugLog('🎉 Login complete!', 'success');
                 
             } catch (error) {
-                debugLog('❌ Login error: ' + error.code + ' - ' + error.message, 'error');
-                
-                const btn = document.querySelector('#loginContainer .auth-button');
-                btn.textContent = 'Sign In';
-                btn.disabled = false;
-                
-                let msg = 'Login failed. ';
-                if (error.code === 'auth/user-not-found') msg = 'No account found. Please sign up.';
-                else if (error.code === 'auth/wrong-password') msg = 'Incorrect password.';
-                else if (error.code === 'auth/invalid-email') msg = 'Invalid email address.';
-                else msg += error.message;
-                
-                showError(msg);
+                debugLog('❌ Login error: ' + error.code, 'error');
+                debugLog('   Message: ' + error.message, 'error');
+                alert('Login failed: ' + error.message);
             }
         }
 
         // Signup handler
         async function handleSignup() {
-            debugLog('📝 Signup attempt started', 'info');
+            debugLog('📝 Signup attempt', 'info');
             
             const name = document.getElementById('signupName').value.trim();
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
             
-            debugLog('📧 Email: ' + email, 'info');
-            
             if (!name || !email || !password) {
                 debugLog('❌ Missing fields', 'error');
-                showError('Please fill in all fields');
+                alert('Please fill in all fields');
                 return;
             }
             
             if (password.length < 6) {
                 debugLog('❌ Password too short', 'error');
-                showError('Password must be at least 6 characters');
+                alert('Password must be at least 6 characters');
                 return;
             }
             
             try {
-                hideMessages();
-                const btn = document.querySelector('#signupContainer .auth-button');
-                btn.textContent = 'Creating...';
-                btn.disabled = true;
-                
-                debugLog('🔄 Creating Firebase account...', 'info');
+                debugLog('🔄 Creating account...', 'info');
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-                
                 debugLog('✅ Account created', 'success');
                 
+                const user = userCredential.user;
                 await user.updateProfile({ displayName: name });
                 debugLog('✅ Profile updated', 'success');
                 
@@ -3927,56 +3917,42 @@ export const realtimeService = {
                 });
                 debugLog('✅ Verification email sent', 'success');
                 
-                showSuccess('Account created! Check your email.');
-                showEmailVerification();
+                alert('Account created! Check your email.');
+                showScreen('verificationScreen');
                 
             } catch (error) {
-                debugLog('❌ Signup error: ' + error.code + ' - ' + error.message, 'error');
-                
-                const btn = document.querySelector('#signupContainer .auth-button');
-                btn.textContent = 'Create Account';
-                btn.disabled = false;
-                
-                let msg = 'Signup failed. ';
-                if (error.code === 'auth/email-already-in-use') msg = 'Email already registered.';
-                else if (error.code === 'auth/weak-password') msg = 'Password too weak.';
-                else msg += error.message;
-                
-                showError(msg);
+                debugLog('❌ Signup error: ' + error.code, 'error');
+                debugLog('   Message: ' + error.message, 'error');
+                alert('Signup failed: ' + error.message);
             }
         }
 
         // Check verification
-        async function checkEmailVerification() {
-            debugLog('🔍 Checking email verification...', 'info');
+        async function checkVerification() {
+            debugLog('🔍 Checking verification...', 'info');
             
             if (auth && auth.currentUser) {
                 try {
                     await auth.currentUser.reload();
                     debugLog('🔄 User reloaded', 'info');
-                    debugLog('📧 Verified: ' + auth.currentUser.emailVerified, 'info');
                     
                     if (auth.currentUser.emailVerified) {
-                        debugLog('✅ Email is verified!', 'success');
-                        showSuccess('Verified! Loading...');
-                        setTimeout(() => {
-                            currentUser = auth.currentUser;
-                            showMiningApp();
-                        }, 1500);
+                        debugLog('✅ Email verified!', 'success');
+                        alert('Email verified! You can now login.');
+                        showScreen('loginScreen');
                     } else {
-                        debugLog('⚠️ Email still not verified', 'info');
-                        showError('Not verified yet. Check your email.');
+                        debugLog('⚠️ Not verified yet', 'warning');
+                        alert('Not verified yet. Check your email.');
                     }
                 } catch (error) {
                     debugLog('❌ Check error: ' + error.message, 'error');
-                    showError('Could not check status.');
                 }
             }
         }
 
         // Resend verification
-        async function resendEmailVerification() {
-            debugLog('📧 Resending verification email...', 'info');
+        async function resendVerification() {
+            debugLog('📧 Resending verification...', 'info');
             
             if (auth && auth.currentUser) {
                 try {
@@ -3985,112 +3961,78 @@ export const realtimeService = {
                         handleCodeInApp: false
                     });
                     debugLog('✅ Email resent', 'success');
-                    showSuccess('Verification email resent!');
+                    alert('Verification email resent!');
                 } catch (error) {
                     debugLog('❌ Resend error: ' + error.message, 'error');
-                    showError('Failed to resend email.');
                 }
             }
         }
 
-        // Logout
-        async function logout() {
-            debugLog('🚪 Logging out...', 'info');
-            try {
-                await auth.signOut();
-                currentUser = null;
-                debugLog('✅ Logged out', 'success');
-                showLoginPage();
-            } catch (error) {
-                debugLog('❌ Logout error: ' + error.message, 'error');
-            }
-        }
-
-        // UI Functions
-        function showLoginPage() {
-            debugLog('🖥️ Showing login page', 'info');
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('miningApp').style.display = 'none';
-            showLogin();
-        }
-
-        function showMiningApp() {
-            debugLog('🖥️ Showing mining app', 'success');
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('miningApp').style.display = 'block';
-            if (currentUser) {
-                document.getElementById('userEmail').textContent = currentUser.email;
-                debugLog('👤 Displaying user: ' + currentUser.email, 'info');
-            }
-        }
-
-        function showLogin() {
-            debugLog('🖥️ Showing login form', 'info');
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('signupContainer').style.display = 'none';
-            document.getElementById('emailVerificationContainer').style.display = 'none';
-            hideMessages();
-        }
-
-        function showSignup() {
-            debugLog('🖥️ Showing signup form', 'info');
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('signupContainer').style.display = 'block';
-            document.getElementById('emailVerificationContainer').style.display = 'none';
-            hideMessages();
-        }
-
-        function showEmailVerification() {
-            debugLog('🖥️ Showing email verification screen', 'info');
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('signupContainer').style.display = 'none';
-            document.getElementById('emailVerificationContainer').style.display = 'block';
-            hideMessages();
-        }
-
-        function showError(message) {
-            document.getElementById('errorText').textContent = message;
-            document.getElementById('errorMessage').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('errorMessage').style.display = 'none';
-            }, 5000);
-        }
-
-        function showSuccess(message) {
-            document.getElementById('successText').textContent = message;
-            document.getElementById('successMessage').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 3000);
-        }
-
-        function hideMessages() {
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
+        // Auth state listener
+        function setupAuthListener() {
+            debugLog('👂 Setting up auth listener...', 'info');
+            
+            auth.onAuthStateChanged(async (user) => {
+                debugLog('🔄 Auth state changed', 'info');
+                
+                try {
+                    if (user) {
+                        debugLog('👤 User detected: ' + user.email, 'info');
+                        debugLog('📧 Email verified: ' + user.emailVerified, 'info');
+                        
+                        await user.reload();
+                        debugLog('🔄 User data reloaded', 'info');
+                        
+                        if (user.emailVerified) {
+                            debugLog('✅ Showing dashboard', 'success');
+                            currentUser = user;
+                            document.getElementById('dashboardEmail').textContent = user.email;
+                            showScreen('dashboardScreen');
+                        } else {
+                            debugLog('⚠️ Not verified - showing verification screen', 'warning');
+                            showScreen('verificationScreen');
+                        }
+                    } else {
+                        debugLog('👤 No user - showing login', 'info');
+                        showScreen('loginScreen');
+                    }
+                } catch (error) {
+                    debugLog('❌ Auth state error: ' + error.message, 'error');
+                    showScreen('loginScreen');
+                }
+            });
         }
 
         // Initialize
+        debugLog('📄 DOM Content Loading...', 'info');
+        
         document.addEventListener('DOMContentLoaded', function() {
-            debugLog('📄 DOM Content Loaded', 'info');
-            debugLog('🌐 URL: ' + window.location.href, 'info');
+            debugLog('✅ DOM Content Loaded', 'success');
             
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-            const oobCode = urlParams.get('oobCode');
-            
-            debugLog('🔍 URL Mode: ' + (mode || 'none'), 'info');
-            debugLog('🔍 URL Code: ' + (oobCode ? 'present' : 'none'), 'info');
-            
-            if (mode === 'verifyEmail' && oobCode && auth) {
-                debugLog('✉️ Email verification link detected', 'info');
-                handleEmailVerificationLink(oobCode);
-            } else {
-                debugLog('🔧 Setting up normal auth flow', 'info');
-                setupAuthStateListener();
+            try {
+                // Check if already logged in
+                setTimeout(() => {
+                    debugLog('🔍 Checking current auth state...', 'info');
+                    
+                    const user = auth.currentUser;
+                    if (user) {
+                        debugLog('👤 Found existing user: ' + user.email, 'info');
+                        document.getElementById('currentUserEmail').textContent = user.email;
+                        showScreen('logoutScreen');
+                    } else {
+                        debugLog('👤 No existing user', 'info');
+                        setupAuthListener();
+                        showScreen('loginScreen');
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                debugLog('❌ Initialization error: ' + error.message, 'error');
+                showScreen('loginScreen');
             }
         });
 
-        debugLog('✅ All scripts loaded', 'success');
+        debugLog('✅ All scripts loaded successfully', 'success');
     </script>
 </body>
 </html>
