@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KABIRU Mining App - Phase 2</title>
+    <title>KABIRU Mining App - Phase 1</title>
     
     <!-- Firebase SDK v9 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
@@ -128,7 +128,6 @@
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 15px;
-            transition: all 0.3s ease;
         }
 
         .auth-button:hover {
@@ -139,7 +138,6 @@
         .auth-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
 
         .hidden {
@@ -157,36 +155,6 @@
         .container {
             max-width: 400px;
             margin: 0 auto;
-        }
-
-        /* Top Navigation Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-around;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .top-bar-btn {
-            flex: 1;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .top-bar-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .top-bar-btn.active {
-            background: rgba(255, 215, 0, 0.3);
-            color: #FFD700;
         }
 
         .user-section {
@@ -338,131 +306,6 @@
             text-transform: uppercase;
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            overflow-y: auto;
-        }
-
-        .modal-content {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .modal-title {
-            color: #FFD700;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            line-height: 1;
-            margin-top: -10px;
-        }
-
-        .close:hover {
-            color: #FFD700;
-        }
-
-        .wallet-address {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            word-break: break-all;
-            font-size: 12px;
-            color: #FFD700;
-            margin: 15px 0;
-        }
-
-        .balance-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .balance-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .balance-item-value {
-            font-size: 14px;
-            font-weight: bold;
-            color: #FFD700;
-        }
-
-        .balance-item-label {
-            font-size: 10px;
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-
-        .transaction-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .transaction-icon {
-            font-size: 18px;
-        }
-
-        .transaction-details {
-            flex: 1;
-        }
-
-        .transaction-title {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .transaction-time {
-            font-size: 10px;
-            opacity: 0.7;
-        }
-
-        .transaction-amount {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .transaction-amount.positive {
-            color: #00ff87;
-        }
-
-        .transaction-amount.negative {
-            color: #ff6b6b;
-        }
-
         .notification {
             position: fixed;
             top: 20px;
@@ -473,7 +316,7 @@
             padding: 15px 25px;
             border-radius: 10px;
             font-size: 14px;
-            z-index: 10001;
+            z-index: 1001;
             display: none;
             animation: slideDown 0.3s ease-out;
         }
@@ -491,7 +334,7 @@
 <body>
     <!-- Debug Console -->
     <div class="debug-console" id="debugConsole">
-        <div class="debug-line debug-info">🔍 Phase 2: Wallet & Transactions</div>
+        <div class="debug-line debug-info">🔍 Phase 1: Core Mining Features</div>
     </div>
 
     <!-- Notification -->
@@ -557,13 +400,6 @@
     <!-- Mining App -->
     <div id="miningApp" class="mining-app">
         <div class="container">
-            <!-- Top Navigation Bar -->
-            <div class="top-bar">
-                <button class="top-bar-btn" onclick="openWalletModal()">💰 WALLET</button>
-                <button class="top-bar-btn" onclick="openProfileModal()">👤 PROFILE</button>
-                <button class="top-bar-btn" onclick="showNotification('Coming in Phase 4!')">🛠️ UTILITIES</button>
-            </div>
-
             <!-- User Section -->
             <div class="user-section">
                 <div class="user-avatar" id="userAvatar">U</div>
@@ -619,136 +455,6 @@
         </div>
     </div>
 
-    <!-- Wallet Modal -->
-    <div id="walletModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('walletModal')">&times;</span>
-            <h2 class="modal-title">💰 KABIRU Wallet</h2>
-            
-            <div style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">Wallet Address:</div>
-            <div class="wallet-address" id="walletAddress">Loading...</div>
-            
-            <div class="balance-grid">
-                <div class="balance-item">
-                    <div class="balance-item-value" id="walletMinedBalance">0.0000 iKb</div>
-                    <div class="balance-item-label">Mined</div>
-                </div>
-                <div class="balance-item">
-                    <div class="balance-item-value" id="walletReceivedBalance">0.0000 iKb</div>
-                    <div class="balance-item-label">Received</div>
-                </div>
-                <div class="balance-item">
-                    <div class="balance-item-value" id="walletLockedBalance">0.0000 iKb</div>
-                    <div class="balance-item-label">Locked</div>
-                </div>
-                <div class="balance-item">
-                    <div class="balance-item-value" id="walletReserveBalance">0.0000 iKb</div>
-                    <div class="balance-item-label">Reserve</div>
-                </div>
-            </div>
-            
-            <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; text-align: center; margin: 15px 0;">
-                <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="walletTotalBalance">0.0000 iKb</div>
-                <div style="font-size: 12px; opacity: 0.7;">Total KABIRU</div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
-                <button class="auth-button" onclick="openSendReceiveModal()" style="font-size: 12px; padding: 10px;">
-                    💸 Send / Receive
-                </button>
-                <button class="auth-button" onclick="openTransactionHistoryModal()" style="font-size: 12px; padding: 10px;">
-                    📊 History
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Send/Receive Modal -->
-    <div id="sendReceiveModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('sendReceiveModal')">&times;</span>
-            <h2 class="modal-title">💸 Send / Receive KABIRU</h2>
-            
-            <!-- Send Section -->
-            <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(255, 107, 107, 0.3);">
-                <div style="font-size: 16px; font-weight: bold; color: #ff6b6b; margin-bottom: 15px;">📤 Send KABIRU</div>
-                
-                <div class="form-group">
-                    <label class="form-label">Recipient Email:</label>
-                    <input type="email" class="form-input" id="sendRecipient" placeholder="recipient@email.com">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Amount (iKb):</label>
-                    <input type="number" class="form-input" id="sendAmount" placeholder="0.0000" step="0.0001" min="0.0001">
-                </div>
-                
-                <div style="font-size: 11px; opacity: 0.8; margin: 10px 0; text-align: center;">
-                    Available: <span id="availableToSend">0.0000 iKb</span> | Fee: 0.0001 iKb
-                </div>
-                
-                <button class="auth-button" onclick="sendKabiru()" style="font-size: 12px; padding: 10px; background: linear-gradient(45deg, #ff6b6b, #ffa726);">
-                    💸 Send KABIRU
-                </button>
-            </div>
-
-            <!-- Receive Section -->
-            <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(0, 255, 135, 0.3);">
-                <div style="font-size: 16px; font-weight: bold; color: #00ff87; margin-bottom: 15px;">📥 Receive KABIRU</div>
-                
-                <div style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">Your Wallet Address:</div>
-                    <div style="font-size: 11px; word-break: break-all; color: #00ff87;" id="receiveAddress">Loading...</div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="auth-button" onclick="copyAddress()" style="font-size: 12px; padding: 8px; background: linear-gradient(45deg, #00ff87, #60efff);">
-                        📋 Copy
-                    </button>
-                    <button class="auth-button" onclick="shareAddress()" style="font-size: 12px; padding: 8px; background: linear-gradient(45deg, #00ff87, #60efff);">
-                        📱 Share
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Transaction History Modal -->
-    <div id="transactionHistoryModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('transactionHistoryModal')">&times;</span>
-            <h2 class="modal-title">📊 Transaction History</h2>
-            
-            <div id="transactionList" style="max-height: 400px; overflow-y: auto;">
-                <div style="text-align: center; opacity: 0.7; font-size: 14px; padding: 20px;">
-                    No transactions yet
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('profileModal')">&times;</span>
-            <h2 class="modal-title">👤 User Profile</h2>
-            
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div class="user-avatar" style="width: 80px; height: 80px; font-size: 32px; margin: 0 auto 15px;" id="modalUserAvatar">U</div>
-                <div style="font-size: 18px; font-weight: bold; color: #FFD700;" id="modalUserName">User Name</div>
-                <div style="font-size: 14px; opacity: 0.7;" id="modalUserEmail">user@example.com</div>
-            </div>
-            
-            <div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin: 15px 0;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 12px; opacity: 0.7;">Tasks Completed</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Debug logging
         function debugLog(msg, type = 'info') {
@@ -772,10 +478,8 @@
         let totalTasksCompleted = 0;
         let miningRate = 0.001;
         let isMining = false;
-        let userWalletAddress = '';
-        let transactionHistory = [];
 
-        debugLog('🚀 Phase 2 Starting...', 'info');
+        debugLog('🚀 Phase 1 Starting...', 'info');
 
         // Firebase config
         const firebaseConfig = {
@@ -797,16 +501,6 @@
             debugLog('❌ Firebase error: ' + error.message, 'error');
         }
 
-        // Generate wallet address
-        function generateWalletAddress() {
-            const chars = '0123456789abcdef';
-            let address = '0x';
-            for (let i = 0; i < 40; i++) {
-                address += chars[Math.floor(Math.random() * chars.length)];
-            }
-            return address;
-        }
-
         // Show notification
         function showNotification(message) {
             const notif = document.getElementById('notification');
@@ -815,11 +509,6 @@
             setTimeout(() => {
                 notif.classList.remove('show');
             }, 3000);
-        }
-
-        // Generate transaction ID
-        function generateTransactionId() {
-            return 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
         // Save user data
@@ -832,8 +521,6 @@
                 lockedBalance: lockedBalance,
                 tasksCompleted: totalTasksCompleted,
                 miningRate: miningRate,
-                walletAddress: userWalletAddress,
-                transactionHistory: transactionHistory,
                 lastActive: new Date().toISOString()
             };
 
@@ -872,8 +559,6 @@
                         userBalance = minedBalance + receivedBalance;
                         totalTasksCompleted = data.tasksCompleted || 0;
                         miningRate = data.miningRate || 0.001;
-                        userWalletAddress = data.walletAddress || generateWalletAddress();
-                        transactionHistory = data.transactionHistory || [];
                         debugLog('✅ Loaded from Firestore', 'success');
                         updateDisplay();
                         return;
@@ -894,12 +579,9 @@
                 userBalance = data.balance || 0;
                 totalTasksCompleted = data.tasksCompleted || 0;
                 miningRate = data.miningRate || 0.001;
-                userWalletAddress = data.walletAddress || generateWalletAddress();
-                transactionHistory = data.transactionHistory || [];
                 debugLog('✅ Loaded from localStorage', 'success');
             } else {
                 debugLog('ℹ️ No saved data, starting fresh', 'info');
-                userWalletAddress = generateWalletAddress();
             }
 
             updateDisplay();
@@ -916,19 +598,9 @@
             document.getElementById('miningRate').textContent = miningRate.toFixed(3);
             
             if (currentUser) {
-                const name = currentUser.displayName || 'User';
-                const initial = name.charAt(0).toUpperCase();
-                
-                document.getElementById('userName').textContent = name;
+                document.getElementById('userName').textContent = currentUser.displayName || 'User';
                 document.getElementById('userEmail').textContent = currentUser.email;
-                document.getElementById('userAvatar').textContent = initial;
-                
-                // Update modal fields
-                document.getElementById('modalUserName').textContent = name;
-                document.getElementById('modalUserEmail').textContent = currentUser.email;
-                document.getElementById('modalUserAvatar').textContent = initial;
-                document.getElementById('modalUserBalance').textContent = userBalance.toFixed(4) + ' iKb';
-                document.getElementById('modalUserTasks').textContent = totalTasksCompleted;
+                document.getElementById('userAvatar').textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
             }
         }
 
@@ -966,17 +638,6 @@
                 userBalance = minedBalance + receivedBalance;
                 totalTasksCompleted++;
                 
-                // Add transaction
-                const transaction = {
-                    id: generateTransactionId(),
-                    type: 'mining',
-                    subtype: type,
-                    amount: reward,
-                    timestamp: new Date().toISOString(),
-                    status: 'completed'
-                };
-                transactionHistory.unshift(transaction);
-                
                 updateDisplay();
                 await saveUserData();
                 
@@ -998,213 +659,6 @@
                 }, 2000);
                 
             }, 3500);
-        }
-
-        // Send KABIRU
-        async function sendKabiru() {
-            const recipient = document.getElementById('sendRecipient').value.trim();
-            const amount = parseFloat(document.getElementById('sendAmount').value);
-            const fee = 0.0001;
-            const totalAmount = amount + fee;
-            const availableBalance = minedBalance + receivedBalance;
-            
-            if (!recipient) {
-                showNotification('Please enter recipient email');
-                return;
-            }
-            
-            if (!amount || amount <= 0) {
-                showNotification('Please enter valid amount');
-                return;
-            }
-            
-            if (totalAmount > availableBalance) {
-                showNotification('Insufficient balance');
-                return;
-            }
-            
-            try {
-                debugLog('💸 Sending tokens...', 'info');
-                
-                // Deduct from sender
-                if (minedBalance >= totalAmount) {
-                    minedBalance -= totalAmount;
-                } else {
-                    const remaining = totalAmount - minedBalance;
-                    minedBalance = 0;
-                    receivedBalance -= remaining;
-                }
-                
-                // Try to find recipient in Firestore
-                if (db) {
-                    try {
-                        const recipientQuery = await db.collection('users').where('email', '==', recipient).limit(1).get();
-                        
-                        if (!recipientQuery.empty) {
-                            const recipientDoc = recipientQuery.docs[0];
-                            await db.collection('users').doc(recipientDoc.id).update({
-                                receivedBalance: firebase.firestore.FieldValue.increment(amount)
-                            });
-                            debugLog('✅ Recipient found and credited', 'success');
-                        } else {
-                            debugLog('⚠️ Recipient not found', 'info');
-                        }
-                    } catch (error) {
-                        debugLog('⚠️ Recipient search error: ' + error.message, 'error');
-                    }
-                }
-                
-                // Add transaction
-                const transaction = {
-                    id: generateTransactionId(),
-                    type: 'send',
-                    recipient: recipient,
-                    amount: amount,
-                    fee: fee,
-                    timestamp: new Date().toISOString(),
-                    status: 'completed'
-                };
-                transactionHistory.unshift(transaction);
-                
-                updateDisplay();
-                await saveUserData();
-                
-                showNotification(`✅ Sent ${amount.toFixed(4)} iKb!`);
-                debugLog(`✅ Transfer complete`, 'success');
-                
-                // Clear inputs
-                document.getElementById('sendRecipient').value = '';
-                document.getElementById('sendAmount').value = '';
-                
-                closeModal('sendReceiveModal');
-                
-            } catch (error) {
-                debugLog('❌ Send error: ' + error.message, 'error');
-                showNotification('Transfer failed');
-            }
-        }
-
-        // Copy wallet address
-        function copyAddress() {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(userWalletAddress).then(() => {
-                    showNotification('📋 Address copied!');
-                }).catch(() => {
-                    fallbackCopy(userWalletAddress);
-                });
-            } else {
-                fallbackCopy(userWalletAddress);
-            }
-        }
-
-        function fallbackCopy(text) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showNotification('📋 Address copied!');
-            } catch (err) {
-                showNotification('Copy failed');
-            }
-            document.body.removeChild(textArea);
-        }
-
-        // Share wallet address
-        function shareAddress() {
-            const shareText = `Send KABIRU tokens to: ${userWalletAddress}`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: 'My KABIRU Wallet',
-                    text: shareText
-                }).then(() => {
-                    showNotification('📱 Shared!');
-                }).catch(() => {
-                    copyAddress();
-                });
-            } else {
-                copyAddress();
-            }
-        }
-
-        // Open modals
-        function openWalletModal() {
-            document.getElementById('walletAddress').textContent = userWalletAddress;
-            document.getElementById('walletMinedBalance').textContent = minedBalance.toFixed(4) + ' iKb';
-            document.getElementById('walletReceivedBalance').textContent = receivedBalance.toFixed(4) + ' iKb';
-            document.getElementById('walletLockedBalance').textContent = lockedBalance.toFixed(4) + ' iKb';
-            document.getElementById('walletReserveBalance').textContent = reserveBalance.toFixed(4) + ' iKb';
-            document.getElementById('walletTotalBalance').textContent = (minedBalance + receivedBalance + lockedBalance + reserveBalance).toFixed(4) + ' iKb';
-            document.getElementById('walletModal').style.display = 'block';
-        }
-
-        function openSendReceiveModal() {
-            document.getElementById('availableToSend').textContent = (minedBalance + receivedBalance).toFixed(4) + ' iKb';
-            document.getElementById('receiveAddress').textContent = userWalletAddress;
-            document.getElementById('sendReceiveModal').style.display = 'block';
-            closeModal('walletModal');
-        }
-
-        function openTransactionHistoryModal() {
-            displayTransactionHistory();
-            document.getElementById('transactionHistoryModal').style.display = 'block';
-            closeModal('walletModal');
-        }
-
-        function openProfileModal() {
-            document.getElementById('profileModal').style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // Display transaction history
-        function displayTransactionHistory() {
-            const list = document.getElementById('transactionList');
-            
-            if (transactionHistory.length === 0) {
-                list.innerHTML = '<div style="text-align: center; opacity: 0.7; font-size: 14px; padding: 20px;">No transactions yet</div>';
-                return;
-            }
-            
-            let html = '';
-            transactionHistory.slice(0, 20).forEach(tx => {
-                const date = new Date(tx.timestamp).toLocaleDateString();
-                const time = new Date(tx.timestamp).toLocaleTimeString();
-                let icon = '⚡';
-                let amountClass = 'positive';
-                let amountText = `+${tx.amount.toFixed(4)} iKb`;
-                let description = '';
-                
-                if (tx.type === 'mining') {
-                    icon = '⛏️';
-                    description = `${tx.subtype} mining`;
-                } else if (tx.type === 'send') {
-                    icon = '📤';
-                    amountClass = 'negative';
-                    amountText = `-${tx.amount.toFixed(4)} iKb`;
-                    description = `Sent to ${tx.recipient}`;
-                } else if (tx.type === 'receive') {
-                    icon = '📥';
-                    description = `Received from ${tx.sender || 'Unknown'}`;
-                }
-                
-                html += `
-                    <div class="transaction-item">
-                        <div class="transaction-icon">${icon}</div>
-                        <div class="transaction-details">
-                            <div class="transaction-title">${description}</div>
-                            <div class="transaction-time">${date} ${time}</div>
-                        </div>
-                        <div class="transaction-amount ${amountClass}">${amountText}</div>
-                    </div>
-                `;
-            });
-            
-            list.innerHTML = html;
         }
 
         // Email verification handler
@@ -1336,7 +790,6 @@
                 minedBalance = 0;
                 receivedBalance = 0;
                 totalTasksCompleted = 0;
-                transactionHistory = [];
                 debugLog('🚪 Logged out', 'info');
                 showNotification('Logged out');
                 showLoginPage();
@@ -1375,16 +828,6 @@
             document.getElementById('verificationContainer').classList.remove('hidden');
         }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             debugLog('📄 DOM loaded', 'success');
@@ -1400,14 +843,7 @@
             }
         });
 
-        debugLog('✅ Phase 2 loaded successfully', 'success');
+        debugLog('✅ Phase 1 loaded successfully', 'success');
     </script>
 </body>
-</html>
--size: 18px; font-weight: bold; color: #FFD700;" 
-id="modalUserBalance">0.0000 iKb</div>
-<div style="font-size: 12px; opacity: 0.7;">Balance</div>
-</div>
-<div style="text-align: center;">
-<div style="font-size: 18px; font-weight: bold; color: #00ff87;" id="modalUserTasks">0</div>
-<div style="font
+    </html>
