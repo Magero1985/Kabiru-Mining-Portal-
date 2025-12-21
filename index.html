@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KABIRU Mining App - Phase 1</title>
+    <title>KABIRU Mining App - Phase 3</title>
     
     <!-- Firebase SDK v9 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
@@ -25,7 +25,6 @@
             color: white;
         }
 
-        /* Debug Console */
         .debug-console {
             position: fixed;
             bottom: 0;
@@ -50,8 +49,8 @@
         .debug-error { color: #ff0000; font-weight: bold; }
         .debug-success { color: #00ff00; }
         .debug-info { color: #00aaff; }
+        .debug-warning { color: #ffaa00; }
 
-        /* Login Page */
         .login-page {
             display: flex;
             align-items: center;
@@ -128,6 +127,7 @@
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 15px;
+            transition: all 0.3s ease;
         }
 
         .auth-button:hover {
@@ -138,13 +138,13 @@
         .auth-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
         .hidden {
             display: none;
         }
 
-        /* Mining App */
         .mining-app {
             display: none;
             min-height: 100vh;
@@ -155,6 +155,44 @@
         .container {
             max-width: 400px;
             margin: 0 auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .top-bar-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .alert-box {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .alert-box.warning {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: #ff6b6b;
         }
 
         .user-section {
@@ -194,6 +232,16 @@
         .user-email {
             font-size: 12px;
             opacity: 0.7;
+        }
+
+        .member-badge {
+            background: rgba(0, 255, 135, 0.2);
+            border: 1px solid #00ff87;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 10px;
+            color: #00ff87;
+            margin-top: 3px;
         }
 
         .balance-section {
@@ -306,6 +354,53 @@
             text-transform: uppercase;
         }
 
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            color: #FFD700;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            margin-top: -10px;
+        }
+
+        .close:hover {
+            color: #FFD700;
+        }
+
         .notification {
             position: fixed;
             top: 20px;
@@ -316,13 +411,15 @@
             padding: 15px 25px;
             border-radius: 10px;
             font-size: 14px;
-            z-index: 1001;
+            z-index: 10001;
             display: none;
-            animation: slideDown 0.3s ease-out;
+            max-width: 90%;
+            text-align: center;
         }
 
         .notification.show {
             display: block;
+            animation: slideDown 0.3s ease-out;
         }
 
         @keyframes slideDown {
@@ -334,7 +431,7 @@
 <body>
     <!-- Debug Console -->
     <div class="debug-console" id="debugConsole">
-        <div class="debug-line debug-info">🔍 Phase 1: Core Mining Features</div>
+        <div class="debug-line debug-info">🔍 Phase 3: TAU Integration</div>
     </div>
 
     <!-- Notification -->
@@ -346,7 +443,6 @@
             <div class="logo">iKb</div>
             <h1>KABIRU</h1>
 
-            <!-- Login Form -->
             <div id="loginContainer">
                 <div class="form-group">
                     <label class="form-label">Email</label>
@@ -362,7 +458,6 @@
                 </div>
             </div>
 
-            <!-- Signup Form -->
             <div id="signupContainer" class="hidden">
                 <div class="form-group">
                     <label class="form-label">Name</label>
@@ -382,7 +477,6 @@
                 </div>
             </div>
 
-            <!-- Email Verification -->
             <div id="verificationContainer" class="hidden">
                 <div style="text-align: center; margin: 30px 0;">
                     <div style="font-size: 48px; margin-bottom: 15px;">📧</div>
@@ -400,12 +494,31 @@
     <!-- Mining App -->
     <div id="miningApp" class="mining-app">
         <div class="container">
+            <!-- Member ID Alert (if not linked) -->
+            <div id="memberIdAlert" class="alert-box warning" style="display: none;">
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">⚠️ Link TAU Member ID</div>
+                <div style="font-size: 12px; margin-bottom: 10px; opacity: 0.9;">
+                    Link your TAU Africa Member ID to unlock mining!
+                </div>
+                <button class="auth-button" onclick="openMemberIDModal()" style="font-size: 12px; padding: 10px;">
+                    🔗 Link Member ID
+                </button>
+            </div>
+
+            <!-- Top Navigation Bar -->
+            <div class="top-bar">
+                <button class="top-bar-btn" onclick="openWalletModal()">💰 WALLET</button>
+                <button class="top-bar-btn" onclick="openProfileModal()">👤 PROFILE</button>
+                <button class="top-bar-btn" onclick="openCashWithdrawalModal()">💵 WITHDRAW</button>
+            </div>
+
             <!-- User Section -->
             <div class="user-section">
                 <div class="user-avatar" id="userAvatar">U</div>
                 <div class="user-info">
                     <div class="user-name" id="userName">User</div>
                     <div class="user-email" id="userEmail">user@example.com</div>
+                    <div id="memberBadge" class="member-badge" style="display: none;">Level 1 Member</div>
                 </div>
             </div>
 
@@ -455,6 +568,104 @@
         </div>
     </div>
 
+    <!-- Member ID Modal -->
+    <div id="memberIDModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('memberIDModal')">&times;</span>
+            <h2 class="modal-title">🔗 Link TAU Member ID</h2>
+            
+            <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <p style="font-size: 14px; margin-bottom: 10px;">Enter your TAU Africa Member ID to activate mining:</p>
+                
+                <div class="form-group">
+                    <label class="form-label">Member ID:</label>
+                    <input type="text" class="form-input" id="linkMemberID" placeholder="TSK-XXXXXX-XXX or TLK-XXXXXX-XXX">
+                </div>
+                
+                <button class="auth-button" onclick="verifyAndLinkMemberID()">
+                    🔗 Verify & Link
+                </button>
+            </div>
+            
+            <div style="font-size: 12px; opacity: 0.8; text-align: center;">
+                Don't have a Member ID? <a href="https://magero1985.github.io/Tau-Africa/" target="_blank" style="color: #FFD700;">Register at TAU Africa</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cash Withdrawal Modal -->
+    <div id="cashWithdrawalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cashWithdrawalModal')">&times;</span>
+            <h2 class="modal-title">💵 Cash Withdrawal</h2>
+            
+            <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                <div style="font-size: 14px; margin-bottom: 15px; text-align: center;">
+                    Available: <span style="color: #FFD700; font-weight: bold;" id="withdrawableBalance">0.0000 iKb</span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Amount (iKb):</label>
+                    <input type="number" class="form-input" id="cashWithdrawAmount" placeholder="0.0000" step="0.0001" min="0.0001" oninput="calculateCashEquivalent()">
+                </div>
+                
+                <div style="background: rgba(0, 255, 135, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center;">
+                    <div style="font-size: 12px; opacity: 0.8; margin-bottom: 5px;">You will receive:</div>
+                    <div style="font-size: 24px; font-weight: bold; color: #00ff87;" id="cashEquivalent">0.00 KSH</div>
+                    <div style="font-size: 10px; opacity: 0.7; margin-top: 5px;">1 iKb = 100,000 KSH</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Pickup Location:</label>
+                    <select class="form-input" id="pickupLocation">
+                        <option value="">-- Select TAU Center --</option>
+                        <option value="Nairobi HQ">Nairobi - TAU Africa HQ</option>
+                        <option value="Mombasa Center">Mombasa Center</option>
+                        <option value="Kisumu Center">Kisumu Center</option>
+                        <option value="Nakuru Center">Nakuru Center</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Phone Number:</label>
+                    <input type="tel" class="form-input" id="withdrawalPhone" placeholder="254XXXXXXXXX">
+                </div>
+                
+                <button class="auth-button" onclick="submitCashWithdrawal()">
+                    💵 Submit Request
+                </button>
+            </div>
+            
+            <div style="font-size: 11px; opacity: 0.8; text-align: center; color: #FFD700; padding: 10px;">
+                ⏱ Processed within 24-48 hours
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet & Profile Modals (simplified versions) -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('walletModal')">&times;</span>
+            <h2 class="modal-title">💰 Wallet</h2>
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 24px; color: #FFD700; margin: 20px 0;" id="walletBalance">0.0000 iKb</div>
+                <div style="font-size: 12px; opacity: 0.7;">Total Balance</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            <h2 class="modal-title">👤 Profile</h2>
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 18px; color: #FFD700;" id="profileName">User</div>
+                <div style="font-size: 14px; opacity: 0.7; margin-top: 5px;" id="profileEmail">user@example.com</div>
+                <div style="font-size: 14px; color: #00ff87; margin-top: 10px;" id="profileMemberID">Not Linked</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Debug logging
         function debugLog(msg, type = 'info') {
@@ -468,7 +679,7 @@
         }
 
         // Global variables
-        let app, db, auth;
+        let app, db, auth, tauDb;
         let currentUser = null;
         let userBalance = 0.0000;
         let minedBalance = 0.0000;
@@ -478,10 +689,15 @@
         let totalTasksCompleted = 0;
         let miningRate = 0.001;
         let isMining = false;
+        let userWalletAddress = '';
+        let transactionHistory = [];
+        let tauMemberId = null;
+        let tauMemberLevel = null;
+        let transferListener = null;
 
-        debugLog('🚀 Phase 1 Starting...', 'info');
+        debugLog('🚀 Phase 3 Starting...', 'info');
 
-        // Firebase config
+        // Firebase configs
         const firebaseConfig = {
             apiKey: "AIzaSyCZhPjrl18PuyBh01Ou2KQMs-Ph3x2GP7o",
             authDomain: "kabiru-mining-app.firebaseapp.com",
@@ -491,14 +707,38 @@
             appId: "1:217095254990:web:9eb44eff825666995fb19f"
         };
 
+        const tauFirebaseConfig = {
+            apiKey: "AIzaSyAW0vk_gg03xXEm6I1TQnU8KRiv1RhcrQ4",
+            authDomain: "tau-africa-ecosystem.firebaseapp.com",
+            projectId: "tau-africa-ecosystem",
+            storageBucket: "tau-africa-ecosystem.firebasestorage.app",
+            messagingSenderId: "1047279398196",
+            appId: "1:1047279398196:web:06d43661650c794268c961"
+        };
+
         // Initialize Firebase
         try {
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
-            debugLog('✅ Firebase initialized', 'success');
+            debugLog('✅ Kabiru Firebase initialized', 'success');
+            
+            // Initialize TAU Firebase
+            const tauApp = firebase.initializeApp(tauFirebaseConfig, 'tauApp');
+            tauDb = tauApp.firestore();
+            debugLog('✅ TAU Firebase initialized', 'success');
         } catch (error) {
             debugLog('❌ Firebase error: ' + error.message, 'error');
+        }
+
+        // Generate wallet address
+        function generateWalletAddress() {
+            const chars = '0123456789abcdef';
+            let address = '0x';
+            for (let i = 0; i < 40; i++) {
+                address += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return address;
         }
 
         // Show notification
@@ -508,7 +748,19 @@
             notif.classList.add('show');
             setTimeout(() => {
                 notif.classList.remove('show');
-            }, 3000);
+            }, 4000);
+        }
+
+        // Generate transaction ID
+        function generateTransactionId() {
+            return 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Calculate cash equivalent
+        function calculateCashEquivalent() {
+            const ikbAmount = parseFloat(document.getElementById('cashWithdrawAmount').value) || 0;
+            const kshAmount = ikbAmount * 100000;
+            document.getElementById('cashEquivalent').textContent = kshAmount.toLocaleString('en-KE', {minimumFractionDigits: 2}) + ' KSH';
         }
 
         // Save user data
@@ -521,11 +773,15 @@
                 lockedBalance: lockedBalance,
                 tasksCompleted: totalTasksCompleted,
                 miningRate: miningRate,
+                walletAddress: userWalletAddress,
+                transactionHistory: transactionHistory,
+                tauMemberId: tauMemberId,
+                tauMemberLevel: tauMemberLevel,
                 lastActive: new Date().toISOString()
             };
 
             localStorage.setItem('kabiruMiningData', JSON.stringify(userData));
-            debugLog('💾 Data saved to localStorage', 'info');
+            debugLog('💾 Data saved', 'info');
 
             if (currentUser && db) {
                 try {
@@ -535,9 +791,9 @@
                         displayName: currentUser.displayName,
                         lastActive: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
-                    debugLog('💾 Data saved to Firestore', 'success');
+                    debugLog('💾 Firestore saved', 'success');
                 } catch (error) {
-                    debugLog('⚠️ Firestore save error: ' + error.message, 'error');
+                    debugLog('⚠️ Firestore error: ' + error.message, 'error');
                 }
             }
         }
@@ -546,7 +802,6 @@
         async function loadUserData(user) {
             debugLog('📂 Loading user data...', 'info');
 
-            // Try Firestore first
             if (db) {
                 try {
                     const doc = await db.collection('users').doc(user.uid).get();
@@ -559,12 +814,23 @@
                         userBalance = minedBalance + receivedBalance;
                         totalTasksCompleted = data.tasksCompleted || 0;
                         miningRate = data.miningRate || 0.001;
+                        userWalletAddress = data.walletAddress || generateWalletAddress();
+                        transactionHistory = data.transactionHistory || [];
+                        tauMemberId = data.tauMemberId || null;
+                        tauMemberLevel = data.tauMemberLevel || null;
+                        
                         debugLog('✅ Loaded from Firestore', 'success');
                         updateDisplay();
+                        checkMemberIdStatus();
+                        
+                        // Start transfer listener if member ID linked
+                        if (tauMemberId) {
+                            startTransferListener();
+                        }
                         return;
                     }
                 } catch (error) {
-                    debugLog('⚠️ Firestore load error: ' + error.message, 'error');
+                    debugLog('⚠️ Firestore error: ' + error.message, 'error');
                 }
             }
 
@@ -574,17 +840,231 @@
                 const data = JSON.parse(savedData);
                 minedBalance = data.minedBalance || 0;
                 receivedBalance = data.receivedBalance || 0;
-                reserveBalance = data.reserveBalance || 0;
-                lockedBalance = data.lockedBalance || 0;
                 userBalance = data.balance || 0;
                 totalTasksCompleted = data.tasksCompleted || 0;
-                miningRate = data.miningRate || 0.001;
+                tauMemberId = data.tauMemberId || null;
+                tauMemberLevel = data.tauMemberLevel || null;
+                userWalletAddress = data.walletAddress || generateWalletAddress();
                 debugLog('✅ Loaded from localStorage', 'success');
             } else {
-                debugLog('ℹ️ No saved data, starting fresh', 'info');
+                userWalletAddress = generateWalletAddress();
             }
 
             updateDisplay();
+            checkMemberIdStatus();
+        }
+
+        // Check member ID status
+        function checkMemberIdStatus() {
+            const alert = document.getElementById('memberIdAlert');
+            if (!tauMemberId) {
+                alert.style.display = 'block';
+                debugLog('⚠️ No Member ID linked', 'warning');
+            } else {
+                alert.style.display = 'none';
+                document.getElementById('memberBadge').style.display = 'inline-block';
+                document.getElementById('memberBadge').textContent = `Level ${tauMemberLevel || 1} Member`;
+                debugLog(`✅ Member ID linked: ${tauMemberId}`, 'success');
+            }
+        }
+
+        // Verify and link Member ID
+        async function verifyAndLinkMemberID() {
+            const memberId = document.getElementById('linkMemberID').value.trim();
+            
+            if (!memberId || !memberId.match(/^(TSK|TLK)-\d{6}-\d{3}$/)) {
+                showNotification('❌ Invalid format. Use: TSK-XXXXXX-XXX');
+                return;
+            }
+            
+            try {
+                debugLog('🔍 Verifying Member ID...', 'info');
+                showNotification('🔍 Verifying...');
+                
+                // Check in TAU Firestore
+                const memberQuery = await tauDb.collection('members')
+                    .where('id', '==', memberId)
+                    .where('email', '==', currentUser.email)
+                    .limit(1)
+                    .get();
+                
+                if (memberQuery.empty) {
+                    showNotification('❌ Member ID not found or email mismatch');
+                    return;
+                }
+                
+                const memberData = memberQuery.docs[0].data();
+                tauMemberId = memberId;
+                tauMemberLevel = memberData.level || 1;
+                
+                // Update mining rate based on level
+                const levelRates = {
+                    1: 0.001,
+                    2: 0.0015,
+                    3: 0.002,
+                    4: 0.0025
+                };
+                miningRate = levelRates[tauMemberLevel] || 0.001;
+                
+                await saveUserData();
+                updateDisplay();
+                checkMemberIdStatus();
+                
+                showNotification(`✅ Verified! Level ${tauMemberLevel} - Rate: ${miningRate} iKb/day`);
+                debugLog(`✅ Member ID verified: ${memberId}`, 'success');
+                
+                closeModal('memberIDModal');
+                
+                // Start listening for transfers
+                startTransferListener();
+                
+            } catch (error) {
+                debugLog('❌ Verification error: ' + error.message, 'error');
+                showNotification('❌ Verification failed');
+            }
+        }
+
+        // Start transfer listener
+        function startTransferListener() {
+            if (!currentUser || !currentUser.email || !tauDb) {
+                debugLog('⚠️ Cannot start transfer listener', 'warning');
+                return;
+            }
+            
+            debugLog('👂 Listening for TAU transfers...', 'info');
+            
+            transferListener = tauDb.collection('members')
+                .where('email', '==', currentUser.email)
+                .onSnapshot(snapshot => {
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        
+                        if (data.pendingKabiruTransfer && data.pendingKabiruTransfer.status === 'pending') {
+                            const transfer = data.pendingKabiruTransfer;
+                            debugLog('💎 Transfer detected!', 'success');
+                            processIncomingTransfer(transfer, doc.id);
+                        }
+                    });
+                });
+        }
+
+        // Process incoming transfer
+        async function processIncomingTransfer(transfer, docId) {
+            try {
+                const transferredIkb = transfer.iKb || 0;
+                
+                receivedBalance += transferredIkb;
+                userBalance = minedBalance + receivedBalance;
+                
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'tau_transfer',
+                    amount: transferredIkb,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                transactionHistory.unshift(transaction);
+                
+                // Mark as completed in TAU
+                await tauDb.collection('members').doc(docId).update({
+                    'pendingKabiruTransfer.status': 'completed',
+                    'pendingKabiruTransfer.completedAt': firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                updateDisplay();
+                await saveUserData();
+                
+                showNotification(`✅ Received ${transferredIkb.toFixed(4)} iKb from TAU Africa!`);
+                debugLog(`✅ Transfer complete: +${transferredIkb.toFixed(4)} iKb`, 'success');
+                
+            } catch (error) {
+                debugLog('❌ Transfer error: ' + error.message, 'error');
+            }
+        }
+
+        // Submit cash withdrawal
+        async function submitCashWithdrawal() {
+            const amount = parseFloat(document.getElementById('cashWithdrawAmount').value);
+            const location = document.getElementById('pickupLocation').value;
+            const phone = document.getElementById('withdrawalPhone').value.trim();
+            const availableBalance = minedBalance + receivedBalance;
+            
+            if (!amount || amount <= 0) {
+                showNotification('❌ Enter valid amount');
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                showNotification(`❌ Insufficient balance`);
+                return;
+            }
+            
+            if (!location) {
+                showNotification('❌ Select pickup location');
+                return;
+            }
+            
+            if (!phone || !phone.match(/^254[0-9]{9}$/)) {
+                showNotification('❌ Invalid phone. Use: 254XXXXXXXXX');
+                return;
+            }
+            
+            try {
+                debugLog('💵 Processing withdrawal...', 'info');
+                showNotification('⏳ Processing...');
+                
+                // Deduct balance
+                if (minedBalance >= amount) {
+                    minedBalance -= amount;
+                } else {
+                    const remaining = amount - minedBalance;
+                    minedBalance = 0;
+                    receivedBalance -= remaining;
+                }
+                userBalance = minedBalance + receivedBalance;
+                
+                // Create withdrawal request
+                if (tauDb) {
+                    await tauDb.collection('cashWithdrawals').add({
+                        userId: currentUser.uid,
+                        userEmail: currentUser.email,
+                        userName: currentUser.displayName,
+                        tauMemberId: tauMemberId || 'Not linked',
+                        tauMemberLevel: tauMemberLevel || 1,
+                        ikbAmount: amount,
+                        kshAmount: amount * 100000,
+                        pickupLocation: location,
+                        contactPhone: phone,
+                        status: 'pending',
+                        requestedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'cash_withdrawal',
+                    amount: amount,
+                    kshAmount: amount * 100000,
+                    pickupLocation: location,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending'
+                };
+                transactionHistory.unshift(transaction);
+                
+                await saveUserData();
+                updateDisplay();
+                
+                showNotification(`✅ Request submitted! You'll be contacted within 24-48 hours.`);
+                debugLog(`✅ Withdrawal request: ${amount.toFixed(4)} iKb`, 'success');
+                
+                document.getElementById('cashWithdrawAmount').value = '';
+                document.getElementById('pickupLocation').value = '';
+                closeModal('cashWithdrawalModal');
+                
+            } catch (error) {
+                debugLog('❌ Withdrawal error: ' + error.message, 'error');
+                showNotification('❌ Request failed');
+            }
         }
 
         // Update display
@@ -596,47 +1076,67 @@
             document.getElementById('minedBalance').textContent = minedBalance.toFixed(4) + ' iKb';
             document.getElementById('tasksCompleted').textContent = totalTasksCompleted;
             document.getElementById('miningRate').textContent = miningRate.toFixed(3);
+            document.getElementById('walletBalance').textContent = userBalance.toFixed(4) + ' iKb';
+            document.getElementById('withdrawableBalance').textContent = (minedBalance + receivedBalance).toFixed(4) + ' iKb';
             
             if (currentUser) {
-                document.getElementById('userName').textContent = currentUser.displayName || 'User';
+                const name = currentUser.displayName || 'User';
+                const initial = name.charAt(0).toUpperCase();
+                
+                document.getElementById('userName').textContent = name;
                 document.getElementById('userEmail').textContent = currentUser.email;
-                document.getElementById('userAvatar').textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
+                document.getElementById('userAvatar').textContent = initial;
+                document.getElementById('profileName').textContent = name;
+                document.getElementById('profileEmail').textContent = currentUser.email;
+                document.getElementById('profileMemberID').textContent = tauMemberId || 'Not Linked';
             }
         }
 
         // Mining function
         async function mineTokens(type, reward) {
-            debugLog(`⛏️ Mining ${type} started`, 'info');
+            if (!tauMemberId) {
+                showNotification('⚠️ Please link TAU Member ID first!');
+                openMemberIDModal();
+                return;
+            }
+            
+            debugLog(`⛏️ Mining ${type}`, 'info');
             
             if (isMining) {
-                showNotification('Already mining! Please wait.');
+                showNotification('Already mining!');
                 return;
             }
 
             isMining = true;
             document.getElementById('miningStatus').textContent = 'Mining...';
             
-            // Disable buttons
             document.getElementById('sovereignBtn').disabled = true;
             document.getElementById('valueBtn').disabled = true;
             document.getElementById('reserveBtn').disabled = true;
             
             showNotification(`🔥 ${type.toUpperCase()} mining started!`);
             
-            // Mining countdown
             let countdown = 3;
             const timer = setInterval(() => {
                 document.getElementById('miningTimer').textContent = `Mining... ${countdown}s`;
                 countdown--;
-                if (countdown < 0) {
-                    clearInterval(timer);
-                }
+                if (countdown < 0) clearInterval(timer);
             }, 1000);
             
             setTimeout(async () => {
                 minedBalance += reward;
                 userBalance = minedBalance + receivedBalance;
                 totalTasksCompleted++;
+                
+                const transaction = {
+                    id: generateTransactionId(),
+                    type: 'mining',
+                    subtype: type,
+                    amount: reward,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                transactionHistory.unshift(transaction);
                 
                 updateDisplay();
                 await saveUserData();
@@ -647,7 +1147,6 @@
                 
                 debugLog(`✅ Mining complete: +${reward.toFixed(4)} iKb`, 'success');
                 
-                // Enable buttons
                 document.getElementById('sovereignBtn').disabled = false;
                 document.getElementById('valueBtn').disabled = false;
                 document.getElementById('reserveBtn').disabled = false;
@@ -661,9 +1160,40 @@
             }, 3500);
         }
 
+        // Modal functions
+        function openMemberIDModal() {
+            document.getElementById('memberIDModal').style.display = 'block';
+        }
+
+        function openCashWithdrawalModal() {
+            document.getElementById('cashWithdrawalModal').style.display = 'block';
+        }
+
+        function openWalletModal() {
+            document.getElementById('walletModal').style.display = 'block';
+        }
+
+        function openProfileModal() {
+            document.getElementById('profileModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modals on outside click
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
         // Email verification handler
         async function handleEmailVerificationLink(oobCode) {
-            debugLog('📧 Processing verification link', 'info');
+            debugLog('📧 Processing verification', 'info');
             try {
                 await auth.applyActionCode(oobCode);
                 debugLog('✅ Email verified!', 'success');
@@ -672,7 +1202,7 @@
                 setTimeout(() => showLogin(), 2000);
             } catch (error) {
                 debugLog('❌ Verification error: ' + error.message, 'error');
-                showNotification('Verification failed.');
+                showNotification('Verification failed');
                 setTimeout(() => showLogin(), 2000);
             }
         }
@@ -708,7 +1238,7 @@
             const password = document.getElementById('loginPassword').value;
             
             if (!email || !password) {
-                showNotification('Please fill in all fields');
+                showNotification('Please fill all fields');
                 return;
             }
             
@@ -717,7 +1247,7 @@
                 const cred = await auth.signInWithEmailAndPassword(email, password);
                 
                 if (!cred.user.emailVerified) {
-                    showNotification('Please verify your email first');
+                    showNotification('Please verify email first');
                     await auth.signOut();
                     return;
                 }
@@ -726,7 +1256,7 @@
                 showNotification('Login successful!');
             } catch (error) {
                 debugLog('❌ Login error: ' + error.message, 'error');
-                showNotification('Login failed: ' + error.message);
+                showNotification('Login failed');
             }
         }
 
@@ -737,7 +1267,7 @@
             const password = document.getElementById('signupPassword').value;
             
             if (!name || !email || !password) {
-                showNotification('Please fill in all fields');
+                showNotification('Please fill all fields');
                 return;
             }
             
@@ -759,7 +1289,7 @@
                 showVerification();
             } catch (error) {
                 debugLog('❌ Signup error: ' + error.message, 'error');
-                showNotification('Signup failed: ' + error.message);
+                showNotification('Signup failed');
             }
         }
 
@@ -775,7 +1305,7 @@
                         showMiningApp();
                     }, 1500);
                 } else {
-                    showNotification('Not verified yet. Check email.');
+                    showNotification('Not verified yet');
                 }
             }
         }
@@ -784,12 +1314,18 @@
         async function logout() {
             try {
                 await saveUserData();
+                
+                if (transferListener) {
+                    transferListener();
+                    transferListener = null;
+                }
+                
                 await auth.signOut();
                 currentUser = null;
                 userBalance = 0;
                 minedBalance = 0;
                 receivedBalance = 0;
-                totalTasksCompleted = 0;
+                tauMemberId = null;
                 debugLog('🚪 Logged out', 'info');
                 showNotification('Logged out');
                 showLoginPage();
@@ -843,7 +1379,7 @@
             }
         });
 
-        debugLog('✅ Phase 1 loaded successfully', 'success');
+        debugLog('✅ Phase 3 loaded successfully', 'success');
     </script>
 </body>
-    </html>
+</html>
