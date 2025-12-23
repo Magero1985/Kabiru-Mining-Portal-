@@ -1627,7 +1627,7 @@
         let app, db, auth;
 
         try {
-            app = firebase.initializeApp(firebaseConfig);
+            app = firebase.initializeApp(FIREBASE_CONFIG);
             db = firebase.firestore();
             auth = firebase.auth();
             console.log('✅ Firebase initialized successfully');
