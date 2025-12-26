@@ -835,6 +835,71 @@
                 width: 95%;
             }
         }
+        /* Value Pool & Sovereignty Grid Styles */
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.menu-item {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 12px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+    background: rgba(255, 215, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+.menu-item i { font-size: 24px; margin-bottom: 8px; display: block; }
+.menu-item span { font-size: 13px; font-weight: bold; color: #FFD700; }
+.menu-item small { font-size: 10px; display: block; opacity: 0.7; }
+
+/* Liquid Wallet Styles */
+.liquid-card {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.currency-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.form-guided {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.mining-progress-container {
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.mining-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+    width: 0%;
+    transition: width 0.5s linear;
+}
     </style>
 </head>
 <body>
@@ -1328,35 +1393,71 @@
             </div>
         </div>
     </div>
-
-    <!-- Read Modal -->
-    <div id="readModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('readModal')">&times;</span>
-            <h2 class="modal-title">Documentation & Resources</h2>
-            <div style="margin-bottom: 20px;">
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('Whitepaper coming soon!')">
-                    <strong>📄 KABIRU Whitepaper</strong>
-                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Technical documentation and roadmap</p>
-                </div>
-                
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('User guide coming soon!')">
-                    <strong>📖 User Guide</strong>
-                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">How to mine and use KABIRU tokens</p>
-                </div>
-                
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('FAQ coming soon!')">
-                    <strong>❓ FAQ</strong>
-                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Frequently asked questions</p>
-                </div>
-                
-                <div style="padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 10px 0; cursor: pointer;" onclick="showNotification('Community links coming soon!')">
-                    <strong>🌐 Community</strong>
-                    <p style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Join our community channels</p>
-                </div>
+<----Value Pool modal--->
+<div id="valuePoolModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('valuePoolModal')">&times;</span>
+        <h2 class="modal-title">VALUE POOL</h2>
+        
+        <div class="menu-grid">
+            <div class="menu-item" onclick="showValueSection('hotpoint')">
+                <span>Value Hotpoint</span>
+                <small>Codes • Items • Declarations</small>
+            </div>
+            <div class="menu-item" onclick="showValueSection('family')">
+                <span>Family Ledgers</span>
+                <small>Members • Personal Decl.</small>
+            </div>
+            <div class="menu-item" onclick="showValueSection('business')">
+                <span>Business Ledgers</span>
+                <small>Holdings • Empires</small>
             </div>
         </div>
+
+        <div id="valueFormContainer" class="form-guided" style="display:none;">
+            <h4 id="formTitle" style="color:#FFD700; margin-bottom:10px;"></h4>
+            <div id="formFields"></div>
+            <button class="auth-button" onclick="submitDeclaration()">Submit Declaration</button>
+        </div>
     </div>
+</div>
+<----Liquid Pool modal---->
+<div id="liquidPoolModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('liquidPoolModal')">&times;</span>
+        <h2 class="modal-title">LIQUID POOL</h2>
+        
+        <div class="liquid-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:12px; opacity:0.9;">Liquid Balance</span>
+                <span class="currency-badge" id="localCurrencyLabel">KSH</span>
+            </div>
+            <div style="font-size:28px; font-weight:bold; margin:10px 0;" id="liquidBalance">0.00</div>
+            <div style="font-size:11px; opacity:0.8;">Rate: 1 iKb = 100,000 <span class="localCurrency">KSH</span></div>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-item" onclick="initiateDeposit()">
+                <span>Add Money</span>
+                <small>Mpesa • Card • Crypto</small>
+            </div>
+            <div class="menu-item" onclick="convertToIKb()">
+                <span>Convert to iKb</span>
+                <small>Instant Conversion</small>
+            </div>
+        </div>
+        
+        <div class="form-guided">
+            <label style="font-size:12px;">Country/Region (for Currency)</label>
+            <select id="userCountry" class="form-input" onchange="updateLocalCurrency()">
+                <option value="Kenya">Kenya (KSH)</option>
+                <option value="Uganda">Uganda (UGX)</option>
+                <option value="Tanzania">Tanzania (TZS)</option>
+                <option value="Burundi">Burundi (BIF)</option>
+            </select>
+        </div>
+    </div>
+</div>
 
     <!-- Language Modal -->
     <div id="languageModal" class="modal">
@@ -3664,5 +3765,148 @@ export const realtimeService = {
   }
 };
     </script>
+                <script>
+                    // State for Mining Sessions
+let miningSession = {
+    active: false,
+    startTime: null,
+    endTime: null,
+    ratePerHour: 0,
+    intervalId: null,
+    type: null
+};
+
+// Mining Configs
+const MINING_TIERS = {
+    basic: { rate: 0.005, hrRate: 0.0002083333, reqLevel: 1 },
+    community: { rate: 0.01, hrRate: 0.0004166667, reqLevel: 2 },
+    sovereign: { rate: 0.1, hrRate: 0.0041666667, reqLevel: 3 }
+};
+
+async function startMiningSession(tierId) {
+    const tier = MINING_TIERS[tierId];
+    
+    // 1. Check Declaration Code Expiry (30 Days)
+    const lastDeclaration = currentUser.lastDeclarationDate || 0;
+    const now = Date.now();
+    const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+    
+    if (now - lastDeclaration > thirtyDaysInMs) {
+        showNotification("⚠️ Declaration expired! Require declaration code to activate for 30 days.");
+        openValueModal(); // Direct to renewal
+        return;
+    }
+
+    if (currentUser.memberLevel < tier.reqLevel) {
+        showNotification(`🔒 Level ${tier.reqLevel} Declaration Required!`);
+        return;
+    }
+
+    if (miningSession.active) {
+        showNotification("Mining session already in progress!");
+        return;
+    }
+
+    // Initialize 24hr Session
+    miningSession = {
+        active: true,
+        startTime: now,
+        endTime: now + (24 * 60 * 60 * 1000),
+        ratePerHour: tier.hrRate,
+        type: tierId
+    };
+
+    saveMiningState();
+    runRealTimeMining();
+    showNotification(`🚀 ${tierId.toUpperCase()} Mining started for 24 hours!`);
+}
+
+function runRealTimeMining() {
+    miningSession.intervalId = setInterval(() => {
+        const now = Date.now();
+        if (now >= miningSession.endTime) {
+            endMiningSession();
+            return;
+        }
+
+        // Calculate progress and real-time increment
+        const elapsedHrs = (now - miningSession.startTime) / (1000 * 60 * 60);
+        const currentMined = elapsedHrs * miningSession.ratePerHour;
+        
+        // Update UI Progress Bar & Timer
+        const progress = ((now - miningSession.startTime) / (24 * 60 * 60 * 1000)) * 100;
+        document.getElementById('miningProgressBar').style.width = `${progress}%`;
+        
+        const remaining = miningSession.endTime - now;
+        updateMiningTimer(remaining);
+        
+        // Animation: Update balance display with small increments
+        animateBalanceIncrement(currentMined);
+        
+    }, 1000);
+}
+
+function endMiningSession() {
+    clearInterval(miningSession.intervalId);
+    miningSession.active = false;
+    
+    // Finalize balance
+    const totalEarned = (miningSession.endTime - miningSession.startTime) / (1000 * 60 * 60) * miningSession.ratePerHour;
+    minedBalance += totalEarned;
+    
+    saveUserData();
+    updateBalanceDisplay();
+    
+    // Notification every end of season
+    showNotification("🏁 Mining session ended! Click MINE again to continue earning iKb.");
+    
+    // Trigger System Notification if possible
+    if (Notification.permission === "granted") {
+        new Notification("KABIRU Mining", { body: "Your 24hr session has ended. Restart to keep earning!" });
+    }
+                    }
+                </script>
+    <script>
+        const CURRENCY_MAP = {
+    'Kenya': { code: 'KSH', symbol: 'Ksh' },
+    'Uganda': { code: 'UGX', symbol: 'Ugsh' },
+    'Burundi': { code: 'BIF', symbol: 'BFr' },
+    'Tanzania': { code: 'TZS', symbol: 'Tsh' }
+};
+
+function updateLocalCurrency() {
+    const country = document.getElementById('userCountry').value;
+    const currency = CURRENCY_MAP[country];
+    
+    // Update UI Labels
+    document.getElementById('localCurrencyLabel').textContent = currency.code;
+    const labels = document.querySelectorAll('.localCurrency');
+    labels.forEach(el => el.textContent = currency.symbol);
+    
+    showNotification(`Currency set to ${currency.code} based on ${country} ID`);
+}
+
+async function convertToIKb() {
+    const liquidAmount = parseFloat(prompt("Enter amount to convert to iKb:"));
+    if (isNaN(liquidAmount) || liquidAmount <= 0) return;
+
+    // 1 iKb = 100,000 of chosen currency
+    const ikbValue = liquidAmount / 100000;
+    
+    if (confirm(`Convert ${liquidAmount} to ${ikbValue.toFixed(6)} iKb?`)) {
+        showNotification("🔄 Processing conversion via Valenta Company...");
+        
+        setTimeout(async () => {
+            receivedBalance += ikbValue;
+            userBalance = minedBalance + receivedBalance;
+            
+            await saveUserData();
+            updateBalanceDisplay();
+            showNotification(`✅ Successfully added ${ikbValue.toFixed(6)} iKb to main wallet!`);
+            closeModal('liquidPoolModal');
+        }, 2000);
+    }
+                    }
+                </script>
  </body>
     </html>
