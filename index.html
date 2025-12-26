@@ -900,6 +900,11 @@
     width: 0%;
     transition: width 0.5s linear;
 }
+        const MINING_TIERS = {
+    'basic': { rate: 0.005, hrRate: 0.0002083333, reqLevel: 1 },
+    'community': { rate: 0.01, hrRate: 0.0004166667, reqLevel: 2 },
+    'sovereign': { rate: 0.1, hrRate: 0.0041666667, reqLevel: 3 }
+};
     </style>
 </head>
 <body>
@@ -1110,33 +1115,38 @@
                     </div>
 
                     <div class="value-categories">
-                        <div class="value-item" onclick="mineTokens('Sovereign', 0.100000)">Sovereign values<br><small>mine</small></div>
-                        <div class="value-item" onclick="mineTokens('Community', 0.01000)">Community values<br><small>mine</small></div>
-                        <div class="value-item" onclick="mineTokens('Basic', 0.00500)">Basic values<br><small>mine</small></div>
-                    </div>
+    <div class="value-item" onclick="startMiningSession('sovereign')" style="cursor: pointer;">
+        Sovereign values<br><small>mine</small>
+    </div>
+    <div class="value-item" onclick="startMiningSession('community')" style="cursor: pointer;">
+        Community values<br><small>mine</small>
+    </div>
+    <div class="value-item" onclick="startMiningSession('basic')" style="cursor: pointer;">
+        Basic values<br><small>mine</small>
+    </div>
+</div>
                 </div>
 
-                <!-- Personal Ledger Section -->
                 <div class="personal-ledger">
-                    <div class="ledger-grid">
-                        <div class="ledger-item">
-                            <div class="ledger-title">My Trust</div>
-                            <div>value-pool</div>
-                        </div>
-                        <div class="ledger-item">
-                            <div class="ledger-title">My Foundation</div>
-                            <div>family-ledger</div>
-                        </div>
-                        <div class="ledger-item">
-                            <div class="ledger-title">My Holdings</div>
-                            <div>business-ledger</div>
-                        </div>
-                        <div class="ledger-item">
-                            <div class="ledger-title">My Corporate</div>
-                            <div>liquid-pool</div>
-                        </div>
-                    </div>
-                </div>
+    <div class="ledger-grid">
+        <div class="ledger-item" onclick="openValueModal()" style="cursor: pointer;">
+            <div class="ledger-title">My Trust</div>
+            <div>value-pool</div>
+        </div>
+        <div class="ledger-item" onclick="showValueSection('family')" style="cursor: pointer;">
+            <div class="ledger-title">My Foundation</div>
+            <div>family-ledger</div>
+        </div>
+        <div class="ledger-item" onclick="showValueSection('business')" style="cursor: pointer;">
+            <div class="ledger-title">My Holdings</div>
+            <div>business-ledger</div>
+        </div>
+        <div class="ledger-item" onclick="openLiquidModal()" style="cursor: pointer;">
+            <div class="ledger-title">My Corporate</div>
+            <div>liquid-pool</div>
+        </div>
+    </div>
+</div>
 
                 <!-- Footer with Logout -->
                 <div style="text-align: center; font-size: 12px; opacity: 0.6; margin-top: 20px;">
@@ -3908,5 +3918,59 @@ async function convertToIKb() {
     }
                     }
                 </script>
- </body>
+    <script>
+        // --- Modal Control Functions ---
+
+function openValueModal() {
+    document.getElementById('valuePoolModal').style.display = 'block';
+}
+
+function openLiquidModal() {
+    document.getElementById('liquidPoolModal').style.display = 'block';
+    // Initialize currency display based on current user settings
+    updateLocalCurrency();
+}
+
+function openSovereignModal() {
+    // Lead to Sovereign forms
+    openValueModal();
+    showValueSection('sovereignty'); 
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+// Function to handle sub-sections inside the Value Pool
+function showValueSection(section) {
+    const container = document.getElementById('valueFormContainer');
+    const fields = document.getElementById('formFields');
+    const title = document.getElementById('formTitle');
+    
+    container.style.display = 'block';
+    fields.innerHTML = ''; // Clear previous fields
+
+    if (section === 'hotpoint') {
+        title.innerText = "Value Hotpoint";
+        fields.innerHTML = `
+            <input type="text" class="form-input" placeholder="Enter Value Code">
+            <input type="text" class="form-input" placeholder="Value Items">
+            <textarea class="form-input" placeholder="Declaration Details"></textarea>
+        `;
+    } else if (section === 'sovereignty') {
+        title.innerText = "Sovereignty Path";
+        fields.innerHTML = `
+            <p style="font-size:11px; margin-bottom:10px;">Guided form for Personal & Community Sovereignty.</p>
+            <input type="text" class="form-input" placeholder="Empire Details">
+            <select class="form-input">
+                <option>Self Sovereignty</option>
+                <option>Family Sovereignty</option>
+                <option>Community Sovereignty</option>
+            </select>
+        `;
+    }
+    // Add other sections (family, business) as needed...
+}
+    </script> 
+</body>
     </html>
